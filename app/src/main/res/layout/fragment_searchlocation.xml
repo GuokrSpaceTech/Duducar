@@ -17,11 +17,11 @@
             android:text="在" >
         </TextView>
 
-        <EditText
+        <TextView
             android:id="@+id/city"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="北京" />
+            android:text="" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.88"
-            android:text="餐厅" />
+            android:text="" />
     </LinearLayout>
 
     <LinearLayout

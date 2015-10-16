@@ -15,27 +15,31 @@
             android:id="@+id/bmapView"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:clickable="true" />
-
-        <Button
-            android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:layout_gravity="top"
-            android:id="@+id/search_button"/>
+            android:clickable="true"
+            android:layout_marginTop="50dp" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:id="@+id/buttonLoc"
-            android:text = "X"/>
+            android:text = "定位"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Y"
-            android:id="@+id/buttonPin"/>
+            android:id="@+id/buttonPin"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/popup" />
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="top"
+            android:id="@+id/search_button"
+            android:text="搜索" />
     </FrameLayout>
 
     <!-- android:layout_gravity="start" tells DrawerLayout to treat

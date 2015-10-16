@@ -37,7 +37,14 @@ import com.baidu.mapapi.search.sug.OnGetSuggestionResultListener;
 import com.baidu.mapapi.search.sug.SuggestionResult;
 import com.baidu.mapapi.search.sug.SuggestionSearch;
 import com.baidu.mapapi.search.sug.SuggestionSearchOption;
+import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
+import com.github.nkzawa.socketio.client.Socket;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,10 +58,8 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class SearchLocationFragment extends Fragment implements OnGetPoiSearchResultListener, OnGetSuggestionResultListener {
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_CITY = "city";
 
     private PoiSearch mPoiSearch = null;
     private SuggestionSearch mSuggestionSearch = null;
@@ -66,15 +71,13 @@ public class SearchLocationFragment extends Fragment implements OnGetPoiSearchRe
      */
     private AutoCompleteTextView keyWorldsView = null;
     private ArrayAdapter<String> sugAdapter = null;
-    private EditText editCity;
+    private TextView editCity;
     private EditText editSearchKey;
     private RecyclerView recyclerView;
     private List<PoiInfo> mDataset = new ArrayList<>();
     ResultListAdapter mAdapter;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String  mCity;
 
     private OnFragmentInteractionListener mListener;
     private Context mContext;
@@ -83,16 +86,12 @@ public class SearchLocationFragment extends Fragment implements OnGetPoiSearchRe
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment SearchLocationFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static SearchLocationFragment newInstance(String param1, String param2) {
+    public static SearchLocationFragment newInstance(String city) {
         SearchLocationFragment fragment = new SearchLocationFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_CITY, city);
         fragment.setArguments(args);
         return fragment;
     }
@@ -105,10 +104,8 @@ public class SearchLocationFragment extends Fragment implements OnGetPoiSearchRe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mCity = getArguments().getString(ARG_CITY);
         }
-
         mPoiSearch = PoiSearch.newInstance();
         mPoiSearch.setOnGetPoiSearchResultListener(this);
         mSuggestionSearch = SuggestionSearch.newInstance();
@@ -117,7 +114,6 @@ public class SearchLocationFragment extends Fragment implements OnGetPoiSearchRe
         mContext = getActivity();
 
         setHasOptionsMenu(true);
-
     }
 
     @Override
@@ -130,7 +126,8 @@ public class SearchLocationFragment extends Fragment implements OnGetPoiSearchRe
         sugAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_dropdown_item_1line);
         keyWorldsView.setAdapter(sugAdapter);
 
-        editCity = (EditText) root.findViewById(R.id.city);
+        editCity = (TextView) root.findViewById(R.id.city);
+        editCity.setText(mCity);
         editSearchKey = (EditText) root.findViewById(R.id.searchkey);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -156,8 +153,7 @@ public class SearchLocationFragment extends Fragment implements OnGetPoiSearchRe
                 if (cs.length() <= 0) {
                     return;
                 }
-                String city = ((EditText) root.findViewById(R.id.city)).getText()
-                        .toString();
+                String city = ((TextView) root.findViewById(R.id.city)).getText().toString();
                 /**
                  * 使用建议搜索服务获取建议列表，结果在onSuggestionResult()中更新
                  */
@@ -192,9 +188,10 @@ public class SearchLocationFragment extends Fragment implements OnGetPoiSearchRe
     public void searchButtonProcess(View v) {
 
         mPoiSearch.searchInCity((new PoiCitySearchOption())
-                .city(editCity.getText().toString())
+                .city(mCity)
                 .keyword(editSearchKey.getText().toString())
                 .pageNum(load_Index));
+
     }
 
     @Override
