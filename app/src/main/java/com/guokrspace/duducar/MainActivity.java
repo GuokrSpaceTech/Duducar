@@ -188,15 +188,14 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-                if (true) //Not login
+                if (false) //Not login
                 {
                     Intent intent = new Intent(mContext, LoginActivity.class);
                     startActivityForResult(intent, 0x6001);
                 } else {
                     //Post mReqLocation
-                    if (mTcpClient != null) {
-//                        mTcpClient.sendMessage("Android Client: " + "Hello World!");
-                    }
+                    Intent intent = new Intent(mContext, OrderConfirmationActivity.class);
+                    startActivity(intent);
                 }
             }
         });
@@ -206,31 +205,7 @@ public class MainActivity extends AppCompatActivity
                 mLocClient.start();
                 isFirstLoc = true;
                 mLocClient.requestLocation();
-//                LatLng ll = new LatLng(bdLocation.getLatitude(), bdLocation.getLongitude());
-//                MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
-//                mBaiduMap.animateMapStatus(u);
 //
-//                switch (mCurrentMode) {
-//                    case NORMAL:
-//                        requestLocButton.setText("跟随");
-//                        mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
-//                        mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(mCurrentMode, true, mCurrentMarker));
-//                        break;
-//                    case COMPASS:
-//                        requestLocButton.setText("普通");
-//                        mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
-//                        mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(mCurrentMode, true, mCurrentMarker));
-//                        break;
-//                    case FOLLOWING:
-//                        requestLocButton.setText("罗盘");
-//                        mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
-//                        mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(mCurrentMode, true, mCurrentMarker));
-//                        break;
-//                mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
-//
-//                mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(mCurrentMode, true, mCurrentMarker));
-////                        break;
-//                }
             }
         });
 
