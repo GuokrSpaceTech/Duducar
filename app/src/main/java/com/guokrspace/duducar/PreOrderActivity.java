@@ -5,12 +5,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.*;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,6 +21,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.widget.DrawerLayout;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import android.widget.ZoomControls;
 
@@ -45,15 +49,17 @@ import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
+import com.guokrspace.duducar.base.HandlerMessageTag;
+import com.guokrspace.duducar.base.SocketClient;
+import com.guokrspace.duducar.ui.OrderConfirmationView;
 
 import org.json.JSONObject;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity
+public class PreOrderActivity extends AppCompatActivity
         implements
         NavigationDrawerFragment.NavigationDrawerCallbacks,
-        SearchLocationFragment.OnFragmentInteractionListener,
         OnGetGeoCoderResultListener,
         SocketClient.ResponseListener {
     private Context mContext = this;
@@ -193,9 +199,22 @@ public class MainActivity extends AppCompatActivity
                     Intent intent = new Intent(mContext, LoginActivity.class);
                     startActivityForResult(intent, 0x6001);
                 } else {
-                    //Post mReqLocation
-                    Intent intent = new Intent(mContext, OrderConfirmationActivity.class);
-                    startActivity(intent);
+
+                    final OrderConfirmationView orderConfirmationView = new OrderConfirmationView(mContext);
+                    final LinearLayout container = (LinearLayout)findViewById(R.id.container);
+                    final FrameLayout mainmapview = (FrameLayout)findViewById(R.id.mainmapview);
+
+                    container.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            ViewGroup.LayoutParams paramRL = mainmapview.getLayoutParams();
+                            paramRL.height = dpToPx(getResources(),350);
+                            mainmapview.requestLayout();
+                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.FILL_PARENT);
+                            container.addView(orderConfirmationView, 1, params);
+                            container.requestLayout();
+                        }
+                    });
                 }
             }
         });
@@ -380,20 +399,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onFragmentInteraction(LatLng location) {
-        mReqLoc = location;
-        mGeoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(location));
-        MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(location);
-        mBaiduMap.animateMapStatus(u);
-        getSupportFragmentManager().popBackStack();
-
-        mBaiduMap.addOverlay(new MarkerOptions()
-                .position(location).icon(BitmapDescriptorFactory
-                        .fromResource(R.drawable.icon_gcoding)));
-        mBaiduMap.setMapStatus(MapStatusUpdateFactory.newLatLng(location));
-    }
-
-    @Override
     public void onGetGeoCodeResult(GeoCodeResult result) {
         if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
             Toast.makeText(this, "抱歉，未能找到结果", Toast.LENGTH_LONG)
@@ -425,20 +430,6 @@ public class MainActivity extends AppCompatActivity
 
         city = result.getAddressDetail().city;
         callForCarButton.setText(result.getAddress());
-//        Button button = new Button(getApplicationContext());
-//        button.setBackgroundResource(R.drawable.popup);
-//        button.setText(result.getAddress());
-//        InfoWindow.OnInfoWindowClickListener listener = null;
-//        mInfoWindow = new InfoWindow(BitmapDescriptorFactory.fromView(button), result.getLocation(), -47, listener);
-//        mBaiduMap.showInfoWindow(mInfoWindow);
-//        mBaiduMap.clear();
-//        mBaiduMap.addOverlay(new MarkerOptions().position(result.getLocation())
-//                .icon(BitmapDescriptorFactory
-//                        .fromResource(R.drawable.icon_gcoding)));
-//        mBaiduMap.setMapStatus(MapStatusUpdateFactory.newLatLng(result
-//                .getLocation()));
-//        Toast.makeText(this, result.getAddress(),
-//                Toast.LENGTH_LONG).show();
 
     }
 
@@ -539,40 +530,6 @@ public class MainActivity extends AppCompatActivity
 //            Log.i("BaiduLocationApiDem", sb.toString());
         }
     }
-
-//    public class MyLocationListenner implements BDLocationListener {
-//
-//        @Override
-//        public void onReceiveLocation(BDLocation location) {
-//            // map view 销毁后不在处理新接收的位置
-//            if (location == null || mMapView == null)
-//                return;
-//
-//            MyLocationData locData = new MyLocationData.Builder()
-//                    .accuracy(location.getRadius())
-//                            // 此处设置开发者获取到的方向信息，顺时针0-360
-//                    .direction(location.getDirection()).latitude(location.getLatitude())
-//                    .longitude(location.getLongitude()).build();
-//
-//            mBaiduMap.setMyLocationData(locData);
-//
-//            LatLng ll = new LatLng(location.getLatitude(),
-//                    location.getLongitude());
-//
-//            mGeoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(ll));
-//
-//            if (isFirstLoc) {
-//                isFirstLoc = false;
-//                MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
-//                mBaiduMap.animateMapStatus(u);
-//            }
-//
-//
-//        }
-//
-//        public void onReceivePoi(BDLocation poiLocation) {
-//        }
-//    }
 
     /**
      * @author Prashant Adesara
@@ -680,7 +637,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onAttach(Activity activity) {
             super.onAttach(activity);
-            ((MainActivity) activity).onSectionAttached(
+            ((PreOrderActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
         }
     }
@@ -718,4 +675,8 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+
+    public int dpToPx(Resources res, int dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, res.getDisplayMetrics());
+    }
 }

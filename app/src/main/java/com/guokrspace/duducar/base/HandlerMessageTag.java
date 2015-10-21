@@ -1,4 +1,4 @@
-package com.guokrspace.duducar;
+package com.guokrspace.duducar.base;
 
 /**
  * Created by macbook on 15/10/16.
