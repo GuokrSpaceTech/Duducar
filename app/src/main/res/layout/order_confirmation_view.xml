@@ -1,11 +1,93 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+              android:orientation="vertical">
 
-    <com.guokrspace.duducar.ui.OrderConfirmationView android:background="#ccc"
-        android:layout_width="300dp" android:layout_height="300dp" android:paddingLeft="20dp"
-        android:paddingBottom="40dp" app:exampleDimension="24sp" app:exampleColor="#33b5e5"
-        app:exampleString="Hello, OrderConfirmationView"
-        app:exampleDrawable="@android:drawable/ic_menu_add" />
 
-</FrameLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:id="@+id/selectPaymentLLayout">
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:id="@+id/imageViewPayIcon"
+            android:background="@drawable/ic_drawer"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Alipay"
+            android:id="@+id/textViewPayDesc"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center_vertical"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:id="@+id/costEstimateLLayout">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:id="@+id/imageView"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_drawer"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cost Estimate"
+                android:id="@+id/textViewCostEst"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="50"
+            android:id="@+id/cuponLLayout">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:id="@+id/imageView2"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_drawer"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cupon"
+                android:id="@+id/textViewCupon"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Call A Cab"
+        android:id="@+id/orderCabButton"/>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="The cab arrives in x minutes"
+        android:id="@+id/timeToArriveTextView"
+        android:gravity="center"/>
+
+</LinearLayout>

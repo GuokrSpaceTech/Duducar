@@ -49,19 +49,22 @@ import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
-import com.guokrspace.duducar.base.HandlerMessageTag;
-import com.guokrspace.duducar.base.SocketClient;
+import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
+import com.guokrspace.duducar.communication.message.MessageTag;
+import com.guokrspace.duducar.communication.ResponseHandler;
+import com.guokrspace.duducar.communication.SocketClient;
+import com.guokrspace.duducar.communication.StateMachine;
+import com.guokrspace.duducar.communication.message.NearByCars;
 import com.guokrspace.duducar.ui.OrderConfirmationView;
 
-import org.json.JSONObject;
-
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class PreOrderActivity extends AppCompatActivity
         implements
         NavigationDrawerFragment.NavigationDrawerCallbacks,
-        OnGetGeoCoderResultListener,
-        SocketClient.ResponseListener {
+        OnGetGeoCoderResultListener{
     private Context mContext = this;
     MapView mMapView = null;
     BaiduMap mBaiduMap = null;
@@ -74,6 +77,7 @@ public class PreOrderActivity extends AppCompatActivity
     public MyLocationListener myListener = new MyLocationListener();
     private MyLocationConfiguration.LocationMode mCurrentMode;
     BitmapDescriptor mCurrentMarker;
+    LatLng mCurrentLocation;
     boolean isFirstLoc = true;// 是否首次定位
 
     //UI
@@ -87,9 +91,11 @@ public class PreOrderActivity extends AppCompatActivity
     //Data
     LatLng mReqLoc = null;
     Order mOrder = new Order();
-    String state = "free";
     String city = null;
     int messageid;
+
+    //State Machine
+    int state;
 
     //信息窗口
     private InfoWindow mInfoWindow;
@@ -104,25 +110,38 @@ public class PreOrderActivity extends AppCompatActivity
     private CharSequence mTitle;
 
     private Handler mHandler = new Handler(new Handler.Callback() {
+
+//        HashMap<Integer, Response> map = ResponseHandler.getInstance().responseParserMap;
+
         @Override
         public boolean handleMessage(Message message) {
             switch(message.what)
             {
-                case HandlerMessageTag.MESSAGE_CREATE_ORDER_FAILURE:
+                case MessageTag.MESSAGE_CREATE_ORDER_FAILURE:
                     break;
-                case HandlerMessageTag.MESSAGE_CREATE_ORDER_SUCCESS:
+                case MessageTag.MESSAGE_CREATE_ORDER_SUCCESS:
                     break;
-                case HandlerMessageTag.MESSAGE_TIMEOUT:
+                case MessageTag.MESSAGE_TIMEOUT:
                     break;
-                case HandlerMessageTag.MESSAGE_SUCCESS:
+                case MessageTag.MESSAGE_SUCCESS:
                     break;
-                case HandlerMessageTag.MESSAGE_FAILURE:
+                case MessageTag.MESSAGE_FAILURE:
+                    break;
+                case MessageTag.GET_NEAR_CAR_RESP:
+                    if(state == StateMachine.STATE_FREE)
+                    {
+//                        ResponseHandler.NearByCars cars = (ResponseHandler.NearByCars) map.get(MessageTag.GET_NEAR_CAR_RESP).parseResponse(message.obj.toString());
+
+                    }
+
                     break;
             }
 
             return false;
         }
     });
+
+    private Timer timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -355,18 +374,26 @@ public class PreOrderActivity extends AppCompatActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         super.onDestroy();
     }
 
     @Override
     protected void onPause() {
         mMapView.onPause();
+        timer.cancel();
+        timer.purge();
         super.onPause();
     }
 
     @Override
     protected void onResume() {
         mMapView.onResume();
+        /*
+         * Start the timer to for peoriodically ask for nearby cars
+         */
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new MyTimerTask(), 2000 ,3*1000);
         super.onResume();
     }
 
@@ -377,10 +404,24 @@ public class PreOrderActivity extends AppCompatActivity
                 //Post mReqLocation
                     messageid = SocketClient.getInstance().sendCarRequest("2", mOrder.start, mOrder.dest,
                             mOrder.start_lat, mOrder.start_lng, mOrder.dest_lat, mOrder.dest_lng,
-                            mOrder.pre_mileage, mOrder.pre_price, mOrder.car_type, mHandler);
+                            mOrder.pre_mileage, mOrder.pre_price, mOrder.car_type, new ResponseHandler() {
+                                @Override
+                                public void onSuccess(String messageBody) {
+
+                                }
+
+                                @Override
+                                public void onFailure(String error) {
+
+                                }
+
+                                @Override
+                                public void onTimeout() {
+
+                                }
+                            });
                 }
                 callForCarButton.setText("已经叫车，等待派单");
-                state = "requested";
             } else if (requestCode == 6002) {
                 Double searchLat = (Double) data.getExtras().get("lat");
                 Double searchLng = (Double) data.getExtras().get("lng");
@@ -432,11 +473,11 @@ public class PreOrderActivity extends AppCompatActivity
         callForCarButton.setText(result.getAddress());
 
     }
-
-    @Override
-    public void onResponseReceived(JSONObject response) {
-        Log.i("", "");
-    }
+//
+//    @Override
+//    public void onResponseReceived(JSONObject response) {
+//        Log.i("", "");
+//    }
 
     /**
      * 定位SDK监听函数
@@ -516,14 +557,14 @@ public class PreOrderActivity extends AppCompatActivity
 
             mBaiduMap.setMyLocationData(locData);
 
-            LatLng ll = new LatLng(location.getLatitude(),
+            mCurrentLocation  = new LatLng(location.getLatitude(),
                     location.getLongitude());
 
-            mGeoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(ll));
+            mGeoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(mCurrentLocation));
 
             if (isFirstLoc) {
                 isFirstLoc = false;
-                MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
+                MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(mCurrentLocation);
                 mBaiduMap.animateMapStatus(u);
             }
 
@@ -539,26 +580,23 @@ public class PreOrderActivity extends AppCompatActivity
         @Override
         protected SocketClient doInBackground(String... message) {
             //we create a TCPClient object and
-            mTcpClient = new SocketClient(new SocketClient.OnMessageReceived() {
-                @Override
-                //here the messageReceived method is implemented
-                public void messageReceived(String message) {
-                    try {
-                        //this method calls the onProgressUpdate
-                        publishProgress(message);
-                        if (message != null) {
-                            System.out.println("Return Message from Socket::::: >>>>> " + message);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-//            mTcpClient.setmResponseListener((MainActivity) mContext);
+            mTcpClient = new SocketClient();
+//                    new SocketClient.OnMessageReceived() {
+//                @Override
+//                //here the messageReceived method is implemented
+//                public void messageReceived(String message) {
+//                    try {
+//                        //this method calls the onProgressUpdate
+//                        publishProgress(message);
+//                        if (message != null) {
+//                            System.out.println("Return Message from Socket::::: >>>>> " + message);
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            });
             mTcpClient.run();
-//            if (mTcpClient != null) {
-//                mTcpClient.sendMessage("Initial Message when connected with Socket Server");
-//            }
             return null;
         }
 
@@ -678,5 +716,42 @@ public class PreOrderActivity extends AppCompatActivity
 
     public int dpToPx(Resources res, int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, res.getDisplayMetrics());
+    }
+
+    private class MyTimerTask extends TimerTask {
+            @Override
+            public void run() {
+                if(mReqLoc!=null) {
+//                    SocketClient.getInstance().sendNearByCarRequest(mReqLoc.latitude, mReqLoc.longitude, "2", mHandler);
+                      SocketClient.getInstance().sendNearByCarRequestTest(28.173D, 112.9584D, "1", new ResponseHandler() {
+                          @Override
+                          public void onSuccess(String messageBody) {
+
+                              NearByCars nearByCars = FastJsonTools.getObject(messageBody, NearByCars.class);
+
+                              mBaiduMap.clear();
+                              for(NearByCars.CarLocation loc: nearByCars.getCars()) {
+                                  LatLng ll = new LatLng(loc.getLat(),loc.getLng());
+                                  mBaiduMap.addOverlay(new MarkerOptions().position(ll)
+                                          .icon(BitmapDescriptorFactory
+                                                  .fromResource(R.drawable.icon_gcoding)));
+
+                                  Log.i("", "");
+                              }
+                          }
+
+                          @Override
+                          public void onFailure(String error) {
+
+                          }
+
+                          @Override
+                          public void onTimeout() {
+
+                          }
+                      });
+
+                }
+            }
     }
 }
