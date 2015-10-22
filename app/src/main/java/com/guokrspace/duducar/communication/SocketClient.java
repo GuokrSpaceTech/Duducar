@@ -1,4 +1,4 @@
-package com.guokrspace.duducar.base;
+package com.guokrspace.duducar.communication;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
