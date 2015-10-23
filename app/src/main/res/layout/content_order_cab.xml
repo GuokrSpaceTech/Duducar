@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -11,6 +12,72 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_order_cab"
-    tools:context="com.guokrspace.duducar.OrderCabActivity">
+    tools:context="com.guokrspace.duducar.PostOrderActivity">
 
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
+
+    <FrameLayout
+        android:orientation="horizontal"
+        android:id="@+id/startPointLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="false"
+        android:layout_below="@+id/progressBar">
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:id="@+id/imageView3"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="西二旗北路"
+            android:id="@+id/destTextView"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="@id/startPointLinearLayout"
+        android:id="@+id/destSearchLinearLayout"
+        android:layout_below="@+id/startPointLinearLayout">
+
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:id="@+id/imageViewSearchIcon"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="输入目的地"
+            android:id="@+id/textViewDestination"/>
+    </FrameLayout>
+
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/bmapView"
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:clickable="true"
+        android:layout_below="@+id/destSearchLinearLayout"/>
+
+    <com.guokrspace.duducar.ui.DriverInformationView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bmapView"
+        android:background="@android:color/white"
+        android:layout_marginBottom="-100dp">
+    </com.guokrspace.duducar.ui.DriverInformationView>
 </RelativeLayout>

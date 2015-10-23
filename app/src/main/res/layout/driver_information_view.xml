@@ -1,7 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/imageViewDriver"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_drawer"
+            app:border_width="2dp"
+            app:border_color="#FF000000"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/imageViewCar"
+            android:layout_gravity="center"
+            android:layout_width="96dp"
+            android:layout_height="96dp"
+            android:src="@drawable/ic_drawer"
+            app:border_width="2dp"
+            app:border_color="#FF000000"/>
+
+    </FrameLayout>
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/driverDescLLayout"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textViewDriverName"
+                android:layout_width="0dp"
+                android:layout_weight="50"
+                android:layout_height="wrap_content"
+                android:text="王师傅"/>
+
+            <ImageView
+                android:id="@+id/imageViewPhoneIcon"
+                android:layout_width="0dp"
+                android:layout_weight="50"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_drawer"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:visibility="invisible"
+            android:id="@+id/carDescLLayout"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textViewCarPlateNumber"
+                android:layout_width="0dp"
+                android:layout_weight="50"
+                android:layout_height="wrap_content"
+                android:text="F1200234234"/>
+            <TextView
+                android:id="@+id/textViewCarDesc"
+                android:layout_width="0dp"
+                android:layout_weight="50"
+                android:layout_height="wrap_content"
+                android:text="起亚i3"/>
+        </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>

@@ -23,6 +23,9 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.guokrspace.duducar.communication.ResponseHandler;
+import com.guokrspace.duducar.communication.message.MessageTag;
+import com.guokrspace.duducar.communication.SocketClient;
 import com.guokrspace.duducar.ui.EditTextHolder;
 import com.guokrspace.duducar.ui.LoadingDialog;
 import com.guokrspace.duducar.ui.WinToast;
@@ -220,7 +223,22 @@ public class LoginActivity extends AppCompatActivity implements
                 if (mDialog != null && !mDialog.isShowing()) {
                     mDialog.show();
                 }
-                messageid = SocketClient.getInstance().sendRegcodeRequst("13900000002","2",mHandler);
+                messageid = SocketClient.getInstance().sendRegcodeRequst("13900000002", "2", new ResponseHandler() {
+                    @Override
+                    public void onSuccess(String messageBody) {
+
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+
+                    }
+
+                    @Override
+                    public void onTimeout() {
+
+                    }
+                });
                 CurrentState = STATE_WAIT_SMS;
 
                 Message mess = Message.obtain();
@@ -239,7 +257,22 @@ public class LoginActivity extends AppCompatActivity implements
                 }
 
                 if(CurrentState == STATE_WAIT_SMS) {
-                    messageid = SocketClient.getInstance().sendVerifyRequst("13900000002", "2", "1111" ,mHandler);
+                    messageid = SocketClient.getInstance().sendVerifyRequst("13900000002", "2", "1111", new ResponseHandler() {
+                        @Override
+                        public void onSuccess(String messageBody) {
+
+                        }
+
+                        @Override
+                        public void onFailure(String error) {
+
+                        }
+
+                        @Override
+                        public void onTimeout() {
+
+                        }
+                    });
                     CurrentState = STATE_WAIT_TOKEN;
                 }
 
@@ -274,7 +307,7 @@ public class LoginActivity extends AppCompatActivity implements
             if (mDialog != null)
                 mDialog.dismiss();
             WinToast.toast(LoginActivity.this, R.string.login_failure);
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, PreOrderActivity.class));
             finish();
         } else if (msg.what == HANDLER_LOGIN_SUCCESS) {
             if (mDialog != null)
@@ -311,7 +344,22 @@ public class LoginActivity extends AppCompatActivity implements
                         CurrentState = STATE_LOGIN;
                         token = SocketClient.getInstance().messageParsor.token(message);
                         mHandler.sendEmptyMessage(HANDLER_VERIFY_SUCCESS);
-                        messageid = SocketClient.getInstance().sendLoginReguest("13900000002", "2", token, mHandler);
+                        messageid = SocketClient.getInstance().sendLoginReguest("13900000002", "2", token, new ResponseHandler() {
+                            @Override
+                            public void onSuccess(String messageBody) {
+
+                            }
+
+                            @Override
+                            public void onFailure(String error) {
+
+                            }
+
+                            @Override
+                            public void onTimeout() {
+
+                            }
+                        });
                     } else if (CurrentState  == STATE_LOGIN) {
                         CurrentState = STATE_LOGINED;
                         mHandler.sendEmptyMessage(HANDLER_LOGIN_SUCCESS);
@@ -333,7 +381,7 @@ public class LoginActivity extends AppCompatActivity implements
             }
 
             Log.i("","");
-        } else if(msg.what == HandlerMessageTag.MESSAGE_TIMEOUT)
+        } else if(msg.what == MessageTag.MESSAGE_TIMEOUT)
         {
             Log.i("","");
         }

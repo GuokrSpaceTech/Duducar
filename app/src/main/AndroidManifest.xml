@@ -39,11 +39,10 @@
             android:value="yWIyrGPVMWZt9Y7gYA9SVeHx" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".PreOrderActivity"
             android:label="" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -62,12 +61,13 @@
             android:process=":remote" />
 
         <activity
-            android:name=".OrderConfirmationActivity"
-            android:label="@string/title_activity_post_order"
-            android:parentActivityName=".MainActivity" >
+            android:name=".PostOrderActivity"
+            android:label="@string/title_activity_order_cab"
+            android:parentActivityName=".PreOrderActivity"
+            android:theme="@style/AppTheme.NoActionBar" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.guokrspace.duducar.MainActivity" />
+                android:value=".PreOrderActivity" />
         </activity>
     </application>
 
