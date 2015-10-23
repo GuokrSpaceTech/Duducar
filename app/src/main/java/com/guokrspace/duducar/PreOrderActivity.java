@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -49,12 +48,14 @@ import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
+import com.baidu.mapapi.utils.DistanceUtil;
 import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
 import com.guokrspace.duducar.communication.message.MessageTag;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
 import com.guokrspace.duducar.communication.StateMachine;
 import com.guokrspace.duducar.communication.message.NearByCars;
+import com.guokrspace.duducar.communication.message.SearchLocation;
 import com.guokrspace.duducar.ui.OrderConfirmationView;
 
 import java.util.List;
@@ -64,7 +65,7 @@ import java.util.TimerTask;
 public class PreOrderActivity extends AppCompatActivity
         implements
         NavigationDrawerFragment.NavigationDrawerCallbacks,
-        OnGetGeoCoderResultListener{
+        OnGetGeoCoderResultListener {
     private Context mContext = this;
     MapView mMapView = null;
     BaiduMap mBaiduMap = null;
@@ -84,18 +85,28 @@ public class PreOrderActivity extends AppCompatActivity
     Button requestLocButton;
     Button searchLocButton;
     Button callForCarButton;
+    OrderConfirmationView orderConfirmationView;
 
     //地址解析
     GeoCoder mGeoCoder = null;
 
     //Data
-    LatLng mReqLoc = null;
+    public LatLng mReqLoc = null;
+    public String mReqAddress = "";
+    public SearchLocation start = null;
+    public SearchLocation dest = null;
     Order mOrder = new Order();
     String city = null;
     int messageid;
 
     //State Machine
     int state;
+
+    //Activity Start RequestCode
+    public final static int ACTIVITY_SEARCH_DEST_REQUEST = 0x1001;
+    public final static int ACTIVITY_SEARCH_START_REQUEST = 0x1002;
+    public final static int ACTVITY_CONFIRM_ORDER_REQUEST = 0x1003;
+    public final static int ACTVITY_COST_ESTIMATE_REQUEST = 0x1004;
 
     //信息窗口
     private InfoWindow mInfoWindow;
@@ -115,8 +126,24 @@ public class PreOrderActivity extends AppCompatActivity
 
         @Override
         public boolean handleMessage(Message message) {
-            switch(message.what)
-            {
+            switch (message.what) {
+                case MessageTag.MSG_TOGGLE_CONFIRMVIEW:
+                    if(orderConfirmationView!=null)
+                        orderConfirmationView = new OrderConfirmationView(mContext);
+                    final LinearLayout container = (LinearLayout) findViewById(R.id.container);
+                    final FrameLayout mainmapview = (FrameLayout) findViewById(R.id.mainmapview);
+                    container.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            ViewGroup.LayoutParams paramRL = mainmapview.getLayoutParams();
+                            paramRL.height = dpToPx(getResources(), 350);
+                            mainmapview.requestLayout();
+                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.FILL_PARENT);
+                            container.addView(orderConfirmationView, 1, params);
+                            container.requestLayout();
+                        }
+                    });
+                    break;
                 case MessageTag.MESSAGE_CREATE_ORDER_FAILURE:
                     break;
                 case MessageTag.MESSAGE_CREATE_ORDER_SUCCESS:
@@ -128,9 +155,7 @@ public class PreOrderActivity extends AppCompatActivity
                 case MessageTag.MESSAGE_FAILURE:
                     break;
                 case MessageTag.GET_NEAR_CAR_RESP:
-                    if(state == StateMachine.STATE_FREE)
-                    {
-//                        ResponseHandler.NearByCars cars = (ResponseHandler.NearByCars) map.get(MessageTag.GET_NEAR_CAR_RESP).parseResponse(message.obj.toString());
+                    if (state == StateMachine.STATE_FREE) {
 
                     }
 
@@ -146,7 +171,6 @@ public class PreOrderActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         /*
          * Init the UI
@@ -219,15 +243,15 @@ public class PreOrderActivity extends AppCompatActivity
                     startActivityForResult(intent, 0x6001);
                 } else {
 
-                    final OrderConfirmationView orderConfirmationView = new OrderConfirmationView(mContext);
-                    final LinearLayout container = (LinearLayout)findViewById(R.id.container);
-                    final FrameLayout mainmapview = (FrameLayout)findViewById(R.id.mainmapview);
+                    orderConfirmationView = new OrderConfirmationView(mContext);
+                    final LinearLayout container = (LinearLayout) findViewById(R.id.container);
+                    final FrameLayout mainmapview = (FrameLayout) findViewById(R.id.mainmapview);
 
                     container.post(new Runnable() {
                         @Override
                         public void run() {
                             ViewGroup.LayoutParams paramRL = mainmapview.getLayoutParams();
-                            paramRL.height = dpToPx(getResources(),350);
+                            paramRL.height = dpToPx(getResources(), 350);
                             mainmapview.requestLayout();
                             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.FILL_PARENT);
                             container.addView(orderConfirmationView, 1, params);
@@ -262,8 +286,6 @@ public class PreOrderActivity extends AppCompatActivity
                 LatLng mCenterLatLng = mapStatus.target;
                 // 反Geo搜索
                 mGeoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(mCenterLatLng));
-//                String str = mCenterLatLng.latitude + ":" + mCenterLatLng.longitude;
-//                Toast.makeText(mContext, str, Toast.LENGTH_LONG).show();
             }
         });
 
@@ -274,13 +296,6 @@ public class PreOrderActivity extends AppCompatActivity
                 Intent intent = new Intent(mContext, SearchActivity.class);
                 intent.putExtra("city", city);
                 startActivityForResult(intent, 6002);
-
-//                getSupportFragmentManager().beginTransaction()
-//                        .replace(R.id.container, SearchLocationFragment.newInstance(city))
-//                        .addToBackStack("search_fragment")
-//                        .commit();
-
-
             }
         });
     }
@@ -367,7 +382,6 @@ public class PreOrderActivity extends AppCompatActivity
         if (mCurrentMarker != null) mCurrentMarker.recycle();
         mLocClient.stop();
         try {
-//            mTcpClient.sendMessage("bye");
             mTcpClient.stopClient();
             conctTask.cancel(true);
             conctTask = null;
@@ -393,7 +407,7 @@ public class PreOrderActivity extends AppCompatActivity
          * Start the timer to for peoriodically ask for nearby cars
          */
         timer = new Timer();
-        timer.scheduleAtFixedRate(new MyTimerTask(), 2000 ,3*1000);
+        timer.scheduleAtFixedRate(new MyTimerTask(), 2000, 3 * 1000);
         super.onResume();
     }
 
@@ -402,26 +416,24 @@ public class PreOrderActivity extends AppCompatActivity
         if (resultCode == RESULT_OK) {
             if (requestCode == 0x6001) {
                 //Post mReqLocation
-                    messageid = SocketClient.getInstance().sendCarRequest("2", mOrder.start, mOrder.dest,
-                            mOrder.start_lat, mOrder.start_lng, mOrder.dest_lat, mOrder.dest_lng,
-                            mOrder.pre_mileage, mOrder.pre_price, mOrder.car_type, new ResponseHandler() {
-                                @Override
-                                public void onSuccess(String messageBody) {
+                messageid = SocketClient.getInstance().sendCarRequest("2", mOrder.start, mOrder.dest,
+                        mOrder.start_lat, mOrder.start_lng, mOrder.dest_lat, mOrder.dest_lng,
+                        mOrder.pre_mileage, mOrder.pre_price, mOrder.car_type, new ResponseHandler() {
+                            @Override
+                            public void onSuccess(String messageBody) {
 
-                                }
+                            }
 
-                                @Override
-                                public void onFailure(String error) {
+                            @Override
+                            public void onFailure(String error) {
 
-                                }
+                            }
 
-                                @Override
-                                public void onTimeout() {
+                            @Override
+                            public void onTimeout() {
 
-                                }
-                            });
-                }
-                callForCarButton.setText("已经叫车，等待派单");
+                            }
+                        });
             } else if (requestCode == 6002) {
                 Double searchLat = (Double) data.getExtras().get("lat");
                 Double searchLng = (Double) data.getExtras().get("lng");
@@ -431,10 +443,27 @@ public class PreOrderActivity extends AppCompatActivity
                 mBaiduMap.addOverlay(new MarkerOptions().position(searchLoc)
                         .icon(BitmapDescriptorFactory
                                 .fromResource(R.drawable.icon_gcoding)));
-                //mBaiduMap.setMapStatus(MapStatusUpdateFactory.newLatLng(searchLoc));
                 mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLng(searchLoc));
                 mGeoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(searchLoc));
+            } else if (requestCode == ACTIVITY_SEARCH_DEST_REQUEST) {
+                Bundle bundle = data.getExtras();
+                if (bundle != null) {
+                    dest = (SearchLocation) bundle.get("location");
+                    start = new SearchLocation();
+                    start.setAddress(mReqAddress);
+                    start.setLat(mReqLoc.latitude);
+                    start.setLng(mReqLoc.longitude);
+
+                    Intent intent = new Intent(mContext, CostEstimateActivity.class);
+                    intent.putExtra("start", start);
+                    intent.putExtra("dest", dest);
+
+                    startActivityForResult(intent, ACTVITY_COST_ESTIMATE_REQUEST);
+                }
+            } else if(requestCode == ACTVITY_COST_ESTIMATE_REQUEST) {
+                mHandler.sendEmptyMessage(MessageTag.MSG_TOGGLE_CONFIRMVIEW);
             }
+        }
 
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -465,19 +494,15 @@ public class PreOrderActivity extends AppCompatActivity
             return;
         }
 
-//        searchLocButton.setText(result.getAddress());
         mReqLoc = result.getLocation();
+        mReqAddress = result.getAddress();
         mOrder.setStartLocation(result.getAddress(), result.getLocation().latitude, result.getLocation().longitude);
 
         city = result.getAddressDetail().city;
         callForCarButton.setText(result.getAddress());
 
     }
-//
-//    @Override
-//    public void onResponseReceived(JSONObject response) {
-//        Log.i("", "");
-//    }
+
 
     /**
      * 定位SDK监听函数
@@ -557,7 +582,7 @@ public class PreOrderActivity extends AppCompatActivity
 
             mBaiduMap.setMyLocationData(locData);
 
-            mCurrentLocation  = new LatLng(location.getLatitude(),
+            mCurrentLocation = new LatLng(location.getLatitude(),
                     location.getLongitude());
 
             mGeoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(mCurrentLocation));
@@ -581,21 +606,6 @@ public class PreOrderActivity extends AppCompatActivity
         protected SocketClient doInBackground(String... message) {
             //we create a TCPClient object and
             mTcpClient = new SocketClient();
-//                    new SocketClient.OnMessageReceived() {
-//                @Override
-//                //here the messageReceived method is implemented
-//                public void messageReceived(String message) {
-//                    try {
-//                        //this method calls the onProgressUpdate
-//                        publishProgress(message);
-//                        if (message != null) {
-//                            System.out.println("Return Message from Socket::::: >>>>> " + message);
-//                        }
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            });
             mTcpClient.run();
             return null;
         }
@@ -719,39 +729,35 @@ public class PreOrderActivity extends AppCompatActivity
     }
 
     private class MyTimerTask extends TimerTask {
-            @Override
-            public void run() {
-                if(mReqLoc!=null) {
+        @Override
+        public void run() {
+            if (mReqLoc != null) {
 //                    SocketClient.getInstance().sendNearByCarRequest(mReqLoc.latitude, mReqLoc.longitude, "2", mHandler);
-                      SocketClient.getInstance().sendNearByCarRequestTest(28.173D, 112.9584D, "1", new ResponseHandler() {
-                          @Override
-                          public void onSuccess(String messageBody) {
+//                SocketClient.getInstance().sendNearByCarRequestTest(28.173D, 112.9584D, "1", new ResponseHandler(Looper.getMainLooper()) {
+//                    @Override
+//                    public void onSuccess(String messageBody) {
+//
+//                        NearByCars nearByCars = FastJsonTools.getObject(messageBody, NearByCars.class);
+//
+//                        mBaiduMap.clear();
+//                        for (NearByCars.CarLocation loc : nearByCars.getCars()) {
+//                            LatLng ll = new LatLng(loc.getLat(), loc.getLng());
+//                            mBaiduMap.addOverlay(new MarkerOptions().position(ll).icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_gcoding)));
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(String error) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onTimeout() {
+//
+//                    }
+//                });
 
-                              NearByCars nearByCars = FastJsonTools.getObject(messageBody, NearByCars.class);
-
-                              mBaiduMap.clear();
-                              for(NearByCars.CarLocation loc: nearByCars.getCars()) {
-                                  LatLng ll = new LatLng(loc.getLat(),loc.getLng());
-                                  mBaiduMap.addOverlay(new MarkerOptions().position(ll)
-                                          .icon(BitmapDescriptorFactory
-                                                  .fromResource(R.drawable.icon_gcoding)));
-
-                                  Log.i("", "");
-                              }
-                          }
-
-                          @Override
-                          public void onFailure(String error) {
-
-                          }
-
-                          @Override
-                          public void onTimeout() {
-
-                          }
-                      });
-
-                }
             }
+        }
     }
 }

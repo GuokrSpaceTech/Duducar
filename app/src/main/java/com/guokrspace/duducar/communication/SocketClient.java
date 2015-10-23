@@ -60,7 +60,6 @@ public class SocketClient {
     public int sendMessage(final JSONObject message, final ResponseHandler handler, final int timeout){
         int ret = -1; //Default is error
 
-
         //Send the message
         try {
             message.put("message_id", messageid);
@@ -79,16 +78,17 @@ public class SocketClient {
                         if(counter < timeout) {
                             handler.postRunnableDelay(this, 1000); //1s interval
                         } else {
-                            Message msg = handler.obtainMessage(MessageTag.MESSAGE_TIMEOUT,message.toString());
+                            handler.stopRunnable(this);
+                            Message msg = handler.obtainMessage(ResponseHandler.TIMEOUT_MESSAGE,message.toString());
                             handler.sendMessage(msg);
                         }
                     }
                 };
+                handler.postRunnable(timerRunnable);
 
                 //Enqueue
                 MessageDispatcher messageDispatcher = new MessageDispatcher(messageid, message, timerRunnable, handler);
                 messageDispatchQueue.put(messageid, messageDispatcher);
-//                handler.postDelayed(timerRunnable, 0);
             }
 
             ret = messageid;
@@ -134,21 +134,21 @@ public class SocketClient {
                     serverMessage = in.readLine();
 
                     if (serverMessage != null) {
+
                         //call the method messageReceived in MainActivity class
                         JSONObject jsonObject = new JSONObject(serverMessage);
                         if(jsonObject.has("message_id")) {
 
                             int messageid = (int)jsonObject.get("message_id");
-                            String command = (String)jsonObject.get("cmd");
-
                             MessageDispatcher dispatcher = messageDispatchQueue.get(messageid);
-                            dispatcher.setResponse(jsonObject);
-
 
                             if(dispatcher != null)
                             {
-                                ResponseHandler handlerTest = dispatcher.target;
-                                handlerTest.sendResponse(serverMessage);
+                                dispatcher.setResponse(jsonObject);
+                                ResponseHandler handler = dispatcher.target;
+                                handler.sendResponse(serverMessage);
+                                handler.stopRunnable(dispatcher.timer); //Cancel the timer
+                                messageDispatchQueue.remove(messageid); //dequeue
                             }
                         }
 
@@ -188,6 +188,7 @@ public class SocketClient {
             this.messageid = messageid;
             this.request = messagebody;
             this.target = target;
+            this.timer = timer;
         }
 
         public void setResponse(JSONObject response) {
@@ -265,7 +266,7 @@ public class SocketClient {
             carmsg.put("destination_lng",dest_lng);
             carmsg.put("pre_mileage",distance);
             carmsg.put("pre_price",price);
-            carmsg.put("car_type",car);
+            carmsg.put("car_grade",car);
             ret = sendMessage(carmsg, handler, 5);
         } catch (JSONException e) {
             e.printStackTrace();

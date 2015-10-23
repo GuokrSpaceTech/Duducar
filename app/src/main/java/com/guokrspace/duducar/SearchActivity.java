@@ -31,12 +31,14 @@ import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
 import com.baidu.mapapi.search.poi.PoiCitySearchOption;
 import com.baidu.mapapi.search.poi.PoiDetailResult;
 import com.baidu.mapapi.search.poi.PoiDetailSearchOption;
+import com.baidu.mapapi.search.poi.PoiNearbySearchOption;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
 import com.baidu.mapapi.search.sug.OnGetSuggestionResultListener;
 import com.baidu.mapapi.search.sug.SuggestionResult;
 import com.baidu.mapapi.search.sug.SuggestionSearch;
 import com.baidu.mapapi.search.sug.SuggestionSearchOption;
+import com.guokrspace.duducar.communication.message.SearchLocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +51,7 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
     private SuggestionSearch mSuggestionSearch = null;
     private int load_Index = 0;
     private LatLng mLoc;
+    private LatLng mReqLoc;
 
     /**
      * 软键盘的控制
@@ -68,28 +71,40 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
 
     private String  mCity;
 
-    private Context mContext;    @Override
+    private Context mContext;
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        //Get ARGs
         Bundle bundle = getIntent().getExtras();
-        mCity = bundle.getString(ARG_CITY);
+        if(bundle!=null) {
+            mCity = bundle.getString(ARG_CITY);
+            SearchLocation location = (SearchLocation)bundle.get("location");
+            if(location!=null)
+                mReqLoc = location.getLocation();
+        }
+
         mContext = this;
 
+        //Init the search components
         mPoiSearch = PoiSearch.newInstance();
         mPoiSearch.setOnGetPoiSearchResultListener(this);
         mSuggestionSearch = SuggestionSearch.newInstance();
         mSuggestionSearch.setOnGetSuggestionResultListener(this);
 
-
+        //Init UI
         keyWorldsView = (AutoCompleteTextView) findViewById(R.id.searchkey);
         sugAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_dropdown_item_1line);
         keyWorldsView.setAdapter(sugAdapter);
 
         editCity = (TextView) findViewById(R.id.city);
         editCity.setText(mCity);
+
         editSearchKey = (EditText) findViewById(R.id.searchkey);
+
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView = (RecyclerView)findViewById(R.id.resultRecyclerView);
@@ -105,6 +120,10 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
         keyWorldsView.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable arg0) {
+                mPoiSearch.searchNearby(new PoiNearbySearchOption()
+                        .location(mReqLoc)
+                        .radius(20000) //20Km
+                        .keyword(editSearchKey.getText().toString()));
             }
 
             @Override
@@ -121,6 +140,14 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
                  * 使用建议搜索服务获取建议列表，结果在onSuggestionResult()中更新
                  */
                 mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).keyword(cs.toString()).city(city));
+
+
+//                mPoiSearch.searchInCity((new PoiCitySearchOption())
+//                        .city(mCity)
+//                        .keyword(editSearchKey.getText().toString())
+//                        .pageNum(load_Index));
+
+                mSoftManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
         });
 
@@ -287,8 +314,11 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
                 public void onClick(View view) {
                     mLoc = mDataset.get(position).location;
                     Intent intent = new Intent();
-                    intent.putExtra("lat", mLoc.latitude);
-                    intent.putExtra("lng",mLoc.longitude);
+                    SearchLocation location = new SearchLocation();
+                    location.setLat(mLoc.latitude);
+                    location.setLng(mLoc.longitude);
+                    location.setAddress(mDataset.get(position).name);
+                    intent.putExtra("location", location);
                     setResult(RESULT_OK, intent);
                     finish();
                 }

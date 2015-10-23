@@ -41,12 +41,12 @@ public abstract class ResponseHandler implements ResponseHandleInterface {
     //Constructor
     public ResponseHandler() {
         this(null);
-        this.responseString = responseString;
     }
 
 
     public ResponseHandler(Looper looper) {
         this.looper = looper == null ? Looper.myLooper() : looper;
+        handler = new ResponderHandler(this, looper);
 
     }
 
@@ -61,6 +61,7 @@ public abstract class ResponseHandler implements ResponseHandleInterface {
             {
                 sendSuccessMessage(responseString);
             } else {
+                sendFailureMessage(responseString);
             }
 
 
@@ -75,9 +76,9 @@ public abstract class ResponseHandler implements ResponseHandleInterface {
         sendMessage(obtainMessage(SUCCESS_MESSAGE,messagebody));
     }
 
-    private void sendFailureMessage()
+    private void sendFailureMessage(String messagebody)
     {
-
+        sendMessage(obtainMessage(FAILURE_MESSAGE,messagebody));
     }
 
     protected Message obtainMessage(int responseMessageId, Object responseMessageData) {
@@ -123,6 +124,14 @@ public abstract class ResponseHandler implements ResponseHandleInterface {
                 // Otherwise, run on provided handler
                 handler.postDelayed(runnable, delay);
             }
+        }
+    }
+
+    protected void stopRunnable(Runnable runnable)
+    {
+        if(runnable != null && handler != null)
+        {
+            handler.removeCallbacks(runnable);
         }
     }
 
@@ -175,6 +184,8 @@ public abstract class ResponseHandler implements ResponseHandleInterface {
             }
         return ret;
     }
+
+
 
     public abstract void onSuccess(String messageBody);
 
