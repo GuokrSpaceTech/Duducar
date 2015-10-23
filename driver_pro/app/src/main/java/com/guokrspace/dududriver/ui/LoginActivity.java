@@ -292,7 +292,7 @@ public class LoginActivity extends AppCompatActivity implements
             if (mDialog != null)
                 mDialog.dismiss();
             WinToast.toast(LoginActivity.this, R.string.login_failure);
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, OldMainActivity.class));
             finish();
         } else if (msg.what == HANDLER_LOGIN_SUCCESS) {
             if (mDialog != null)

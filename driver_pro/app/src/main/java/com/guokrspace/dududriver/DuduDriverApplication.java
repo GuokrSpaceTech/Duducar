@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.DatabaseUtils;
 
 import com.baidu.mapapi.SDKInitializer;
 
@@ -16,9 +17,16 @@ public class DuduDriverApplication extends Application{
 
     private SDKReceiver mReceiver;
 
+    private static DuduDriverApplication instance = null;
+
+    public static DuduDriverApplication getInstance() {
+        return instance;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
         // 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
         SDKInitializer.initialize(this);
 

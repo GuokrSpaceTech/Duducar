@@ -24,6 +24,11 @@ public class LoadingDialog extends Dialog {
         mTextView = (TextView) findViewById(android.R.id.message);
     }
 
+    public LoadingDialog(Context context, boolean cancelable) {
+        super(context, 0);
+        setCancelable(cancelable);
+    }
+
     @Override
     public void show() {
         super.show();
