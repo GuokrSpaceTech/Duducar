@@ -266,7 +266,7 @@ public class SocketClient {
             carmsg.put("destination_lng",dest_lng);
             carmsg.put("pre_mileage",distance);
             carmsg.put("pre_price",price);
-            carmsg.put("car_grade",car);
+            carmsg.put("car_type",car);
             ret = sendMessage(carmsg, handler, 5);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -274,6 +274,20 @@ public class SocketClient {
 
         return ret;
     }
+
+    public int cancelCarRequest(String role, ResponseHandler handler) {
+        int ret = -1;
+        JSONObject carmsg = new JSONObject();
+        try {
+            carmsg.put("cmd", "cancel_order");
+            ret = sendMessage(carmsg, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return ret;
+    }
+
 
     public int sendNearByCarRequestTest(Double lat, Double lng, String cartype, ResponseHandler handler)
     {

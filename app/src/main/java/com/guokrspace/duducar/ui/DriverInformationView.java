@@ -1,88 +1,93 @@
 package com.guokrspace.duducar.ui;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.GestureDetectorCompat;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.baidu.mapapi.model.LatLng;
-import com.guokrspace.duducar.PreOrderActivity;
-import com.guokrspace.duducar.PostOrderActivity;
 import com.guokrspace.duducar.R;
+
+import static android.support.v4.content.PermissionChecker.checkSelfPermission;
 
 /**
  * TODO: document your custom view class.
  */
 public class DriverInformationView extends LinearLayout {
 
-    private LinearLayout mSelectPaymentView;
-    private LinearLayout mCostEstimateView;
-    private LinearLayout mCuponUseView;
-    private Button       mOrderCabBtn;
-    private TextView     mTimeToArriveText;
-    private String       mMinToArrive;
-    private String       mCurrentAdress;
-    private LatLng       mCurrentLoc;
+
     GestureDetectorCompat mDetector;
-    private int         viewPortHeight;
+
+    //UI
     private LinearLayout root;
-    private ImageView    mDriver;
-    private ImageView    mCar;
-    private LinearLayout  mDriverDesc;
-    private LinearLayout  mCarDesc;
-    String DEBUG_TAG = "DriverInformation";
+    public ImageView mDriverImageView;
+    public ImageView mCarImageView;
+    public ImageView mPhoneIconImageView;
+    public TextView mDriverNameTextView;
+    public TextView mCarDescTextView;
+    public TextView mCarPlateNumberTextView;
+    public RatingBar mRatingBar;
+
+    private LinearLayout mDriverDescLLayout;
+    private LinearLayout mCarDescLLayout;
+
 
     private Handler mHandler = new Handler(new Handler.Callback() {
         @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
         @Override
         public boolean handleMessage(Message message) {
 
-            if(message.what == 0x1001)
-            {
-                float distancY = (float)message.obj;
+            if (message.what == 0x1001) {
+                float distancY = (float) message.obj;
 
-                if(distancY > 0) //Scroll up
+                if (distancY > 0) //Scroll up by 60dp
                 {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
-                        root.animate().translationY(-400);
-                        mDriver.animate().translationX(200);
-                        mCar.animate().translationX(-200);
+                        root.animate().translationY(dpToPx(getResources(), -60));
 
-                        mDriverDesc.animate().scaleX(0.5f);
-                        mDriverDesc.animate().translationX(100);
+                        mDriverImageView.animate().translationX(dpToPx(getResources(), 100)); //left
+                        mCarImageView.animate().translationX(dpToPx(getResources(), -100)); //right
 
-                        mCarDesc.setVisibility(VISIBLE);
-                        mCarDesc.animate().scaleX(0.5f);
-                        mCarDesc.animate().translationX(-100);
+                        mPhoneIconImageView.animate().translationY(dpToPx(getResources(), 50)); //down
+                        mPhoneIconImageView.animate().translationX(dpToPx(getResources(), -200)); //Left
+
+                        mCarPlateNumberTextView.animate().translationY(dpToPx(getResources(), 50)); //down
+                        mCarPlateNumberTextView.animate().translationX(dpToPx(getResources(), 200)); //Right
+
+                        mCarDescLLayout.setVisibility(VISIBLE);
+                        mCarDescLLayout.requestLayout();
                     }
-                } else { //Scroll down
+                } else { //Scroll down by 60dp
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
                         root.animate().translationY(0);
 
-                        mDriver.animate().translationX(0);
-                        mCar.animate().translationX(0);
+                        mDriverImageView.animate().translationX(0);
+                        mCarImageView.animate().translationX(0);
 
-                        mDriverDesc.animate().scaleX(0);
-                        mDriverDesc.animate().translationX(0);
-                        mDriverDesc.setVisibility(VISIBLE);
+                        mPhoneIconImageView.animate().translationX(0);
+                        mPhoneIconImageView.animate().translationY(0);
 
-                        mCarDesc.setVisibility(INVISIBLE);
-                        mCarDesc.animate().scaleX(0);
-                        mCarDesc.animate().translationX(0);
+                        mCarPlateNumberTextView.animate().translationX(0);
+                        mCarPlateNumberTextView.animate().translationY(0);
+
+                        mCarDescLLayout.setVisibility(INVISIBLE);
                     }
                 }
             }
@@ -109,29 +114,48 @@ public class DriverInformationView extends LinearLayout {
     }
 
     private void init(Context context) {
-        root = (LinearLayout)LayoutInflater.from(context).inflate(R.layout.driver_information_view, this, true);
-        mDriver = (ImageView)findViewById(R.id.imageViewDriver);
-        mCar    = (ImageView)findViewById(R.id.imageViewCar);
-        mDriverDesc = (LinearLayout)findViewById(R.id.driverDescLLayout);
-        mCarDesc = (LinearLayout)findViewById(R.id.carDescLLayout);
+        root = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.driver_information_view, this, true);
+        mDriverImageView = (ImageView) findViewById(R.id.imageViewDriver);
+        mCarImageView = (ImageView) findViewById(R.id.imageViewCar);
+        mPhoneIconImageView = (ImageView) findViewById(R.id.imageViewPhoneIcon);
+        mDriverNameTextView = (TextView) findViewById(R.id.textViewDriverName);
+        mCarDescTextView = (TextView) findViewById(R.id.textViewCarDesc);
+        mDriverDescLLayout = (LinearLayout) findViewById(R.id.driverDescLLayout);
+        mCarDescLLayout = (LinearLayout) findViewById(R.id.carDescLLayout);
+        mCarPlateNumberTextView = (TextView) findViewById(R.id.textViewCarPlateNumber);
+        mRatingBar = (RatingBar) findViewById(R.id.ratingBar);
 
-        viewPortHeight = getHeight();
         mDetector = new GestureDetectorCompat(context, new MyGestureListener());
+    }
 
-
-
-    };
+    ;
 
     @Override
-    public boolean onTouchEvent(MotionEvent event){
+    public boolean onTouchEvent(MotionEvent event) {
         boolean retVal = mDetector.onTouchEvent(event);
         // Be sure to call the superclass implementation
         return retVal || super.onTouchEvent(event);
     }
 
 
-    private void setListeners(final Context context)
-    {
+    private void setListeners(final Context context) {
+
+        mPhoneIconImageView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String phoneNum = (String) view.getTag();
+
+                if (phoneNum != null) {
+                    Intent callIntent = new Intent(Intent.ACTION_CALL);
+                    callIntent.setData(Uri.parse("tel:" + phoneNum));
+                    if (checkSelfPermission(context, Manifest.permission.CALL_PHONE) == PackageManager.PERMISSION_GRANTED) {
+                        context.startActivity(callIntent);
+                        return;
+                    }
+                }
+            }
+
+        });
 //        mSelectPaymentView.setOnClickListener(new OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -163,18 +187,6 @@ public class DriverInformationView extends LinearLayout {
 //                ((PreOrderActivity) context).startActivityForResult(intent, 0x6002);
 //            }
 //        });
-    }
-
-    public void setmMinToArrive(String mMinToArrive) {
-        this.mMinToArrive = mMinToArrive;
-    }
-
-    public void setmCurrentAdress(String mCurrentAdress) {
-        this.mCurrentAdress = mCurrentAdress;
-    }
-
-    public void setmCurrentLoc(LatLng mCurrentLoc) {
-        this.mCurrentLoc = mCurrentLoc;
     }
 
 
@@ -239,5 +251,9 @@ public class DriverInformationView extends LinearLayout {
         public boolean onContextClick(MotionEvent e) {
             return super.onContextClick(e);
         }
+    }
+
+    public int dpToPx(Resources res, int dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, res.getDisplayMetrics());
     }
 }

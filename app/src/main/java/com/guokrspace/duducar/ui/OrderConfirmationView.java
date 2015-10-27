@@ -88,11 +88,7 @@ public class OrderConfirmationView extends LinearLayout {
             public void onClick(View view) {
                 Intent intent = new Intent(context, SearchActivity.class);
 
-                SearchLocation location = new SearchLocation();
-                location.setAddress(((PreOrderActivity)context).mReqAddress);
-                location.setLat(((PreOrderActivity) context).mReqLoc.latitude);
-                location.setLng(((PreOrderActivity) context).mReqLoc.longitude);
-                intent.putExtra("location", location);
+                intent.putExtra("location", ((PreOrderActivity) context).start);
 
                 ((PreOrderActivity)context).startActivityForResult(intent, PreOrderActivity.ACTIVITY_SEARCH_DEST_REQUEST);
             }
@@ -109,43 +105,12 @@ public class OrderConfirmationView extends LinearLayout {
         mOrderCabBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                String startAddr = (activity.start==null) ? "":activity.start.getAddress();
-                String destAddr = (activity.dest==null) ? "":activity.dest.getAddress();
-                Double startLat =  (activity.start==null) ? 0D:activity.start.getLat();
-                Double destLat = (activity.dest==null) ? 0D:activity.dest.getLat();
-                Double startLng =  (activity.start==null) ? 0D:activity.start.getLng();
-                Double destLng = (activity.dest==null) ? 0D:activity.dest.getLat();
-                SocketClient.getInstance().sendCarRequest(
-                        "2",
-                        startAddr,
-                        destAddr,
-                        startLat,
-                        startLng,
-                        destLat,
-                        destLng,
-                        "",
-                        "",
-                        "1",
-                        new ResponseHandler(Looper.getMainLooper()) {
-                            @Override
-                            public void onSuccess(String messageBody) {
-                                Log.i("","");
-                                
-                            }
 
-                            @Override
-                            public void onFailure(String error) {
-                                Log.i("","");
-                            }
 
-                            @Override
-                            public void onTimeout() {
-                                Log.i("","");
-                            }
-                        });
-
-//                Intent intent = new Intent(context,PostOrderActivity.class);
-//                ((PreOrderActivity) context).startActivityForResult(intent, 0x6002);
+                Intent intent = new Intent(context,PostOrderActivity.class);
+                intent.putExtra("start",activity.start);
+                intent.putExtra("dest",activity.dest);
+                ((PreOrderActivity) context).startActivityForResult(intent, 0x6002);
             }
         });
     }

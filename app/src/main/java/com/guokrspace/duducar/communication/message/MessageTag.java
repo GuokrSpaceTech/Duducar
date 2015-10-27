@@ -28,8 +28,11 @@ public class MessageTag {
     public static final int MESSAGE_ORDER_DISPATCHED = 0x9001;
     public static final int MESSAGE_ORDER_DISPATCH_TIMEOUT = 0x9002;
 
+    public static final int MESSAGE_CAR_ARRIVED = 0x900A;
+
     public static final int MESSAGE_ORDER_CANCEL_CONFIRMED = 0x9003;
     public static final int MESSAGE_ORDER_CANCEL_TIMEOUT = 0x9004;
+    public static final int MESSAGE_ORDER_COMPLETED = 0x900b;
 
     public static final int MESSAGE_PASSENGER_IN_CAR = 0x9005;
 
@@ -43,6 +46,8 @@ public class MessageTag {
     public static final int GET_NEAR_CAR_RESP = 0x1002;
     public static final int CREATE_ORDER_REQ = 0x1003;
     public static final int CREATE_ORDER_RESP = 0x1004;
+    public static final int CANCEL_ORDER_REQ = 0x1005;
+    public static final int CANCEL_ORDER_RESP = 0x1006;
 
     public static MessageTag getInstance(){
         if(s_instance == null) new MessageTag();
@@ -58,6 +63,8 @@ public class MessageTag {
         MessageTag.put("get_near_car_resp", GET_NEAR_CAR_RESP);
         MessageTag.put("create_order",CREATE_ORDER_REQ);
         MessageTag.put("create_order_resp",CREATE_ORDER_RESP);
+        MessageTag.put("cancel_order",CANCEL_ORDER_REQ);
+        MessageTag.put("cancel_order_resp",CANCEL_ORDER_RESP);
     }
 
     public int Tag(String command)
