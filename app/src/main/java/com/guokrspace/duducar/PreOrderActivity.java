@@ -755,33 +755,32 @@ public class PreOrderActivity extends AppCompatActivity
     private class MyTimerTask extends TimerTask {
         @Override
         public void run() {
-//            if (mReqLoc != null) {
-//                    SocketClient.getInstance().sendNearByCarRequest(mReqLoc.latitude, mReqLoc.longitude, "2", mHandler);
-//                SocketClient.getInstance().sendNearByCarRequestTest(28.173D, 112.9584D, "1", new ResponseHandler(Looper.getMainLooper()) {
-//                    @Override
-//                    public void onSuccess(String messageBody) {
-//
-//                        NearByCars nearByCars = FastJsonTools.getObject(messageBody, NearByCars.class);
-//
-//                        mBaiduMap.clear();
-//                        for (NearByCars.CarLocation loc : nearByCars.getCars()) {
-//                            LatLng ll = new LatLng(loc.getLat(), loc.getLng());
-//                            mBaiduMap.addOverlay(new MarkerOptions().position(ll).icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_gcoding)));
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(String error) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onTimeout() {
-//
-//                    }
-//                });
+            if (start != null) {
+                SocketClient.getInstance().sendNearByCarRequestTest(28.173D, 112.9584D, "1", new ResponseHandler(Looper.getMainLooper()) {
+                    @Override
+                    public void onSuccess(String messageBody) {
 
-//            }
+                        NearByCars nearByCars = FastJsonTools.getObject(messageBody, NearByCars.class);
+
+                        mBaiduMap.clear();
+                        for (NearByCars.CarLocation loc : nearByCars.getCars()) {
+                            LatLng ll = new LatLng(loc.getLat(), loc.getLng());
+                            mBaiduMap.addOverlay(new MarkerOptions().position(ll).icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_gcoding)));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+
+                    }
+
+                    @Override
+                    public void onTimeout() {
+
+                    }
+                });
+
+            }
         }
     }
 }

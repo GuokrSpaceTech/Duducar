@@ -238,7 +238,35 @@ public class PostOrderActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("正在预约中...");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        SocketClient.getInstance().registerServerMessageHandler(MessageTag.CREATE_ORDER_RESP, new ResponseHandler(Looper.myLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                FastJsonTools.getObject(messageBody, DriverInfo.class);
+                mHandler.sendEmptyMessageDelayed(MessageTag.MESSAGE_ORDER_DISPATCHED, 5000);
+            }
+
+            @Override
+            public void onFailure(String error) {
+
+            }
+
+            @Override
+            public void onTimeout() {
+
+            }
+        });
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     @Override
@@ -292,15 +320,15 @@ public class PostOrderActivity extends AppCompatActivity {
                 new ResponseHandler(Looper.getMainLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
-                        String respString = "{\"status\":1,\"cmd\":\"create_order_resp\", \"message_id\":11, \"driver\":{\"name\":\"王师傅\",\"avatar\":\"http://a2.att.hudong.com/12/26/19300000362045133857269184471_950.jpg\"," +
-                                "\"mobile\":\"13522577115\",\"picture\":\"http://a2.att.hudong.com/12/26/19300000362045133857269184471_950.jpg\",\"plate\":\"1111111111\",\"description\":\"This is black Honda\", \"rating\":3.5}}";
-
-                        driver = FastJsonTools.getObject(respString, DriverInfo.class);
-
-                        //Simulate Order Confirmed and Cars are arranged in 3 secs
-                        mHandler.sendEmptyMessageDelayed(MessageTag.MESSAGE_ORDER_DISPATCHED, 5000);
-
-                        mHandler.sendEmptyMessageDelayed(MessageTag.MESSAGE_ORDER_COMPLETED, 30000);
+//                        String respString = "{\"status\":1,\"cmd\":\"create_order_resp\", \"message_id\":11, \"driver\":{\"name\":\"王师傅\",\"avatar\":\"http://a2.att.hudong.com/12/26/19300000362045133857269184471_950.jpg\"," +
+//                                "\"mobile\":\"13522577115\",\"picture\":\"http://a2.att.hudong.com/12/26/19300000362045133857269184471_950.jpg\",\"plate\":\"1111111111\",\"description\":\"This is black Honda\", \"rating\":3.5}}";
+//
+//                        driver = FastJsonTools.getObject(respString, DriverInfo.class);
+//
+//                        //Simulate Order Confirmed and Cars are arranged in 3 secs
+//                        mHandler.sendEmptyMessageDelayed(MessageTag.MESSAGE_ORDER_DISPATCHED, 5000);
+//
+//                        mHandler.sendEmptyMessageDelayed(MessageTag.MESSAGE_ORDER_COMPLETED, 30000);
                         Log.i("", "");
                     }
 

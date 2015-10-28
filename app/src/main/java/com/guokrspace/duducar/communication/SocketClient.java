@@ -142,13 +142,29 @@ public class SocketClient {
                             int messageid = (int)jsonObject.get("message_id");
                             MessageDispatcher dispatcher = messageDispatchQueue.get(messageid);
 
+                            /*
+                             * Client Originated Message
+                             */
                             if(dispatcher != null)
                             {
                                 dispatcher.setResponse(jsonObject);
                                 ResponseHandler handler = dispatcher.target;
                                 handler.sendResponse(serverMessage);
                                 handler.stopRunnable(dispatcher.timer); //Cancel the timer
-                                messageDispatchQueue.remove(messageid); //dequeue
+                                messageDispatchQueue.remove(messageid); //dequeu
+                            /*
+                            * Server Originated Message
+                            */
+                            } else {
+                                String cmd = (String)jsonObject.get("cmd");
+                                int messageTag = MessageTag.getInstance().Tag(cmd);
+                                ResponseHandler target = serverMessageDispatchMap.get(messageTag);
+                                if(target!=null)
+                                    target.sendResponse(serverMessage);
+                                else {
+                                    String errorMsg = String.format("Unregisted Message: %s", serverMessage);
+                                    Log.i("DuduCar", errorMsg);
+                                }
                             }
                         }
 
@@ -176,7 +192,6 @@ public class SocketClient {
 
 
     HashMap<Integer, MessageDispatcher> messageDispatchQueue = new HashMap<>();
-
     public class MessageDispatcher{
         int messageid;
         JSONObject request;
@@ -196,7 +211,21 @@ public class SocketClient {
         }
     }
 
+    HashMap<Integer, ResponseHandler> serverMessageDispatchMap = new HashMap<>();
 
+    public void registerServerMessageHandler( int cmd, ResponseHandler target)
+    {
+        serverMessageDispatchMap.put(cmd, target);
+    }
+
+    public void unregisterServerMessageHandler( int cmd)
+    {
+        serverMessageDispatchMap.remove(cmd);
+    }
+
+    /*
+     * Send message
+     */
     public int sendRegcodeRequst(String mobile, String role, ResponseHandler handler)
     {
         int ret = -1;
