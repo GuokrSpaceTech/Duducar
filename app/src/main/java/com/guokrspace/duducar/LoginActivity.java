@@ -26,17 +26,18 @@ import android.widget.ImageView;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.message.MessageTag;
 import com.guokrspace.duducar.communication.SocketClient;
+import com.guokrspace.duducar.database.PersonalInformation;
 import com.guokrspace.duducar.ui.EditTextHolder;
 import com.guokrspace.duducar.ui.LoadingDialog;
 import com.guokrspace.duducar.ui.WinToast;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
 public class LoginActivity extends AppCompatActivity implements
         View.OnClickListener, Handler.Callback,
-        EditTextHolder.OnEditTextFocusChangeListener
-{
+        EditTextHolder.OnEditTextFocusChangeListener {
     private static final String TAG = "LoginActivity";
     /**
      * 用户账户
@@ -80,44 +81,29 @@ public class LoginActivity extends AppCompatActivity implements
      */
     private InputMethodManager mSoftManager;
 
-    private Thread  thread;
+    private Thread thread;
     private boolean threadStopFlag = false;
 
     private int messageid;
-    private int CurrentState = STATE_READY;
 
-    private static final int STATE_READY      = 0;  // Free
-    private static final int STATE_WAIT_SMS   = 1; //Register code reqeusted, wait for SMS
-    private static final int STATE_WAIT_TOKEN = 2;//SMS sent, wait for token
-    private static final int STATE_LOGIN      = 3;
-    private static final int STATE_LOGINED      = 4;
-
-    private static final int REQUEST_CODE_REGISTER = 200;
-    public static final String INTENT_IMAIL = "intent_email";
-    public static final String INTENT_PASSWORD = "intent_password";
     private static final int HANDLER_LOGIN_SUCCESS = 1;
     private static final int HANDLER_LOGIN_FAILURE = 2;
-    private static final int HANDLER_REGISTER_REQUESTED = 12;
+
     private static final int HANDLER_REGISTER_SUCCESS = 7;
     private static final int HANDLER_REGISTER_FAILURE = 8;
-    private static final int HANDLER_VERIFY_SUCCESS = 10;
-    private static final int HANDLER_VERIFY_FAILURE = 11;
+
     private static final int HANDLER_LOGIN_HAS_FOCUS = 3;
     private static final int HANDLER_LOGIN_HAS_NO_FOCUS = 4;
+
     private static final int HANDLER_TIMERTICK = 5;
     private static final int HANDLER_TIMER_TIMEOUT = 6;
-
-    private static final int HANDLER_LOGIN_SMS = 9;
-
 
     private Handler mHandler;
 
     private ImageView mImgBackgroud;
 
     String userName;
-    String token;
-    private boolean isFirst = false;
-    private boolean isSuccess = false;
+    DuduApplication mApplication;
     private LoadingDialog mDialog;
     private EditTextHolder mEditUserNameEt;
     private EditTextHolder mEditPassWordEt;
@@ -128,12 +114,7 @@ public class LoginActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        /*
-         * Init the SocketClient
-         */
-//        mTcpClient = null;
-//        conctTask = new connectTask(); //Connect to server
-//        conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
+        mApplication = (DuduApplication) getApplicationContext();
         initView();
     }
 
@@ -156,27 +137,6 @@ public class LoginActivity extends AppCompatActivity implements
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     protected void initView() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
@@ -186,16 +146,14 @@ public class LoginActivity extends AppCompatActivity implements
         mUserNameEt = (EditText) findViewById(R.id.app_username_et);
         mPassWordEt = (EditText) findViewById(R.id.app_password_et);
         mSignInBt = (Button) findViewById(R.id.app_sign_in_bt);
-        mRegcodeBt = (Button)findViewById(R.id.app_regcode_bt);
+        mRegcodeBt = (Button) findViewById(R.id.app_regcode_bt);
         mImgBackgroud = (ImageView) findViewById(R.id.de_img_backgroud);
         mFrUserNameDelete = (FrameLayout) findViewById(R.id.fr_username_delete);
         mFrPasswordDelete = (FrameLayout) findViewById(R.id.fr_pass_delete);
 
         mSignInBt.setOnClickListener(this);
         mRegcodeBt.setOnClickListener(this);
-//        mRegister.setOnClickListener(this);
-//        mLeftTitle.setOnClickListener(this);
-//        mRightTitle.setOnClickListener(this);
+
         mHandler = new Handler(this);
         mDialog = new LoadingDialog(this);
 
@@ -220,34 +178,36 @@ public class LoginActivity extends AppCompatActivity implements
                     WinToast.toast(this, R.string.login_erro_is_null);
                     return;
                 }
+
                 if (mDialog != null && !mDialog.isShowing()) {
                     mDialog.show();
                 }
-                messageid = SocketClient.getInstance().sendRegcodeRequst("13900000002", "2", new ResponseHandler() {
+
+                mRegcodeBt.setEnabled(false);
+                TimerTick(60);
+
+                messageid = SocketClient.getInstance().sendRegcodeRequst(userName, "2", new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
-
+                        mHandler.sendEmptyMessage(HANDLER_REGISTER_SUCCESS);
                     }
 
                     @Override
                     public void onFailure(String error) {
-
+                        mHandler.sendEmptyMessage(HANDLER_REGISTER_FAILURE);
                     }
 
                     @Override
                     public void onTimeout() {
-
+                        mHandler.sendEmptyMessage(HANDLER_REGISTER_FAILURE);
                     }
                 });
-                CurrentState = STATE_WAIT_SMS;
 
-                Message mess = Message.obtain();
-                mess.what = HANDLER_REGISTER_REQUESTED;
-                mHandler.sendMessage(mess);
+
                 break;
             case R.id.app_sign_in_bt://登录
                 userName = mUserNameEt.getEditableText().toString();
-                String passWord = mPassWordEt.getEditableText().toString();
+                final String passWord = mPassWordEt.getEditableText().toString();
                 if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(passWord)) {
                     WinToast.toast(this, R.string.login_erro_is_null);
                     return;
@@ -256,30 +216,38 @@ public class LoginActivity extends AppCompatActivity implements
                     mDialog.show();
                 }
 
-                if(CurrentState == STATE_WAIT_SMS) {
-                    messageid = SocketClient.getInstance().sendVerifyRequst("13900000002", "2", "1111", new ResponseHandler() {
-                        @Override
-                        public void onSuccess(String messageBody) {
-
+                messageid = SocketClient.getInstance().sendVerifyRequst(userName, "2", passWord, new ResponseHandler(Looper.getMainLooper()) {
+                    @Override
+                    public void onSuccess(String messageBody) {
+                        try {
+                            String token = "";
+                            JSONObject jsonObject = new JSONObject(messageBody);
+                            if (jsonObject.has("token")) token = (String) jsonObject.get("token");
+                            PersonalInformation person = new PersonalInformation();
+                            person.setMobile(userName);
+                            person.setToken("1111");
+                            mApplication.mDaoSession.getPersonalInformationDao().insert(person);
+                            mHandler.sendEmptyMessage(HANDLER_LOGIN_SUCCESS);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
+                    }
 
-                        @Override
-                        public void onFailure(String error) {
+                    @Override
+                    public void onFailure(String error) {
+                        mHandler.sendEmptyMessage(HANDLER_LOGIN_FAILURE);
+                    }
 
-                        }
-
-                        @Override
-                        public void onTimeout() {
-
-                        }
-                    });
-                    CurrentState = STATE_WAIT_TOKEN;
-                }
+                    @Override
+                    public void onTimeout() {
+                        mHandler.sendEmptyMessage(HANDLER_LOGIN_FAILURE);
+                    }
+                });
 
                 break;
             case R.id.app_username_et:
             case R.id.app_password_et:
-                mess = Message.obtain();
+                Message mess = Message.obtain();
                 mess.what = HANDLER_LOGIN_HAS_FOCUS;
                 mHandler.sendMessage(mess);
                 break;
@@ -303,89 +271,43 @@ public class LoginActivity extends AppCompatActivity implements
     @Override
     public boolean handleMessage(Message msg) {
 
-        if (msg.what == HANDLER_LOGIN_FAILURE) {
-            if (mDialog != null)
-                mDialog.dismiss();
-            WinToast.toast(LoginActivity.this, R.string.login_failure);
-            startActivity(new Intent(this, PreOrderActivity.class));
-            finish();
-        } else if (msg.what == HANDLER_LOGIN_SUCCESS) {
-            if (mDialog != null)
-                mDialog.dismiss();
-            WinToast.toast(LoginActivity.this, R.string.login_success);
-//            startActivity(new Intent(this, MainActivity.class));
-            setResult(RESULT_OK);
-            finish();
-        } else if (msg.what == HANDLER_LOGIN_HAS_FOCUS) {
-            mLoginImg.setVisibility(View.GONE);
-        } else if (msg.what == HANDLER_LOGIN_HAS_NO_FOCUS) {
-            mLoginImg.setVisibility(View.VISIBLE);
-        } else if (msg.what == HANDLER_TIMERTICK) {
-             mRegcodeBt.setText((String) msg.obj);
-             mRegcodeBt.setEnabled(false);
-        } else if(msg.what == HANDLER_REGISTER_REQUESTED) {
-            mRegcodeBt.setEnabled(false);
-            TimerTick(60);
-        } else if(msg.what == HANDLER_TIMER_TIMEOUT) {
-            threadStopFlag = true;
-            mRegcodeBt.setText("获取验证码");
-            mRegcodeBt.setEnabled(true);
-        } else if(msg.what == HANDLER_REGISTER_SUCCESS){
-            if (mDialog != null)
-                mDialog.dismiss();
-        } else if(msg.what == 0x6001) { //Ensure the sync of the request and response
-            JSONObject message = (JSONObject)msg.obj;
-            if(message==null) return false;
-            if(SocketClient.getInstance().messageParsor.retcode(message) == 1)
-            {
-                    if (CurrentState == STATE_WAIT_SMS) {
-                        mHandler.sendEmptyMessage(HANDLER_REGISTER_SUCCESS);
-                    } else if (CurrentState == STATE_WAIT_TOKEN) {
-                        CurrentState = STATE_LOGIN;
-                        token = SocketClient.getInstance().messageParsor.token(message);
-                        mHandler.sendEmptyMessage(HANDLER_VERIFY_SUCCESS);
-                        messageid = SocketClient.getInstance().sendLoginReguest("13900000002", "2", token, new ResponseHandler() {
-                            @Override
-                            public void onSuccess(String messageBody) {
-
-                            }
-
-                            @Override
-                            public void onFailure(String error) {
-
-                            }
-
-                            @Override
-                            public void onTimeout() {
-
-                            }
-                        });
-                    } else if (CurrentState  == STATE_LOGIN) {
-                        CurrentState = STATE_LOGINED;
-                        mHandler.sendEmptyMessage(HANDLER_LOGIN_SUCCESS);
-                    }
-
-                    if(messageid >= 0) {
-                        Log.i("","");
-                    }
-            } else {
-                if(CurrentState == STATE_WAIT_SMS)
-                {
-                    mHandler.sendEmptyMessage(HANDLER_REGISTER_FAILURE);
-                } else if(CurrentState == STATE_WAIT_TOKEN) {
-                    mHandler.sendEmptyMessage(HANDLER_VERIFY_FAILURE);
-                } else if(CurrentState == STATE_LOGIN) {
-                    mHandler.sendEmptyMessage(HANDLER_LOGIN_FAILURE);
-                }
-
-            }
-
-            Log.i("","");
-        } else if(msg.what == MessageTag.MESSAGE_TIMEOUT)
-        {
-            Log.i("","");
+        switch (msg.what) {
+            case HANDLER_REGISTER_SUCCESS:
+                if (mDialog != null) mDialog.dismiss();
+                mPassWordEt.requestFocus();
+                break;
+            case HANDLER_REGISTER_FAILURE:
+                WinToast.toast(LoginActivity.this, "获取验证码失败");
+                break;
+            case HANDLER_LOGIN_SUCCESS:
+                if (mDialog != null) mDialog.dismiss();
+                WinToast.toast(LoginActivity.this, R.string.login_success);
+                setResult(RESULT_OK);
+                finish();
+                break;
+            case HANDLER_LOGIN_FAILURE:
+                if (mDialog != null) mDialog.dismiss();
+                WinToast.toast(LoginActivity.this, R.string.login_failure);
+                setResult(RESULT_CANCELED);
+                finish();
+                break;
+            case HANDLER_TIMERTICK:
+                mRegcodeBt.setText((String) msg.obj);
+                mRegcodeBt.setEnabled(false);
+                break;
+            case HANDLER_TIMER_TIMEOUT:
+                mRegcodeBt.setText("获取验证码");
+                mRegcodeBt.setEnabled(true);
+                break;
+            case HANDLER_LOGIN_HAS_FOCUS:
+                mLoginImg.setVisibility(View.GONE);
+                break;
+            case HANDLER_LOGIN_HAS_NO_FOCUS:
+                mLoginImg.setVisibility(View.VISIBLE);
+                break;
+            default:
+                break;
         }
-
         return false;
     }
 

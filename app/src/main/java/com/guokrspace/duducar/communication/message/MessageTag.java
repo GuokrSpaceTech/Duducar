@@ -42,13 +42,16 @@ public class MessageTag {
     public static final int MESSAGE_PAYMENT_CONFIRM_TIMEOUT = 0x9008;
     public static final int MESSAGE_PAYMENT_COMPLETED = 0x9008;
 
+    public static final int REGISTER_REQ = 0x100A;
+    public static final int REGISTER_RESP = 0x100B;
+    public static final int VERIFY_REQ = 0x100C;
+    public static final int VERIFY_RESP = 0x100D;
     public static final int GET_NEAR_CAR_REQ = 0x1001;
     public static final int GET_NEAR_CAR_RESP = 0x1002;
     public static final int CREATE_ORDER_REQ = 0x1003;
     public static final int CREATE_ORDER_RESP = 0x1004;
     public static final int CANCEL_ORDER_REQ = 0x1005;
     public static final int CANCEL_ORDER_RESP = 0x1006;
-
     public static final int TRIP_START = 0x1007;
     public static final int TRIP_OVER = 0x1008;
 
@@ -70,6 +73,10 @@ public class MessageTag {
         MessageTag.put("cancel_order_resp",CANCEL_ORDER_RESP);
         MessageTag.put("trip_start",TRIP_START);
         MessageTag.put("trip_over",TRIP_OVER);
+        MessageTag.put("register",REGISTER_REQ);
+        MessageTag.put("register_resp",REGISTER_RESP);
+        MessageTag.put("verify",VERIFY_REQ);
+        MessageTag.put("verify_resp",VERIFY_RESP);
     }
 
     public int Tag(String command)

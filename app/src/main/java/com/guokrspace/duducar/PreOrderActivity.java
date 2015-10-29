@@ -6,11 +6,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.*;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -22,6 +25,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.ZoomControls;
 
@@ -56,6 +60,7 @@ import com.guokrspace.duducar.communication.SocketClient;
 import com.guokrspace.duducar.communication.StateMachine;
 import com.guokrspace.duducar.communication.message.NearByCars;
 import com.guokrspace.duducar.communication.message.SearchLocation;
+import com.guokrspace.duducar.database.PersonalInformation;
 import com.guokrspace.duducar.ui.OrderConfirmationView;
 
 import java.util.List;
@@ -65,7 +70,9 @@ import java.util.TimerTask;
 public class PreOrderActivity extends AppCompatActivity
         implements
         NavigationDrawerFragment.NavigationDrawerCallbacks,
-        OnGetGeoCoderResultListener {
+        OnGetGeoCoderResultListener,
+        OrderHistoryFragment.OnFragmentInteractionListener,
+        PersonalInfoFragment.OnFragmentInteractionListener {
     private Context mContext = this;
     MapView mMapView = null;
     BaiduMap mBaiduMap = null;
@@ -91,13 +98,11 @@ public class PreOrderActivity extends AppCompatActivity
     GeoCoder mGeoCoder = null;
 
     //Data
-//    public LatLng mReqLoc = null;
-//    public String mReqAddress = "";
     public SearchLocation start = null;
     public SearchLocation dest = null;
     Order mOrder = new Order();
     String city = null;
-    int messageid;
+    DuduApplication mApplication;
 
     //State Machine
     int state;
@@ -121,52 +126,6 @@ public class PreOrderActivity extends AppCompatActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
-
-    private Handler mHandler = new Handler(new Handler.Callback() {
-
-//        HashMap<Integer, Response> map = ResponseHandler.getInstance().responseParserMap;
-
-        @Override
-        public boolean handleMessage(Message message) {
-            switch (message.what) {
-                case MessageTag.MSG_TOGGLE_CONFIRMVIEW:
-                    if(orderConfirmationView!=null)
-                        orderConfirmationView = new OrderConfirmationView(mContext);
-                    final LinearLayout container = (LinearLayout) findViewById(R.id.container);
-                    final FrameLayout mainmapview = (FrameLayout) findViewById(R.id.mainmapview);
-                    container.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            ViewGroup.LayoutParams paramRL = mainmapview.getLayoutParams();
-                            paramRL.height = dpToPx(getResources(), 350);
-                            mainmapview.requestLayout();
-                            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.FILL_PARENT);
-                            container.addView(orderConfirmationView, 1, params);
-                            container.requestLayout();
-                        }
-                    });
-                    break;
-                case MessageTag.MESSAGE_CREATE_ORDER_FAILURE:
-                    break;
-                case MessageTag.MESSAGE_CREATE_ORDER_SUCCESS:
-                    break;
-                case MessageTag.MESSAGE_TIMEOUT:
-                    break;
-                case MessageTag.MESSAGE_SUCCESS:
-                    break;
-                case MessageTag.MESSAGE_FAILURE:
-                    break;
-                case MessageTag.GET_NEAR_CAR_RESP:
-                    if (state == StateMachine.STATE_FREE) {
-
-                    }
-
-                    break;
-            }
-
-            return false;
-        }
-    });
 
     private Timer timer;
 
@@ -237,8 +196,7 @@ public class PreOrderActivity extends AppCompatActivity
          * Init the data
          */
         start = new SearchLocation();
-//        dest  = new SearchLocation();
-
+        mApplication = (DuduApplication) getApplicationContext();
     }
 
     private void initListener() {
@@ -246,15 +204,19 @@ public class PreOrderActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-                if (false) //Not login
+                List persons = mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().list();
+                if (persons.size() > 0)
+                    mApplication.mPersonalInformation = (PersonalInformation) persons.get(0);
+
+                if (mApplication.mPersonalInformation == null) //Not login
                 {
                     Intent intent = new Intent(mContext, LoginActivity.class);
-                    startActivityForResult(intent, 0x6001);
+                    startActivityForResult(intent, ACTVITY_LOGIN_REQUEST);
                 } else {
 
-                    if(orderConfirmationView==null) {
+                    if (orderConfirmationView == null) {
                         orderConfirmationView = new OrderConfirmationView(mContext);
-                        final LinearLayout container = (LinearLayout) findViewById(R.id.container);
+                        final RelativeLayout container = (RelativeLayout) findViewById(R.id.container);
                         final FrameLayout mainmapview = (FrameLayout) findViewById(R.id.mainmapview);
 
                         container.post(new Runnable() {
@@ -267,7 +229,8 @@ public class PreOrderActivity extends AppCompatActivity
                                 paramRL.height = mainmapview.getHeight() - dpToPx(getResources(), heightInDpofConfirmView);
                                 mainmapview.requestLayout();
 
-                                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.FILL_PARENT);
+                                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.FILL_PARENT);
+                                params.addRule(RelativeLayout.BELOW, mainmapview.getId());
                                 container.addView(orderConfirmationView, 1, params);
                                 container.requestLayout();
 
@@ -284,7 +247,6 @@ public class PreOrderActivity extends AppCompatActivity
                 mLocClient.start();
                 isFirstLoc = true;
                 mLocClient.requestLocation();
-//
             }
         });
 
@@ -311,7 +273,7 @@ public class PreOrderActivity extends AppCompatActivity
             public void onClick(View view) {
 
                 Intent intent = new Intent(mContext, SearchActivity.class);
-                intent.putExtra("location",start);
+                intent.putExtra("location", start);
                 startActivityForResult(intent, ACTIVITY_SEARCH_START_REQUEST);
             }
         });
@@ -338,20 +300,30 @@ public class PreOrderActivity extends AppCompatActivity
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
-                .commit();
+
+        if (position == 0) {
+            FragmentTransaction transaction;
+            transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.container, PersonalInfoFragment.newInstance());
+            transaction.addToBackStack("personalinfo");
+            transaction.commit();
+        }
+        //Order Records
+        else if (position == 1) {
+            FragmentTransaction transaction;
+            transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.container, OrderHistoryFragment.newInstance());
+            transaction.addToBackStack("orderrecords");
+            transaction.commit();
+        }
     }
 
     public void onSectionAttached(int number) {
         switch (number) {
-            case 1:
-                mTitle = getString(R.string.title_section1);
-                break;
-            case 2:
+            case 0:
                 mTitle = getString(R.string.title_section2);
                 break;
-            case 3:
+            case 1:
                 mTitle = getString(R.string.title_section3);
                 break;
         }
@@ -385,14 +357,19 @@ public class PreOrderActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if(id == android.R.id.home) {
-            if(isShowingOrderConfirmatinoView == true)
+        if (id == android.R.id.home) {
+
+            //If there are fragments showing
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                getSupportFragmentManager().popBackStack();
+                return true; //Just return, do not toggle the drawer
+            } else if (isShowingOrderConfirmatinoView == true) //If the confirmview is showing
             {
                 isShowingOrderConfirmatinoView = false;
                 //Just hide the OrderConfirmationView
                 {
-                    final LinearLayout container = (LinearLayout) findViewById(R.id.container);
-                    if(orderConfirmationView!=null) {
+                    final RelativeLayout container = (RelativeLayout) findViewById(R.id.container);
+                    if (orderConfirmationView != null) {
                         container.removeView(orderConfirmationView);
                     }
                     final FrameLayout mainmapview = (FrameLayout) findViewById(R.id.mainmapview);
@@ -406,11 +383,7 @@ public class PreOrderActivity extends AppCompatActivity
             }
         }
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
+        //Let the super handle the rest, toggle the drawer
         return super.onOptionsItemSelected(item);
     }
 
@@ -458,7 +431,7 @@ public class PreOrderActivity extends AppCompatActivity
             } else if (requestCode == ACTIVITY_SEARCH_START_REQUEST) {
 
                 Bundle bundle = data.getExtras();
-                if(bundle!=null) {
+                if (bundle != null) {
                     SearchLocation location = (SearchLocation) bundle.get("location");
                     LatLng searchLoc = location.getLocation();
 
@@ -479,7 +452,7 @@ public class PreOrderActivity extends AppCompatActivity
 
                     startActivityForResult(intent, ACTVITY_COST_ESTIMATE_REQUEST);
                 }
-            } else if(requestCode == ACTVITY_COST_ESTIMATE_REQUEST) {
+            } else if (requestCode == ACTVITY_COST_ESTIMATE_REQUEST) {
 //                mHandler.sendEmptyMessage(MessageTag.MSG_TOGGLE_CONFIRMVIEW);
             }
         }
@@ -603,7 +576,7 @@ public class PreOrderActivity extends AppCompatActivity
                     .direction(location.getDirection()).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
 
-            if(locData!=null)
+            if (locData != null)
                 mBaiduMap.setMyLocationData(locData);
 
             mCurrentLocation = new LatLng(location.getLatitude(),
@@ -673,6 +646,10 @@ public class PreOrderActivity extends AppCompatActivity
         return false;
     }
 
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+        Log.i("", "");
+    }
 
     /**
      * A placeholder fragment containing a simple view.

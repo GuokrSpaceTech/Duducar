@@ -150,7 +150,7 @@ public class SocketClient {
                                 ResponseHandler handler = dispatcher.target;
                                 handler.sendResponse(serverMessage);
                                 handler.stopRunnable(dispatcher.timer); //Cancel the timer
-                                messageDispatchQueue.remove(messageid); //dequeu
+                                messageDispatchQueue.remove(messageid); //dequeue
                             }
                             /*
                             * Server Originated Message

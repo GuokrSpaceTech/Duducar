@@ -46,6 +46,7 @@ import com.guokrspace.duducar.communication.message.MessageTag;
 import com.guokrspace.duducar.communication.message.SearchLocation;
 import com.guokrspace.duducar.communication.message.TripOver;
 import com.guokrspace.duducar.communication.message.TripStart;
+import com.guokrspace.duducar.database.OrderRecord;
 import com.guokrspace.duducar.ui.DriverInformationView;
 import com.guokrspace.duducar.ui.WinToast;
 import com.squareup.picasso.Picasso;
@@ -53,6 +54,8 @@ import com.squareup.picasso.Picasso;
 import org.w3c.dom.Text;
 
 import java.sql.Driver;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class PostOrderActivity extends AppCompatActivity {
@@ -82,6 +85,7 @@ public class PostOrderActivity extends AppCompatActivity {
     DriverInfo driver;
     TripStart order_start;
     TripOver  order_finish;
+    DuduApplication mApplication;
 
     //Activity Start RequestCode
     public final static int ACTIVITY_SEARCH_DEST_REQUEST = 0x1001;
@@ -106,8 +110,7 @@ public class PostOrderActivity extends AppCompatActivity {
                     break;
                 case MessageTag.MESSAGE_ORDER_DISPATCHED:
                     if(state == WAITING_FOR_ORDER_CONFIRM)
-                    {
-                        //The driverview moves up by 140dp
+                    {   //The driverview moves up by 140dp
                         LinearLayout bmapLayout = (LinearLayout)findViewById(R.id.bmapLayout);
                         ViewGroup.LayoutParams paramRL = bmapLayout.getLayoutParams();
                         paramRL.height =  bmapLayout.getHeight() - dpToPx(getResources(),140);
@@ -260,6 +263,8 @@ public class PostOrderActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("正在预约中...");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mApplication = (DuduApplication)getApplicationContext();
     }
 
     @Override
@@ -270,18 +275,14 @@ public class PostOrderActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String messageBody) {
                 driver = FastJsonTools.getObject(messageBody, DriverInfo.class);
-                mHandler.sendEmptyMessageDelayed(MessageTag.MESSAGE_ORDER_DISPATCHED, 5000);
+                mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_DISPATCHED);
             }
 
             @Override
-            public void onFailure(String error) {
-
-            }
+            public void onFailure(String error) {}
 
             @Override
-            public void onTimeout() {
-
-            }
+            public void onTimeout() {}
         });
 
         SocketClient.getInstance().registerServerMessageHandler(MessageTag.TRIP_START, new ResponseHandler(Looper.myLooper()) {
@@ -306,6 +307,22 @@ public class PostOrderActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String messageBody) {
                 order_finish = FastJsonTools.getObject(messageBody, TripOver.class);
+
+                OrderRecord orderRecord = new OrderRecord();
+                orderRecord.setStartAddr(order_start.getOrder().getStart());
+                orderRecord.setDestAddr(order_finish.getOrder().getDestination());
+                orderRecord.setStartLat(order_finish.getOrder().getStart_lat());
+                orderRecord.setStartLng(order_finish.getOrder().getStart_lng());
+                orderRecord.setDestLat(order_finish.getOrder().getDestination_lat());
+                orderRecord.setDestLng(order_finish.getOrder().getDestination_lng());
+                orderRecord.setMileage(order_finish.getOrder().getMileage());
+                orderRecord.setPrice(order_finish.getOrder().getPrice());
+                orderRecord.setCarType(order_finish.getOrder().getCar_type());
+                SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd HH:mm");
+                String dateStr = sdf.format(new Date());
+                orderRecord.setOrderTime(dateStr);
+
+                mApplication.mDaoSession.getOrderRecordDao().insert(orderRecord);
                 mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_COMPLETED);
             }
 
@@ -377,18 +394,7 @@ public class PostOrderActivity extends AppCompatActivity {
                 "1",
                 new ResponseHandler(Looper.getMainLooper()) {
                     @Override
-                    public void onSuccess(String messageBody) {
-//                        String respString = "{\"status\":1,\"cmd\":\"create_order_resp\", \"message_id\":11, \"driver\":{\"name\":\"王师傅\",\"avatar\":\"http://a2.att.hudong.com/12/26/19300000362045133857269184471_950.jpg\"," +
-//                                "\"mobile\":\"13522577115\",\"picture\":\"http://a2.att.hudong.com/12/26/19300000362045133857269184471_950.jpg\",\"plate\":\"1111111111\",\"description\":\"This is black Honda\", \"rating\":3.5}}";
-//
-//                        driver = FastJsonTools.getObject(respString, DriverInfo.class);
-//
-//                        //Simulate Order Confirmed and Cars are arranged in 3 secs
-//                        mHandler.sendEmptyMessageDelayed(MessageTag.MESSAGE_ORDER_DISPATCHED, 5000);
-//
-//                        mHandler.sendEmptyMessageDelayed(MessageTag.MESSAGE_ORDER_COMPLETED, 30000);
-                        Log.i("", "");
-                    }
+                    public void onSuccess(String messageBody) {}
 
                     @Override
                     public void onFailure(String error) {
@@ -403,7 +409,6 @@ public class PostOrderActivity extends AppCompatActivity {
                     public void onTimeout() {
                         //Test: Simulate Success
                         cancelOrder();
-
                         // Try again
                         requestCar();
                     }

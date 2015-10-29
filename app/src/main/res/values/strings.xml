@@ -14,7 +14,7 @@
     <string name="login_success">"登录成功"</string>
     <string name="login_failure">"登录失败"</string>
 
-    <string name="title_section1">嘟嘟打车</string>
+    <string name="title_section1">我要打车</string>
     <string name="title_section2">个人信息</string>
     <string name="title_section3">历史订单</string>
 
