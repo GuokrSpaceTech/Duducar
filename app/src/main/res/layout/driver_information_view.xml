@@ -10,22 +10,24 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/imageViewDriver"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_drawer"
-            app:border_width="2dp"
-            app:border_color="#FF000000"/>
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/imageViewCar"
             android:layout_gravity="center"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:src="@drawable/ic_drawer"
-            app:border_width="2dp"
+            app:border_width="1dp"
             app:border_color="#FF000000"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/imageViewDriver"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_drawer"
+            app:border_width="1dp"
+            app:border_color="#FF000000"/>
+
 
     </FrameLayout>
 
@@ -33,7 +35,8 @@
         android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"
+        />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -41,7 +44,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
             android:id="@+id/driverDescLLayout"
             android:orientation="horizontal">
@@ -51,20 +54,21 @@
                 android:layout_width="0dp"
                 android:layout_weight="50"
                 android:layout_height="wrap_content"
-                android:text="王师傅"/>
+                android:text="王师傅"
+                android:gravity="center"/>
 
             <ImageView
                 android:id="@+id/imageViewPhoneIcon"
                 android:layout_width="0dp"
                 android:layout_weight="50"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_drawer"/>
+                android:src="@drawable/ic_phone_black_24dp"/>
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="100dp"
             android:layout_gravity="center_horizontal"
             android:visibility="invisible"
             android:id="@+id/carDescLLayout"
@@ -75,13 +79,15 @@
                 android:layout_width="0dp"
                 android:layout_weight="50"
                 android:layout_height="wrap_content"
-                android:text="F1200234234"/>
+                android:text="F1200234234"
+                android:gravity="center"/>
             <TextView
                 android:id="@+id/textViewCarDesc"
                 android:layout_width="0dp"
                 android:layout_weight="50"
                 android:layout_height="wrap_content"
-                android:text="起亚i3"/>
+                android:text="起亚i3"
+                android:gravity="center"/>
         </LinearLayout>
     </FrameLayout>
 

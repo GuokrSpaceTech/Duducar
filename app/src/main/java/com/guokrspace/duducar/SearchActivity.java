@@ -96,12 +96,14 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
         mSuggestionSearch.setOnGetSuggestionResultListener(this);
 
         //Init UI
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("搜索");
         keyWorldsView = (AutoCompleteTextView) findViewById(R.id.searchkey);
         sugAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_dropdown_item_1line);
         keyWorldsView.setAdapter(sugAdapter);
 
-        editCity = (TextView) findViewById(R.id.city);
-        editCity.setText(mCity);
+//        editCity = (TextView) findViewById(R.id.city);
+//        editCity.setText(mCity);
 
         editSearchKey = (EditText) findViewById(R.id.searchkey);
 
@@ -120,10 +122,10 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
         keyWorldsView.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable arg0) {
-                mPoiSearch.searchNearby(new PoiNearbySearchOption()
-                        .location(mReqLoc)
-                        .radius(20000) //20Km
-                        .keyword(editSearchKey.getText().toString()));
+//                mPoiSearch.searchNearby(new PoiNearbySearchOption()
+//                        .location(mReqLoc)
+//                        .radius(20000) //20Km
+//                        .keyword(editSearchKey.getText().toString()));
             }
 
             @Override
@@ -135,11 +137,11 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
                 if (cs.length() <= 0) {
                     return;
                 }
-                String city = ((TextView) findViewById(R.id.city)).getText().toString();
+//                String city = ((TextView) findViewById(R.id.city)).getText().toString();
                 /**
                  * 使用建议搜索服务获取建议列表，结果在onSuggestionResult()中更新
                  */
-                mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).keyword(cs.toString()).city(city));
+                mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).keyword(cs.toString()).city("长沙"));
 
 
 //                mPoiSearch.searchInCity((new PoiCitySearchOption())
@@ -158,16 +160,15 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
                 searchButtonProcess(view);
             }
         });
-        Button nextBatchData = (Button)findViewById(R.id.map_next_data);
-        nextBatchData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                load_Index++;
-                searchButtonProcess(null);
-            }
-        });
+//        Button nextBatchData = (Button)findViewById(R.id.map_next_data);
+//        nextBatchData.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                load_Index++;
+//                searchButtonProcess(null);
+//            }
+//        });
     }
-
 
     /**
      * 影响搜索按钮点击事件
@@ -176,10 +177,10 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
      */
     public void searchButtonProcess(View v) {
 
-        mPoiSearch.searchInCity((new PoiCitySearchOption())
-                .city(mCity)
-                .keyword(editSearchKey.getText().toString())
-                .pageNum(load_Index));
+        mPoiSearch.searchNearby(new PoiNearbySearchOption()
+                .location(mReqLoc)
+                .radius(100000) //100Km
+                .keyword(editSearchKey.getText().toString()));
         mSoftManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 
 
@@ -188,7 +189,7 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_search, menu);
+//        getMenuInflater().inflate(R.menu.menu_search, menu);
         return true;
     }
 
@@ -199,6 +200,11 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        if(id == android.R.id.home)
+        {
+            finish();
+            return true;
+        }
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;

@@ -27,7 +27,7 @@
         android:orientation="horizontal"
         android:id="@+id/startPointLinearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="false"
         android:layout_below="@+id/progressBar">
@@ -42,14 +42,13 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="西二旗北路"
-            android:id="@+id/destTextView"/>
+            android:id="@+id/textViewStart"/>
     </FrameLayout>
 
     <FrameLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="@id/startPointLinearLayout"
+        android:layout_height="40dp"
         android:id="@+id/destSearchLinearLayout"
         android:layout_below="@+id/startPointLinearLayout">
 
@@ -66,18 +65,24 @@
             android:id="@+id/textViewDestination"/>
     </FrameLayout>
 
+    <LinearLayout
+        android:id="@+id/bmapLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/destSearchLinearLayout">
     <com.baidu.mapapi.map.MapView
         android:id="@+id/bmapView"
-        android:layout_width="fill_parent"
-        android:layout_height="200dp"
-        android:clickable="true"
-        android:layout_below="@+id/destSearchLinearLayout"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"/>
+    </LinearLayout>
 
     <com.guokrspace.duducar.ui.DriverInformationView
+        android:id="@+id/driverView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/bmapView"
+        android:layout_height="200dp"
+        android:layout_below="@+id/bmapLayout"
         android:background="@android:color/white"
-        android:layout_marginBottom="-100dp">
+        android:layout_marginBottom="-200dp">
     </com.guokrspace.duducar.ui.DriverInformationView>
 </RelativeLayout>

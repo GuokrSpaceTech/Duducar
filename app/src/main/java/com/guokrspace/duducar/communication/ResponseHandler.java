@@ -4,10 +4,13 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 
 public abstract class ResponseHandler implements ResponseHandleInterface {
 
@@ -38,12 +41,12 @@ public abstract class ResponseHandler implements ResponseHandleInterface {
     //Constructor
     public ResponseHandler() {
         this(null);
-        this.responseString = responseString;
     }
 
 
     public ResponseHandler(Looper looper) {
         this.looper = looper == null ? Looper.myLooper() : looper;
+        handler = new ResponderHandler(this, looper);
 
     }
 
@@ -52,15 +55,17 @@ public abstract class ResponseHandler implements ResponseHandleInterface {
         try {
             JSONObject jsonObject = new JSONObject(responseString);
 
-            String cmd = (String) jsonObject.get("cmd");
-
-            if(jsonObject.getInt("status") == 1)
-            {
+            //Server Originated Message
+            if(!jsonObject.has("message_id")) {
                 sendSuccessMessage(responseString);
-            } else {
+
+            } else { //Client Originated Message
+                if (jsonObject.get("status") == 1) {
+                    sendSuccessMessage(responseString);
+                } else {
+                    sendFailureMessage(responseString);
+                }
             }
-
-
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -72,9 +77,9 @@ public abstract class ResponseHandler implements ResponseHandleInterface {
         sendMessage(obtainMessage(SUCCESS_MESSAGE,messagebody));
     }
 
-    private void sendFailureMessage()
+    private void sendFailureMessage(String messagebody)
     {
-
+        sendMessage(obtainMessage(FAILURE_MESSAGE,messagebody));
     }
 
     protected Message obtainMessage(int responseMessageId, Object responseMessageData) {
@@ -120,6 +125,14 @@ public abstract class ResponseHandler implements ResponseHandleInterface {
                 // Otherwise, run on provided handler
                 handler.postDelayed(runnable, delay);
             }
+        }
+    }
+
+    protected void stopRunnable(Runnable runnable)
+    {
+        if(runnable != null && handler != null)
+        {
+            handler.removeCallbacks(runnable);
         }
     }
 
@@ -172,6 +185,8 @@ public abstract class ResponseHandler implements ResponseHandleInterface {
             }
         return ret;
     }
+
+
 
     public abstract void onSuccess(String messageBody);
 

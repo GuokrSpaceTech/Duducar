@@ -1,94 +1,93 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+              android:orientation="vertical">
 
 
     <LinearLayout
-        android:id="@+id/selectPaymentLLayout"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="10dp"
+        android:id="@+id/selectPaymentLLayout">
 
         <ImageView
-            android:id="@+id/imageViewPayIcon"
             android:layout_width="28dp"
             android:layout_height="28dp"
-            android:background="@drawable/ic_drawer" />
+            android:id="@+id/imageViewPayIcon"
+            android:background="@drawable/ic_drawer"/>
 
         <TextView
-            android:id="@+id/textViewPayDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:text="支付宝"
+            android:id="@+id/textViewPayDesc"
             android:layout_marginLeft="10dp"
-            android:text="Alipay" />
+            android:layout_gravity="center_vertical"/>
     </LinearLayout>
 
     <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/costEstimateLLayout"
+            android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="50"
-            android:orientation="vertical">
+            android:id="@+id/costEstimateLLayout">
 
             <ImageView
-                android:id="@+id/imageView"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
+                android:id="@+id/imageView"
                 android:layout_gravity="center"
-                android:background="@drawable/ic_drawer" />
+                android:background="@drawable/ic_drawer"/>
 
             <TextView
-                android:id="@+id/textViewCostEst"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Cost Estimate" />
+                android:text="费用估算"
+                android:id="@+id/textViewCostEst"
+                android:layout_gravity="center"/>
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/cuponLLayout"
+            android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="50"
-            android:orientation="vertical">
+            android:id="@+id/cuponLLayout">
 
             <ImageView
-                android:id="@+id/imageView2"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
+                android:id="@+id/imageView2"
                 android:layout_gravity="center"
-                android:background="@drawable/ic_drawer" />
+                android:background="@drawable/ic_drawer"/>
 
             <TextView
-                android:id="@+id/textViewCupon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Cupon" />
+                android:text="优惠劵"
+                android:id="@+id/textViewCupon"
+                android:layout_gravity="center"/>
         </LinearLayout>
 
     </LinearLayout>
 
     <Button
-        android:id="@+id/orderCabButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Call A Cab" />
+        android:text="确认叫车"
+        android:id="@+id/orderCabButton"/>
 
     <TextView
-        android:id="@+id/timeToArriveTextView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="The cab arrives in x minutes" />
+        android:text="叫车将于3分钟后到达"
+        android:id="@+id/timeToArriveTextView"
+        android:gravity="center"/>
 
 </LinearLayout>

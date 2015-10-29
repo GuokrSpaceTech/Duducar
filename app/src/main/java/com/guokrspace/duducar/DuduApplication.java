@@ -5,16 +5,28 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.baidu.mapapi.SDKInitializer;
+import com.guokrspace.duducar.database.DaoMaster;
+import com.guokrspace.duducar.database.DaoSession;
+import com.guokrspace.duducar.database.PersonalInformation;
+import com.guokrspace.duducar.database.PersonalInformationDao;
+
+import java.util.List;
 
 /**
  * Created by macbook on 15/10/13.
  */
 public class DuduApplication extends Application{
 
-
     private SDKReceiver mReceiver;
+
+    public DaoMaster.DevOpenHelper mDBhelper;
+    public DaoMaster mDaoMaster;
+    public DaoSession mDaoSession;
+
+    public PersonalInformation mPersonalInformation;
 
     @Override
     public void onCreate() {
@@ -29,6 +41,10 @@ public class DuduApplication extends Application{
         iFilter.addAction(SDKInitializer.SDK_BROADTCAST_INTENT_EXTRA_INFO_KEY_ERROR_CODE);
         mReceiver = new SDKReceiver();
         registerReceiver(mReceiver, iFilter);
+
+        initDB();
+
+        InitPersonalInformation();
     }
 
     /**
@@ -37,14 +53,10 @@ public class DuduApplication extends Application{
     public class SDKReceiver extends BroadcastReceiver {
         public void onReceive(Context context, Intent intent) {
             String s = intent.getAction();
-//            Log.d(LTAG, "action: " + s);
-//            TextView text = (TextView) findViewById(R.id.text_Info);
-//            text.setTextColor(Color.RED);
+
             if (s.equals(SDKInitializer.SDK_BROADTCAST_ACTION_STRING_PERMISSION_CHECK_ERROR)) {
-//                text.setText("key 验证出错! 请在 AndroidManifest.xml 文件中检查 key 设置");
             } else if (s
                     .equals(SDKInitializer.SDK_BROADCAST_ACTION_STRING_NETWORK_ERROR)) {
-//                text.setText("网络出错");
             }
         }
     }
@@ -53,5 +65,29 @@ public class DuduApplication extends Application{
     public void onTerminate() {
         super.onTerminate();
         unregisterReceiver(mReceiver);
+    }
+
+    public void initDB() {
+        SQLiteDatabase db;
+        if (mDBhelper != null) mDBhelper.close();
+
+        mDBhelper = new DaoMaster.DevOpenHelper(this, "Duducar-db", null);
+
+        db = mDBhelper.getWritableDatabase();
+
+        mDaoMaster = new DaoMaster(db);
+        mDaoSession = mDaoMaster.newSession();
+    }
+
+    public boolean InitPersonalInformation() {
+        boolean retCode = false;
+        PersonalInformationDao personDao = mDaoSession.getPersonalInformationDao();
+        List persons = personDao.queryBuilder().list();
+        if (persons.size() != 0) {
+            mPersonalInformation = (PersonalInformation) persons.get(0);
+            retCode = true;
+        }
+
+        return retCode;
     }
 }
