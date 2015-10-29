@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.ui.GrabOrderFragment;
 import com.guokrspace.dududriver.ui.MeFragment;
+import com.guokrspace.dududriver.ui.MoreFragment;
 import com.guokrspace.dududriver.util.LogUtil;
 import com.viewpagerindicator.IconPageIndicator;
 import com.viewpagerindicator.IconPagerAdapter;
@@ -34,11 +35,10 @@ public class TabPagerAdapter extends FragmentPagerAdapter implements IconPagerAd
         switch (position) {
             case 0:
                 return MeFragment.newInstance();
-
             case 1:
-            case 2:
                 return GrabOrderFragment.newInstance();
-
+            case 2:
+                return MoreFragment.newInstance();
             default:
                 break;
         }

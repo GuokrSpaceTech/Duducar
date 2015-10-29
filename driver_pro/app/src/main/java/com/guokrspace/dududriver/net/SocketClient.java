@@ -1,8 +1,10 @@
 package com.guokrspace.dududriver.net;
 
-import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+
+
+import com.guokrspace.dududriver.common.MessageTag;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,14 +36,15 @@ public class SocketClient {
     public static final String SERVERIP = "120.24.237.15"; // your computer IP address
     public static final int SERVERPORT = 8282;
     public static final int TIME_OUT = 5;
-    private OnMessageReceived mMessageListener = null;
-    private ResponseListener  mResponseListener = null;
+
     private boolean mRun = false;
 
     private PrintWriter out = null;
     private BufferedReader in = null;
 
-    public MessageParsor messageParsor;
+    public ResponseHandler messageParsor;
+
+
 
     public static SocketClient getInstance() {
         return s_socketClient;
@@ -49,42 +52,23 @@ public class SocketClient {
     /**
      *  Constructor of the class. OnMessagedReceived listens for the messages received from server
      */
-    public SocketClient(final OnMessageReceived listener)
+    public SocketClient()
     {
-        mMessageListener = listener;
+//        mMessageListener = listener;
         s_socketClient = this;
         messageid = 0;
-        messageParsor = new MessageParsor();
     }
 
-
-    public void setmResponseListener(ResponseListener mResponseListener) {
-        this.mResponseListener = mResponseListener;
-    }
 
     /**
      * Sends the message entered by client to the server
      * @param message text entered by client
      */
-    public int sendMessage(final JSONObject message, final Handler handler, final int timeout){
+    public int sendMessage(final JSONObject message, final ResponseHandler handler, final int timeout){
         int ret = -1; //Default is error
 
-        final Runnable timerRunnable = new Runnable() {
-            int counter=0;
-            @Override
-            public void run() {
-                counter ++;
-                if(counter < timeout) {
-                    handler.postDelayed(this, 1000); //1s interval
-                } else {
-                    Message msg = handler.obtainMessage();
-                    msg.what = HandlerMessageTag.MESSAGE_TIMEOUT;
-                    msg.obj  = message;
-                    handler.sendMessage(msg);
-                }
-            }
-        };
 
+        //Send the message
         try {
             message.put("message_id", messageid);
 
@@ -93,9 +77,25 @@ public class SocketClient {
                 out.println(message.toString());
                 out.flush();
 
+                //Start a timer
+                final Runnable timerRunnable = new Runnable() {
+                    int counter=0;
+                    @Override
+                    public void run() {
+                        counter ++;
+                        if(counter < timeout) {
+                            handler.postRunnableDelay(this, 1000); //1s interval
+                        } else {
+                            Message msg = handler.obtainMessage(MessageTag.MESSAGE_TIMEOUT,message.toString());
+                            handler.sendMessage(msg);
+                        }
+                    }
+                };
+
+                //Enqueue
                 MessageDispatcher messageDispatcher = new MessageDispatcher(messageid, message, timerRunnable, handler);
                 messageDispatchQueue.put(messageid, messageDispatcher);
-                handler.postDelayed(timerRunnable, 0);
+//                handler.postDelayed(timerRunnable, 0);
             }
 
             ret = messageid;
@@ -109,26 +109,6 @@ public class SocketClient {
         return ret;
     }
 
-    /**
-     * Sends the message entered by client to the server
-     * @param message text entered by client
-     */
-    public void sendMessage(JSONObject message){
-
-        try {
-            message.put("message_id", String.valueOf(messageid));
-            messageid++;
-
-            if (out != null && !out.checkError()) {
-                System.out.println("message: "+ message);
-                out.println(message);
-                out.flush();
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void stopClient(){
         mRun = false;
@@ -154,31 +134,28 @@ public class SocketClient {
 
                 Log.e("TCP SI Client", "SI: Sent.");
                 //receive the message which the server sends back
-                in = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
                 //in this while the client listens for the messages sent by the server
                 while (mRun) {
                     serverMessage = in.readLine();
 
-                    if (serverMessage != null && mMessageListener != null) {
+                    if (serverMessage != null) {
                         //call the method messageReceived in MainActivity class
                         JSONObject jsonObject = new JSONObject(serverMessage);
                         if(jsonObject.has("message_id")) {
 
                             int messageid = (int)jsonObject.get("message_id");
+                            String command = (String)jsonObject.get("cmd");
 
                             MessageDispatcher dispatcher = messageDispatchQueue.get(messageid);
+                            dispatcher.setResponse(jsonObject);
 
-                            if (dispatcher != null) {
-                                Handler handler = dispatcher.target;
-                                Message message = handler.obtainMessage();
-                                message.what = 0x6001;
-                                message.obj = jsonObject;
-                                handler.sendMessage(message);
-                                dispatcher.target.removeCallbacks(dispatcher.timer);
-                                messageDispatchQueue.remove(messageid);
-                            } else {
-                                //Todo: Generic message handler
+
+                            if(dispatcher != null)
+                            {
+                                ResponseHandler handlerTest = dispatcher.target;
+                                handlerTest.sendResponse(serverMessage);
                             }
                         }
 
@@ -191,7 +168,6 @@ public class SocketClient {
             {
                 Log.e("TCP SI Error", "SI: Error", e);
                 e.printStackTrace();
-
             }
             finally
             {
@@ -201,11 +177,10 @@ public class SocketClient {
             }
 
         } catch (Exception e) {
-
             Log.e("TCP SI Error", "SI: Error", e);
-
         }
     }
+
 
     HashMap<Integer, MessageDispatcher> messageDispatchQueue = new HashMap<>();
 
@@ -213,10 +188,10 @@ public class SocketClient {
         int messageid;
         JSONObject request;
         JSONObject response;
-        Handler target;
+        ResponseHandler target;
         Runnable timer;
 
-        public MessageDispatcher(int messageid, JSONObject messagebody, Runnable timer, Handler target) {
+        public MessageDispatcher(int messageid, JSONObject messagebody, Runnable timer, ResponseHandler target) {
             this.messageid = messageid;
             this.request = messagebody;
             this.target = target;
@@ -227,54 +202,6 @@ public class SocketClient {
         }
     }
 
-    public class MessageParsor {
-
-        public MessageParsor(){}
-
-        /**
-         * a common method for obtaining a field value
-         * Author: hyman
-         * Date: 15/10/20
-         * @param message
-         * @param fieldName
-         * @param <T>
-         * @return
-         */
-        @SuppressWarnings("unchecked")
-        public <T> T getFieldVal(JSONObject message, String fieldName, Class<T> type) {
-            Object res = null;
-            String className = type.getSimpleName();
-            try {
-                if ("Integer".equals(className)) {
-                    res = message.has(fieldName) ? message.getInt(fieldName) : -1;
-                } else if ("String".equals(className)) {
-                    res = message.has(fieldName) ? message.getString(fieldName) : "";
-                } else if ("Boolean".equals(className)) {
-                    res = message.has(fieldName) ? message.getBoolean(fieldName) : Boolean.FALSE;
-                } else if ("Double".equals(fieldName)) {
-                    res = message.has(fieldName) ? message.getDouble(fieldName) : -1;
-                } else if ("Long".equals(fieldName)) {
-                    res = message.has(fieldName) ? message.getLong(fieldName) : -1;
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return (T) res;
-        }
-
-    }
-
-    //Declare the interface. The method messageReceived(String message) will must be implemented in the MainActivity
-    //class at on asynckTask doInBackground
-    public interface OnMessageReceived {
-        public void messageReceived(String message);
-    }
-
-    //Handle the received messaged based on its content
-    public interface ResponseListener{
-        public void onResponseReceived(JSONObject response);
-    }
-
     /**
      *  a common method for send request
      *
@@ -282,7 +209,7 @@ public class SocketClient {
      *  Date:15/10/20
      *
      */
-    public int sendRequest(Map<String, String> params, Handler handler) {
+    public int sendRequest(Map<String, String> params, ResponseHandler handler) {
         int _messageId = -1;
         JSONObject requestBody = new JSONObject();
         if (params != null) {

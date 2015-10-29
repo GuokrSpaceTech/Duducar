@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.net.HandlerMessageTag;
+import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
 import com.guokrspace.dududriver.view.EditTextHolder;
 import com.guokrspace.dududriver.view.LoadingDialog;
@@ -39,7 +40,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class LoginActivity extends AppCompatActivity implements
+public class LoginActivity extends BaseActivity implements
         View.OnClickListener, Handler.Callback,
         EditTextHolder.OnEditTextFocusChangeListener
 {
@@ -56,6 +57,8 @@ public class LoginActivity extends AppCompatActivity implements
      * 登录button
      */
     private Button mSignInBt;
+
+    private Button btSkip;
 
     /**
      * 验证码Button
@@ -184,20 +187,20 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     protected void initView() {
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
 
         mSoftManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         mLoginImg = (ImageView) findViewById(R.id.de_login_logo);
         mUserNameEt = (EditText) findViewById(R.id.app_username_et);
         mPassWordEt = (EditText) findViewById(R.id.app_password_et);
         mSignInBt = (Button) findViewById(R.id.app_sign_in_bt);
+        btSkip = (Button) findViewById(R.id.app_skip_bt);
         mRegcodeBt = (Button)findViewById(R.id.app_regcode_bt);
         mImgBackgroud = (ImageView) findViewById(R.id.de_img_backgroud);
         mFrUserNameDelete = (FrameLayout) findViewById(R.id.fr_username_delete);
         mFrPasswordDelete = (FrameLayout) findViewById(R.id.fr_pass_delete);
 
         mSignInBt.setOnClickListener(this);
+        btSkip.setOnClickListener(this);
         mRegcodeBt.setOnClickListener(this);
 //        mRegister.setOnClickListener(this);
 //        mLeftTitle.setOnClickListener(this);
@@ -233,7 +236,22 @@ public class LoginActivity extends AppCompatActivity implements
                 registerParams.put("cmd", Constants.CMD_REGISTER);
                 registerParams.put("role", "2");
                 registerParams.put("mobile", "13900000002");
-                messageid = SocketClient.getInstance().sendRequest(registerParams, mHandler);
+                messageid = SocketClient.getInstance().sendRequest(registerParams, new ResponseHandler() {
+                    @Override
+                    public void onSuccess(String messageBody) {
+
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+
+                    }
+
+                    @Override
+                    public void onTimeout() {
+
+                    }
+                });
                 CurrentState = STATE_WAIT_SMS;
 
                 Message mess = Message.obtain();
@@ -257,7 +275,22 @@ public class LoginActivity extends AppCompatActivity implements
                     verifyParams.put("role", "2");
                     verifyParams.put("mobile", "13900000002");
                     verifyParams.put("verifycode", "1111");
-                    messageid = SocketClient.getInstance().sendRequest(verifyParams, mHandler);
+                    messageid = SocketClient.getInstance().sendRequest(verifyParams, new ResponseHandler() {
+                        @Override
+                        public void onSuccess(String messageBody) {
+
+                        }
+
+                        @Override
+                        public void onFailure(String error) {
+
+                        }
+
+                        @Override
+                        public void onTimeout() {
+
+                        }
+                    });
                     CurrentState = STATE_WAIT_TOKEN;
                 }
 
@@ -267,6 +300,12 @@ public class LoginActivity extends AppCompatActivity implements
                 mess = Message.obtain();
                 mess.what = HANDLER_LOGIN_HAS_FOCUS;
                 mHandler.sendMessage(mess);
+                break;
+            case R.id.app_skip_bt:
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+                break;
+            default:
                 break;
         }
     }
@@ -334,7 +373,22 @@ public class LoginActivity extends AppCompatActivity implements
                         loginParams.put("role", "2");
                         loginParams.put("mobile", "13900000002");
                         loginParams.put("token", token);
-                        messageid = SocketClient.getInstance().sendRequest(loginParams, mHandler);
+                        messageid = SocketClient.getInstance().sendRequest(loginParams, new ResponseHandler() {
+                            @Override
+                            public void onSuccess(String messageBody) {
+
+                            }
+
+                            @Override
+                            public void onFailure(String error) {
+
+                            }
+
+                            @Override
+                            public void onTimeout() {
+
+                            }
+                        });
                     } else if (CurrentState  == STATE_LOGIN) {
                         CurrentState = STATE_LOGINED;
                         mHandler.sendEmptyMessage(HANDLER_LOGIN_SUCCESS);

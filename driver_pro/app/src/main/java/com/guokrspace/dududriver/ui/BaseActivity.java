@@ -7,11 +7,16 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.guokrspace.dududriver.DuduDriverApplication;
+import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.view.LoadingDialog;
 
@@ -66,6 +71,20 @@ public class BaseActivity extends AppCompatActivity {
             mToast.setText(resId);
         }
         mToast.show();
+    }
+
+    public void showCustomToast(CharSequence text) {
+        Toast toast = new Toast(this);
+
+        LayoutInflater inflate = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inflate.inflate(R.layout.de_ui_toast, null);
+        toast.setView(v);
+        TextView tv = (TextView) v.findViewById(android.R.id.message);
+        tv.setText(text);
+
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     protected void showLoadingDialog(Context contex, boolean show,

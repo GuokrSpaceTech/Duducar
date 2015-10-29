@@ -10,4 +10,5 @@ public class HandlerMessageTag {
     public static final int MESSAGE_CREATE_ORDER_SUCCESS = 0x8001;
     public static final int MESSAGE_CREATE_ORDER_FAILURE = 0x8002;
     public static final int MESSAGE_CREATE_ORDER_TIMEOUT = 0x8003;
+
 }

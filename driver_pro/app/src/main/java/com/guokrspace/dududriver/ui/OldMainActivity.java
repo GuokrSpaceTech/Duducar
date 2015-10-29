@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -52,6 +51,7 @@ import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.net.HandlerMessageTag;
+import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
 
 import org.json.JSONObject;
@@ -64,8 +64,7 @@ public class OldMainActivity extends AppCompatActivity
         implements
         NavigationDrawerFragment.NavigationDrawerCallbacks,
         SearchLocationFragment.OnFragmentInteractionListener,
-        OnGetGeoCoderResultListener,
-        SocketClient.ResponseListener {
+        OnGetGeoCoderResultListener{
     private Context mContext = this;
     MapView mMapView = null;
     BaiduMap mBaiduMap = null;
@@ -421,7 +420,22 @@ public class OldMainActivity extends AppCompatActivity
                 carRequestParams.put("pre_mileage", mOrder.pre_mileage);
                 carRequestParams.put("pre_price", mOrder.pre_price);
                 carRequestParams.put("car_type", mOrder.car_type);
-                messageid = SocketClient.getInstance().sendRequest(carRequestParams, mHandler);
+                messageid = SocketClient.getInstance().sendRequest(carRequestParams, new ResponseHandler() {
+                    @Override
+                    public void onSuccess(String messageBody) {
+
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+
+                    }
+
+                    @Override
+                    public void onTimeout() {
+
+                    }
+                });
                 }
                 callForCarButton.setText("已经叫车，等待派单");
                 state = "requested";
@@ -503,11 +517,6 @@ public class OldMainActivity extends AppCompatActivity
 //        Toast.makeText(this, result.getAddress(),
 //                Toast.LENGTH_LONG).show();
 
-    }
-
-    @Override
-    public void onResponseReceived(JSONObject response) {
-        Log.i("", "");
     }
 
     /**
@@ -645,26 +654,24 @@ public class OldMainActivity extends AppCompatActivity
         @Override
         protected SocketClient doInBackground(String... message) {
             //we create a TCPClient object and
-            mTcpClient = new SocketClient(new SocketClient.OnMessageReceived() {
-                @Override
-                //here the messageReceived method is implemented
-                public void messageReceived(String message) {
-                    try {
-                        //this method calls the onProgressUpdate
-                        publishProgress(message);
-                        if (message != null) {
-                            System.out.println("Return Message from Socket::::: >>>>> " + message);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
+            mTcpClient = new SocketClient();
+//                    new SocketClient.OnMessageReceived() {
+//                @Override
+//                //here the messageReceived method is implemented
+//                public void messageReceived(String message) {
+//                    try {
+//                        //this method calls the onProgressUpdate
+//                        publishProgress(message);
+//                        if (message != null) {
+//                            System.out.println("Return Message from Socket::::: >>>>> " + message);
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            });
 //            mTcpClient.setmResponseListener((MainActivity) mContext);
             mTcpClient.run();
-//            if (mTcpClient != null) {
-//                mTcpClient.sendMessage("Initial Message when connected with Socket Server");
-//            }
             return null;
         }
 
