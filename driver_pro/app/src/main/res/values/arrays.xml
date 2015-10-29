@@ -5,4 +5,22 @@
         <item>@string/title_section2</item>
         <item>@string/title_section3</item>
     </string-array>
+
+    <string-array name="more_option_text">
+        <item>推荐</item>
+        <item>订单地图</item>
+        <item>车型升级</item>
+        <item>消息通知</item>
+        <item>专车指南</item>
+        <item>设置</item>
+    </string-array>
+
+    <array name="more_option_resid">
+        <item>@mipmap/suggest</item>
+        <item>@mipmap/map</item>
+        <item>@mipmap/upgrade</item>
+        <item>@mipmap/msg</item>
+        <item>@mipmap/guide</item>
+        <item>@mipmap/setting</item>
+    </array>
 </resources>

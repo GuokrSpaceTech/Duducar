@@ -44,58 +44,59 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp">
-            <RelativeLayout
-                android:id="@+id/liner1"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="70"
-                android:layout_marginRight="30dip"
-                android:orientation="horizontal"
-                android:layout_gravity="center_vertical">
+                android:layout_marginRight="30dp"
+                android:orientation="horizontal">
 
-
-                <EditText
-                    android:id="@+id/app_username_et"
-                    android:layout_width="match_parent"
+                <RelativeLayout
+                    android:id="@+id/liner1"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rc_ed_public_service_search_selector"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:hint="@string/app_login_show"
-                    android:singleLine="true"
-                    android:textColor="@color/main_regist"
-                    android:textColorHint="@color/main_regist" />
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="30dip"
+                    android:layout_weight="70"
+                    android:orientation="horizontal">
 
-                <FrameLayout
-                    android:id="@+id/fr_username_delete"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignRight="@+id/app_username_et"
-                    android:layout_centerVertical="true"
-                    android:visibility="gone">
 
-                    <ImageView
+                    <EditText
+                        android:id="@+id/app_username_et"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rc_ed_public_service_search_selector"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:hint="@string/app_login_show"
+                        android:singleLine="true"
+                        android:textColor="@color/main_regist"
+                        android:textColorHint="@color/main_regist" />
+
+                    <FrameLayout
+                        android:id="@+id/fr_username_delete"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="5dip"
-                        android:src="@drawable/de_register_delete" />
-                </FrameLayout>
+                        android:layout_alignRight="@+id/app_username_et"
+                        android:layout_centerVertical="true"
+                        android:visibility="gone">
 
-            </RelativeLayout>
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dip"
+                            android:src="@drawable/de_register_delete" />
+                    </FrameLayout>
+
+                </RelativeLayout>
 
                 <Button
                     android:id="@+id/app_regcode_bt"
                     style="@style/DemoTextStyleSmall"
                     android:layout_width="150dp"
                     android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="30"
                     android:background="@drawable/de_login_selector"
                     android:text="@string/app_req_code"
-                    android:textColor="@color/main_regist"
-                    android:layout_gravity="center_vertical" />
+                    android:textColor="@color/main_regist" />
             </LinearLayout>
 
             <RelativeLayout
@@ -150,6 +151,17 @@
                 android:text="@string/app_sign_up"
                 android:textColor="@color/main_regist" />
 
+            <Button
+                android:id="@+id/app_skip_bt"
+                style="@style/DemoTextStyleBig1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dip"
+                android:layout_marginRight="30dip"
+                android:layout_marginTop="24dip"
+                android:background="@drawable/de_login_selector"
+                android:text="跳过"
+                android:textColor="@color/main_regist" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

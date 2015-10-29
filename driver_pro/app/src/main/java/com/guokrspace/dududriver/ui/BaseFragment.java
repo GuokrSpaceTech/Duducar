@@ -1,14 +1,19 @@
 package com.guokrspace.dududriver.ui;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.guokrspace.dududriver.DuduDriverApplication;
+import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.view.LoadingDialog;
 
@@ -37,7 +42,7 @@ public class BaseFragment extends Fragment {
 
     Toast mToast;
 
-    public void ShowToast(String text) {
+    public void showToast(String text) {
         if (!TextUtils.isEmpty(text)) {
             if (mToast == null) {
                 mToast = Toast.makeText(getActivity().getApplicationContext(), text,
@@ -49,7 +54,7 @@ public class BaseFragment extends Fragment {
         }
     }
 
-    public void ShowToast(int resId) {
+    public void showToast(int resId) {
         if (mToast == null) {
             mToast = Toast.makeText(getActivity().getApplicationContext(), resId,
                     Toast.LENGTH_SHORT);
@@ -57,6 +62,20 @@ public class BaseFragment extends Fragment {
             mToast.setText(resId);
         }
         mToast.show();
+    }
+
+    public void showCustomToast(CharSequence text) {
+        Toast toast = new Toast(getActivity());
+
+        LayoutInflater inflate = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inflate.inflate(R.layout.de_ui_toast, null);
+        toast.setView(v);
+        TextView tv = (TextView) v.findViewById(android.R.id.message);
+        tv.setText(text);
+
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     protected void showLoadingDialog(Context contex, boolean show, boolean cancelable) {
@@ -93,7 +112,7 @@ public class BaseFragment extends Fragment {
     protected boolean isNetworkAvailable() {
         boolean isNetConnected = CommonUtil.isNetworkAvailable(getActivity());
         if (!isNetConnected) {
-            ShowToast("当前网络不可用，请检查您的网络...");
+            showToast("当前网络不可用，请检查您的网络...");
         }
         return isNetConnected;
     }

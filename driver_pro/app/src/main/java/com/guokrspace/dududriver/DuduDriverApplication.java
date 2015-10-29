@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.database.DatabaseUtils;
 
 import com.baidu.mapapi.SDKInitializer;
+import com.guokrspace.dududriver.ui.DisplayUtil;
 
 /**
  * Created by macbook on 15/10/13.
@@ -27,6 +28,8 @@ public class DuduDriverApplication extends Application{
     public void onCreate() {
         super.onCreate();
         instance = this;
+        //初始化显示工具类
+        DisplayUtil.init(getApplicationContext());
         // 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
         SDKInitializer.initialize(this);
 

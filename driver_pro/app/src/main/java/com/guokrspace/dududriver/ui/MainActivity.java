@@ -36,8 +36,8 @@ public class MainActivity extends BaseActivity {
 
         pager = (ViewPager) findViewById(R.id.pager);
         mAdapter = new TabPagerAdapter(getSupportFragmentManager());
-        pager.setOffscreenPageLimit(1);//设置预加载页数,第一次进入程序起作用，因为都是从网络上获取数据，因此预加载意义不大
-        //当然就缓存一页，因为每次的加载都需要保证列表是最新的
+        pager.setOffscreenPageLimit(2);//设置预加载页数
+        //要求每次的加载都需要保证列表是最新的，当然就缓存一页
         pager.setAdapter(mAdapter);
         mIndicator.setViewPager(pager);
         mIndicator.setCurrentItem(1);//设置启动首先显示的抢单界面

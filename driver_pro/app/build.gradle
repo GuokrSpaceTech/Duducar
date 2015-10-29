@@ -25,6 +25,10 @@ android {
         debug
     }
 
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
 
     buildTypes {
         release {
@@ -75,4 +79,5 @@ dependencies {
     compile 'com.github.nkzawa:socket.io-client:0.3.0'
     compile 'com.koushikdutta.async:androidasync:2.+'
     compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.alibaba:fastjson:1.1.34.android'
 }

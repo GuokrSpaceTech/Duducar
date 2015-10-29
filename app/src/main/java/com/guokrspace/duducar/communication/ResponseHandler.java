@@ -4,13 +4,10 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
-import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.List;
 
 public abstract class ResponseHandler implements ResponseHandleInterface {
 
@@ -57,7 +54,7 @@ public abstract class ResponseHandler implements ResponseHandleInterface {
 
             String cmd = (String) jsonObject.get("cmd");
 
-            if(jsonObject.get("status") == 1)
+            if(jsonObject.getInt("status") == 1)
             {
                 sendSuccessMessage(responseString);
             } else {
