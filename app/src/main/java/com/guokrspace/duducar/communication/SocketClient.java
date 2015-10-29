@@ -18,7 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * @author Prashant Adesara
+ * @author Prashant Adesara, Kai Yang
  * Handle the TCPClient with Socket Server. 
  * */
 
@@ -137,18 +137,33 @@ public class SocketClient {
 
                         //call the method messageReceived in MainActivity class
                         JSONObject jsonObject = new JSONObject(serverMessage);
-                        if(jsonObject.has("message_id")) {
+                        if (jsonObject.has("message_id")) {
 
-                            int messageid = (int)jsonObject.get("message_id");
+                            int messageid = (int) jsonObject.get("message_id");
                             MessageDispatcher dispatcher = messageDispatchQueue.get(messageid);
 
-                            if(dispatcher != null)
-                            {
+                            /*
+                             * Client Originated Message
+                             */
+                            if (dispatcher != null) {
                                 dispatcher.setResponse(jsonObject);
                                 ResponseHandler handler = dispatcher.target;
                                 handler.sendResponse(serverMessage);
                                 handler.stopRunnable(dispatcher.timer); //Cancel the timer
-                                messageDispatchQueue.remove(messageid); //dequeue
+                                messageDispatchQueue.remove(messageid); //dequeu
+                            }
+                            /*
+                            * Server Originated Message
+                            */
+                        } else if(jsonObject.has("cmd")){
+                            String cmd = (String) jsonObject.get("cmd");
+                            int messageTag = MessageTag.getInstance().Tag(cmd);
+                            ResponseHandler target = serverMessageDispatchMap.get(messageTag);
+                            if (target != null)
+                                target.sendResponse(serverMessage);
+                            else {
+                                String errorMsg = String.format("Unregisted Message: %s", serverMessage);
+                                Log.i("DuduCar", errorMsg);
                             }
                         }
 
@@ -176,7 +191,6 @@ public class SocketClient {
 
 
     HashMap<Integer, MessageDispatcher> messageDispatchQueue = new HashMap<>();
-
     public class MessageDispatcher{
         int messageid;
         JSONObject request;
@@ -196,7 +210,21 @@ public class SocketClient {
         }
     }
 
+    HashMap<Integer, ResponseHandler> serverMessageDispatchMap = new HashMap<>();
 
+    public void registerServerMessageHandler( int cmd, ResponseHandler target)
+    {
+        serverMessageDispatchMap.put(cmd, target);
+    }
+
+    public void unregisterServerMessageHandler( int cmd)
+    {
+        serverMessageDispatchMap.remove(cmd);
+    }
+
+    /*
+     * Send message
+     */
     public int sendRegcodeRequst(String mobile, String role, ResponseHandler handler)
     {
         int ret = -1;
@@ -266,7 +294,7 @@ public class SocketClient {
             carmsg.put("destination_lng",dest_lng);
             carmsg.put("pre_mileage",distance);
             carmsg.put("pre_price",price);
-            carmsg.put("car_grade",car);
+            carmsg.put("car_type",car);
             ret = sendMessage(carmsg, handler, 5);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -274,6 +302,20 @@ public class SocketClient {
 
         return ret;
     }
+
+    public int cancelCarRequest(String role, ResponseHandler handler) {
+        int ret = -1;
+        JSONObject carmsg = new JSONObject();
+        try {
+            carmsg.put("cmd", "cancel_order");
+            ret = sendMessage(carmsg, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return ret;
+    }
+
 
     public int sendNearByCarRequestTest(Double lat, Double lng, String cartype, ResponseHandler handler)
     {

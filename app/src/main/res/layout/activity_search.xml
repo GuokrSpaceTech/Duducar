@@ -11,23 +11,23 @@
         android:layout_height="50dip"
         android:orientation="horizontal" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="在" >
-        </TextView>
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="在" >-->
+        <!--</TextView>-->
 
-        <TextView
-            android:id="@+id/city"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="bottom" />
+        <!--<TextView-->
+            <!--android:id="@+id/city"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:gravity="bottom" />-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="市内找" >
-        </TextView>
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="市内找" >-->
+        <!--</TextView>-->
 
         <AutoCompleteTextView
             android:id="@+id/searchkey"
@@ -50,16 +50,8 @@
             android:layout_weight="12"
             android:onClick="searchButtonProcess"
             android:padding="10dip"
-            android:text="开始" />
+            android:text="搜索" />
 
-        <Button
-            android:id="@+id/map_next_data"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="12"
-            android:onClick="goToNextPage"
-            android:padding="10dip"
-            android:text="下一组数据" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
