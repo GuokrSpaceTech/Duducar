@@ -29,9 +29,11 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.location.Poi;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
@@ -42,6 +44,8 @@ import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
 import com.guokrspace.duducar.communication.message.DriverInfo;
 import com.guokrspace.duducar.communication.message.MessageTag;
 import com.guokrspace.duducar.communication.message.SearchLocation;
+import com.guokrspace.duducar.communication.message.TripOver;
+import com.guokrspace.duducar.communication.message.TripStart;
 import com.guokrspace.duducar.ui.DriverInformationView;
 import com.guokrspace.duducar.ui.WinToast;
 import com.squareup.picasso.Picasso;
@@ -54,10 +58,8 @@ import java.util.List;
 public class PostOrderActivity extends AppCompatActivity {
 
     //UI
-    String orderStatusString = "正在预约车辆";
-    MapView mMapView = null;
-    BaiduMap mBaiduMap = null;
     Context mContext = this;
+    String orderStatusString = "正在预约车辆";
     FrameLayout mSearchDestLLayout;
     TextView mDestTextView;
     TextView mStartTextView;
@@ -67,14 +69,19 @@ public class PostOrderActivity extends AppCompatActivity {
 
     int state;
 
-    //Location
+    //Baidu Map Location
+    MapView mMapView = null;
+    BaiduMap mBaiduMap = null;
     BitmapDescriptor mCurrentMarker;
     LocationClient mLocClient;
     public MyLocationListener myListener = new MyLocationListener();
+
     //Data
     SearchLocation start;
     SearchLocation dest;
     DriverInfo driver;
+    TripStart order_start;
+    TripOver  order_finish;
 
     //Activity Start RequestCode
     public final static int ACTIVITY_SEARCH_DEST_REQUEST = 0x1001;
@@ -107,20 +114,13 @@ public class PostOrderActivity extends AppCompatActivity {
                         bmapLayout.requestLayout();
 
                         driverView = (DriverInformationView)findViewById(R.id.driverView);
-//                        RelativeLayout.LayoutParams layoutParams =
-//                                new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-//                        layoutParams.addRule(RelativeLayout.BELOW, bmapLayout.getId());
-//                        layoutParams.bottomMargin=dpToPx(getResources(),-40);
 
                         RelativeLayout container = (RelativeLayout)findViewById(R.id.container);
-//                        container.addView(driverView, layoutParams);
 
                         container.requestLayout();
 
                         orderStatusString = "出租车即将到达";
                         getSupportActionBar().setTitle(orderStatusString);
-
-                        mHandler.sendEmptyMessageDelayed(MessageTag.MESSAGE_CAR_ARRIVED, 5000);
 
                         if(driver!=null)
                            updateDriverUI(driver);
@@ -130,25 +130,47 @@ public class PostOrderActivity extends AppCompatActivity {
                     }
                     break;
                 case MessageTag.MESSAGE_CAR_ARRIVED:
-                    //start tracing location
                     orderStatusString = "已经上车";
                     getSupportActionBar().setTitle(orderStatusString);
+                    //修正上车地点
+                    if(order_start!=null)
+                    {
+                        Double lat = Double.parseDouble(order_start.getOrder().getStart_lat());
+                        Double lng = Double.parseDouble(order_start.getOrder().getStart_lng());
+                        LatLng ll = new LatLng(lat, lng);
+
+                        mBaiduMap.clear();
+                        mBaiduMap.addOverlay(new MarkerOptions()
+                                .position(ll)
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_gcoding)));
+                        mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLng(ll));
+                    }
 
                     break;
 
                 case MessageTag.MESSAGE_ORDER_COMPLETED:
-                    orderStatusString = "到达目的地";
-                    getSupportActionBar().setTitle(orderStatusString);
-                    WinToast.toast(mContext, "到达目的地，支付39元，请对本次服务评价。");
-                    driverView.mRatingBar.setEnabled(true);
-                    driverView.mRatingBar.setStepSize(0.5f);
-                    driverView.mRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-                        @Override
-                        public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-                            WinToast.toast(mContext, "谢谢评价。");
-                            driverView.mRatingBar.setEnabled(false);
-                        }
-                    });
+                    if(order_finish!=null) {
+                        orderStatusString = String.format("到达%s", order_finish.getOrder().getDestination());
+                        getSupportActionBar().setTitle(orderStatusString);
+
+                        String toastString = String.format("本次行程%s公里，支付%s元，请对本次服务评价。",
+                                order_finish.getOrder().getMileage(), order_finish.getOrder().getPrice());
+                        WinToast.toast(mContext, toastString);
+
+                        driverView.mRatingBar.setEnabled(true);
+                        driverView.mRatingBar.setStepSize(0.5f);
+                        driverView.mRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+                            @Override
+                            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                                WinToast.toast(mContext, "谢谢评价。");
+                                driverView.mRatingBar.setEnabled(false);
+                                finish();
+                            }
+                        });
+
+                        mDestTextView.setText(order_finish.getOrder().getDestination());
+
+                    }
                     break;
             }
             return false;
@@ -247,7 +269,7 @@ public class PostOrderActivity extends AppCompatActivity {
         SocketClient.getInstance().registerServerMessageHandler(MessageTag.CREATE_ORDER_RESP, new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
-                FastJsonTools.getObject(messageBody, DriverInfo.class);
+                driver = FastJsonTools.getObject(messageBody, DriverInfo.class);
                 mHandler.sendEmptyMessageDelayed(MessageTag.MESSAGE_ORDER_DISPATCHED, 5000);
             }
 
@@ -265,8 +287,8 @@ public class PostOrderActivity extends AppCompatActivity {
         SocketClient.getInstance().registerServerMessageHandler(MessageTag.TRIP_START, new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
-                FastJsonTools.getObject(messageBody, DriverInfo.class);
-                mHandler.sendEmptyMessageDelayed(MessageTag.MESSAGE_ORDER_DISPATCHED, 5000);
+                order_start = FastJsonTools.getObject(messageBody, TripStart.class);
+                mHandler.sendEmptyMessage(MessageTag.MESSAGE_CAR_ARRIVED);
             }
 
             @Override
@@ -283,8 +305,8 @@ public class PostOrderActivity extends AppCompatActivity {
         SocketClient.getInstance().registerServerMessageHandler(MessageTag.TRIP_OVER, new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
-                FastJsonTools.getObject(messageBody, DriverInfo.class);
-                mHandler.sendEmptyMessageDelayed(MessageTag.MESSAGE_ORDER_DISPATCHED, 5000);
+                order_finish = FastJsonTools.getObject(messageBody, TripOver.class);
+                mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_COMPLETED);
             }
 
             @Override

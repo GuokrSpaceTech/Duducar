@@ -55,16 +55,17 @@ public abstract class ResponseHandler implements ResponseHandleInterface {
         try {
             JSONObject jsonObject = new JSONObject(responseString);
 
-            String cmd = (String) jsonObject.get("cmd");
-
-            if(jsonObject.get("status") == 1)
-            {
+            //Server Originated Message
+            if(!jsonObject.has("message_id")) {
                 sendSuccessMessage(responseString);
-            } else {
-                sendFailureMessage(responseString);
+
+            } else { //Client Originated Message
+                if (jsonObject.get("status") == 1) {
+                    sendSuccessMessage(responseString);
+                } else {
+                    sendFailureMessage(responseString);
+                }
             }
-
-
 
         } catch (JSONException e) {
             e.printStackTrace();
