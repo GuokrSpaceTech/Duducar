@@ -15,6 +15,8 @@ public class MessageTag {
     public static final int MESSAGE_TIMEOUT = 0x7002;
     public static final int MESSAGE_FAILURE = 0x7003;
 
+    public static final int MSG_TOGGLE_CONFIRMVIEW = 0x1001;
+
     public static final int MESSAGE_GET_NEARBY_CAR_FAILURE = 0x7004;
     public static final int MESSAGE_GET_NEARBY_CAR_SUCCESS = 0x7005;
 
@@ -39,6 +41,8 @@ public class MessageTag {
 
     public static final int GET_NEAR_CAR_REQ = 0x1001;
     public static final int GET_NEAR_CAR_RESP = 0x1002;
+    public static final int CREATE_ORDER_REQ = 0x1003;
+    public static final int CREATE_ORDER_RESP = 0x1004;
 
     public static MessageTag getInstance(){
         if(s_instance == null) new MessageTag();
@@ -52,6 +56,8 @@ public class MessageTag {
         s_instance = this;
         MessageTag.put("get_near_car", GET_NEAR_CAR_REQ);
         MessageTag.put("get_near_car_resp", GET_NEAR_CAR_RESP);
+        MessageTag.put("create_order",CREATE_ORDER_REQ);
+        MessageTag.put("create_order_resp",CREATE_ORDER_RESP);
     }
 
     public int Tag(String command)
