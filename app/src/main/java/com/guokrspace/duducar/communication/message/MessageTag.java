@@ -49,6 +49,9 @@ public class MessageTag {
     public static final int CANCEL_ORDER_REQ = 0x1005;
     public static final int CANCEL_ORDER_RESP = 0x1006;
 
+    public static final int TRIP_START = 0x1007;
+    public static final int TRIP_OVER = 0x1008;
+
     public static MessageTag getInstance(){
         if(s_instance == null) new MessageTag();
 
@@ -65,6 +68,8 @@ public class MessageTag {
         MessageTag.put("create_order_resp",CREATE_ORDER_RESP);
         MessageTag.put("cancel_order",CANCEL_ORDER_REQ);
         MessageTag.put("cancel_order_resp",CANCEL_ORDER_RESP);
+        MessageTag.put("trip_start",TRIP_START);
+        MessageTag.put("trip_over",TRIP_OVER);
     }
 
     public int Tag(String command)

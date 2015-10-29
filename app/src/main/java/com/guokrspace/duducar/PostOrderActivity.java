@@ -262,6 +262,42 @@ public class PostOrderActivity extends AppCompatActivity {
             }
         });
 
+        SocketClient.getInstance().registerServerMessageHandler(MessageTag.TRIP_START, new ResponseHandler(Looper.myLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                FastJsonTools.getObject(messageBody, DriverInfo.class);
+                mHandler.sendEmptyMessageDelayed(MessageTag.MESSAGE_ORDER_DISPATCHED, 5000);
+            }
+
+            @Override
+            public void onFailure(String error) {
+
+            }
+
+            @Override
+            public void onTimeout() {
+
+            }
+        });
+
+        SocketClient.getInstance().registerServerMessageHandler(MessageTag.TRIP_OVER, new ResponseHandler(Looper.myLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                FastJsonTools.getObject(messageBody, DriverInfo.class);
+                mHandler.sendEmptyMessageDelayed(MessageTag.MESSAGE_ORDER_DISPATCHED, 5000);
+            }
+
+            @Override
+            public void onFailure(String error) {
+
+            }
+
+            @Override
+            public void onTimeout() {
+
+            }
+        });
+
     }
 
     @Override

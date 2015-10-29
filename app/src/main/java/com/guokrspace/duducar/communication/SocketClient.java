@@ -18,7 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * @author Prashant Adesara
+ * @author Prashant Adesara, Kai Yang
  * Handle the TCPClient with Socket Server. 
  * */
 
@@ -137,34 +137,33 @@ public class SocketClient {
 
                         //call the method messageReceived in MainActivity class
                         JSONObject jsonObject = new JSONObject(serverMessage);
-                        if(jsonObject.has("message_id")) {
+                        if (jsonObject.has("message_id")) {
 
-                            int messageid = (int)jsonObject.get("message_id");
+                            int messageid = (int) jsonObject.get("message_id");
                             MessageDispatcher dispatcher = messageDispatchQueue.get(messageid);
 
                             /*
                              * Client Originated Message
                              */
-                            if(dispatcher != null)
-                            {
+                            if (dispatcher != null) {
                                 dispatcher.setResponse(jsonObject);
                                 ResponseHandler handler = dispatcher.target;
                                 handler.sendResponse(serverMessage);
                                 handler.stopRunnable(dispatcher.timer); //Cancel the timer
                                 messageDispatchQueue.remove(messageid); //dequeu
+                            }
                             /*
                             * Server Originated Message
                             */
-                            } else {
-                                String cmd = (String)jsonObject.get("cmd");
-                                int messageTag = MessageTag.getInstance().Tag(cmd);
-                                ResponseHandler target = serverMessageDispatchMap.get(messageTag);
-                                if(target!=null)
-                                    target.sendResponse(serverMessage);
-                                else {
-                                    String errorMsg = String.format("Unregisted Message: %s", serverMessage);
-                                    Log.i("DuduCar", errorMsg);
-                                }
+                        } else if(jsonObject.has("cmd")){
+                            String cmd = (String) jsonObject.get("cmd");
+                            int messageTag = MessageTag.getInstance().Tag(cmd);
+                            ResponseHandler target = serverMessageDispatchMap.get(messageTag);
+                            if (target != null)
+                                target.sendResponse(serverMessage);
+                            else {
+                                String errorMsg = String.format("Unregisted Message: %s", serverMessage);
+                                Log.i("DuduCar", errorMsg);
                             }
                         }
 
