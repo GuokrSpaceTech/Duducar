@@ -118,6 +118,14 @@ public abstract class ResponseHandler implements ResponseHandleInterface {
         }
     }
 
+    protected void stopRunnable(Runnable runnable)
+    {
+        if(runnable != null && handler != null)
+        {
+            handler.removeCallbacks(runnable);
+        }
+    }
+
     /**
      * a common method for obtaining a field value
      * Author: hyman

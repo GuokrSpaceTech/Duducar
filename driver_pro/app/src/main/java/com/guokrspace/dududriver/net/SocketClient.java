@@ -22,8 +22,8 @@ import java.util.Map;
 
 /**
  * @author Prashant Adesara
- * Handle the TCPClient with Socket Server. 
- * */
+ *         Handle the TCPClient with Socket Server.
+ */
 
 public class SocketClient {
 
@@ -32,7 +32,7 @@ public class SocketClient {
     private int messageid;
     /**
      * Specify the Server Ip Address here. Whereas our Socket Server is started.
-     * */
+     */
     public static final String SERVERIP = "120.24.237.15"; // your computer IP address
     public static final int SERVERPORT = 8282;
     public static final int TIME_OUT = 5;
@@ -45,15 +45,14 @@ public class SocketClient {
     public ResponseHandler messageParsor;
 
 
-
     public static SocketClient getInstance() {
         return s_socketClient;
     }
+
     /**
-     *  Constructor of the class. OnMessagedReceived listens for the messages received from server
+     * Constructor of the class. OnMessagedReceived listens for the messages received from server
      */
-    public SocketClient()
-    {
+    public SocketClient() {
 //        mMessageListener = listener;
         s_socketClient = this;
         messageid = 0;
@@ -62,9 +61,10 @@ public class SocketClient {
 
     /**
      * Sends the message entered by client to the server
+     *
      * @param message text entered by client
      */
-    public int sendMessage(final JSONObject message, final ResponseHandler handler, final int timeout){
+    public int sendMessage(final JSONObject message, final ResponseHandler handler, final int timeout) {
         int ret = -1; //Default is error
 
 
@@ -79,14 +79,15 @@ public class SocketClient {
 
                 //Start a timer
                 final Runnable timerRunnable = new Runnable() {
-                    int counter=0;
+                    int counter = 0;
+
                     @Override
                     public void run() {
-                        counter ++;
-                        if(counter < timeout) {
+                        counter++;
+                        if (counter < timeout) {
                             handler.postRunnableDelay(this, 1000); //1s interval
                         } else {
-                            Message msg = handler.obtainMessage(MessageTag.MESSAGE_TIMEOUT,message.toString());
+                            Message msg = handler.obtainMessage(MessageTag.MESSAGE_TIMEOUT, message.toString());
                             handler.sendMessage(msg);
                         }
                     }
@@ -110,7 +111,7 @@ public class SocketClient {
     }
 
 
-    public void stopClient(){
+    public void stopClient() {
         mRun = false;
     }
 
@@ -143,17 +144,16 @@ public class SocketClient {
                     if (serverMessage != null) {
                         //call the method messageReceived in MainActivity class
                         JSONObject jsonObject = new JSONObject(serverMessage);
-                        if(jsonObject.has("message_id")) {
+                        if (jsonObject.has("message_id")) {
 
-                            int messageid = (int)jsonObject.get("message_id");
-                            String command = (String)jsonObject.get("cmd");
+                            int messageid = (int) jsonObject.get("message_id");
+                            String command = (String) jsonObject.get("cmd");
 
                             MessageDispatcher dispatcher = messageDispatchQueue.get(messageid);
                             dispatcher.setResponse(jsonObject);
 
 
-                            if(dispatcher != null)
-                            {
+                            if (dispatcher != null) {
                                 ResponseHandler handlerTest = dispatcher.target;
                                 handlerTest.sendResponse(serverMessage);
                             }
@@ -163,14 +163,10 @@ public class SocketClient {
                     }
                     serverMessage = null;
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Log.e("TCP SI Error", "SI: Error", e);
                 e.printStackTrace();
-            }
-            finally
-            {
+            } finally {
                 //the socket must be closed. It is not possible to reconnect to this socket
                 // after it is closed, which means a new socket instance has to be created.
                 socket.close();
@@ -184,7 +180,7 @@ public class SocketClient {
 
     HashMap<Integer, MessageDispatcher> messageDispatchQueue = new HashMap<>();
 
-    public class MessageDispatcher{
+    public class MessageDispatcher {
         int messageid;
         JSONObject request;
         JSONObject response;
@@ -202,12 +198,22 @@ public class SocketClient {
         }
     }
 
+
+    HashMap<Integer, ResponseHandler> serverMessageDispatchMap = new HashMap<>();
+
+    public void registerServerMessageHandler(int cmd, ResponseHandler target) {
+        serverMessageDispatchMap.put(cmd, target);
+    }
+
+    public void unregisterServerMessageHandler(int cmd) {
+        serverMessageDispatchMap.remove(cmd);
+    }
+
     /**
-     *  a common method for send request
-     *
-     *  Author:hyman
-     *  Date:15/10/20
-     *
+     * a common method for send request
+     * <p>
+     * Author:hyman
+     * Date:15/10/20
      */
     public int sendRequest(Map<String, String> params, ResponseHandler handler) {
         int _messageId = -1;
@@ -215,7 +221,7 @@ public class SocketClient {
         if (params != null) {
             Iterator<String> keyIterator = params.keySet().iterator();
             try {
-                for (; keyIterator.hasNext();) {
+                for (; keyIterator.hasNext(); ) {
                     String paramName = keyIterator.next();
                     requestBody.put(paramName, params.get(paramName));
                 }

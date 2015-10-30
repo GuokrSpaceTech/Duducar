@@ -234,8 +234,8 @@ public class LoginActivity extends BaseActivity implements
                 }
                 Map<String, String> registerParams = new HashMap<>();
                 registerParams.put("cmd", Constants.CMD_REGISTER);
-                registerParams.put("role", "2");
-                registerParams.put("mobile", "13900000002");
+                registerParams.put("role", "1");
+                registerParams.put("mobile", "13900000003");
                 messageid = SocketClient.getInstance().sendRequest(registerParams, new ResponseHandler() {
                     @Override
                     public void onSuccess(String messageBody) {
@@ -272,8 +272,8 @@ public class LoginActivity extends BaseActivity implements
                 if(CurrentState == STATE_WAIT_SMS) {
                     Map<String, String> verifyParams = new HashMap<>();
                     verifyParams.put("cmd", Constants.CMD_VERIFY);
-                    verifyParams.put("role", "2");
-                    verifyParams.put("mobile", "13900000002");
+                    verifyParams.put("role", "1");
+                    verifyParams.put("mobile", "13900000003");
                     verifyParams.put("verifycode", "1111");
                     messageid = SocketClient.getInstance().sendRequest(verifyParams, new ResponseHandler() {
                         @Override
@@ -370,8 +370,8 @@ public class LoginActivity extends BaseActivity implements
                         mHandler.sendEmptyMessage(HANDLER_VERIFY_SUCCESS);
                         Map<String, String> loginParams = new HashMap<>();
                         loginParams.put("cmd", Constants.CMD_LOGIN);
-                        loginParams.put("role", "2");
-                        loginParams.put("mobile", "13900000002");
+                        loginParams.put("role", "1");
+                        loginParams.put("mobile", "13900000003");
                         loginParams.put("token", token);
                         messageid = SocketClient.getInstance().sendRequest(loginParams, new ResponseHandler() {
                             @Override

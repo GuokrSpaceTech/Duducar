@@ -60,7 +60,7 @@ public abstract class ResponseHandler implements ResponseHandleInterface {
                 sendSuccessMessage(responseString);
 
             } else { //Client Originated Message
-                if (jsonObject.get("status") == 1) {
+                if (jsonObject.getInt("status") == 1) {
                     sendSuccessMessage(responseString);
                 } else {
                     sendFailureMessage(responseString);
