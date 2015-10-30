@@ -41,21 +41,25 @@
         <activity
             android:name=".ui.LoginActivity"
             android:label="">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ui.MainActivity"
-            android:label=""></activity>
+            android:label="">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.SearchActivity"
             android:label="@string/title_activity_search"></activity>
         <activity
             android:name=".ui.SettingActivity"
             android:label="设置"></activity>
+
+        <activity
+            android:name=".ui.PostOrderActivity"
+            android:label="订单"></activity>
 
         <service
             android:name="com.baidu.location.f"

@@ -5,16 +5,27 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.database.DatabaseUtils;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.baidu.mapapi.SDKInitializer;
+import com.guokrspace.dududriver.database.DaoMaster;
+import com.guokrspace.dududriver.database.DaoSession;
+import com.guokrspace.dududriver.database.PersonalInformation;
+import com.guokrspace.dududriver.database.PersonalInformationDao;
 import com.guokrspace.dududriver.ui.DisplayUtil;
+
+import java.util.List;
 
 /**
  * Created by macbook on 15/10/13.
  */
 public class DuduDriverApplication extends Application{
 
+    public DaoMaster.DevOpenHelper mDBhelper;
+    public DaoMaster mDaoMaster;
+    public DaoSession mDaoSession;
+
+    public PersonalInformation mPersonalInformation;
 
     private SDKReceiver mReceiver;
 
@@ -40,6 +51,10 @@ public class DuduDriverApplication extends Application{
         iFilter.addAction(SDKInitializer.SDK_BROADTCAST_INTENT_EXTRA_INFO_KEY_ERROR_CODE);
         mReceiver = new SDKReceiver();
         registerReceiver(mReceiver, iFilter);
+
+        initDB();
+
+        initPersonalInformation();
     }
 
     /**
@@ -64,5 +79,29 @@ public class DuduDriverApplication extends Application{
     public void onTerminate() {
         super.onTerminate();
         unregisterReceiver(mReceiver);
+    }
+
+    public void initDB() {
+        SQLiteDatabase db;
+        if (mDBhelper != null) mDBhelper.close();
+
+        mDBhelper = new DaoMaster.DevOpenHelper(this, "Duducar-db", null);
+
+        db = mDBhelper.getWritableDatabase();
+
+        mDaoMaster = new DaoMaster(db);
+        mDaoSession = mDaoMaster.newSession();
+    }
+
+    public boolean initPersonalInformation() {
+        boolean retCode = false;
+        PersonalInformationDao personDao = mDaoSession.getPersonalInformationDao();
+        List persons = personDao.queryBuilder().list();
+        if (persons.size() != 0) {
+            mPersonalInformation = (PersonalInformation) persons.get(0);
+            retCode = true;
+        }
+
+        return retCode;
     }
 }

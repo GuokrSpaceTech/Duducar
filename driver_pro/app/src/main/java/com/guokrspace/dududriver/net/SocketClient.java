@@ -4,7 +4,8 @@ import android.os.Message;
 import android.util.Log;
 
 
-import com.guokrspace.dududriver.common.MessageTag;
+import com.guokrspace.dududriver.net.message.HeartBeatMessage;
+import com.guokrspace.dududriver.net.message.MessageTag;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,11 +18,9 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 /**
- * @author Prashant Adesara
+ * @author Prashant Adesara, Kai Yang
  * Handle the TCPClient with Socket Server. 
  * */
 
@@ -35,16 +34,12 @@ public class SocketClient {
      * */
     public static final String SERVERIP = "120.24.237.15"; // your computer IP address
     public static final int SERVERPORT = 8282;
-    public static final int TIME_OUT = 5;
-
     private boolean mRun = false;
 
     private PrintWriter out = null;
     private BufferedReader in = null;
 
     public ResponseHandler messageParsor;
-
-
 
     public static SocketClient getInstance() {
         return s_socketClient;
@@ -67,7 +62,6 @@ public class SocketClient {
     public int sendMessage(final JSONObject message, final ResponseHandler handler, final int timeout){
         int ret = -1; //Default is error
 
-
         //Send the message
         try {
             message.put("message_id", messageid);
@@ -86,16 +80,17 @@ public class SocketClient {
                         if(counter < timeout) {
                             handler.postRunnableDelay(this, 1000); //1s interval
                         } else {
-                            Message msg = handler.obtainMessage(MessageTag.MESSAGE_TIMEOUT,message.toString());
+                            handler.stopRunnable(this);
+                            Message msg = handler.obtainMessage(ResponseHandler.TIMEOUT_MESSAGE,message.toString());
                             handler.sendMessage(msg);
                         }
                     }
                 };
+                handler.postRunnable(timerRunnable);
 
                 //Enqueue
                 MessageDispatcher messageDispatcher = new MessageDispatcher(messageid, message, timerRunnable, handler);
                 messageDispatchQueue.put(messageid, messageDispatcher);
-//                handler.postDelayed(timerRunnable, 0);
             }
 
             ret = messageid;
@@ -141,21 +136,36 @@ public class SocketClient {
                     serverMessage = in.readLine();
 
                     if (serverMessage != null) {
+
                         //call the method messageReceived in MainActivity class
                         JSONObject jsonObject = new JSONObject(serverMessage);
-                        if(jsonObject.has("message_id")) {
+                        if (jsonObject.has("message_id")) {
 
-                            int messageid = (int)jsonObject.get("message_id");
-                            String command = (String)jsonObject.get("cmd");
-
+                            int messageid = (int) jsonObject.get("message_id");
                             MessageDispatcher dispatcher = messageDispatchQueue.get(messageid);
-                            dispatcher.setResponse(jsonObject);
 
-
-                            if(dispatcher != null)
-                            {
-                                ResponseHandler handlerTest = dispatcher.target;
-                                handlerTest.sendResponse(serverMessage);
+                            /*
+                             * Client Originated Message
+                             */
+                            if (dispatcher != null) {
+                                dispatcher.setResponse(jsonObject);
+                                ResponseHandler handler = dispatcher.target;
+                                handler.sendResponse(serverMessage);
+                                handler.stopRunnable(dispatcher.timer); //Cancel the timer
+                                messageDispatchQueue.remove(messageid); //dequeue
+                            }
+                            /*
+                            * Server Originated Message
+                            */
+                        } else if(jsonObject.has("cmd")){
+                            String cmd = (String) jsonObject.get("cmd");
+                            int messageTag = MessageTag.getInstance().Tag(cmd);
+                            ResponseHandler target = serverMessageDispatchMap.get(messageTag);
+                            if (target != null)
+                                target.sendResponse(serverMessage);
+                            else {
+                                String errorMsg = String.format("Unregisted Message: %s", serverMessage);
+                                Log.i("DuduCar", errorMsg);
                             }
                         }
 
@@ -183,7 +193,6 @@ public class SocketClient {
 
 
     HashMap<Integer, MessageDispatcher> messageDispatchQueue = new HashMap<>();
-
     public class MessageDispatcher{
         int messageid;
         JSONObject request;
@@ -195,6 +204,7 @@ public class SocketClient {
             this.messageid = messageid;
             this.request = messagebody;
             this.target = target;
+            this.timer = timer;
         }
 
         public void setResponse(JSONObject response) {
@@ -202,29 +212,130 @@ public class SocketClient {
         }
     }
 
-    /**
-     *  a common method for send request
-     *
-     *  Author:hyman
-     *  Date:15/10/20
-     *
+    HashMap<Integer, ResponseHandler> serverMessageDispatchMap = new HashMap<>();
+
+    public void registerServerMessageHandler( int cmd, ResponseHandler target)
+    {
+        serverMessageDispatchMap.put(cmd, target);
+    }
+
+    public void unregisterServerMessageHandler( int cmd)
+    {
+        serverMessageDispatchMap.remove(cmd);
+    }
+
+    /*
+     * Send message
      */
-    public int sendRequest(Map<String, String> params, ResponseHandler handler) {
-        int _messageId = -1;
-        JSONObject requestBody = new JSONObject();
-        if (params != null) {
-            Iterator<String> keyIterator = params.keySet().iterator();
-            try {
-                for (; keyIterator.hasNext();) {
-                    String paramName = keyIterator.next();
-                    requestBody.put(paramName, params.get(paramName));
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+    public int sendRegcodeRequst(String mobile, String role, ResponseHandler handler)
+    {
+        int ret = -1;
+        JSONObject regcodeReq = new JSONObject();
+        try {
+            regcodeReq.put("cmd","register");
+            regcodeReq.put("role",role);
+            regcodeReq.put("mobile",mobile);
+            ret = sendMessage(regcodeReq, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        _messageId = sendMessage(requestBody, handler, TIME_OUT);
-        return _messageId;
+
+        return ret;
+    }
+
+
+    public int sendVerifyRequst(String mobile, String role, String regcode, ResponseHandler handler)
+    {
+        int ret = -1;
+        JSONObject verify = new JSONObject();
+        try {
+            verify.put("cmd", "verify");
+            verify.put("role",role);
+            verify.put("mobile",mobile);
+            verify.put("verifycode",regcode);
+            ret = sendMessage(verify, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return ret;
+    }
+
+    public int sendHeartBeat(HeartBeatMessage heartBeatMessage,ResponseHandler handler)
+    {
+        int ret = -1;
+        JSONObject heatbeat = new JSONObject();
+        try {
+            heatbeat.put("cmd", heartBeatMessage.getCmd());
+            heatbeat.put("role", "1");
+            heatbeat.put("status",heartBeatMessage.getStatus());
+            heatbeat.put("lat",heartBeatMessage.getLat());
+            heatbeat.put("lng", heartBeatMessage.getLng());
+            heatbeat.put("speed",heartBeatMessage.getSpeed());
+            ret = sendMessage(heatbeat, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return ret;
+    }
+
+    public int sendCarRequest(String role, String start, String dest, Double start_lat,
+                              Double start_lng, Double dest_lat, Double dest_lng,
+                              String distance, String price, String car,ResponseHandler handler)
+    {
+        int ret = -1;
+        JSONObject carmsg = new JSONObject();
+        try {
+            carmsg.put("cmd", "create_order");
+            carmsg.put("role",role);
+            carmsg.put("start",start);
+            carmsg.put("destination",dest);
+            carmsg.put("start_lat", start_lat);
+            carmsg.put("start_lng",start_lng);
+            carmsg.put("destination_lat",dest_lat);
+            carmsg.put("destination_lng",dest_lng);
+            carmsg.put("pre_mileage",distance);
+            carmsg.put("pre_price",price);
+            carmsg.put("car_type",car);
+            ret = sendMessage(carmsg, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return ret;
+    }
+
+    public int cancelCarRequest(String role, ResponseHandler handler) {
+        int ret = -1;
+        JSONObject carmsg = new JSONObject();
+        try {
+            carmsg.put("cmd", "cancel_order");
+            ret = sendMessage(carmsg, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return ret;
+    }
+
+
+    public int sendNearByCarRequestTest(Double lat, Double lng, String cartype, ResponseHandler handler)
+    {
+        int ret = -1;
+        JSONObject carmsg = new JSONObject();
+        try {
+            carmsg.put("cmd", MessageTag.getInstance().Command(MessageTag.GET_NEAR_CAR_REQ));
+            carmsg.put("role","2");
+            carmsg.put("lat",lat);
+            carmsg.put("lng",lng);
+            carmsg.put("car_type",cartype);
+            ret = sendMessage(carmsg, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return ret;
     }
 
 }

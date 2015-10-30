@@ -11,6 +11,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+import com.baidu.location.Poi;
+import com.baidu.mapapi.map.MapStatusUpdate;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
+import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.adapter.OrderListAdapter;
 import com.guokrspace.dududriver.model.OrderListItem;
@@ -43,6 +53,7 @@ public class GrabOrderFragment extends BaseFragment {
 
     private OrderListAdapter mAdapter;
 
+
     public static GrabOrderFragment newInstance() {
         final GrabOrderFragment grabOrderFragment = new GrabOrderFragment();
 //        final Bundle args = new Bundle();
@@ -54,6 +65,12 @@ public class GrabOrderFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        this.context = context;
+        super.onAttach(context);
     }
 
     @Nullable
@@ -71,7 +88,7 @@ public class GrabOrderFragment extends BaseFragment {
     }
 
     private void initView() {
-        mAdapter = new OrderListAdapter(initData());
+        mAdapter = new OrderListAdapter(initData(), context);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
@@ -85,6 +102,8 @@ public class GrabOrderFragment extends BaseFragment {
         }
         return data;
     }
+
+
 
     @Override
     public void onDestroyView() {
