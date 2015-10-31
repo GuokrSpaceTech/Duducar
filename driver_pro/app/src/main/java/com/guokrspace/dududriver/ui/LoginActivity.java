@@ -30,6 +30,7 @@ import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.database.PersonalInformation;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
+import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 import com.guokrspace.dududriver.view.EditTextHolder;
 import com.guokrspace.dududriver.view.LoadingDialog;
 import com.guokrspace.dududriver.view.WinToast;
@@ -37,8 +38,10 @@ import com.guokrspace.dududriver.view.WinToast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
 
-public class LoginActivity extends AppCompatActivity implements
+
+public class LoginActivity extends BaseActivity implements
         View.OnClickListener, Handler.Callback,
         EditTextHolder.OnEditTextFocusChangeListener {
     private static final String TAG = "LoginActivity";
@@ -89,17 +92,24 @@ public class LoginActivity extends AppCompatActivity implements
 
     private int messageid;
 
-    private static final int HANDLER_LOGIN_SUCCESS = 1;
-    private static final int HANDLER_LOGIN_FAILURE = 2;
+    /**
+     * 第一次在手机上登陆需要验证码验证身份，验证成功就登陆成功了；
+     * 之后如果在该手机重新进入应用直接后台进行登陆即可，不用在提交验证码验证。
+     */
+    private static final int HANDLER_LOGIN_SUCCESS = 1;//登陆成功
+    private static final int HANDLER_LOGIN_FAILURE = 2;//登陆失败
 
-    private static final int HANDLER_REGISTER_SUCCESS = 7;
-    private static final int HANDLER_REGISTER_FAILURE = 8;
+    private static final int HANDLER_REGISTER_SUCCESS = 7;//获取验证码成功
+    private static final int HANDLER_REGISTER_FAILURE = 8;//获取验证码失败
 
     private static final int HANDLER_LOGIN_HAS_FOCUS = 3;
     private static final int HANDLER_LOGIN_HAS_NO_FOCUS = 4;
 
     private static final int HANDLER_TIMERTICK = 5;
     private static final int HANDLER_TIMER_TIMEOUT = 6;
+
+    private static final int HANDLER_CHECK_CODE_SUCCESS = 9;//验证码校验成功
+    private static final int HANDLER_CHECK_CODE_FAILURE = 10;//验证码校验失败
 
     private Handler mHandler;
 
@@ -112,17 +122,16 @@ public class LoginActivity extends AppCompatActivity implements
     private EditTextHolder mEditPassWordEt;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mApplication = (DuduDriverApplication) getApplicationContext();
+
         setContentView(R.layout.activity_login);
 
-
-
-        mApplication = (DuduDriverApplication) getApplicationContext();
         initView();
     }
+
 
     @Override
     protected void onStop() {
@@ -179,7 +188,7 @@ public class LoginActivity extends AppCompatActivity implements
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.app_regcode_bt://验证码
+            case R.id.app_regcode_bt://获取验证码
                 userName = mUserNameEt.getEditableText().toString();
                 if (TextUtils.isEmpty(userName)) {
                     WinToast.toast(this, R.string.login_erro_is_null);
@@ -212,7 +221,7 @@ public class LoginActivity extends AppCompatActivity implements
 
 
                 break;
-            case R.id.app_sign_in_bt://登录
+            case R.id.app_sign_in_bt://提交验证码获得token，验证成功同时就表示登陆成功了
                 userName = mUserNameEt.getEditableText().toString();
                 final String passWord = mPassWordEt.getEditableText().toString();
                 if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(passWord)) {
@@ -232,7 +241,7 @@ public class LoginActivity extends AppCompatActivity implements
                             if (jsonObject.has("token")) token = (String) jsonObject.get("token");
                             PersonalInformation person = new PersonalInformation();
                             person.setMobile(userName);
-                            person.setToken("1111"); //Server didn't response Token yet
+                            person.setToken(token); //Server didn't response Token yet
                             mApplication.mDaoSession.getPersonalInformationDao().insert(person);
                             mHandler.sendEmptyMessage(HANDLER_LOGIN_SUCCESS);
                         } catch (JSONException e) {
@@ -286,15 +295,23 @@ public class LoginActivity extends AppCompatActivity implements
             case HANDLER_REGISTER_FAILURE:
                 WinToast.toast(LoginActivity.this, "获取验证码失败");
                 break;
+            case HANDLER_CHECK_CODE_SUCCESS:
+                //验证码提交正确，获得token进行自动登录
             case HANDLER_LOGIN_SUCCESS:
                 if (mDialog != null) mDialog.dismiss();
                 WinToast.toast(LoginActivity.this, R.string.login_success);
+                //将sharedpreferences中是否登陆的状态改为true
+                SharedPreferencesUtils.setParam(LoginActivity.this, SharedPreferencesUtils.LOGIN_STATE, true);
                 startActivity(new Intent(this, MainActivity.class));
                 finish();
                 break;
             case HANDLER_LOGIN_FAILURE:
                 if (mDialog != null) mDialog.dismiss();
                 WinToast.toast(LoginActivity.this, R.string.login_failure);
+                break;
+            case HANDLER_CHECK_CODE_FAILURE:
+                if (mDialog != null) mDialog.dismiss();
+                WinToast.toast(LoginActivity.this, R.string.check_code_failure);
                 break;
             case HANDLER_TIMERTICK:
                 mRegcodeBt.setText((String) msg.obj);
@@ -393,4 +410,5 @@ public class LoginActivity extends AppCompatActivity implements
             thread.start();
         }
     }
+
 }

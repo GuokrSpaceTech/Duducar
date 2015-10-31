@@ -40,11 +40,10 @@
 
         <activity
             android:name=".ui.LoginActivity"
-            android:label="">
-        </activity>
+            android:label=""></activity>
         <activity
             android:name=".ui.MainActivity"
-            android:label="">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -64,8 +63,7 @@
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote">
-        </service>
+            android:process=":remote"></service>
 
     </application>
 

@@ -13,14 +13,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.dexafree.materialList.card.Card;
 import com.dexafree.materialList.card.CardProvider;
-import com.dexafree.materialList.card.OnActionClickListener;
-import com.dexafree.materialList.card.action.WelcomeButtonAction;
 import com.dexafree.materialList.view.MaterialListView;
-import com.guokrspace.duducar.database.OrderRecord;
 import com.guokrspace.duducar.database.PersonalInformation;
 import com.squareup.picasso.RequestCreator;
 

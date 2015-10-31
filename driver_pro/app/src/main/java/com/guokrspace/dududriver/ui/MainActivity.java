@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -19,17 +21,21 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.adapter.TabPagerAdapter;
+import com.guokrspace.dududriver.database.PersonalInformation;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
 import com.guokrspace.dududriver.net.message.HeartBeatMessage;
+import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 import com.viewpagerindicator.TabPageIndicator;
 
 import java.util.List;
 
+import javax.security.auth.login.LoginException;
+
 /**
  * Created by hyman on 15/10/22.
  */
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements Handler.Callback{
 
     private Context context;
 
@@ -39,6 +45,15 @@ public class MainActivity extends BaseActivity {
 
     private SocketClient mTcpClient = null;
     private connectTask conctTask = null;
+
+    private boolean isOnline = false;
+    private boolean isVisiable = false;
+
+    private Handler mHandler;
+
+    private static final int HANDLE_LOGIN_FAILURE = 100;
+
+    private PersonalInformation userInfo;
 
     // 定位相关
     LocationClient mLocClient;
@@ -52,11 +67,12 @@ public class MainActivity extends BaseActivity {
         context = this;
         initView();
 
+        mHandler = new Handler(this);
+
         /*
          * Check if use has logined
          */
-        if( !DuduDriverApplication.getInstance().initPersonalInformation() )
-        {
+        if (!DuduDriverApplication.getInstance().initPersonalInformation()) {
             startActivity(new Intent(this, LoginActivity.class));
         }
 
@@ -74,6 +90,63 @@ public class MainActivity extends BaseActivity {
         mLocClient.start();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isVisiable = true;
+        /*
+         * 用户不在线，就进行登陆
+         *
+         */
+        isOnline = (boolean) SharedPreferencesUtils.getParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, false);
+        if (!isOnline && DuduDriverApplication.getInstance().initPersonalInformation()) {
+            if (!isNetworkAvailable()) {
+                showToast("网络不可用，现在时离线状态");
+            }
+            List localUsers = DuduDriverApplication.getInstance().
+                    mDaoSession.getPersonalInformationDao().
+                    queryBuilder().list();
+            if (localUsers != null && localUsers.size() > 0) {
+                userInfo = (PersonalInformation) localUsers.get(0);
+                doLogin(userInfo);
+            }
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isVisiable = false;
+        mHandler.removeMessages(HANDLE_LOGIN_FAILURE);
+    }
+
+    private void doLogin(PersonalInformation user) {
+        Log.e("hyman", user.getMobile() + " " + user.getToken() + " " + user.getId());
+        if (user == null) {
+            return;
+        }
+        SocketClient.getInstance().autoLoginRequest(user.getMobile(), "1", user.getToken(), new ResponseHandler(Looper.myLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                showCustomToast("登陆成功");
+                SharedPreferencesUtils.setParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, true);
+                isOnline = true;
+            }
+
+            @Override
+            public void onFailure(String error) {
+                showCustomToast("登陆失败");
+                mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_LOGIN_FAILURE), 500);
+            }
+
+            @Override
+            public void onTimeout() {
+                Log.e("hyman", "登陆超时");
+                mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_LOGIN_FAILURE), 500);
+            }
+        });
+    }
+
     private void initView() {
         mIndicator = (TabPageIndicator) findViewById(R.id.indicator);
 
@@ -86,6 +159,20 @@ public class MainActivity extends BaseActivity {
         mIndicator.setCurrentItem(1);//设置启动首先显示的抢单界面
     }
 
+    @Override
+    public boolean handleMessage(Message msg) {
+        switch (msg.what) {
+            case HANDLE_LOGIN_FAILURE:
+                if (isVisiable) {
+                    doLogin(userInfo);
+                }
+                break;
+            default:
+                break;
+        }
+        return false;
+    }
+
     /**
      * @author Prashant Adesara
      *         receive the message from server with asyncTask
@@ -95,7 +182,10 @@ public class MainActivity extends BaseActivity {
         protected SocketClient doInBackground(String... message) {
             //we create a TCPClient object and
             mTcpClient = new SocketClient();
-            mTcpClient.run();
+            if (isNetworkAvailable()) {
+                mTcpClient.run();
+            }
+
             return null;
         }
 
@@ -108,6 +198,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        SharedPreferencesUtils.setParam(this, SharedPreferencesUtils.LOGIN_STATE, false);
+        isOnline = false;
 
         try {
             mTcpClient.stopClient();
@@ -219,8 +311,7 @@ public class MainActivity extends BaseActivity {
 //            Log.i("BaiduLocationApiDem", sb.toString());
         }
 
-        private void sendHeartBeat(MyLocationData locData)
-        {
+        private void sendHeartBeat(MyLocationData locData) {
             HeartBeatMessage msg = new HeartBeatMessage();
             msg.setCmd("hearbeat");
             msg.setStatus("1");
@@ -241,7 +332,7 @@ public class MainActivity extends BaseActivity {
 
                 @Override
                 public void onTimeout() {
-                    Log.i("HeartBeat","Response Timeout");
+                    Log.i("HeartBeat", "Response Timeout");
                 }
             });
         }

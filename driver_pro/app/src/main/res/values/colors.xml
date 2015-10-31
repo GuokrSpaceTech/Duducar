@@ -28,6 +28,7 @@
     <color name="material_deep_blue">#01579b</color>
     <color name="material_blue">#0277bd</color>
     <color name="material_light_green">#b2dfdb</color>
-    <color name="origin">#ffa000</color>
-
+    <color name="orange">#ffa000</color>
+    <color name="translucent_black">#660A0A0A</color>
+    <color name="translucent_white">#55FFFFFF</color>
 </resources>

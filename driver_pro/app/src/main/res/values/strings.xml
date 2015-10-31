@@ -13,6 +13,7 @@
     <string name="login_erro_is_null">"用户名、密码不能为空"</string>
     <string name="login_success">"登录成功"</string>
     <string name="login_failure">"登录失败"</string>
+    <string name="check_code_failure">"验证码错误"</string>
 
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
@@ -31,4 +32,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_search">SearchActivity</string>
+    <!-- 个人界面 -->
+    <string name="my_order_num">订单数%1$1d</string>
+    <string name="height_praise_rate">好评率%1$.2f%</string>
 </resources>

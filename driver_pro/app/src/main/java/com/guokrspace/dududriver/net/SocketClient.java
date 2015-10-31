@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.guokrspace.dududriver.net.message.HeartBeatMessage;
 import com.guokrspace.dududriver.net.message.MessageTag;
+import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,6 +43,13 @@ public class SocketClient {
     public ResponseHandler messageParsor;
 
     public static SocketClient getInstance() {
+        if (s_socketClient == null) {
+            synchronized (SocketClient.class) {
+                if (s_socketClient == null) {
+                    s_socketClient = new SocketClient();
+                }
+            }
+        }
         return s_socketClient;
     }
     /**
@@ -258,6 +266,21 @@ public class SocketClient {
             e.printStackTrace();
         }
 
+        return ret;
+    }
+
+    public int autoLoginRequest(String mobile, String role, String token, ResponseHandler handler) {
+        int ret = -1;
+        JSONObject loginRequest = new JSONObject();
+        try {
+            loginRequest.put("cmd", "login");
+            loginRequest.put("mobile", mobile);
+            loginRequest.put("role", role);
+            loginRequest.put("token", token);
+            ret = sendMessage(loginRequest, handler, 5);
+        } catch(JSONException e) {
+            e.printStackTrace();
+        }
         return ret;
     }
 

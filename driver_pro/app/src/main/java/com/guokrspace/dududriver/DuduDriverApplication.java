@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.guokrspace.dududriver.database.DaoMaster;
@@ -13,6 +14,7 @@ import com.guokrspace.dududriver.database.DaoSession;
 import com.guokrspace.dududriver.database.PersonalInformation;
 import com.guokrspace.dududriver.database.PersonalInformationDao;
 import com.guokrspace.dududriver.ui.DisplayUtil;
+import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 
 import java.util.List;
 
