@@ -15,7 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
-import com.guokrspace.dududriver.ui.DisplayUtil;
+import com.guokrspace.dududriver.util.DisplayUtil;
 
 /**
  * Created by hyman on 15/10/30.
@@ -201,7 +201,6 @@ public class ListenProgressView extends View{
                 invalidate();
                 break;
             case MotionEvent.ACTION_UP:
-
                 break;
             default:
                 break;

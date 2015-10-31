@@ -51,12 +51,12 @@ public class MeFragment extends BaseFragment {
     RelativeLayout searchLayout;
     @Bind(R.id.order_records)
     RecyclerView mRecyclerView;
-    @Bind(R.id.pattern_btn)
-    Button btnPattern;
-    @Bind(R.id.listenprogressview)
-    ListenProgressView mListenProgressView;
-    @Bind(R.id.over_btn)
-    Button btnOver;
+//    @Bind(R.id.pattern_btn)
+//    Button btnPattern;
+//    @Bind(R.id.listenprogressview)
+//    ListenProgressView mListenProgressView;
+//    @Bind(R.id.over_btn)
+//    Button btnOver;
     private Context context;
 
     private RecordListAdapter mAdapter;
