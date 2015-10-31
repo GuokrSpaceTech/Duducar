@@ -239,9 +239,9 @@ public class SearchLocationFragment extends Fragment implements OnGetPoiSearchRe
             mAdapter.mDataset = mDataset;
             mAdapter.notifyDataSetChanged();
 
-            ((OldMainActivity)mContext).mBaiduMap.clear();
-            PoiOverlay overlay = new MyPoiOverlay(((OldMainActivity)mContext).mBaiduMap);
-            ((OldMainActivity)mContext).mBaiduMap.setOnMarkerClickListener(overlay);
+            ((PostOrderActivity)mContext).mBaiduMap.clear();
+            PoiOverlay overlay = new MyPoiOverlay(((PostOrderActivity)mContext).mBaiduMap);
+            ((PostOrderActivity)mContext).mBaiduMap.setOnMarkerClickListener(overlay);
             overlay.setData(result);
             overlay.addToMap();
             overlay.zoomToSpan();

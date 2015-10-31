@@ -5,7 +5,8 @@
     android:background="#00ffffff"
     android:paddingTop="10dp"
     android:paddingBottom="16dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/itemLLayout">
 
     <RelativeLayout
         android:layout_width="fill_parent"

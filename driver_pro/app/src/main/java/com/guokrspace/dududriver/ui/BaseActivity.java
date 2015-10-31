@@ -74,7 +74,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void showCustomToast(CharSequence text) {
-        Toast toast = new Toast(this);
+        Toast toast = new Toast(getApplicationContext());
 
         LayoutInflater inflate = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = inflate.inflate(R.layout.de_ui_toast, null);

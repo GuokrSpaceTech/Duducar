@@ -27,7 +27,7 @@ public abstract class ResponseHandler implements ResponseHandleInterface {
     protected static final int TIMEOUT_MESSAGE = 2;
 
 
-    public static ResponseHandler getInstance() {
+    public static ResponseHandler getInstance(){
         return s_parser;
     }
 
@@ -38,38 +38,45 @@ public abstract class ResponseHandler implements ResponseHandleInterface {
     //Constructor
     public ResponseHandler() {
         this(null);
-        this.responseString = responseString;
     }
 
 
     public ResponseHandler(Looper looper) {
         this.looper = looper == null ? Looper.myLooper() : looper;
+        handler = new ResponderHandler(this, looper);
 
     }
 
-    private void preParseResponse(String responseString) {
+    private void preParseResponse(String responseString)
+    {
         try {
             JSONObject jsonObject = new JSONObject(responseString);
 
-            String cmd = (String) jsonObject.get("cmd");
-
-            if (jsonObject.getInt("status") == 1) {
+            //Server Originated Message
+            if(!jsonObject.has("message_id")) {
                 sendSuccessMessage(responseString);
-            } else {
-            }
 
+            } else { //Client Originated Message
+                if (jsonObject.getInt("status") == 1) {
+                    sendSuccessMessage(responseString);
+                } else {
+                    sendFailureMessage(responseString);
+                }
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    private void sendSuccessMessage(String messagebody) {
-        sendMessage(obtainMessage(SUCCESS_MESSAGE, messagebody));
+    private void sendSuccessMessage(String messagebody)
+    {
+        sendMessage(obtainMessage(SUCCESS_MESSAGE,messagebody));
     }
 
-    private void sendFailureMessage() {
-
+    private void sendFailureMessage(String messagebody)
+    {
+        sendMessage(obtainMessage(FAILURE_MESSAGE,messagebody));
     }
 
     protected Message obtainMessage(int responseMessageId, Object responseMessageData) {
@@ -126,37 +133,57 @@ public abstract class ResponseHandler implements ResponseHandleInterface {
         }
     }
 
-    /**
-     * a common method for obtaining a field value
-     * Author: hyman
-     * Date: 15/10/20
-     *
-     * @param message
-     * @param fieldName
-     * @param <T>
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    public <T> T getFieldVal(JSONObject message, String fieldName, Class<T> type) {
-        Object res = null;
-        String className = type.getSimpleName();
-        try {
-            if ("Integer".equals(className)) {
-                res = message.has(fieldName) ? message.getInt(fieldName) : -1;
-            } else if ("String".equals(className)) {
-                res = message.has(fieldName) ? message.getString(fieldName) : "";
-            } else if ("Boolean".equals(className)) {
-                res = message.has(fieldName) ? message.getBoolean(fieldName) : Boolean.FALSE;
-            } else if ("Double".equals(fieldName)) {
-                res = message.has(fieldName) ? message.getDouble(fieldName) : -1;
-            } else if ("Long".equals(fieldName)) {
-                res = message.has(fieldName) ? message.getLong(fieldName) : -1;
+    public int messageid(JSONObject message)
+    {
+        int messageid = -1;
+        if(message.has("message_id"))
+            try {
+                messageid = (int)message.get("message_id");
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return (T) res;
+        return messageid;
     }
+
+    public int retcode(JSONObject message)
+    {
+        int ret = -1;
+        if(message.has("status"))
+            try {
+                ret = (int)message.get("status");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        else
+            ret = 1;
+        return ret;
+    }
+
+    public String description(JSONObject message)
+    {
+        String ret = "";
+        if(message.has("message"))
+            try {
+                ret = (String)message.get("message");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        return ret;
+    }
+
+    public String token(JSONObject message)
+    {
+        String ret = "";
+        if(message.has("token"))
+            try {
+                ret = (String)message.get("token");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        return ret;
+    }
+
+
 
     public abstract void onSuccess(String messageBody);
 
