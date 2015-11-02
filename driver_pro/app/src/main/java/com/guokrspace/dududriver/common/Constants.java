@@ -15,5 +15,9 @@ public class Constants {
     public static String FIELD_MESSAGE = "message";
     public static String FIELD_TOKEN = "token";
 
+    public static String STATUS_HOLD = "0";
+    public static String STATUS_WAIT = "1";
+    public static String STATUS_GOT  = "2";
+    public static String STATUS_RUN  = "3";
 
 }

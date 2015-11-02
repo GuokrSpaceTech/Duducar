@@ -10,6 +10,8 @@ import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.Window;
 
 import com.baidu.location.BDLocation;
@@ -21,11 +23,17 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.adapter.TabPagerAdapter;
+import com.guokrspace.dududriver.common.Constants;
+import com.guokrspace.dududriver.common.MessageTag;
 import com.guokrspace.dududriver.database.PersonalInformation;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
 import com.guokrspace.dududriver.net.message.HeartBeatMessage;
+import com.guokrspace.dududriver.util.CommonUtil;
+import com.guokrspace.dududriver.util.FastJsonTools;
+import com.guokrspace.dududriver.util.LogUtil;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
+import com.guokrspace.dududriver.view.ListenProgressView;
 import com.viewpagerindicator.TabPageIndicator;
 
 import java.util.List;
@@ -43,17 +51,30 @@ public class MainActivity extends BaseActivity implements Handler.Callback{
     private TabPagerAdapter mAdapter;
     private TabPageIndicator mIndicator;
 
+    private View buttonGroup;
+
     private SocketClient mTcpClient = null;
     private connectTask conctTask = null;
 
     private boolean isOnline = false;
     private boolean isVisiable = false;
+    private boolean isListeneing = false;
 
     private Handler mHandler;
 
     private static final int HANDLE_LOGIN_FAILURE = 100;
+    private static final int NEW_ORDER_ARRIVE = 101;
+    private static final int REJECT_ORDER = 102;
+    private static final int ACCEPT_ORDER = 103;
+    private static final int CALL_PASSENGER = 104;
+    private static final int HANG_OUT = 105;
+    private static final int GOT_PASSENGER = 106;
+    private static final int FINISH_TRIP = 107;
+    //TODO:OTHER thing
 
     private PersonalInformation userInfo;
+
+    private OrderInformation orderInfo;
 
     // 定位相关
     LocationClient mLocClient;
@@ -66,6 +87,8 @@ public class MainActivity extends BaseActivity implements Handler.Callback{
         setContentView(R.layout.activity_main);
         context = this;
         initView();
+        CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
+
 
         mHandler = new Handler(this);
 
@@ -111,6 +134,22 @@ public class MainActivity extends BaseActivity implements Handler.Callback{
                 doLogin(userInfo);
             }
         }
+
+        //注册派单监听
+        SocketClient.getInstance().registerServerMessageHandler(MessageTag.MESSAGE_ORDER_DISPATCH, new ResponseHandler(Looper.myLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                orderInfo = FastJsonTools.getObject(messageBody, OrderInformation.class);
+                mHandler.sendEmptyMessage(NEW_ORDER_ARRIVE);
+            }
+
+            @Override
+            public void onFailure(String error) {}
+
+            @Override
+            public void onTimeout() {}
+        });
+
     }
 
     @Override
@@ -157,6 +196,28 @@ public class MainActivity extends BaseActivity implements Handler.Callback{
         pager.setAdapter(mAdapter);
         mIndicator.setViewPager(pager);
         mIndicator.setCurrentItem(1);//设置启动首先显示的抢单界面
+
+        buttonGroup = (View) findViewById(R.id.button_group_layout);
+        ListenProgressView listenProgressView = (ListenProgressView) buttonGroup.findViewById(R.id.listenprogressview);
+        listenProgressView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                String currStatus = CommonUtil.getCurrentStatus();
+                if (currStatus == Constants.STATUS_RUN || currStatus == Constants.STATUS_GOT) {
+                    //error stats
+                    LogUtil.e("MainActivity ", "runing can not click the button ");
+                    return true;
+                }
+
+                isListeneing = !isListeneing;
+                if (isListeneing) {
+                    CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+                } else {
+                    CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -166,6 +227,9 @@ public class MainActivity extends BaseActivity implements Handler.Callback{
                 if (isVisiable) {
                     doLogin(userInfo);
                 }
+                break;
+            case NEW_ORDER_ARRIVE:
+
                 break;
             default:
                 break;
@@ -212,6 +276,15 @@ public class MainActivity extends BaseActivity implements Handler.Callback{
         mLocClient.stop();
     }
 
+    //TODO : to start listening
+    private void startListener(){
+        if(CommonUtil.getCurrentStatus() == Constants.STATUS_GOT){
+            CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+        } else {
+            //wrong to get here .
+            LogUtil.e("MainActivity ", "wrong status change happened!");
+        }
+    }
     private void initLocation() {
         mLocClient = new LocationClient(getApplicationContext());
         LocationClientOption option = new LocationClientOption();
@@ -299,14 +372,13 @@ public class MainActivity extends BaseActivity implements Handler.Callback{
             if (location == null)
                 return;
 
-            MyLocationData locData = new MyLocationData.Builder()
+            MyLocationData curLocaData = new MyLocationData.Builder()
                     .accuracy(location.getRadius())
                             // 此处设置开发者获取到的方向信息，顺时针0-360
                     .direction(location.getDirection()).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
 
-            sendHeartBeat(locData);
-
+            sendHeartBeat(curLocaData);
 
 //            Log.i("BaiduLocationApiDem", sb.toString());
         }
@@ -314,7 +386,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback{
         private void sendHeartBeat(MyLocationData locData) {
             HeartBeatMessage msg = new HeartBeatMessage();
             msg.setCmd("hearbeat");
-            msg.setStatus("1");
+            msg.setStatus(CommonUtil.getCurrentStatus());
             msg.setLat(String.valueOf(locData.latitude));
             msg.setLng(String.valueOf(locData.longitude));
             msg.setSpeed(String.valueOf(locData.speed));
@@ -335,6 +407,81 @@ public class MainActivity extends BaseActivity implements Handler.Callback{
                     Log.i("HeartBeat", "Response Timeout");
                 }
             });
+            Log.i("daddy hearbeat", msg.getStatus()+ " - currentStatus");
+        }
+    }
+
+
+    public class OrderInformation{
+
+        private Passenger passenger;
+        private String orderNo;
+
+        public Passenger getPassenger() {
+            return passenger;
+        }
+
+        public void setPassenger(Passenger passenger) {
+            this.passenger = passenger;
+        }
+
+        public String getOrderNo() {
+            return orderNo;
+        }
+
+        public void setOrderNo(String orderNo) {
+            this.orderNo = orderNo;
+        }
+
+
+        public class Passenger{
+
+            String start_lat;
+            String start_lng;
+            String end_lat;
+            String end_lng;
+            String mobile;
+
+
+            public String getStart_lat() {
+                return start_lat;
+            }
+
+            public void setStart_lat(String start_lat) {
+                this.start_lat = start_lat;
+            }
+
+            public String getEnd_lat() {
+                return end_lat;
+            }
+
+            public void setEnd_lat(String end_lat) {
+                this.end_lat = end_lat;
+            }
+
+            public String getEnd_lng() {
+                return end_lng;
+            }
+
+            public void setEnd_lng(String end_lng) {
+                this.end_lng = end_lng;
+            }
+
+            public String getMobile() {
+                return mobile;
+            }
+
+            public void setMobile(String mobile) {
+                this.mobile = mobile;
+            }
+
+            public String getStart_lng() {
+                return start_lng;
+            }
+
+            public void setStart_lng(String start_lng) {
+                this.start_lng = start_lng;
+            }
         }
     }
 }

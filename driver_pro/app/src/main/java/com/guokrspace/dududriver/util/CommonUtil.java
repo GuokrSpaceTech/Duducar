@@ -55,4 +55,16 @@ public class CommonUtil {
                 || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
+    private static String currentStatus;
+
+    public static void changeCurStatus(String curStatus){
+        currentStatus = curStatus;
+    }
+
+    public static String getCurrentStatus(){
+        return currentStatus;
+    }
+
+
+
 }
