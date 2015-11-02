@@ -64,6 +64,9 @@
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote"></service>
+        <activity
+            android:name=".ui.PickUpPassengerActivity"
+            android:label="去接乘客" />
 
     </application>
 
