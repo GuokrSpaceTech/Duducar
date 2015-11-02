@@ -57,19 +57,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="31d78d7e-7a22-4d28-8586-0dfc2a298271" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/res/mipmap-xhdpi/call_passenger.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/res/mipmap-xhdpi/cancel_btn.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/res/mipmap-xhdpi/passenger_info.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MainOrderDialog.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/PickUpPassengerActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/res/drawable/accept_btn_bg_shape.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/res/layout/activity_pickuppassenger.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/res/layout/dialog_main_order.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/LoginActivity.java" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/LoginActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MainActivity.java" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/.idea/misc.xml" afterPath="$PROJECT_DIR$/driver_pro/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/.idea/workspace.xml" afterPath="$PROJECT_DIR$/driver_pro/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Duducar.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -113,7 +101,7 @@
       <file leaf-file-name="PreOrderActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/PreOrderActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.44444445">
+            <state vertical-scroll-proportion="25.88889">
               <caret line="478" column="3" selection-start-line="464" selection-start-column="8" selection-end-line="478" selection-end-column="3" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -3094,7 +3082,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/PreOrderActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.44444445">
+        <state vertical-scroll-proportion="25.88889">
           <caret line="478" column="3" selection-start-line="464" selection-start-column="8" selection-end-line="478" selection-end-column="3" />
           <folding>
             <element signature="imports" expanded="true" />
