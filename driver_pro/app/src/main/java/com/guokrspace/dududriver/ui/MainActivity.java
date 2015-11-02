@@ -2,6 +2,7 @@ package com.guokrspace.dududriver.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -20,12 +22,22 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.location.Poi;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.geocode.GeoCodeResult;
+import com.baidu.mapapi.search.geocode.GeoCoder;
+import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
+import com.baidu.mapapi.utils.DistanceUtil;
 import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.adapter.TabPagerAdapter;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.common.MessageTag;
 import com.guokrspace.dududriver.database.PersonalInformation;
+import com.guokrspace.dududriver.model.Loaction;
+import com.guokrspace.dududriver.model.OrderItem;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
 import com.guokrspace.dududriver.net.message.HeartBeatMessage;
@@ -43,7 +55,7 @@ import javax.security.auth.login.LoginException;
 /**
  * Created by hyman on 15/10/22.
  */
-public class MainActivity extends BaseActivity implements Handler.Callback{
+public class MainActivity extends BaseActivity implements OnGetGeoCoderResultListener, Handler.Callback {
 
     private Context context;
 
@@ -74,8 +86,11 @@ public class MainActivity extends BaseActivity implements Handler.Callback{
 
     private PersonalInformation userInfo;
 
-    private OrderInformation orderInfo;
+    private OrderItem orderItem = null;
+    private OrderBrefInformation orderBref = null;
 
+    private GeoCoder mGeoCoder = null;
+    private int geoTimes = 1;
     // 定位相关
     LocationClient mLocClient;
     public MyLocationListener myListener = new MyLocationListener();
@@ -111,6 +126,9 @@ public class MainActivity extends BaseActivity implements Handler.Callback{
          */
         initLocation();
         mLocClient.start();
+
+        mGeoCoder = GeoCoder.newInstance();
+        mGeoCoder.setOnGetGeoCodeResultListener(this);
     }
 
     @Override
@@ -139,15 +157,17 @@ public class MainActivity extends BaseActivity implements Handler.Callback{
         SocketClient.getInstance().registerServerMessageHandler(MessageTag.MESSAGE_ORDER_DISPATCH, new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
-                orderInfo = FastJsonTools.getObject(messageBody, OrderInformation.class);
+                orderItem = FastJsonTools.getObject(messageBody, OrderItem.class);
                 mHandler.sendEmptyMessage(NEW_ORDER_ARRIVE);
             }
 
             @Override
-            public void onFailure(String error) {}
+            public void onFailure(String error) {
+            }
 
             @Override
-            public void onTimeout() {}
+            public void onTimeout() {
+            }
         });
 
     }
@@ -229,12 +249,74 @@ public class MainActivity extends BaseActivity implements Handler.Callback{
                 }
                 break;
             case NEW_ORDER_ARRIVE:
+                if (orderItem == null) {
+                    isListeneing = true;
+                    break;
+                }
+                orderBref = new OrderBrefInformation();
+                LatLng startLoaction = new LatLng(
+                        Double.valueOf(orderItem.getPassenger().getStart_lat()), Double.valueOf(orderItem.getPassenger().getStart_lng()));
+                mGeoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(startLoaction));
+                LatLng endLoaction = new LatLng(
+                        Double.valueOf(orderItem.getPassenger().getEnd_lat()), Double.valueOf(orderItem.getPassenger().getEnd_lng()));
+                mGeoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(endLoaction));
+                orderBref.setDistance(String.valueOf(DistanceUtil.getDistance(startLoaction, endLoaction)));
 
                 break;
             default:
                 break;
         }
         return false;
+    }
+
+    @Override
+    public void onGetGeoCodeResult(GeoCodeResult result) {
+        if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
+            Toast.makeText(this, "抱歉，未能找到结果", Toast.LENGTH_LONG)
+                    .show();
+            return;
+        }
+//        mBaiduMap.clear();
+//        mBaiduMap.addOverlay(new MarkerOptions().position(result.getLocation())
+//                .icon(BitmapDescriptorFactory
+//                        .fromResource(R.drawable.icon_marka)));
+//        mBaiduMap.setMapStatus(MapStatusUpdateFactory.newLatLng(result
+//                .getLocation()));
+        String strInfo = String.format("纬度：%f 经度：%f",
+                result.getLocation().latitude, result.getLocation().longitude);
+        Toast.makeText(this, strInfo, Toast.LENGTH_LONG).show();
+
+    }
+
+    @Override
+    public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
+        if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
+            Toast.makeText(this, "抱歉，订单位置异常", Toast.LENGTH_LONG)
+                    .show();
+            return;
+        }
+
+        if(orderItem == null || orderBref == null){
+            Toast.makeText(this, "抱歉，订单数据异常", Toast.LENGTH_SHORT)
+                    .show();
+            return;
+        }
+        if(geoTimes == 1){
+            orderBref.setStartPoint(result.getAddress());
+            geoTimes++;
+        } else if(geoTimes == 2) {
+            orderBref.setEndPoint(result.getAddress());
+            geoTimes--;
+        } else {
+            Log.e("MainActivity ", "geoTime wrong must be 1 or 2");
+            return;
+        }
+//        mReqLoc = result.getLocation();
+//        mReqAddress = result.getAddress();
+
+//        city = result.getAddressDetail().city;
+//        callForCarButton.setText("上车地点:\n" + result.getAddress() + "\n点击叫车");
+
     }
 
     /**
@@ -277,14 +359,15 @@ public class MainActivity extends BaseActivity implements Handler.Callback{
     }
 
     //TODO : to start listening
-    private void startListener(){
-        if(CommonUtil.getCurrentStatus() == Constants.STATUS_GOT){
+    private void startListener() {
+        if (CommonUtil.getCurrentStatus() == Constants.STATUS_GOT) {
             CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
         } else {
             //wrong to get here .
             LogUtil.e("MainActivity ", "wrong status change happened!");
         }
     }
+
     private void initLocation() {
         mLocClient = new LocationClient(getApplicationContext());
         LocationClientOption option = new LocationClientOption();
@@ -407,81 +490,40 @@ public class MainActivity extends BaseActivity implements Handler.Callback{
                     Log.i("HeartBeat", "Response Timeout");
                 }
             });
-            Log.i("daddy hearbeat", msg.getStatus()+ " - currentStatus");
+            Log.i("daddy hearbeat", msg.getStatus() + " - currentStatus");
         }
     }
 
 
-    public class OrderInformation{
+    public class OrderBrefInformation {
 
-        private Passenger passenger;
-        private String orderNo;
-
-        public Passenger getPassenger() {
-            return passenger;
+        public String getStartPoint() {
+            return startPoint;
         }
 
-        public void setPassenger(Passenger passenger) {
-            this.passenger = passenger;
+        public void setStartPoint(String startPoint) {
+            this.startPoint = startPoint;
         }
 
-        public String getOrderNo() {
-            return orderNo;
+        public String getDistance() {
+            return distance;
         }
 
-        public void setOrderNo(String orderNo) {
-            this.orderNo = orderNo;
+        public void setDistance(String distance) {
+            this.distance = distance;
         }
 
-
-        public class Passenger{
-
-            String start_lat;
-            String start_lng;
-            String end_lat;
-            String end_lng;
-            String mobile;
-
-
-            public String getStart_lat() {
-                return start_lat;
-            }
-
-            public void setStart_lat(String start_lat) {
-                this.start_lat = start_lat;
-            }
-
-            public String getEnd_lat() {
-                return end_lat;
-            }
-
-            public void setEnd_lat(String end_lat) {
-                this.end_lat = end_lat;
-            }
-
-            public String getEnd_lng() {
-                return end_lng;
-            }
-
-            public void setEnd_lng(String end_lng) {
-                this.end_lng = end_lng;
-            }
-
-            public String getMobile() {
-                return mobile;
-            }
-
-            public void setMobile(String mobile) {
-                this.mobile = mobile;
-            }
-
-            public String getStart_lng() {
-                return start_lng;
-            }
-
-            public void setStart_lng(String start_lng) {
-                this.start_lng = start_lng;
-            }
+        public String getEndPoint() {
+            return endPoint;
         }
+
+        public void setEndPoint(String endPoint) {
+            this.endPoint = endPoint;
+        }
+
+        private String startPoint;
+        private String endPoint;
+        private String distance;
+
     }
 }
