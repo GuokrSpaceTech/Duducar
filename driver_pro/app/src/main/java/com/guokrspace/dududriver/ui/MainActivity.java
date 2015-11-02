@@ -8,9 +8,10 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -30,13 +31,16 @@ import com.viewpagerindicator.TabPageIndicator;
 
 import java.util.List;
 
-import javax.security.auth.login.LoginException;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by hyman on 15/10/22.
  */
-public class MainActivity extends BaseActivity implements Handler.Callback{
+public class MainActivity extends BaseActivity implements Handler.Callback {
 
+    @Bind(R.id.pattern_btn)
+    Button btnPattern;
     private Context context;
 
     private ViewPager pager;
@@ -64,6 +68,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback{
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         context = this;
         initView();
 
@@ -157,6 +162,14 @@ public class MainActivity extends BaseActivity implements Handler.Callback{
         pager.setAdapter(mAdapter);
         mIndicator.setViewPager(pager);
         mIndicator.setCurrentItem(1);//设置启动首先显示的抢单界面
+        btnPattern.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainOrderDialog dialog = new MainOrderDialog(context);
+                dialog.setCancelable(true);
+                dialog.show(getSupportFragmentManager(), "mainorderdialog");
+            }
+        });
     }
 
     @Override
@@ -182,9 +195,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback{
         protected SocketClient doInBackground(String... message) {
             //we create a TCPClient object and
             mTcpClient = new SocketClient();
-            if (isNetworkAvailable()) {
-                mTcpClient.run();
-            }
+            mTcpClient.run();
 
             return null;
         }
