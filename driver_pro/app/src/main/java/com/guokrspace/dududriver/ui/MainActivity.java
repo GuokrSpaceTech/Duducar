@@ -51,6 +51,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by hyman on 15/10/22.
@@ -59,6 +60,12 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 
     @Bind(R.id.pattern_btn)
     Button btnPattern;
+    @OnClick(R.id.pattern_btn) public void showMainOrderDialog() {
+        MainOrderDialog dialog = new MainOrderDialog(context);
+        dialog.setCancelable(true);
+        dialog.show(getSupportFragmentManager(), "mainorderdialog");
+
+    }
     private Context context;
 
     private ViewPager pager;
