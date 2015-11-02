@@ -47,13 +47,19 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
     private Handler mHandler;
     private boolean threadStopFlag = false;
 
+    private MainActivity.OrderBrefInformation order;
+
     private static final int MAX_TIME = 15;
     private static final int HANDLE_TIMERTICK = 999;
     private static final int HANDLER_TIMER_TIMEOUT = 888;
 
-
     public MainOrderDialog(Context context) {
         this.context = context;
+    }
+
+    public MainOrderDialog(Context context, MainActivity.OrderBrefInformation order){
+        this.context = context;
+        this.order = order;
     }
 
     @Override
@@ -76,6 +82,9 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
         btnCancel.setOnClickListener(this);
         acceptLayout.setOnClickListener(this);
         mHandler = new Handler(this);
+        tvDistance.setText("距离你大约 " + order.getDistance() + " 公里");
+        tvOrderOrigin.setText(" " + order.getStartPoint());
+        tvOrderDestination.setText(" " + order.getEndPoint());
         TimerTick(MAX_TIME);
     }
 

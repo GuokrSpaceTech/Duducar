@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.guokrspace.dududriver.net.message.HeartBeatMessage;
 import com.guokrspace.dududriver.net.message.MessageTag;
+import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 
 import org.json.JSONException;
@@ -291,7 +292,7 @@ public class SocketClient {
         try {
             heatbeat.put("cmd", heartBeatMessage.getCmd());
             heatbeat.put("role", "1");
-            heatbeat.put("status",heartBeatMessage.getStatus());
+            heatbeat.put("status", CommonUtil.getCurrentStatus());
             heatbeat.put("lat",heartBeatMessage.getLat());
             heatbeat.put("lng", heartBeatMessage.getLng());
             heatbeat.put("speed",heartBeatMessage.getSpeed());
