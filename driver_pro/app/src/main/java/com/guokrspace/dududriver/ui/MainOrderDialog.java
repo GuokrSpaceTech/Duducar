@@ -82,9 +82,9 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
         btnCancel.setOnClickListener(this);
         acceptLayout.setOnClickListener(this);
         mHandler = new Handler(this);
-        tvDistance.setText("距离你大约 " + order.getDistance() + " 公里");
-        tvOrderOrigin.setText(" " + order.getStartPoint());
-        tvOrderDestination.setText(" " + order.getEndPoint());
+//        tvDistance.setText("距离你大约 " + order.getDistance() + " 公里");
+//        tvOrderOrigin.setText(" " + order.getStartPoint());
+//        tvOrderDestination.setText(" " + order.getEndPoint());
         TimerTick(MAX_TIME);
     }
 
@@ -133,6 +133,7 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
             case HANDLER_TIMER_TIMEOUT:
                 threadStopFlag = true;
                 this.dismiss();
+
                 break;
             default:
                 break;
