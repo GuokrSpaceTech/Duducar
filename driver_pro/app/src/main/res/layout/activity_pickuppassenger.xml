@@ -83,18 +83,61 @@
             android:id="@+id/passenger_info"
             android:layout_width="46dp"
             android:layout_height="46dp"
-            android:background="@mipmap/passenger_info"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginRight="10dp"
+            android:background="@mipmap/passenger_info" />
 
         <Button
             android:id="@+id/call_passenger"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@mipmap/call_passenger"
-            android:layout_toLeftOf="@id/passenger_info"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/passenger_info"
+            android:background="@mipmap/call_passenger" />
     </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:background="@drawable/gray_frame_shape">
+
+        <TextView
+            android:id="@+id/illustration_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="去友阿百货送尾号4188"
+            android:layout_centerVertical="true"
+            android:textSize="20sp"
+            android:layout_marginLeft="20dp"/>
+        <ImageButton android:id="@+id/navi_passenger"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:background="@mipmap/navigate"/>
+    </RelativeLayout>
+    <com.baidu.mapapi.map.MapView android:id="@+id/pickup_mapview"
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"
+        />
+    <Button android:id="@+id/confirm_button"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/orange"
+        android:text="确认乘客上车"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="22sp"/>
 </LinearLayout>

@@ -2,6 +2,7 @@ package com.guokrspace.dududriver.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -92,17 +93,20 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        if (thread != null && thread.isAlive()) {
+            thread.interrupt();
+            thread = null;
+        }
+        mHandler.removeMessages(HANDLE_TIMERTICK);
         switch (v.getId()) {
             case R.id.order_cancel:
-                if (thread != null && thread.isAlive()) {
-                    thread.interrupt();
-                    thread = null;
-                }
-                mHandler.removeMessages(HANDLE_TIMERTICK);
                 this.dismiss();
                 break;
             case R.id.accept_rl:
                 // TODO: Skip to OrderInfo page
+                threadStopFlag = true;
+                getActivity().startActivity(new Intent(context, PickUpPassengerActivity.class));
+                this.dismiss();
                 break;
             default:
                 break;

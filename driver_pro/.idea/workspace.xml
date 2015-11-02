@@ -37,62 +37,24 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="BaseActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/BaseActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="63" column="5" selection-start-line="63" selection-start-column="5" selection-end-line="63" selection-end-column="5" />
-              <folding>
-                <element signature="imports" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="LoginActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/LoginActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.9666667">
-              <caret line="397" column="47" selection-start-line="397" selection-start-column="47" selection-end-line="397" selection-end-column="47" />
-              <folding>
-                <element signature="e#13441#14062#0" expanded="true" />
-                <element signature="e#14061#14062#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/MainActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="162" column="39" selection-start-line="162" selection-start-column="39" selection-end-line="162" selection-end-column="39" />
-              <folding>
-                <element signature="e#5335#5643#0" expanded="true" />
-                <element signature="e#5642#5643#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GrabOrderFragment.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/GrabOrderFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="46" column="22" selection-start-line="46" selection-start-column="22" selection-end-line="46" selection-end-column="22" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="dialog_main_order.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/dialog_main_order.xml">
           <provider editor-type-id="android-designer">
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.0">
-              <caret line="81" column="0" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
+            <state vertical-scroll-proportion="-6.53125">
+              <caret line="116" column="21" selection-start-line="116" selection-start-column="21" selection-end-line="116" selection-end-column="21" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="accept_btn_bg_selector.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/accept_btn_bg_selector.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="4" column="11" selection-start-line="4" selection-start-column="11" selection-end-line="4" selection-end-column="11" />
               <folding />
             </state>
           </provider>
@@ -102,23 +64,60 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/PickUpPassengerActivity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="12" column="5" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
+              <caret line="73" column="55" selection-start-line="73" selection-start-column="55" selection-end-line="73" selection-end-column="55" />
               <folding>
-                <element signature="e#236#237#0" expanded="true" />
-                <element signature="e#286#287#0" expanded="true" />
+                <element signature="imports" expanded="true" />
+                <element signature="e#2145#3080#0" expanded="true" />
+                <element signature="e#3079#3080#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="activity_pickuppassenger.xml" pinned="false" current-in-tab="true">
+      <file leaf-file-name="PostOrderActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/PostOrderActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="104" column="45" selection-start-line="104" selection-start-column="45" selection-end-line="104" selection-end-column="45" />
+              <folding>
+                <element signature="e#4754#4966#0" expanded="true" />
+                <element signature="e#4965#4966#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="activity_post_order.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_post_order.xml">
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-3.9375">
+              <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="activity_pickuppassenger.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_pickuppassenger.xml">
           <provider editor-type-id="android-designer">
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.476874">
-              <caret line="17" column="25" selection-start-line="17" selection-start-column="25" selection-end-line="17" selection-end-column="25" />
+            <state vertical-scroll-proportion="-3.75">
+              <caret line="124" column="46" selection-start-line="124" selection-start-column="46" selection-end-line="124" selection-end-column="46" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/MainActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.6852792">
+              <caret line="171" column="11" selection-start-line="171" selection-start-column="11" selection-end-line="171" selection-end-column="11" />
               <folding />
             </state>
           </provider>
@@ -128,13 +127,26 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/MainOrderDialog.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="67" column="55" selection-start-line="67" selection-start-column="55" selection-end-line="67" selection-end-column="55" />
+              <caret line="96" column="31" selection-start-line="96" selection-start-column="31" selection-end-line="96" selection-end-column="31" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#1511#1512#0" expanded="true" />
-                <element signature="e#1549#1550#0" expanded="true" />
-                <element signature="e#3680#4294#0" expanded="true" />
-                <element signature="e#4293#4294#0" expanded="true" />
+                <element signature="e#1542#1543#0" expanded="true" />
+                <element signature="e#1580#1581#0" expanded="true" />
+                <element signature="e#3839#4453#0" expanded="true" />
+                <element signature="e#4452#4453#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="62" column="16" selection-start-line="62" selection-start-column="16" selection-end-line="62" selection-end-column="16" />
+              <folding>
+                <element signature="e#2160#2178#0" expanded="true" />
+                <element signature="e#2493#2524#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -153,24 +165,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="accept_btn_bg_shape.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/accept_btn_bg_shape.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="5" column="8" selection-start-line="5" selection-start-column="8" selection-end-line="5" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="resourceFile" />
         <option value="Class" />
         <option value="layoutResourceFile_vertical" />
+        <option value="resourceFile" />
       </list>
     </option>
   </component>
@@ -2698,7 +2700,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/net/ResponseHandler.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/util/SharedPreferencesUtils.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/net/SocketClient.java" />
-        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/DuduDriverApplication.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/SettingActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/pattern_bg_normal.xml" />
@@ -2719,14 +2720,17 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_graborder.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/OrderFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/BaseActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/drawable/accept_btn_bg_selector.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/accept_btn_bg_shape.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/LoginActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/MainActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/MainOrderDialog.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/dialog_main_order.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/PickUpPassengerActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/drawable/gray_frame_shape.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_pickuppassenger.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/drawable/accept_btn_bg_pressed.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/drawable/accept_btn_bg_selector.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/dialog_main_order.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/MainOrderDialog.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/PickUpPassengerActivity.java" />
       </list>
     </option>
   </component>
@@ -3454,7 +3458,7 @@
     <property name="OverrideImplement.combined" value="true" />
     <property name="OverrideImplement.overriding.sorted" value="false" />
     <property name="FullScreen" value="false" />
-    <property name="SearchEverywhereHistoryKey" value="dia&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/layout/dialog_main_order.xml&#10;M&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MainOrderDialog.java&#10;Login&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/LoginActivity.java&#10;activity&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/layout/activity_main.xml&#10;fra&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/layout/fragment_me.xml&#10;Me&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MeFragment.java&#10;r&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/adapter/RecordListAdapter.java&#10;Or&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/adapter/OrderListAdapter.java&#10;R&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/adapter/RecordListAdapter.java&#10;O&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/adapter/OrderListAdapter.java&#10;Orde&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/model/OrderListItem.java&#10;colo&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/values/colors.xml&#10;string&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/values/strings.xml&#10;strings&#9;PSI&#9;JAVA://java.awt.datatransfer.StringSelection&#10;Li&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/view/ListenProgressView.java&#10;Longin&#9;PSI&#9;JAVA://com.sun.scenario.animation.shared.InterpolationInterval.LongInterpolationInterval&#10;s&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/SettingActivity.java&#10;MAIN&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MainActivity.java&#10;mIN&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/layout/more_recyclerview_item.xml&#10;LoGIN&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/LoginActivity.java&#10;Main&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MainActivity.java&#10;color&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/values/colors.xml&#10;Soc&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/net/SocketClient.java&#10;L&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/LoginActivity.java&#10;lOgin&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/LoginActivity.java&#10;Lo&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/LoginActivity.java&#10;mAIN&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MainActivity.java&#10;App&#9;PSI&#9;JAVA://com.guokrspace.dududriver.DuduDriverApplication&#10;Android&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/AndroidManifest.xml" />
+    <property name="SearchEverywhereHistoryKey" value="Main&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MainActivity.java&#10;DUd&#9;PSI&#9;JAVA://com.guokrspace.dududriver.DuduDriverApplication&#10;Android&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/AndroidManifest.xml&#10;AndroidM&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/indicator_library/AndroidManifest.xml&#10;dia&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/layout/dialog_main_order.xml&#10;M&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MainOrderDialog.java&#10;Login&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/LoginActivity.java&#10;activity&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/layout/activity_main.xml&#10;fra&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/layout/fragment_me.xml&#10;Me&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MeFragment.java&#10;r&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/adapter/RecordListAdapter.java&#10;Or&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/adapter/OrderListAdapter.java&#10;R&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/adapter/RecordListAdapter.java&#10;O&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/adapter/OrderListAdapter.java&#10;Orde&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/model/OrderListItem.java&#10;colo&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/values/colors.xml&#10;string&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/values/strings.xml&#10;strings&#9;PSI&#9;JAVA://java.awt.datatransfer.StringSelection&#10;Li&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/view/ListenProgressView.java&#10;Longin&#9;PSI&#9;JAVA://com.sun.scenario.animation.shared.InterpolationInterval.LongInterpolationInterval&#10;s&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/SettingActivity.java&#10;MAIN&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MainActivity.java&#10;mIN&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/layout/more_recyclerview_item.xml&#10;LoGIN&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/LoginActivity.java&#10;color&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/values/colors.xml&#10;Soc&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/net/SocketClient.java&#10;L&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/LoginActivity.java&#10;lOgin&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/LoginActivity.java&#10;Lo&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/LoginActivity.java&#10;mAIN&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MainActivity.java&#10;App&#9;PSI&#9;JAVA://com.guokrspace.dududriver.DuduDriverApplication" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -3698,12 +3702,12 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.38405797" sideWeight="0.4051724" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32902297" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31465518" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31465518" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32550335" sideWeight="0.49950933" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26956522" sideWeight="0.5676251" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32608697" sideWeight="0.7673057" order="16" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32960597" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.38405797" sideWeight="0.5948276" order="15" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.38405797" sideWeight="0.5948276" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30872482" sideWeight="0.56033874" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20905173" sideWeight="0.49158248" order="0" side_tool="false" content_ui="combo" />
@@ -3751,14 +3755,14 @@
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="0" y="133" width="1720" height="754" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31465518" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31465518" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32550335" sideWeight="0.49950933" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26956522" sideWeight="0.5676251" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32608697" sideWeight="0.7673057" order="16" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32960597" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.38405797" sideWeight="0.5948276" order="15" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.38405797" sideWeight="0.5948276" order="15" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30872482" sideWeight="0.56033874" order="10" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.20905173" sideWeight="0.49158248" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.20905173" sideWeight="0.49158248" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Memory Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4302462" sideWeight="0.46219382" order="13" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5768116" sideWeight="0.44462195" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32922825" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -3783,80 +3787,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/styles.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="94" column="37" selection-start-line="94" selection-start-column="37" selection-end-line="94" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="35" column="44" selection-start-line="35" selection-start-column="44" selection-end-line="35" selection-end-column="44" />
-          <folding>
-            <element signature="e#1776#1794#0" expanded="false" />
-            <element signature="e#2160#2178#0" expanded="false" />
-            <element signature="e#2493#2524#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/DuduDriverApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/net/SocketClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="69" column="67" selection-start-line="69" selection-start-column="67" selection-end-line="69" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/net/ResponseHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="223" column="37" selection-start-line="223" selection-start-column="37" selection-end-line="223" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-23/android/util/AttributeSet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.037936">
-          <caret line="57" column="17" selection-start-line="57" selection-start-column="17" selection-end-line="57" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/more_recyclerview_item.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.0939226">
-          <caret line="22" column="0" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home/javafx-src.zip!/com/sun/scenario/animation/shared/InterpolationInterval.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.51522845">
-          <caret line="448" column="31" selection-start-line="448" selection-start-column="31" selection-end-line="448" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-23/android/view/View.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.44157815">
-          <caret line="719" column="70" selection-start-line="719" selection-start-column="70" selection-end-line="719" selection-end-column="70" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/SettingActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -3983,13 +3913,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-7.8">
           <caret line="60" column="13" selection-start-line="60" selection-start-column="13" selection-end-line="60" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/PostOrderActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="178" column="22" selection-start-line="178" selection-start-column="22" selection-end-line="178" selection-end-column="22" />
         </state>
       </provider>
     </entry>
@@ -4171,21 +4094,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/accept_btn_bg_shape.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="5" column="8" selection-start-line="5" selection-start-column="8" selection-end-line="5" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/LoginActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-5.9666667">
           <caret line="397" column="47" selection-start-line="397" selection-start-column="47" selection-end-line="397" selection-end-column="47" />
           <folding>
-            <element signature="e#13441#14062#0" expanded="true" />
-            <element signature="e#14061#14062#0" expanded="true" />
+            <element signature="e#13441#14062#0" expanded="false" />
+            <element signature="e#14061#14062#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -4198,14 +4113,54 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/MainActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/gray_frame_shape.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="162" column="39" selection-start-line="162" selection-start-column="39" selection-end-line="162" selection-end-column="39" />
-          <folding>
-            <element signature="e#5335#5643#0" expanded="true" />
-            <element signature="e#5642#5643#0" expanded="true" />
-          </folding>
+          <caret line="2" column="8" selection-start-line="2" selection-start-column="8" selection-end-line="2" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/accept_btn_bg_shape.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="5" column="8" selection-start-line="5" selection-start-column="8" selection-end-line="5" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/accept_btn_bg_pressed.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="4" column="51" selection-start-line="4" selection-start-column="51" selection-end-line="4" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/vpi_selected_holo.9.png">
+      <provider selected="true" editor-type-id="ninepatcheditor">
+        <state />
+      </provider>
+      <provider editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/accept_btn_bg_selector.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="4" column="11" selection-start-line="4" selection-start-column="11" selection-end-line="4" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/dialog_main_order.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-6.53125">
+          <caret line="116" column="21" selection-start-line="116" selection-start-column="21" selection-end-line="116" selection-end-column="21" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -4220,39 +4175,36 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/indicator_library/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="62" column="16" selection-start-line="62" selection-start-column="16" selection-end-line="62" selection-end-column="16" />
+          <folding>
+            <element signature="e#2160#2178#0" expanded="true" />
+            <element signature="e#2493#2524#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/MainOrderDialog.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="67" column="55" selection-start-line="67" selection-start-column="55" selection-end-line="67" selection-end-column="55" />
+          <caret line="96" column="31" selection-start-line="96" selection-start-column="31" selection-end-line="96" selection-end-column="31" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#1511#1512#0" expanded="true" />
-            <element signature="e#1549#1550#0" expanded="true" />
-            <element signature="e#3680#4294#0" expanded="true" />
-            <element signature="e#4293#4294#0" expanded="true" />
+            <element signature="e#1542#1543#0" expanded="true" />
+            <element signature="e#1580#1581#0" expanded="true" />
+            <element signature="e#3839#4453#0" expanded="true" />
+            <element signature="e#4452#4453#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/PickUpPassengerActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="12" column="5" selection-start-line="12" selection-start-column="5" selection-end-line="12" selection-end-column="5" />
-          <folding>
-            <element signature="e#236#237#0" expanded="true" />
-            <element signature="e#286#287#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/dialog_main_order.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.0">
-          <caret line="81" column="0" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -4261,8 +4213,66 @@
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.476874">
-          <caret line="17" column="25" selection-start-line="17" selection-start-column="25" selection-end-line="17" selection-end-column="25" />
+        <state vertical-scroll-proportion="-3.75">
+          <caret line="124" column="46" selection-start-line="124" selection-start-column="46" selection-end-line="124" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/DuduDriverApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/app/libs/BaiduLBS_Android.jar!/com/baidu/mapapi/map/MapStatusUpdate.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.17170112">
+          <caret line="15" column="19" selection-start-line="15" selection-start-column="19" selection-end-line="15" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/PostOrderActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="104" column="45" selection-start-line="104" selection-start-column="45" selection-end-line="104" selection-end-column="45" />
+          <folding>
+            <element signature="e#4754#4966#0" expanded="true" />
+            <element signature="e#4965#4966#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_post_order.xml">
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.9375">
+          <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/PickUpPassengerActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="73" column="55" selection-start-line="73" selection-start-column="55" selection-end-line="73" selection-end-column="55" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2145#3080#0" expanded="true" />
+            <element signature="e#3079#3080#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6852792">
+          <caret line="171" column="11" selection-start-line="171" selection-start-column="11" selection-end-line="171" selection-end-column="11" />
           <folding />
         </state>
       </provider>
