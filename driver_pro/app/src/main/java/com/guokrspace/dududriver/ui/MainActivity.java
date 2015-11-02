@@ -9,13 +9,12 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.Toast;
-
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -50,13 +49,16 @@ import com.viewpagerindicator.TabPageIndicator;
 
 import java.util.List;
 
-import javax.security.auth.login.LoginException;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by hyman on 15/10/22.
  */
 public class MainActivity extends BaseActivity implements OnGetGeoCoderResultListener, Handler.Callback {
 
+    @Bind(R.id.pattern_btn)
+    Button btnPattern;
     private Context context;
 
     private ViewPager pager;
@@ -100,6 +102,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         context = this;
         initView();
         CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
@@ -328,9 +331,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         protected SocketClient doInBackground(String... message) {
             //we create a TCPClient object and
             mTcpClient = new SocketClient();
-            if (isNetworkAvailable()) {
-                mTcpClient.run();
-            }
+            mTcpClient.run();
 
             return null;
         }
