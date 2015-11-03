@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary" />
+
+    <com.gc.materialdesign.views.ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/gray_frame_shape">
+
+                <com.guokrspace.dududriver.view.CircleImageView
+                    android:id="@+id/passenger_avatar"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/hyman" />
+
+                <LinearLayout
+                    android:id="@+id/myposition_ll"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_toRightOf="@id/passenger_avatar"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="16dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/origin" />
+
+                    <TextView
+                        android:id="@+id/myposition_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="长沙轮渡"
+                        android:textSize="22sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/passengerposition_ll"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/myposition_ll"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_toRightOf="@id/passenger_avatar"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="16dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/destination" />
+
+                    <TextView
+                        android:id="@+id/passengerposition_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="友阿百货"
+                        android:textSize="22sp" />
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/passenger_info"
+                    android:layout_width="46dp"
+                    android:layout_height="46dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:background="#00000000"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/call_passenger" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/total_bill"
+                android:layout_width="fill_parent"
+                android:layout_height="60dp"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/bill_sum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:text="34.4"
+                    android:textSize="40sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/bill_sum"
+                    android:layout_alignParentBottom="true"
+                    android:layout_toRightOf="@id/bill_sum"
+                    android:text="元"
+                    android:textStyle="normal" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="6sp"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/bill_item_padding"
+                android:paddingRight="@dimen/bill_item_padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="起步价"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/start_price_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="@string/start_price"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/bill_item_padding"
+                android:paddingRight="@dimen/bill_item_padding">
+
+                <TextView
+                    android:id="@+id/mileage_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mileage_text"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/mileage_cost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="@string/mileage_cost"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/bill_item_padding"
+                android:paddingRight="@dimen/bill_item_padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/low_speed_text"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/low_speed_cost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:text="@string/low_speed_cost"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+
+            <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="@dimen/bill_item_padding"
+                android:paddingRight="@dimen/bill_item_padding">
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1px"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/light_gray" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="高速费"
+                    android:textColor="@color/light_gray"
+                    android:textSize="20sp" />
+            </FrameLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:paddingLeft="@dimen/bill_item_padding"
+                android:paddingRight="@dimen/bill_item_padding">
+
+                <ImageButton
+                    android:id="@+id/height_speed_cost_minus"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:background="#00000000"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/minus" />
+
+                <TextView
+                    android:id="@+id/height_speed_cost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="0.0元"
+                    android:textSize="22sp" />
+
+                <ImageButton
+                    android:id="@+id/height_speed_cost_add"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:background="#00000000"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/add" />
+            </RelativeLayout>
+
+            <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="6dp"
+                android:paddingLeft="@dimen/bill_item_padding"
+                android:paddingRight="@dimen/bill_item_padding">
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1px"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/light_gray" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="路桥费"
+                    android:textColor="@color/light_gray"
+                    android:textSize="20sp" />
+            </FrameLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:paddingLeft="@dimen/bill_item_padding"
+                android:paddingRight="@dimen/bill_item_padding">
+
+                <ImageButton
+                    android:id="@+id/bridge_cost_minus"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:background="#00000000"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/minus" />
+
+                <TextView
+                    android:id="@+id/bridge_cost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="0.0元"
+                    android:textSize="22sp" />
+
+                <ImageButton
+                    android:id="@+id/bridge_cost_add"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:background="#00000000"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/add" />
+            </RelativeLayout>
+
+            <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="6dp"
+                android:paddingLeft="@dimen/bill_item_padding"
+                android:paddingRight="@dimen/bill_item_padding">
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1px"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/light_gray" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="停车费"
+                    android:textColor="@color/light_gray"
+                    android:textSize="20sp" />
+            </FrameLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:paddingLeft="@dimen/bill_item_padding"
+                android:paddingRight="@dimen/bill_item_padding">
+
+                <ImageButton
+                    android:id="@+id/park_cost_minus"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:background="#00000000"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/minus" />
+
+                <TextView
+                    android:id="@+id/park_cost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="0.0元"
+                    android:textSize="22sp" />
+
+                <ImageButton
+                    android:id="@+id/park_cost_add"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:background="#00000000"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/add" />
+            </RelativeLayout>
+
+            <com.gc.materialdesign.views.ButtonRectangle
+                android:id="@+id/confirm_button"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="6dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="6dp"
+                android:background="@color/orange"
+                android:gravity="center"
+                android:text="完成"
+                android:textColor="@color/white"
+                android:textSize="6sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </com.gc.materialdesign.views.ScrollView>
+</LinearLayout>

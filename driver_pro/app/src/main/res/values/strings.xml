@@ -35,4 +35,11 @@
     <!-- 个人界面 -->
     <string name="my_order_num">订单数%1$1d</string>
     <string name="height_praise_rate">好评率%1$.2f%</string>
+    <!-- 确认账单界面 -->
+    <string name="start_price" >%1$.1f元</string>
+    <string name="mileage_text">里程%1$.1f公里</string>
+    <string name="mileage_cost" >%1$.1f元</string>
+    <string name="low_speed_text">低速%1$d分钟</string>
+    <string name="low_speed_cost">%1$.1f元</string>
+    <string name="confirm_dialog_content">请您确认费用无误，并提示乘客先付款后下车</string>
 </resources>

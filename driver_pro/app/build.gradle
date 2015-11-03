@@ -67,10 +67,10 @@ if (propFile.exists()) {
     android.buildTypes.debug.signingConfig = null
 }
 
-
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':indicator_library')
+    compile project(':MaterialDesign')
     compile 'com.android.support:appcompat-v7:23.0.0'
     compile 'com.android.support:recyclerview-v7:23.0.1'
     compile 'com.github.dexafree:materiallist:3.0.1'

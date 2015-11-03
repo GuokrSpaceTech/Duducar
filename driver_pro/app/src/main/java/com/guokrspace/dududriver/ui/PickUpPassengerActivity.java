@@ -1,6 +1,7 @@
 package com.guokrspace.dududriver.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -20,14 +21,28 @@ import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.overlayutil.DrivingRouteOverlay;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.route.DrivingRoutePlanOption;
+import com.baidu.mapapi.search.route.DrivingRouteResult;
+import com.baidu.mapapi.search.route.OnGetRoutePlanResultListener;
+import com.baidu.mapapi.search.route.PlanNode;
+import com.baidu.mapapi.search.route.RoutePlanSearch;
+import com.baidu.mapapi.search.route.TransitRouteResult;
+import com.baidu.mapapi.search.route.WalkingRouteResult;
+import com.gc.materialdesign.views.ButtonFlat;
+import com.gc.materialdesign.views.ButtonRectangle;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.view.CircleImageView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by hyman on 15/11/2.
@@ -53,15 +68,87 @@ public class PickUpPassengerActivity extends BaseActivity {
     @Bind(R.id.pickup_mapview)
     MapView mMapview;
     @Bind(R.id.confirm_button)
-    Button btnConfirm;
+    ButtonRectangle btnConfirm;
+    @OnClick(R.id.confirm_button) public void enterConfirmPage() {
+        startActivity(new Intent(this, ConfirmBillActivity.class));
+        this.finish();
+    }
     private Context context;
     private BaiduMap mBaiduMap;
     private LocationClient mLocationClient;
     private LocationClientOption mLocationClientOption;
     private BitmapDescriptor mCurrentMarker = null;
+    private OverlayOptions myOptions;
+    private OverlayOptions passengerOptions;
     private boolean isFirstLoc = true;
-    private MyLocationConfiguration.LocationMode mCurrentMode;
+    private Marker myMarker;
+    private Marker passengerMarker;
+    private BitmapDescriptor passengerDescriptor = null;
 
+    private LatLng passengerLatLng = new LatLng(28.169544, 112.957194);
+
+    //绘制路线相关变量
+    private RoutePlanSearch routePlanSearch;
+    private boolean customDefaultIcon = true;
+    private PlanNode st = null;
+    private PlanNode ed = PlanNode.withLocation(passengerLatLng);
+    private OnGetRoutePlanResultListener routePlanResultListener = new OnGetRoutePlanResultListener() {
+        @Override
+        public void onGetWalkingRouteResult(WalkingRouteResult walkingRouteResult) {
+            //获取步行路线规划结果
+        }
+
+        @Override
+        public void onGetTransitRouteResult(TransitRouteResult transitRouteResult) {
+            //获取公交换乘路径规划结果
+        }
+
+        @Override
+        public void onGetDrivingRouteResult(DrivingRouteResult drivingRouteResult) {
+            //获取驾车线路规划结果
+            if (drivingRouteResult == null || drivingRouteResult.error != SearchResult.ERRORNO.NO_ERROR) {
+                showToast("抱歉，未找到结果");
+            }
+            if (drivingRouteResult.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
+                //起终点或途经点地址有歧义，通过以下接口获取建议查询信息
+//                drivingRouteResult.getSuggestAddrInfo();
+                showToast("查询地址有歧义");
+                return;
+            }
+
+            if (drivingRouteResult.error == SearchResult.ERRORNO.NO_ERROR) {
+                DrivingRouteOverlay overlay = new MyDrivingRouteOverlay(mBaiduMap);
+                mBaiduMap.setOnMarkerClickListener(overlay);
+                overlay.setData(drivingRouteResult.getRouteLines().get(0));
+                overlay.addToMap();
+                overlay.zoomToSpan();
+            }
+        }
+    };
+    private class MyDrivingRouteOverlay extends DrivingRouteOverlay {
+
+        public MyDrivingRouteOverlay(BaiduMap baiduMap) {
+            super(baiduMap);
+        }
+
+        @Override
+        public BitmapDescriptor getStartMarker() {
+            if (customDefaultIcon) {
+                return BitmapDescriptorFactory.fromResource(R.mipmap.myposition);
+            }
+            return super.getStartMarker();
+        }
+
+        @Override
+        public BitmapDescriptor getTerminalMarker() {
+            if (customDefaultIcon) {
+                return BitmapDescriptorFactory.fromResource(R.mipmap.passenger_position);
+            }
+            return super.getTerminalMarker();
+        }
+    }
+
+    private MyLocationConfiguration.LocationMode mCurrentMode;
     private BDLocationListener mDBLocationListener = new BDLocationListener() {
         @Override
         public void onReceiveLocation(BDLocation location) {
@@ -74,11 +161,23 @@ public class PickUpPassengerActivity extends BaseActivity {
                             // 此处设置开发者获取到的方向信息，顺时针0-360
                     .direction(location.getDirection()).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
-            mBaiduMap.setMyLocationData(locData);//设置定位数据
+//            mBaiduMap.setMyLocationData(locData);//设置定位数据
+            LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
+            /*if (myMarker != null) {
+                myMarker.remove();
+            }
+            myOptions = new MarkerOptions()//
+                    .position(ll)
+                    .icon(mCurrentMarker)
+                    .zIndex(9);
+            myMarker = (Marker) mBaiduMap.addOverlay(myOptions);*/
+            st = PlanNode.withLocation(ll);
+            routePlanSearch.drivingSearch(new DrivingRoutePlanOption().from(st).to(ed));
+
+
 
             if (isFirstLoc) {
                 isFirstLoc = false;
-                LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
                 MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(ll, 16);//设置中心及缩放级别
                 mBaiduMap.animateMapStatus(u);
             }
@@ -115,6 +214,10 @@ public class PickUpPassengerActivity extends BaseActivity {
         }
         zoom.setVisibility(View.GONE);
 
+        routePlanSearch = RoutePlanSearch.newInstance();
+        routePlanSearch.setOnGetRoutePlanResultListener(routePlanResultListener);
+
+
         MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(16.0f);
         mBaiduMap.setMapStatus(msu);
 
@@ -125,7 +228,10 @@ public class PickUpPassengerActivity extends BaseActivity {
         mBaiduMap.setMyLocationEnabled(true);
         mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
         mCurrentMarker = BitmapDescriptorFactory.fromResource(R.mipmap.myposition);
-        mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(mCurrentMode, true, mCurrentMarker));
+//        mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(mCurrentMode, true, mCurrentMarker));
+        passengerDescriptor = BitmapDescriptorFactory.fromResource(R.mipmap.passenger_position);
+//        passengerOptions = new MarkerOptions().position(passengerLatLng).icon(passengerDescriptor).zIndex(9);
+//        mBaiduMap.addOverlay(passengerOptions);
         // 定位初始化
         initLocation();
         mLocationClient.start();
@@ -180,4 +286,6 @@ public class PickUpPassengerActivity extends BaseActivity {
             mMapview = null;
         }
     }
+
+
 }
