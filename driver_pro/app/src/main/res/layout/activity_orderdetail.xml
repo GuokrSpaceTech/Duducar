@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary" />
+
+    <com.gc.materialdesign.views.ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/gray_frame_shape">
+
+                <com.guokrspace.dududriver.view.CircleImageView
+                    android:id="@+id/passenger_avatar"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/hyman" />
+
+                <LinearLayout
+                    android:id="@+id/myposition_ll"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_toRightOf="@id/passenger_avatar"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="16dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/origin" />
+
+                    <TextView
+                        android:id="@+id/myposition_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="长沙轮渡"
+                        android:textSize="22sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/passengerposition_ll"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/myposition_ll"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_toRightOf="@id/passenger_avatar"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingLeft="16dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:scaleType="centerCrop"
+                        android:src="@mipmap/destination" />
+
+                    <TextView
+                        android:id="@+id/passengerposition_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="友阿百货"
+                        android:textSize="22sp" />
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/passenger_info"
+                    android:layout_width="46dp"
+                    android:layout_height="46dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:background="#00000000"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/call_passenger" />
+            </RelativeLayout>
+
+            <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="70dp"
+                android:paddingLeft="@dimen/bill_item_padding"
+                android:paddingRight="@dimen/bill_item_padding">
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1px"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/light_gray" />
+
+                <TextView
+                    android:id="@+id/order_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="未支付"
+                    android:textColor="@color/holo_red_light"
+                    android:textSize="23sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
+
+            <RelativeLayout
+                android:id="@+id/total_bill"
+                android:layout_width="fill_parent"
+                android:layout_height="60dp"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/bill_sum"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:text="34.4"
+                    android:textSize="40sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/bill_sum"
+                    android:layout_alignParentBottom="true"
+                    android:layout_toRightOf="@id/bill_sum"
+                    android:text="元"
+                    android:textStyle="normal" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/check_detail_ll"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/search_black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="查看收费明细"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <com.gc.materialdesign.views.ButtonFlat
+                android:id="@+id/substitute_pay"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:text="代充值"
+                android:textSize="6sp" />
+
+        </LinearLayout>
+    </com.gc.materialdesign.views.ScrollView>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <com.gc.materialdesign.views.ButtonRectangle
+            android:id="@+id/over_order_acccept"
+            android:layout_width="120dp"
+            android:layout_height="fill_parent"
+            android:layout_marginRight="16dp"
+            android:background="@color/material_blue"
+            android:text="收车"
+            android:textSize="6sp" />
+
+        <com.gc.materialdesign.views.ButtonRectangle
+            android:id="@+id/continue_order_acccept"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@color/orange"
+            android:text="完成，继续听单"
+            android:textSize="6sp" />
+    </LinearLayout>
+</LinearLayout>
