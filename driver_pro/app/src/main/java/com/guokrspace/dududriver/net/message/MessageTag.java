@@ -55,6 +55,9 @@ public class MessageTag {
     public static final int TRIP_START = 0x1007;
     public static final int TRIP_OVER = 0x1008;
 
+    //daddy
+    public static final int PATCH_ORDER = 0X1009;
+
     public static MessageTag getInstance(){
         if(s_instance == null) new MessageTag();
 
@@ -77,6 +80,9 @@ public class MessageTag {
         MessageTag.put("register_resp",REGISTER_RESP);
         MessageTag.put("verify",VERIFY_REQ);
         MessageTag.put("verify_resp",VERIFY_RESP);
+
+        //daddy
+        MessageTag.put("order", PATCH_ORDER);
     }
 
     public int Tag(String command)

@@ -33,13 +33,13 @@ import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.adapter.TabPagerAdapter;
 import com.guokrspace.dududriver.common.Constants;
-import com.guokrspace.dududriver.common.MessageTag;
 import com.guokrspace.dududriver.database.PersonalInformation;
 import com.guokrspace.dududriver.model.Loaction;
 import com.guokrspace.dududriver.model.OrderItem;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
 import com.guokrspace.dududriver.net.message.HeartBeatMessage;
+import com.guokrspace.dududriver.net.message.MessageTag;
 import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.FastJsonTools;
 import com.guokrspace.dududriver.util.LogUtil;
@@ -61,6 +61,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     @Bind(R.id.pattern_btn)
     Button btnPattern;
     @OnClick(R.id.pattern_btn) public void showMainOrderDialog() {
+        //
         MainOrderDialog dialog = new MainOrderDialog(context);
         dialog.setCancelable(true);
         dialog.show(getSupportFragmentManager(), "mainorderdialog");
@@ -164,7 +165,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         }
 
         //注册派单监听
-        SocketClient.getInstance().registerServerMessageHandler(MessageTag.MESSAGE_ORDER_DISPATCH, new ResponseHandler(Looper.myLooper()) {
+        SocketClient.getInstance().registerServerMessageHandler(MessageTag.PATCH_ORDER, new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
                 orderItem = FastJsonTools.getObject(messageBody, OrderItem.class);
@@ -271,6 +272,17 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                         Double.valueOf(orderItem.getPassenger().getEnd_lat()), Double.valueOf(orderItem.getPassenger().getEnd_lng()));
                 mGeoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(endLoaction));
                 orderBref.setDistance(String.valueOf(DistanceUtil.getDistance(startLoaction, endLoaction)));
+                orderBref.setOrder_no(orderItem.getOrderNo());
+                //显示派单dialog
+                if(CommonUtil.getCurrentStatus() == Constants.STATUS_WAIT){
+                    MainOrderDialog dialog = new MainOrderDialog(context, orderBref);
+                    dialog.setCancelable(true);
+                    dialog.show(getSupportFragmentManager(), "mainorderdialog");
+                    //选择界面不听单
+                    CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
+                } else {
+                    Log.e("MainActivity ", "wrong status to get new order!");
+                }
 
                 break;
             default:
@@ -532,6 +544,16 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         private String startPoint;
         private String endPoint;
         private String distance;
+
+        public String getOrder_no() {
+            return order_no;
+        }
+
+        public void setOrder_no(String order_no) {
+            this.order_no = order_no;
+        }
+
+        private String order_no;
 
     }
 }
