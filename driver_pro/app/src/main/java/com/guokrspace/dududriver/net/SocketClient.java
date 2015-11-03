@@ -306,7 +306,7 @@ public class SocketClient {
         JSONObject heatbeat = new JSONObject();
         try {
             heatbeat.put("cmd", heartBeatMessage.getCmd());
-            heatbeat.put("role", "1");
+//            heatbeat.put("role", "1");
             heatbeat.put("status", CommonUtil.getCurrentStatus());
             heatbeat.put("lat",heartBeatMessage.getLat());
             heatbeat.put("lng", heartBeatMessage.getLng());

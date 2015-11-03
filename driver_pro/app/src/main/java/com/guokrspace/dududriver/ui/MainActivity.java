@@ -488,7 +488,7 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 
         private void sendHeartBeat(MyLocationData locData) {
             HeartBeatMessage msg = new HeartBeatMessage();
-            msg.setCmd("hearbeat");
+            msg.setCmd("heartbeat");
             msg.setStatus(CommonUtil.getCurrentStatus());
             msg.setLat(String.valueOf(locData.latitude));
             msg.setLng(String.valueOf(locData.longitude));
