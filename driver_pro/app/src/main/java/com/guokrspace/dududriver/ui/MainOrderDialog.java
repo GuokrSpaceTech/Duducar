@@ -15,8 +15,13 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.guokrspace.dududriver.R;
+import com.guokrspace.dududriver.common.Constants;
+import com.guokrspace.dududriver.net.ResponseHandler;
+import com.guokrspace.dududriver.net.SocketClient;
+import com.guokrspace.dududriver.util.CommonUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -82,11 +87,19 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
         btnCancel.setOnClickListener(this);
         acceptLayout.setOnClickListener(this);
         mHandler = new Handler(this);
-//        tvDistance.setText("距离你大约 " + order.getDistance() + " 公里");
-//        tvOrderOrigin.setText(" " + order.getStartPoint());
-//        tvOrderDestination.setText(" " + order.getEndPoint());
+        tvDistance.setText("距离你大约 " + order.getDistance() + " 公里");
+        tvOrderOrigin.setText(" " + order.getStartPoint());
+        tvOrderDestination.setText(" " + order.getEndPoint());
         TimerTick(MAX_TIME);
     }
+
+    private Context retContext(){
+        return context;
+    }
+    private void disMiss(){
+        this.dismiss();
+    }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -110,11 +123,38 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
         switch (v.getId()) {
             case R.id.order_cancel:
                 this.dismiss();
+                //取消订单,重新听单
+                CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
                 break;
             case R.id.accept_rl:
                 // TODO: Skip to OrderInfo page
                 threadStopFlag = true;
                 getActivity().startActivity(new Intent(context, PickUpPassengerActivity.class));
+                //确认接单,不听单
+                SocketClient.getInstance().orderOrder(order.getOrder_no(), new ResponseHandler(Looper.myLooper()){
+
+                    @Override
+                    public void onSuccess(String messageBody) {
+                        //发送成功了
+                        Toast.makeText(retContext(), "正在等待服务器确认派单...", Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+                        //发送失败
+                        Toast.makeText(retContext(), "接单失败,请等待下次派单!", Toast.LENGTH_SHORT).show();
+                        CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+                        disMiss();
+                    }
+
+                    @Override
+                    public void onTimeout() {
+                        Toast.makeText(retContext(), "服务器响应超时,请等待下次派单!", Toast.LENGTH_SHORT).show();
+                        CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+                        disMiss();
+                    }
+                });
+                CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
                 this.dismiss();
                 break;
             default:
@@ -133,7 +173,8 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
             case HANDLER_TIMER_TIMEOUT:
                 threadStopFlag = true;
                 this.dismiss();
-
+                //超时返回监听状态
+                CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
                 break;
             default:
                 break;

@@ -10,10 +10,6 @@ public class MessageTag {
 
     private static com.guokrspace.dududriver.common.MessageTag s_instance;
 
-    // MainActivity
-    public static final int MESSAGE_ORDER_DISPATCH = 0X5001;
-    public static final int MESSAGE_ORDER_CONFIRM = 0X5002;
-    public static final int MESSAGE_ORDER_CANCEL  = 0X5003;
 //    public static final int
 
     //Pre Order Activity
