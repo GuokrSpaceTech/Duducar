@@ -9,6 +9,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -137,6 +138,7 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
                     public void onSuccess(String messageBody) {
                         //发送成功了
                         Toast.makeText(retContext(), "正在等待服务器确认派单...", Toast.LENGTH_LONG).show();
+                        Log.e("MainOrderDialog", "success up order");
                     }
 
                     @Override
