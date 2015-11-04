@@ -77,6 +77,8 @@ public class MessageTag {
         MessageTag.put("register_resp",REGISTER_RESP);
         MessageTag.put("verify",VERIFY_REQ);
         MessageTag.put("verify_resp",VERIFY_RESP);
+        MessageTag.put("login",VERIFY_REQ);
+        MessageTag.put("login_resp",VERIFY_RESP);
     }
 
     public int Tag(String command)

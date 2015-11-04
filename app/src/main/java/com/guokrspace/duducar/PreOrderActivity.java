@@ -197,6 +197,31 @@ public class PreOrderActivity extends AppCompatActivity
          */
         start = new SearchLocation();
         mApplication = (DuduApplication) getApplicationContext();
+
+        /*
+         * Login with Token
+         */
+        List persons = mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().list();
+        if (persons.size() > 0)
+            mApplication.mPersonalInformation = (PersonalInformation) persons.get(0);
+        String token = mApplication.mPersonalInformation.getToken();
+        String mobile = mApplication.mPersonalInformation.getMobile();
+        SocketClient.getInstance().sendLoginReguest(mobile, "2", token, new ResponseHandler(Looper.getMainLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                Log.i("","Login Success");
+            }
+
+            @Override
+            public void onFailure(String error) {
+                Log.i("","Login Failure");
+            }
+
+            @Override
+            public void onTimeout() {
+                Log.i("","Login Timeout");
+            }
+        });
     }
 
     private void initListener() {

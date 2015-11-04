@@ -151,6 +151,8 @@ public class PostOrderActivity extends AppCompatActivity {
                         orderStatusString = String.format("到达%s", order_finish.getOrder().getDestination());
                         getSupportActionBar().setTitle(orderStatusString);
 
+                        startActivity(new Intent(mContext, AlipayActivity.class));
+
                         String toastString = String.format("本次行程%s公里，支付%s元，请对本次服务评价。",
                                 order_finish.getOrder().getMileage(), order_finish.getOrder().getPrice());
                         WinToast.toast(mContext, toastString);
