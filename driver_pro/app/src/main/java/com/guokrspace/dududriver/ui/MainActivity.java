@@ -190,11 +190,9 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         mHandler.removeMessages(HANDLE_LOGIN_FAILURE);
     }
 
+    //进行自动登陆
     private void doLogin(PersonalInformation user) {
         Log.e("hyman", user.getMobile() + " " + user.getToken() + " " + user.getId());
-        if (user == null) {
-            return;
-        }
         SocketClient.getInstance().autoLoginRequest(user.getMobile(), "1", user.getToken(), new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
@@ -498,16 +496,29 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 @Override
                 public void onSuccess(String messageBody) {
                     Log.i("HeartBeat Response", messageBody);
+                    //将登陆状态置为true
+                    boolean isOnline = (boolean) SharedPreferencesUtils.getParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, false);
+                    if (!isOnline) {
+                        SharedPreferencesUtils.setParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, true);
+                    }
                 }
 
                 @Override
                 public void onFailure(String error) {
                     Log.i("HeartBeat Response", error);
+                    //将登陆状态置为true
+                    boolean isOnline = (boolean) SharedPreferencesUtils.getParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, false);
+                    if (!isOnline) {
+                        SharedPreferencesUtils.setParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, true);
+                    }
                 }
 
                 @Override
                 public void onTimeout() {
                     Log.i("HeartBeat", "Response Timeout");
+                    showToast("网络异常...");
+                    //将登陆状态置为false
+                    SharedPreferencesUtils.setParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, false);
                 }
             });
             Log.i("daddy hearbeat", msg.getStatus() + " - currentStatus");

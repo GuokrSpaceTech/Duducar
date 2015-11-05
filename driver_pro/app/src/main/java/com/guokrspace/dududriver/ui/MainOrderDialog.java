@@ -9,6 +9,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,9 +88,9 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
         btnCancel.setOnClickListener(this);
         acceptLayout.setOnClickListener(this);
         mHandler = new Handler(this);
-        tvDistance.setText("距离你大约 " + order.getDistance() + " 公里");
-        tvOrderOrigin.setText(" " + order.getStartPoint());
-        tvOrderDestination.setText(" " + order.getEndPoint());
+//        tvDistance.setText("距离你大约 " + order.getDistance() + " 公里");
+//        tvOrderOrigin.setText(" " + order.getStartPoint());
+//        tvOrderDestination.setText(" " + order.getEndPoint());
         TimerTick(MAX_TIME);
     }
 
