@@ -169,6 +169,7 @@ public class LoginActivity extends BaseActivity implements
         mSignInBt.setOnClickListener(this);
         mRegcodeBt.setOnClickListener(this);
 
+
         mHandler = new Handler(this);
         mDialog = new LoadingDialog(this);
 
@@ -267,6 +268,7 @@ public class LoginActivity extends BaseActivity implements
                 mess.what = HANDLER_LOGIN_HAS_FOCUS;
                 mHandler.sendMessage(mess);
                 break;
+
         }
     }
 

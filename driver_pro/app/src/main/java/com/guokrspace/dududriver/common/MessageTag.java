@@ -10,6 +10,8 @@ public class MessageTag {
 
     private static com.guokrspace.dududriver.common.MessageTag s_instance;
 
+//    public static final int
+
     //Pre Order Activity
     public static final int MESSAGE_SUCCESS = 0x7001;
     public static final int MESSAGE_TIMEOUT = 0x7002;

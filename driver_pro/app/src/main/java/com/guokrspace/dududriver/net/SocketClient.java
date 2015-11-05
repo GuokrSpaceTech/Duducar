@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.guokrspace.dududriver.net.message.HeartBeatMessage;
 import com.guokrspace.dududriver.net.message.MessageTag;
+import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 
 import org.json.JSONException;
@@ -168,6 +169,7 @@ public class SocketClient {
                         } else if(jsonObject.has("cmd")){
                             String cmd = (String) jsonObject.get("cmd");
                             int messageTag = MessageTag.getInstance().Tag(cmd);
+                            Log.d("SocketClient ", "messageTag"+messageTag);
                             ResponseHandler target = serverMessageDispatchMap.get(messageTag);
                             if (target != null)
                                 target.sendResponse(serverMessage);
@@ -284,6 +286,20 @@ public class SocketClient {
         return ret;
     }
 
+    public int orderOrder(String order_no, ResponseHandler handler){
+        int ret = -1;
+        JSONObject orderOrder = new JSONObject();
+        try{
+            orderOrder.put("cmd", "accept");
+            orderOrder.put("order_no", order_no);
+            ret = sendMessage(orderOrder, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return ret;
+    }
+
     public int sendHeartBeat(HeartBeatMessage heartBeatMessage,ResponseHandler handler)
     {
         int ret = -1;
@@ -291,7 +307,7 @@ public class SocketClient {
         try {
             heatbeat.put("cmd", heartBeatMessage.getCmd());
             heatbeat.put("role", "1");
-            heatbeat.put("status",heartBeatMessage.getStatus());
+            heatbeat.put("status", CommonUtil.getCurrentStatus());
             heatbeat.put("lat",heartBeatMessage.getLat());
             heatbeat.put("lng", heartBeatMessage.getLng());
             heatbeat.put("speed",heartBeatMessage.getSpeed());

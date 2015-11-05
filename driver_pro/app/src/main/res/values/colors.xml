@@ -31,4 +31,5 @@
     <color name="orange">#ffa000</color>
     <color name="translucent_black">#660A0A0A</color>
     <color name="translucent_white">#55FFFFFF</color>
+    <color name="holo_red_light">#ffff4444</color>
 </resources>

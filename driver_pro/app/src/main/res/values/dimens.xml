@@ -10,4 +10,5 @@
     <dimen name="padding_indicator">12dp</dimen>
     <dimen name="text_size_indicator">18dp</dimen>
     <dimen name="grid_item_margin">5dp</dimen>
+    <dimen name="bill_item_padding">36dp</dimen>
 </resources>

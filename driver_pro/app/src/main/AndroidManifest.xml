@@ -40,7 +40,7 @@
 
         <activity
             android:name=".ui.LoginActivity"
-            android:label=""></activity>
+            android:label="" />
         <activity
             android:name=".ui.MainActivity"
             android:label="@string/app_name">
@@ -51,20 +51,29 @@
         </activity>
         <activity
             android:name=".ui.SearchActivity"
-            android:label="@string/title_activity_search"></activity>
+            android:label="@string/title_activity_search" />
         <activity
             android:name=".ui.SettingActivity"
-            android:label="设置"></activity>
+            android:label="设置" />
 
         <activity
             android:name=".ui.PostOrderActivity"
-            android:label="订单"></activity>
+            android:label="订单" />
 
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote"></service>
+            android:process=":remote"/>
 
+        <activity
+            android:name=".ui.PickUpPassengerActivity"
+            android:label="去接乘客" />
+        <activity
+            android:name=".ui.ConfirmBillActivity"
+            android:label="确认账单" />
+        <activity
+            android:name=".ui.OrderDetailActivity"
+            android:label="订单详情" />
     </application>
 
 

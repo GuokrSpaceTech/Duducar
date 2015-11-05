@@ -2,59 +2,105 @@ package com.guokrspace.dududriver.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.Window;
-
+import android.widget.Button;
+import android.widget.Toast;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.location.Poi;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.search.core.SearchResult;
+import com.baidu.mapapi.search.geocode.GeoCodeResult;
+import com.baidu.mapapi.search.geocode.GeoCoder;
+import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
+import com.baidu.mapapi.utils.DistanceUtil;
 import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.adapter.TabPagerAdapter;
+import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.database.PersonalInformation;
+import com.guokrspace.dududriver.model.Loaction;
+import com.guokrspace.dududriver.model.OrderItem;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
 import com.guokrspace.dududriver.net.message.HeartBeatMessage;
+import com.guokrspace.dududriver.net.message.MessageTag;
+import com.guokrspace.dududriver.util.CommonUtil;
+import com.guokrspace.dududriver.util.FastJsonTools;
+import com.guokrspace.dududriver.util.LogUtil;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
+import com.guokrspace.dududriver.view.ListenProgressView;
 import com.viewpagerindicator.TabPageIndicator;
 
 import java.util.List;
 
-import javax.security.auth.login.LoginException;
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by hyman on 15/10/22.
  */
-public class MainActivity extends BaseActivity implements Handler.Callback{
+public class MainActivity extends BaseActivity implements OnGetGeoCoderResultListener, Handler.Callback {
 
+    @Bind(R.id.pattern_btn)
+    Button btnPattern;
+    @OnClick(R.id.pattern_btn) public void showMainOrderDialog() {
+        //
+        MainOrderDialog dialog = new MainOrderDialog(context);
+        dialog.setCancelable(true);
+        dialog.show(getSupportFragmentManager(), "mainorderdialog");
+
+    }
     private Context context;
 
     private ViewPager pager;
     private TabPagerAdapter mAdapter;
     private TabPageIndicator mIndicator;
 
+    private View buttonGroup;
+
     private SocketClient mTcpClient = null;
     private connectTask conctTask = null;
 
     private boolean isOnline = false;
     private boolean isVisiable = false;
+    private boolean isListeneing = false;
 
     private Handler mHandler;
 
     private static final int HANDLE_LOGIN_FAILURE = 100;
+    private static final int NEW_ORDER_ARRIVE = 101;
+    private static final int REJECT_ORDER = 102;
+    private static final int ACCEPT_ORDER = 103;
+    private static final int CALL_PASSENGER = 104;
+    private static final int HANG_OUT = 105;
+    private static final int GOT_PASSENGER = 106;
+    private static final int FINISH_TRIP = 107;
+    //TODO:OTHER thing
 
     private PersonalInformation userInfo;
 
+    private OrderItem orderItem = null;
+    private OrderBrefInformation orderBref = null;
+
+    private GeoCoder mGeoCoder = null;
+    private int geoTimes = 1;
     // 定位相关
     LocationClient mLocClient;
     public MyLocationListener myListener = new MyLocationListener();
@@ -64,8 +110,11 @@ public class MainActivity extends BaseActivity implements Handler.Callback{
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         context = this;
         initView();
+        CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
+
 
         mHandler = new Handler(this);
 
@@ -88,6 +137,9 @@ public class MainActivity extends BaseActivity implements Handler.Callback{
          */
         initLocation();
         mLocClient.start();
+
+        mGeoCoder = GeoCoder.newInstance();
+        mGeoCoder.setOnGetGeoCodeResultListener(this);
     }
 
     @Override
@@ -111,6 +163,24 @@ public class MainActivity extends BaseActivity implements Handler.Callback{
                 doLogin(userInfo);
             }
         }
+
+        //注册派单监听
+        SocketClient.getInstance().registerServerMessageHandler(MessageTag.PATCH_ORDER, new ResponseHandler(Looper.myLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                orderItem = FastJsonTools.getObject(messageBody, OrderItem.class);
+                mHandler.sendEmptyMessage(NEW_ORDER_ARRIVE);
+            }
+
+            @Override
+            public void onFailure(String error) {
+            }
+
+            @Override
+            public void onTimeout() {
+            }
+        });
+
     }
 
     @Override
@@ -157,6 +227,28 @@ public class MainActivity extends BaseActivity implements Handler.Callback{
         pager.setAdapter(mAdapter);
         mIndicator.setViewPager(pager);
         mIndicator.setCurrentItem(1);//设置启动首先显示的抢单界面
+
+        buttonGroup = (View) findViewById(R.id.button_group_layout);
+        ListenProgressView listenProgressView = (ListenProgressView) buttonGroup.findViewById(R.id.listenprogressview);
+        listenProgressView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                String currStatus = CommonUtil.getCurrentStatus();
+                if (currStatus == Constants.STATUS_RUN || currStatus == Constants.STATUS_GOT) {
+                    //error stats
+                    LogUtil.e("MainActivity ", "runing can not click the button ");
+                    return true;
+                }
+
+                isListeneing = !isListeneing;
+                if (isListeneing) {
+                    CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+                } else {
+                    CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
+                }
+                return false;
+            }
+        });
     }
 
     @Override
@@ -167,10 +259,86 @@ public class MainActivity extends BaseActivity implements Handler.Callback{
                     doLogin(userInfo);
                 }
                 break;
+            case NEW_ORDER_ARRIVE:
+                if (orderItem == null) {
+                    isListeneing = true;
+                    break;
+                }
+                orderBref = new OrderBrefInformation();
+                LatLng startLoaction = new LatLng(
+                        Double.valueOf(orderItem.getPassenger().getStart_lat()), Double.valueOf(orderItem.getPassenger().getStart_lng()));
+                mGeoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(startLoaction));
+                LatLng endLoaction = new LatLng(
+                        Double.valueOf(orderItem.getPassenger().getEnd_lat()), Double.valueOf(orderItem.getPassenger().getEnd_lng()));
+                mGeoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(endLoaction));
+                orderBref.setDistance(String.valueOf(DistanceUtil.getDistance(startLoaction, endLoaction)));
+                orderBref.setOrder_no(orderItem.getOrderNo());
+                //显示派单dialog
+                if(CommonUtil.getCurrentStatus() == Constants.STATUS_WAIT){
+                    MainOrderDialog dialog = new MainOrderDialog(context, orderBref);
+                    dialog.setCancelable(true);
+                    dialog.show(getSupportFragmentManager(), "mainorderdialog");
+                    //选择界面不听单
+                    CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
+                } else {
+                    Log.e("MainActivity ", "wrong status to get new order!");
+                }
+
+                break;
             default:
                 break;
         }
         return false;
+    }
+
+    @Override
+    public void onGetGeoCodeResult(GeoCodeResult result) {
+        if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
+            Toast.makeText(this, "抱歉，未能找到结果", Toast.LENGTH_LONG)
+                    .show();
+            return;
+        }
+//        mBaiduMap.clear();
+//        mBaiduMap.addOverlay(new MarkerOptions().position(result.getLocation())
+//                .icon(BitmapDescriptorFactory
+//                        .fromResource(R.drawable.icon_marka)));
+//        mBaiduMap.setMapStatus(MapStatusUpdateFactory.newLatLng(result
+//                .getLocation()));
+        String strInfo = String.format("纬度：%f 经度：%f",
+                result.getLocation().latitude, result.getLocation().longitude);
+        Toast.makeText(this, strInfo, Toast.LENGTH_LONG).show();
+
+    }
+
+    @Override
+    public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
+        if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
+            Toast.makeText(this, "抱歉，订单位置异常", Toast.LENGTH_LONG)
+                    .show();
+            return;
+        }
+
+        if(orderItem == null || orderBref == null){
+            Toast.makeText(this, "抱歉，订单数据异常", Toast.LENGTH_SHORT)
+                    .show();
+            return;
+        }
+        if(geoTimes == 1){
+            orderBref.setStartPoint(result.getAddress());
+            geoTimes++;
+        } else if(geoTimes == 2) {
+            orderBref.setEndPoint(result.getAddress());
+            geoTimes--;
+        } else {
+            Log.e("MainActivity ", "geoTime wrong must be 1 or 2");
+            return;
+        }
+//        mReqLoc = result.getLocation();
+//        mReqAddress = result.getAddress();
+
+//        city = result.getAddressDetail().city;
+//        callForCarButton.setText("上车地点:\n" + result.getAddress() + "\n点击叫车");
+
     }
 
     /**
@@ -182,9 +350,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback{
         protected SocketClient doInBackground(String... message) {
             //we create a TCPClient object and
             mTcpClient = new SocketClient();
-            if (isNetworkAvailable()) {
-                mTcpClient.run();
-            }
+            mTcpClient.run();
 
             return null;
         }
@@ -210,6 +376,16 @@ public class MainActivity extends BaseActivity implements Handler.Callback{
         }
 
         mLocClient.stop();
+    }
+
+    //TODO : to start listening
+    private void startListener() {
+        if (CommonUtil.getCurrentStatus() == Constants.STATUS_GOT) {
+            CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+        } else {
+            //wrong to get here .
+            LogUtil.e("MainActivity ", "wrong status change happened!");
+        }
     }
 
     private void initLocation() {
@@ -299,14 +475,13 @@ public class MainActivity extends BaseActivity implements Handler.Callback{
             if (location == null)
                 return;
 
-            MyLocationData locData = new MyLocationData.Builder()
+            MyLocationData curLocaData = new MyLocationData.Builder()
                     .accuracy(location.getRadius())
                             // 此处设置开发者获取到的方向信息，顺时针0-360
                     .direction(location.getDirection()).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
 
-            sendHeartBeat(locData);
-
+            sendHeartBeat(curLocaData);
 
 //            Log.i("BaiduLocationApiDem", sb.toString());
         }
@@ -314,7 +489,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback{
         private void sendHeartBeat(MyLocationData locData) {
             HeartBeatMessage msg = new HeartBeatMessage();
             msg.setCmd("hearbeat");
-            msg.setStatus("1");
+            msg.setStatus(CommonUtil.getCurrentStatus());
             msg.setLat(String.valueOf(locData.latitude));
             msg.setLng(String.valueOf(locData.longitude));
             msg.setSpeed(String.valueOf(locData.speed));
@@ -335,6 +510,50 @@ public class MainActivity extends BaseActivity implements Handler.Callback{
                     Log.i("HeartBeat", "Response Timeout");
                 }
             });
+            Log.i("daddy hearbeat", msg.getStatus() + " - currentStatus");
         }
+    }
+
+
+    public class OrderBrefInformation {
+
+        public String getStartPoint() {
+            return startPoint;
+        }
+
+        public void setStartPoint(String startPoint) {
+            this.startPoint = startPoint;
+        }
+
+        public String getDistance() {
+            return distance;
+        }
+
+        public void setDistance(String distance) {
+            this.distance = distance;
+        }
+
+        public String getEndPoint() {
+            return endPoint;
+        }
+
+        public void setEndPoint(String endPoint) {
+            this.endPoint = endPoint;
+        }
+
+        private String startPoint;
+        private String endPoint;
+        private String distance;
+
+        public String getOrder_no() {
+            return order_no;
+        }
+
+        public void setOrder_no(String order_no) {
+            this.order_no = order_no;
+        }
+
+        private String order_no;
+
     }
 }

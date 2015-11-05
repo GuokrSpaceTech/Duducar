@@ -1,0 +1,9 @@
+diff a/.idea/workspace.xml b/.idea/workspace.xml	(rejected hunks)
+@@ -16,6 +16,7 @@
+     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+   </component>
+   <component name="ChangeListManager">
++<<<<<<< HEAD
+     <list default="true" id="9e84425a-f675-4f40-a609-491a8485116d" name="Default" comment="">
+       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/libs/alipaySDK-20151014.jar" />
+       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/AlipayActivity.java" />
