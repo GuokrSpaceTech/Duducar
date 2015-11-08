@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.alipay.sdk.app.PayTask;
 import com.guokrspace.duducar.alipay.PayResult;
 import com.guokrspace.duducar.alipay.SignUtils;
-import com.guokrspace.duducar.communication.message.TripOver;
+import com.guokrspace.duducar.communication.message.TripOverOrder;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -30,13 +30,13 @@ public class AlipayActivity extends ActionBarActivity {
     // 商户PID
     public static final String PARTNER = "2088121002293318";
     // 商户收款账号
-    public static final String SELLER = "";
+    public static final String SELLER = "1946742250@qq.com";
     // 商户私钥，pkcs8格式
-    public static final String RSA_PRIVATE = "";
+    public static final String RSA_PRIVATE = "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBALvlB3umV2aGN0bW10UfLBMlTBH9/gAFocJxDZ/c2SbWR7dOJAakVfjrZx2qdzCSEF1lV1jFo53+ZVTA9kRjkhB//D8w5IEmNxf5Ie9vGSN4exPbQPJ+U543nlDjmeF4SHOeJ0Z1Ulw8m7gPIcpNTekTZ0tI3sXmjYCreFsX73FTAgMBAAECgYBfUPoQ0ft4eRHFj+s4l22mcL88SVr26+R5XRyKQmCugPl0leFUtT0fv1taA0Xfj9lZZ7V9xRURayJAcnr7in9nnNX8SWz+z7MhlIzFmkuIWxVvT/AGp+sf1e7+NKF9QdfR2Hlrgg9iVc42kGxCKNKcB9s/uqoszdCN9jFIW3ZWoQJBAN+cPZytoP+96vPXYrb5Fuyonf8rOo0Gik7g7AF3wGWiOVQ02+VJ7BrVupG0rXiGfMVErN9Sstz46kkrheIe33kCQQDXHGfHu+rZIhua9ujCR9qZHT3OqSwbm4dvNZPLsoYSz3jjliMzj/kzhpl5pZTKo7/RVhr4kileNdSwI6naPSgrAkBWlCkq4/NlcgRpu2iGTfW5ViQuq281MWYV2nKmstY0w9YMq5bEtZWMYlqlld5gvznKK6f/pAaLFnmoMQjan3eJAkAZSI5uLIk7AkZKXZEYHMf1zTkRjFLR3+L4UEzR2Wbm2Rn1bhUvH1IEG2L4qFynwL1wBnXfF5bjKuKX3Wk+bIfHAkBwbiXSzGH/uI5R7nTRA4lF7yq+IDdwPTNDOTMnehiksvLlgoM+BvtQcF9h9pl9B4JD7qMtRu+MGowzroFBqRpV";
     // 支付宝公钥
     public static final String RSA_PUBLIC = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDI6d306Q8fIfCOaTXyiUeJHkrIvYISRcc73s3vF1ZT7XN8RNPwJxo8pWaJMmvyTn9N4HQ632qJBVHf8sxHi/fEsraprwCtzvzQETrNRwVxLO5jVmRGi60j8Ue1efIlzPXV9je9mkjzOmdssymZkh2QhUrCmZYI/FCEa3/cNMW0QIDAQAB";
 
-   private TripOver.Order orderDetail;
+   private TripOverOrder tripOverOrderDetail;
    private Button payButton;
 
 
@@ -44,47 +44,47 @@ public class AlipayActivity extends ActionBarActivity {
 
     private static final int SDK_CHECK_FLAG = 2;
 
-    private Handler mHandler = new Handler() {
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case SDK_PAY_FLAG: {
-                    PayResult payResult = new PayResult((String) msg.obj);
+    private Handler mHandler= new Handler() {
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case SDK_PAY_FLAG: {
+                        PayResult payResult = new PayResult((String) msg.obj);
 
-                    // 支付宝返回此次支付结果及加签，建议对支付宝签名信息拿签约时支付宝提供的公钥做验签
-                    String resultInfo = payResult.getResult();
+                        // 支付宝返回此次支付结果及加签，建议对支付宝签名信息拿签约时支付宝提供的公钥做验签
+                        String resultInfo = payResult.getResult();
 
-                    String resultStatus = payResult.getResultStatus();
+                        String resultStatus = payResult.getResultStatus();
 
-                    // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
-                    if (TextUtils.equals(resultStatus, "9000")) {
-                        Toast.makeText(AlipayActivity.this, "支付成功",
-                                Toast.LENGTH_SHORT).show();
-                    } else {
-                        // 判断resultStatus 为非“9000”则代表可能支付失败
-                        // “8000”代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
-                        if (TextUtils.equals(resultStatus, "8000")) {
-                            Toast.makeText(AlipayActivity.this, "支付结果确认中",
+                        // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
+                        if (TextUtils.equals(resultStatus, "9000")) {
+                            Toast.makeText(AlipayActivity.this, "支付成功",
                                     Toast.LENGTH_SHORT).show();
-
                         } else {
-                            // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
-                            Toast.makeText(AlipayActivity.this, "支付失败",
-                                    Toast.LENGTH_SHORT).show();
+                            // 判断resultStatus 为非“9000”则代表可能支付失败
+                            // “8000”代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
+                            if (TextUtils.equals(resultStatus, "8000")) {
+                                Toast.makeText(AlipayActivity.this, "支付结果确认中",
+                                        Toast.LENGTH_SHORT).show();
 
+                            } else {
+                                // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
+                                Toast.makeText(AlipayActivity.this, "支付失败",
+                                        Toast.LENGTH_SHORT).show();
+
+                            }
                         }
+                        break;
                     }
-                    break;
+                    case SDK_CHECK_FLAG: {
+                        Toast.makeText(AlipayActivity.this, "检查结果为：" + msg.obj,
+                                Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                    default:
+                        break;
                 }
-                case SDK_CHECK_FLAG: {
-                    Toast.makeText(AlipayActivity.this, "检查结果为：" + msg.obj,
-                            Toast.LENGTH_SHORT).show();
-                    break;
-                }
-                default:
-                    break;
             }
         };
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,9 +98,18 @@ public class AlipayActivity extends ActionBarActivity {
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null)
         {
-            orderDetail = (TripOver.Order)bundle.get("order");
+            tripOverOrderDetail = (TripOverOrder) bundle.get("order");
         }
-
+        //Debug
+        tripOverOrderDetail = new TripOverOrder("0.01");
+        tripOverOrderDetail.setCar_type("1");
+        tripOverOrderDetail.setDestination("");
+        tripOverOrderDetail.setDestination_lat("28.173");
+        tripOverOrderDetail.setDestination_lng("112.9584");
+        tripOverOrderDetail.setMileage("24");
+        tripOverOrderDetail.setPrice("32");
+        tripOverOrderDetail.setStart_lat("28.189");
+        tripOverOrderDetail.setStart_lng("112.96");
     }
 
     @Override
@@ -146,7 +155,7 @@ public class AlipayActivity extends ActionBarActivity {
             return;
         }
         // 订单
-        String orderInfo = getOrderInfo(orderDetail);
+        String orderInfo = getOrderInfo(tripOverOrderDetail);
 
         // 对订单做RSA 签名
         String sign = sign(orderInfo);
@@ -187,7 +196,7 @@ public class AlipayActivity extends ActionBarActivity {
      * create the order info. 创建订单信息
      *
      */
-    public String getOrderInfo(TripOver.Order orderDetail) {
+    public String getOrderInfo(TripOverOrder tripOverOrderDetail) {
 
         // 签约合作者身份ID
         String orderInfo = "partner=" + "\"" + PARTNER + "\"";
@@ -199,16 +208,16 @@ public class AlipayActivity extends ActionBarActivity {
         orderInfo += "&out_trade_no=" + "\"" + getOutTradeNo() + "\"";
 
         // 商品名称
-        orderInfo += "&subject=" + "\"" + orderDetail.getDestination() + "\"";
+        orderInfo += "&subject=" + "\"" + tripOverOrderDetail.getDestination() + "\"";
 
         // 商品详情
-        orderInfo += "&body=" + "\"" +  orderDetail.getMileage() + "\"";
+        orderInfo += "&body=" + "\"" +  tripOverOrderDetail.getMileage() + "\"";
 
         // 商品金额
-        orderInfo += "&total_fee=" + "\"" + orderDetail.getMileage() + "\"";
+        orderInfo += "&total_fee=" + "\"" + tripOverOrderDetail.getMileage() + "\"";
 
         // 服务器异步通知页面路径
-        orderInfo += "&notify_url=" + "\"" + "http://notify.msp.hk/notify.htm"
+        orderInfo += "&notify_url=" + "\"" + "http://www.yunxiaoche.com"
                 + "\"";
 
         // 服务接口名称， 固定值

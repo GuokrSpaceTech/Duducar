@@ -10,7 +10,7 @@ public class MessageTag {
 
     private static com.guokrspace.duducar.communication.message.MessageTag s_instance;
 
-    //Pre Order Activity
+    //Pre TripOverOrder Activity
     public static final int MESSAGE_SUCCESS = 0x7001;
     public static final int MESSAGE_TIMEOUT = 0x7002;
     public static final int MESSAGE_FAILURE = 0x7003;
@@ -24,7 +24,7 @@ public class MessageTag {
     public static final int MESSAGE_CREATE_ORDER_FAILURE = 0x8002;
     public static final int MESSAGE_CREATE_ORDER_TIMEOUT = 0x8003;
 
-    //Post Order Activity
+    //Post TripOverOrder Activity
     public static final int MESSAGE_ORDER_DISPATCHED = 0x9001;
     public static final int MESSAGE_ORDER_DISPATCH_TIMEOUT = 0x9002;
 
