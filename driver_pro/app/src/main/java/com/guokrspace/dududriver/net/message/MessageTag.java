@@ -57,6 +57,8 @@ public class MessageTag {
 
     //daddy
     public static final int PATCH_ORDER = 0X1009;
+    public static final int ORDER_CANCEL = 0x1010;
+//    public static final int ORDER_CONFIRM = 0X1010;
 
     public static MessageTag getInstance(){
         if(s_instance == null) new MessageTag();
@@ -83,6 +85,8 @@ public class MessageTag {
 
         //daddy
         MessageTag.put("order", PATCH_ORDER);
+        MessageTag.put("order_cancel", ORDER_CANCEL);
+//        MessageTag.put("order_confirm", ORDER_CONFIRM);
     }
 
     public int Tag(String command)

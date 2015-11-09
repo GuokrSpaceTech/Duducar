@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
@@ -20,9 +21,16 @@ import android.widget.Toast;
 
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
+import com.guokrspace.dududriver.model.OrderItem;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
 import com.guokrspace.dududriver.util.CommonUtil;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -49,21 +57,23 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
     ImageButton btnCancel;
 
     private Context context;
-    private Thread thread;
+//    private Thread thread;
+    private MyTimeTick myTimeTick;
     private Handler mHandler;
     private boolean threadStopFlag = false;
 
-    private MainActivity.OrderBrefInformation order;
+    private OrderItem order;
 
     private static final int MAX_TIME = 15;
     private static final int HANDLE_TIMERTICK = 999;
     private static final int HANDLER_TIMER_TIMEOUT = 888;
+    private static final int INTENT_TO_PICKUP = 898;
 
     public MainOrderDialog(Context context) {
         this.context = context;
     }
 
-    public MainOrderDialog(Context context, MainActivity.OrderBrefInformation order){
+    public MainOrderDialog(Context context, OrderItem order){
         this.context = context;
         this.order = order;
     }
@@ -89,15 +99,18 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
         acceptLayout.setOnClickListener(this);
         mHandler = new Handler(this);
         tvDistance.setText("距离你大约 " + order.getDistance() + " 公里");
-        tvOrderOrigin.setText(" " + order.getStartPoint());
-        tvOrderDestination.setText(" " + order.getEndPoint());
-        TimerTick(MAX_TIME);
+        tvOrderOrigin.setText(" " + order.getOrder().getStart());
+        tvOrderDestination.setText(" " + order.getOrder().getDestination());
+        myTimeTick = new MyTimeTick(MAX_TIME);
+        myTimeTick.startTimer();
+//        TimerTick(MAX_TIME);
     }
 
     private Context retContext(){
         return context;
     }
     private void disMiss(){
+        myTimeTick.stopTimer();
         this.dismiss();
     }
 
@@ -111,40 +124,44 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        myTimeTick.stopTimer();
         ButterKnife.unbind(this);
     }
 
     @Override
     public void onClick(View v) {
-        if (thread != null && thread.isAlive()) {
-            thread.interrupt();
-            thread = null;
-        }
+//        if (thread != null && thread.isAlive()) {
+//            thread.interrupt();
+//            thread = null;
+//        }
+
         mHandler.removeMessages(HANDLE_TIMERTICK);
         switch (v.getId()) {
             case R.id.order_cancel:
                 this.dismiss();
+                myTimeTick.stopTimer();
                 //取消订单,重新听单
                 CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
                 break;
             case R.id.accept_rl:
                 // TODO: Skip to OrderInfo page
-                threadStopFlag = true;
-                getActivity().startActivity(new Intent(context, PickUpPassengerActivity.class));
-                //确认接单,不听单
-                SocketClient.getInstance().orderOrder(order.getOrder_no(), new ResponseHandler(Looper.myLooper()){
+                myTimeTick.stopTimer();
+                 //确认接单,不听单
+                SocketClient.getInstance().orderOrder(order.getOrder().getId(), new ResponseHandler(Looper.myLooper()){
 
                     @Override
                     public void onSuccess(String messageBody) {
                         //发送成功了
-                        Toast.makeText(retContext(), "正在等待服务器确认派单...", Toast.LENGTH_LONG).show();
+                        Toast.makeText(retContext(), "接单成功!", Toast.LENGTH_SHORT).show();
+                        mHandler.sendEmptyMessage(INTENT_TO_PICKUP);
+
                         Log.e("MainOrderDialog", "success up order");
                     }
 
                     @Override
                     public void onFailure(String error) {
-                        //发送失败
-                        Toast.makeText(retContext(), "接单失败,请等待下次派单!", Toast.LENGTH_SHORT).show();
+                        //接单失败
+                        Toast.makeText(retContext(), "接单失败,马上为您派发新单!", Toast.LENGTH_SHORT).show();
                         CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
                         disMiss();
                     }
@@ -156,8 +173,8 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
                         disMiss();
                     }
                 });
-                CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
-                this.dismiss();
+//                CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
+//                this.dismiss();
                 break;
             default:
                 break;
@@ -178,31 +195,64 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
                 //超时返回监听状态
                 CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
                 break;
+            case INTENT_TO_PICKUP:
+                //确认完毕进入导航页面
+                Intent intent = new Intent(context, PickUpPassengerActivity.class);
+//                List orderList = new ArrayList();
+//                orderList.add(order);
+//                Bundle bundle = new Bundle();
+//                bundle.putSerializable("orderItem", (ArrayList) orderList);
+//                intent.putExtras(bundle);
+                intent.putExtra("orderItem", order);
+                startActivity(intent);
+                dismiss();
+                break;
             default:
                 break;
         }
         return false;
     }
 
-    private void TimerTick(final int max_seconds) {
-        thread = new Thread(new Runnable() {
+    class MyTimeTick {
+
+        int timeLeft;
+
+        MyTimeTick(int maxTime){ this.timeLeft = maxTime; }
+
+        private Timer _Timer = new Timer();
+
+        private MyTask _Task = new MyTask();
+
+        public void startTimer() {
+            if (_Timer == null) {
+                _Timer = new Timer();
+            }
+            _Task = new MyTask();//新建一个任务
+            _Timer.schedule(_Task, 1000, 1000);
+        }
+
+        public void stopTimer() {
+            if (_Timer != null) {
+                _Timer.cancel();
+                _Timer = null;
+            }
+            if (_Task != null) {
+                _Task.cancel();//将原任务从队列中移除
+                _Task = null;
+            }
+        }
+
+        class MyTask extends TimerTask {
+
             @Override
             public void run() {
-                int seconds_left = max_seconds;
-                while (seconds_left > 0 && !threadStopFlag) {
-                    seconds_left--;
-                    mHandler.sendMessage(mHandler.obtainMessage(HANDLE_TIMERTICK, seconds_left));
-                    try {
-                        thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                if (timeLeft <= 0) {
+                    mHandler.sendEmptyMessage(HANDLER_TIMER_TIMEOUT);
+                    return;
                 }
-                mHandler.sendEmptyMessage(HANDLER_TIMER_TIMEOUT);
+                timeLeft--;
+                mHandler.sendMessage(mHandler.obtainMessage(HANDLE_TIMERTICK, timeLeft));
             }
-        });
-        if (!thread.isAlive()) {
-            thread.start();
         }
     }
 }

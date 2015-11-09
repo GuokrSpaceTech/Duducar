@@ -3,11 +3,9 @@ package com.guokrspace.dududriver.net;
 import android.os.Message;
 import android.util.Log;
 
-
 import com.guokrspace.dududriver.net.message.HeartBeatMessage;
 import com.guokrspace.dududriver.net.message.MessageTag;
 import com.guokrspace.dududriver.util.CommonUtil;
-import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -146,7 +144,10 @@ public class SocketClient {
 
                     if (serverMessage != null) {
 
+//                        serverMessage = removeBOM(serverMessage);
                         //call the method messageReceived in MainActivity class
+//                        serverMessage = new String(serverMessage.getBytes("UTF-8"), "UTF-8");
+//                        serverMessage = convertStandardJSONString(serverMessage);
                         JSONObject jsonObject = new JSONObject(serverMessage);
                         if (jsonObject.has("message_id")) {
 
@@ -291,8 +292,53 @@ public class SocketClient {
         JSONObject orderOrder = new JSONObject();
         try{
             orderOrder.put("cmd", "accept");
-            orderOrder.put("order_no", order_no);
-            ret = sendMessage(orderOrder, handler, 5);
+            orderOrder.put("role", "1");
+            orderOrder.put("order_id", order_no);
+
+            ret = sendMessage(orderOrder, handler, 10);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return ret;
+    }
+
+    public int startOrder(String order_no, ResponseHandler handler){
+        int ret  = -1;
+        JSONObject stOrder = new JSONObject();
+        try {
+            stOrder.put("cmd", "order_start");
+            stOrder.put("role", "1");
+            stOrder.put("order_no", order_no);
+            ret = sendMessage(stOrder, handler, 5);
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        return ret;
+    }
+
+    public int endOrder(ResponseHandler handler){
+        int ret = -1;
+        JSONObject edOrder = new JSONObject();
+        try {
+            edOrder.put("cmd", "order_end");
+            edOrder.put("role", "1");
+            ret = sendMessage(edOrder, handler, 5);
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        return ret;
+    }
+
+    public int pullBaseInfo(ResponseHandler handler){
+        int ret = -1;
+        JSONObject baseInfo = new JSONObject();
+        try {
+            baseInfo.put("cmd", "baseinfo");
+            baseInfo.put("role", "1");
+            ret = sendMessage(baseInfo, handler, 5);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -303,15 +349,15 @@ public class SocketClient {
     public int sendHeartBeat(HeartBeatMessage heartBeatMessage,ResponseHandler handler)
     {
         int ret = -1;
-        JSONObject heatbeat = new JSONObject();
+        JSONObject heartbeat = new JSONObject();
         try {
-            heatbeat.put("cmd", heartBeatMessage.getCmd());
-//            heatbeat.put("role", "1");
-            heatbeat.put("status", CommonUtil.getCurrentStatus());
-            heatbeat.put("lat",heartBeatMessage.getLat());
-            heatbeat.put("lng", heartBeatMessage.getLng());
-            heatbeat.put("speed",heartBeatMessage.getSpeed());
-            ret = sendMessage(heatbeat, handler, 5);
+            heartbeat.put("cmd", heartBeatMessage.getCmd());
+            heartbeat.put("role", "1");
+            heartbeat.put("status", CommonUtil.getCurrentStatus());
+            heartbeat.put("lat",heartBeatMessage.getLat());
+            heartbeat.put("lng", heartBeatMessage.getLng());
+            heartbeat.put("speed",heartBeatMessage.getSpeed());
+            ret = sendMessage(heartbeat, handler, 5);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -375,6 +421,15 @@ public class SocketClient {
         }
 
         return ret;
+    }
+
+    private String convertStandardJSONString(String data_json) {
+        data_json = data_json.replaceAll("\\\\r\\\\n", "");
+        data_json = data_json.replaceAll("\\\\", "");
+        data_json = data_json.replace("\"{", "{");
+        data_json = data_json.replace("}\",", "},");
+        data_json = data_json.replace("}\"", "}");
+        return data_json;
     }
 
 }

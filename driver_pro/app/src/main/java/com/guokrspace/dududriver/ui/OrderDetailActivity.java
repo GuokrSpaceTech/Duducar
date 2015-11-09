@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 import com.gc.materialdesign.views.ButtonFlat;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.guokrspace.dududriver.R;
+import com.guokrspace.dududriver.common.Constants;
+import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.view.CircleImageView;
 
 import butterknife.Bind;
@@ -47,6 +50,7 @@ public class OrderDetailActivity extends BaseActivity {
     ButtonRectangle btnContinueOrderAcccept;
     private Context context;
     @OnClick(R.id.continue_order_acccept) public void goBackHome() {
+        CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
 //        startActivity(new Intent(OrderDetailActivity.this, MainActivity.class));
         finish();
     }
@@ -66,12 +70,23 @@ public class OrderDetailActivity extends BaseActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        btnOverOrderAcccept.setButtonText("收车");
+        btnOverOrderAcccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
+                startActivity(new Intent(OrderDetailActivity.this, MainActivity.class));
+                finish();
+            }
+        });
+        btnContinueOrderAcccept.setButtonText("完成,继续听单!");
 
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
+            CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
             finish();
             return true;
         }
