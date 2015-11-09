@@ -254,12 +254,16 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         mHandler.removeMessages(HANDLE_LOGIN_FAILURE);
     }
 
+    //进行自动登陆
     private void doLogin(PersonalInformation user) {
         Log.e("hyman", user.getMobile() + " " + user.getToken() + " " + user.getId());
+<<<<<<< HEAD
         if (user == null) {
             return;
         }
         Log.e("daddy", user.getMobile() + " " + user.getToken() + " " + user.getId());
+=======
+>>>>>>> e4f7c7ee26083e986211dd87067e68c4c3b9ac4c
         SocketClient.getInstance().autoLoginRequest(user.getMobile(), "1", user.getToken(), new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
@@ -531,6 +535,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             msg.setSpeed(String.valueOf(locData.speed));
 
             SocketClient.getInstance().sendHeartBeat(msg, new ResponseHandler(Looper.myLooper()) {
+<<<<<<< HEAD
                         @Override
                         public void onSuccess(String messageBody) {
                             Log.i("HeartBeat Response", messageBody);
@@ -560,6 +565,37 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             );
                 Log.i("daddy hearbeat", msg.getStatus() + " - currentStatus");
             }
+=======
+                @Override
+                public void onSuccess(String messageBody) {
+                    Log.i("HeartBeat Response", messageBody);
+                    //将登陆状态置为true
+                    boolean isOnline = (boolean) SharedPreferencesUtils.getParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, false);
+                    if (!isOnline) {
+                        SharedPreferencesUtils.setParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, true);
+                    }
+                }
+
+                @Override
+                public void onFailure(String error) {
+                    Log.i("HeartBeat Response", error);
+                    //将登陆状态置为true
+                    boolean isOnline = (boolean) SharedPreferencesUtils.getParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, false);
+                    if (!isOnline) {
+                        SharedPreferencesUtils.setParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, true);
+                    }
+                }
+
+                @Override
+                public void onTimeout() {
+                    Log.i("HeartBeat", "Response Timeout");
+                    showToast("网络异常...");
+                    //将登陆状态置为false
+                    SharedPreferencesUtils.setParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, false);
+                }
+            });
+            Log.i("daddy hearbeat", msg.getStatus() + " - currentStatus");
+>>>>>>> e4f7c7ee26083e986211dd87067e68c4c3b9ac4c
         }
 
 

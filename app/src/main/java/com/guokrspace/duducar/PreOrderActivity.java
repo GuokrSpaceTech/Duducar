@@ -7,12 +7,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
-import android.os.*;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.ActionBar;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
@@ -21,11 +25,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ZoomControls;
 
@@ -37,7 +38,6 @@ import com.baidu.location.Poi;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
-import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
@@ -52,12 +52,9 @@ import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
-import com.baidu.mapapi.utils.DistanceUtil;
-import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
-import com.guokrspace.duducar.communication.message.MessageTag;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
-import com.guokrspace.duducar.communication.StateMachine;
+import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
 import com.guokrspace.duducar.communication.message.NearByCars;
 import com.guokrspace.duducar.communication.message.SearchLocation;
 import com.guokrspace.duducar.database.PersonalInformation;
@@ -90,8 +87,10 @@ public class PreOrderActivity extends AppCompatActivity
 
     //UI
     Button requestLocButton;
-    Button searchLocButton;
-    Button callForCarButton;
+    TextView startLocButton;
+    TextView destLocButton;
+    TextView nearByCarsTextView;
+    Button callCabButton;
     OrderConfirmationView orderConfirmationView;
 
     //地址解析
@@ -115,8 +114,6 @@ public class PreOrderActivity extends AppCompatActivity
     public final static int ACTVITY_COST_ESTIMATE_REQUEST = 0x1004;
     public final static int ACTVITY_LOGIN_REQUEST = 0x1005;
 
-    //信息窗口
-    private InfoWindow mInfoWindow;
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
@@ -138,8 +135,13 @@ public class PreOrderActivity extends AppCompatActivity
          */
         setContentView(R.layout.activity_main);
         requestLocButton = (Button) findViewById(R.id.buttonLoc);
-        searchLocButton = (Button) findViewById(R.id.search_button);
-        callForCarButton = (Button) findViewById(R.id.buttonPin);
+        startLocButton = (TextView) findViewById(R.id.startButton);
+        destLocButton = (TextView) findViewById(R.id.destButton);
+        nearByCarsTextView = (TextView)findViewById(R.id.nearByCarsTextView);
+        callCabButton = (Button)findViewById(R.id.callaCabButton);
+
+//        Toolbar myToolbar = (Toolbar)findViewById(R.id.my_toolbar);
+//        setSupportActionBar(myToolbar);
 
         // 地图初始化
         mMapView = (MapView) findViewById(R.id.bmapView);
@@ -176,7 +178,6 @@ public class PreOrderActivity extends AppCompatActivity
         mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
         mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(mCurrentMode, true, mCurrentMarker));
 
-
         // 定位初始化
         initLocation();
         mLocClient.start();
@@ -197,47 +198,74 @@ public class PreOrderActivity extends AppCompatActivity
          */
         start = new SearchLocation();
         mApplication = (DuduApplication) getApplicationContext();
+
+        /*
+         * Login with Token
+         */
+        List persons = mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().list();
+        if (persons.size() > 0) {
+            mApplication.mPersonalInformation = (PersonalInformation) persons.get(0);
+            String token = mApplication.mPersonalInformation.getToken();
+            String mobile = mApplication.mPersonalInformation.getMobile();
+            SocketClient.getInstance().sendLoginReguest(mobile, "2", token, new ResponseHandler(Looper.getMainLooper()) {
+                @Override
+                public void onSuccess(String messageBody) {
+                    Log.i("", "Login Success");
+                }
+
+                @Override
+                public void onFailure(String error) {
+                    Log.i("", "Login Failure");
+                }
+
+                @Override
+                public void onTimeout() {
+                    Log.i("", "Login Timeout");
+                }
+            });
+        }
     }
 
     private void initListener() {
-        callForCarButton.setOnClickListener(new View.OnClickListener() {
+        callCabButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 List persons = mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().list();
-                if (persons.size() > 0)
-                    mApplication.mPersonalInformation = (PersonalInformation) persons.get(0);
-
-                if (mApplication.mPersonalInformation == null) //Not login
-                {
+                if (persons.size() <= 0) { //Not Logged in
                     Intent intent = new Intent(mContext, LoginActivity.class);
                     startActivityForResult(intent, ACTVITY_LOGIN_REQUEST);
                 } else {
+                    mApplication.mPersonalInformation = (PersonalInformation) persons.get(0);
+                    Intent intent = new Intent(mContext,PostOrderActivity.class);
+                    intent.putExtra("start", start);
+                    intent.putExtra("dest", dest);
+                    startActivityForResult(intent, 0x6002);
 
-                    if (orderConfirmationView == null) {
-                        orderConfirmationView = new OrderConfirmationView(mContext);
-                        final RelativeLayout container = (RelativeLayout) findViewById(R.id.container);
-                        final FrameLayout mainmapview = (FrameLayout) findViewById(R.id.mainmapview);
-
-                        container.post(new Runnable() {
-                            @Override
-                            public void run() {
-
-                                int heightInDpofConfirmView = 160;
-
-                                ViewGroup.LayoutParams paramRL = mainmapview.getLayoutParams();
-                                paramRL.height = mainmapview.getHeight() - dpToPx(getResources(), heightInDpofConfirmView);
-                                mainmapview.requestLayout();
-
-                                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.FILL_PARENT);
-                                params.addRule(RelativeLayout.BELOW, mainmapview.getId());
-                                container.addView(orderConfirmationView, 1, params);
-                                container.requestLayout();
-
-                                isShowingOrderConfirmatinoView = true;
-                            }
-                        });
-                    }
+//                    if (orderConfirmationView == null) {
+//                        orderConfirmationView = new OrderConfirmationView(mContext);
+//                        final RelativeLayout container = (RelativeLayout) findViewById(R.id.container);
+//                        final FrameLayout mainmapview = (FrameLayout) findViewById(R.id.mainmapview);
+//
+//                        container.post(new Runnable() {
+//                            @Override
+//                            public void run() {
+//
+//                                int heightInDpofConfirmView = 160;
+//
+//                                ViewGroup.LayoutParams paramRL = mainmapview.getLayoutParams();
+//                                paramRL.height = mainmapview.getHeight() - dpToPx(getResources(), heightInDpofConfirmView);
+//                                mainmapview.requestLayout();
+//
+//                                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.FILL_PARENT);
+//                                params.addRule(RelativeLayout.BELOW, mainmapview.getId());
+//                                container.addView(orderConfirmationView, 1, params);
+//                                container.requestLayout();
+//
+//                                isShowingOrderConfirmatinoView = true;
+//                            }
+//                        });
+//                    }
                 }
             }
         });
@@ -268,7 +296,17 @@ public class PreOrderActivity extends AppCompatActivity
             }
         });
 
-        searchLocButton.setOnClickListener(new View.OnClickListener() {
+        startLocButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(mContext, SearchActivity.class);
+                intent.putExtra("location", start);
+                startActivityForResult(intent, ACTIVITY_SEARCH_START_REQUEST);
+            }
+        });
+
+        destLocButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -308,7 +346,7 @@ public class PreOrderActivity extends AppCompatActivity
             transaction.addToBackStack("personalinfo");
             transaction.commit();
         }
-        //Order Records
+        //TripOverOrder Records
         else if (position == 1) {
             FragmentTransaction transaction;
             transaction = fragmentManager.beginTransaction();
@@ -368,15 +406,15 @@ public class PreOrderActivity extends AppCompatActivity
                 isShowingOrderConfirmatinoView = false;
                 //Just hide the OrderConfirmationView
                 {
-                    final RelativeLayout container = (RelativeLayout) findViewById(R.id.container);
-                    if (orderConfirmationView != null) {
-                        container.removeView(orderConfirmationView);
-                    }
-                    final FrameLayout mainmapview = (FrameLayout) findViewById(R.id.mainmapview);
-                    ViewGroup.LayoutParams paramRL = mainmapview.getLayoutParams();
-                    paramRL.height = ViewGroup.LayoutParams.MATCH_PARENT;
-                    mainmapview.requestLayout();
-                    container.requestLayout();
+//                    final RelativeLayout container = (RelativeLayout) findViewById(R.id.container);
+//                    if (orderConfirmationView != null) {
+//                        container.removeView(orderConfirmationView);
+//                    }
+//                    final FrameLayout mainmapview = (FrameLayout) findViewById(R.id.mainmapview);
+//                    ViewGroup.LayoutParams paramRL = mainmapview.getLayoutParams();
+//                    paramRL.height = ViewGroup.LayoutParams.MATCH_PARENT;
+//                    mainmapview.requestLayout();
+//                    container.requestLayout();
 
                     return true; //Just return, do not toggle the drawer
                 }
@@ -438,7 +476,7 @@ public class PreOrderActivity extends AppCompatActivity
                     mBaiduMap.clear();
                     mBaiduMap.addOverlay(new MarkerOptions().position(searchLoc)
                             .icon(BitmapDescriptorFactory
-                                    .fromResource(R.drawable.icon_gcoding)));
+                                    .fromResource(R.drawable.caricon)));
                     mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLng(searchLoc));
                     mGeoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(searchLoc));
                 }
@@ -490,13 +528,10 @@ public class PreOrderActivity extends AppCompatActivity
         start.setLat(result.getLocation().latitude);
         start.setLng(result.getLocation().longitude);
 
-//        mReqLoc = result.getLocation();
-//        mReqAddress = result.getAddress();
         mOrder.setStartLocation(result.getAddress(), result.getLocation().latitude, result.getLocation().longitude);
 
         city = result.getAddressDetail().city;
-        callForCarButton.setText("上车地点:\n" + result.getAddress() + "\n点击叫车");
-
+        startLocButton.setText(result.getAddress());
     }
 
 
@@ -742,8 +777,11 @@ public class PreOrderActivity extends AppCompatActivity
                         mBaiduMap.clear();
                         for (NearByCars.CarLocation loc : nearByCars.getCars()) {
                             LatLng ll = new LatLng(loc.getLat(), loc.getLng());
-                            mBaiduMap.addOverlay(new MarkerOptions().position(ll).icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_gcoding)));
+                            mBaiduMap.addOverlay(new MarkerOptions().position(ll).icon(BitmapDescriptorFactory.fromResource(R.drawable.caricon)));
                         }
+
+                        String nearbyString = String.format(getResources().getString(R.string.nearby), nearByCars.getCars().size());
+                        nearByCarsTextView.setText(nearbyString);
                     }
 
                     @Override

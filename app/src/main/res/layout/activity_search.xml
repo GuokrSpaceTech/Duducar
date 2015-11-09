@@ -5,54 +5,28 @@
     android:background="@android:color/white"
     android:orientation="vertical" >
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="50dip"
-        android:orientation="horizontal" >
-
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="在" >-->
-        <!--</TextView>-->
-
-        <!--<TextView-->
-            <!--android:id="@+id/city"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:gravity="bottom" />-->
-
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="市内找" >-->
-        <!--</TextView>-->
-
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <AutoCompleteTextView
             android:id="@+id/searchkey"
-            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.88"
-            android:text="" />
-    </LinearLayout>
+            android:layout_margin="20dp"
+            android:background="@drawable/white_roundcorner_grey_border_background"
+            android:text="岳麓大道388号"
+            android:textColor="@android:color/black"
+            android:textSize="8pt"/>
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="50dip"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/search"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="12"
-            android:onClick="searchButtonProcess"
-            android:padding="10dip"
-            android:text="搜索" />
-
-    </LinearLayout>
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/searchicon"/>
+    </FrameLayout>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="fill_parent"

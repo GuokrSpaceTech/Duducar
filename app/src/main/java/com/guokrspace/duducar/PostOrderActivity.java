@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -39,16 +40,20 @@ import com.baidu.mapapi.model.LatLng;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
 import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
+import com.guokrspace.duducar.communication.message.DriverDetail;
 import com.guokrspace.duducar.communication.message.DriverInfo;
 import com.guokrspace.duducar.communication.message.MessageTag;
 import com.guokrspace.duducar.communication.message.SearchLocation;
 import com.guokrspace.duducar.communication.message.TripOver;
+import com.guokrspace.duducar.communication.message.TripOverOrder;
 import com.guokrspace.duducar.communication.message.TripStart;
+import com.guokrspace.duducar.communication.message.TripStartOrder;
 import com.guokrspace.duducar.database.OrderRecord;
 import com.guokrspace.duducar.ui.DriverInformationView;
 import com.guokrspace.duducar.ui.WinToast;
 import com.squareup.picasso.Picasso;
 
+import java.sql.Driver;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -64,6 +69,7 @@ public class PostOrderActivity extends AppCompatActivity {
     FloatingActionButton mFab;
     DriverInformationView driverView;
     boolean isFirstLoc = true;// 是否首次定位
+    ProgressBar mProgressBar;
 
     int state;
 
@@ -107,24 +113,26 @@ public class PostOrderActivity extends AppCompatActivity {
                     if(state == WAITING_FOR_ORDER_CONFIRM)
                     {   //The driverview moves up by 140dp
                         LinearLayout bmapLayout = (LinearLayout)findViewById(R.id.bmapLayout);
-                        ViewGroup.LayoutParams paramRL = bmapLayout.getLayoutParams();
-                        paramRL.height =  bmapLayout.getHeight() - dpToPx(getResources(),140);
+                        RelativeLayout.LayoutParams paramRL = (RelativeLayout.LayoutParams)bmapLayout.getLayoutParams();
+                        paramRL.height =  bmapLayout.getHeight() - dpToPx(getResources(),120);
                         bmapLayout.requestLayout();
 
                         driverView = (DriverInformationView)findViewById(R.id.driverView);
+                        RelativeLayout.LayoutParams params = ( RelativeLayout.LayoutParams)driverView.getLayoutParams();
 
                         RelativeLayout container = (RelativeLayout)findViewById(R.id.container);
-
                         container.requestLayout();
 
                         orderStatusString = "出租车即将到达";
                         getSupportActionBar().setTitle(orderStatusString);
 
-                        if(driver!=null)
-                           updateDriverUI(driver);
-
-                        mFab.setVisibility(View.GONE);
-
+                        if(driver!=null) {
+                            updateDriverUI(driver);
+                            TextView cancelPrompt = (TextView)findViewById(R.id.cancelPromptTextView);
+                            cancelPrompt.setVisibility(View.GONE);
+                            mProgressBar.setVisibility(View.GONE);
+                            mFab.setVisibility(View.GONE);
+                        }
                     }
                     break;
                 case MessageTag.MESSAGE_CAR_ARRIVED:
@@ -140,33 +148,36 @@ public class PostOrderActivity extends AppCompatActivity {
                         mBaiduMap.clear();
                         mBaiduMap.addOverlay(new MarkerOptions()
                                 .position(ll)
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.icon_gcoding)));
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_current_position_pin)));
                         mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLng(ll));
                     }
 
                     break;
 
                 case MessageTag.MESSAGE_ORDER_COMPLETED:
+                    startActivity(new Intent(mContext, AlipayActivity.class));
                     if(order_finish!=null) {
-                        orderStatusString = String.format("到达%s", order_finish.getOrder().getDestination());
+                        orderStatusString = String.format("到达%s", order_finish.getTripOverOrder().getDestination());
                         getSupportActionBar().setTitle(orderStatusString);
 
-                        String toastString = String.format("本次行程%s公里，支付%s元，请对本次服务评价。",
-                                order_finish.getOrder().getMileage(), order_finish.getOrder().getPrice());
-                        WinToast.toast(mContext, toastString);
+                        startActivity(new Intent(mContext, AlipayActivity.class));
 
-                        driverView.mRatingBar.setEnabled(true);
-                        driverView.mRatingBar.setStepSize(0.5f);
-                        driverView.mRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-                            @Override
-                            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-                                WinToast.toast(mContext, "谢谢评价。");
-                                driverView.mRatingBar.setEnabled(false);
-                                finish();
-                            }
-                        });
+//                        String toastString = String.format("本次行程%s公里，支付%s元，请对本次服务评价。",
+//                                order_finish.getTripOverOrder().getMileage(), order_finish.getTripOverOrder().getPrice());
+//                        WinToast.toast(mContext, toastString);
 
-                        mDestTextView.setText(order_finish.getOrder().getDestination());
+//                        driverView.mRatingBar.setEnabled(true);
+//                        driverView.mRatingBar.setStepSize(0.5f);
+//                        driverView.mRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+//                            @Override
+//                            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+//                                WinToast.toast(mContext, "谢谢评价。");
+//                                driverView.mRatingBar.setEnabled(false);
+//                                finish();
+//                            }
+//                        });
+
+//                        mDestTextView.setText(order_finish.getTripOverOrder().getDestination());
 
                     }
                     break;
@@ -225,6 +236,7 @@ public class PostOrderActivity extends AppCompatActivity {
         mBaiduMap.setMapStatus(msu);
 
         //UI
+        mProgressBar = (ProgressBar)findViewById(R.id.progressBar);
         mFab = (FloatingActionButton) findViewById(R.id.fab);
         mFab.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -232,20 +244,93 @@ public class PostOrderActivity extends AppCompatActivity {
                 Snackbar.make(view, "订单取消中...", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 state = ORDER_CANCELLING;
-                mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_CANCEL_CONFIRMED); //Simulate the cancel is success
+
+                mHandler.sendEmptyMessageDelayed(MessageTag.MESSAGE_ORDER_CANCEL_CONFIRMED, 2000); //Simulate the cancel is success
                 return false;
             }
         });
 
-        mSearchDestLLayout = (FrameLayout)findViewById(R.id.destSearchLinearLayout);
-        mSearchDestLLayout.setOnClickListener(new View.OnClickListener() {
+        // Debug
+
+
+                mFab.setOnClickListener(new View.OnClickListener() {
+////            @Override
+////            public void onClick(View view) {
+////                mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_COMPLETED);
+////            }
+//
+//            @Override
+//            public void onClick(View view) {
+//                order_start = new TripStart();
+//
+//                TripStartOrder order = new TripStartOrder();
+//
+//                order.setStart("麓山南路36号");
+//                order.setStart_lat("28.18539");
+//                order.setStart_lng("112.949728");
+//                order.setDestination("火车南站");
+//                order.setCar_type("1");
+//
+//                order_start.setOrder(order);
+//
+//                driver = new DriverInfo();
+//                DriverDetail detail = new DriverDetail();
+//                detail.setName("王师傅");
+//                detail.setAvatar("http://img4.imgtn.bdimg.com/it/u=1519979105,1747027397&fm=21&gp=0.jpg");
+//                detail.setMobile("13522577115");
+//                detail.setDescription("黑色起亚");
+//                detail.setPlate("湘A-12445345");
+//                detail.setPicture("http://img4.imgtn.bdimg.com/it/u=1519979105,1747027397&fm=21&gp=0.jpg");
+//                detail.setRating(4);
+//                driver.setDriver(detail);
+//                mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_DISPATCHED);
+//            }
+//        });
+
+        //        mFab.setOnClickListener(new View.OnClickListener() {
+////            @Override
+////            public void onClick(View view) {
+////                mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_COMPLETED);
+////            }
+//
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(mContext, SearchActivity.class);
-                intent.putExtra("location",start); //start must have been set
-                startActivityForResult(intent, ACTIVITY_SEARCH_DEST_REQUEST);
+                order_finish = new TripOver();
+
+                TripOverOrder order = new TripOverOrder("39.9");
+
+                order.setDestination("麓山南路36号");
+                order.setStart_lat("28.18539");
+                order.setStart_lng("112.949728");
+        order.setDestination_lat("28.18539");
+        order.setDestination_lng("112.949728");
+                order.setCar_type("1");
+
+                order_finish.setTripOverOrder(order);
+
+                driver = new DriverInfo();
+                DriverDetail detail = new DriverDetail();
+                detail.setName("王师傅");
+                detail.setAvatar("http://img4.imgtn.bdimg.com/it/u=1519979105,1747027397&fm=21&gp=0.jpg");
+                detail.setMobile("13522577115");
+                detail.setDescription("黑色起亚");
+                detail.setPlate("湘A-12445345");
+                detail.setPicture("http://img4.imgtn.bdimg.com/it/u=1519979105,1747027397&fm=21&gp=0.jpg");
+                detail.setRating(4);
+                driver.setDriver(detail);
+                mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_COMPLETED);
             }
         });
+
+//        mSearchDestLLayout = (FrameLayout)findViewById(R.id.destSearchLinearLayout);
+//        mSearchDestLLayout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(mContext, SearchActivity.class);
+//                intent.putExtra("location",start); //start must have been set
+//                startActivityForResult(intent, ACTIVITY_SEARCH_DEST_REQUEST);
+//            }
+//        });
 
         mStartTextView = (TextView)findViewById(R.id.textViewStart);
         mDestTextView = (TextView)findViewById(R.id.textViewDestination);
@@ -305,14 +390,14 @@ public class PostOrderActivity extends AppCompatActivity {
 
                 OrderRecord orderRecord = new OrderRecord();
                 orderRecord.setStartAddr(order_start.getOrder().getStart());
-                orderRecord.setDestAddr(order_finish.getOrder().getDestination());
-                orderRecord.setStartLat(order_finish.getOrder().getStart_lat());
-                orderRecord.setStartLng(order_finish.getOrder().getStart_lng());
-                orderRecord.setDestLat(order_finish.getOrder().getDestination_lat());
-                orderRecord.setDestLng(order_finish.getOrder().getDestination_lng());
-                orderRecord.setMileage(order_finish.getOrder().getMileage());
-                orderRecord.setPrice(order_finish.getOrder().getPrice());
-                orderRecord.setCarType(order_finish.getOrder().getCar_type());
+                orderRecord.setDestAddr(order_finish.getTripOverOrder().getDestination());
+                orderRecord.setStartLat(order_finish.getTripOverOrder().getStart_lat());
+                orderRecord.setStartLng(order_finish.getTripOverOrder().getStart_lng());
+                orderRecord.setDestLat(order_finish.getTripOverOrder().getDestination_lat());
+                orderRecord.setDestLng(order_finish.getTripOverOrder().getDestination_lng());
+                orderRecord.setMileage(order_finish.getTripOverOrder().getMileage());
+                orderRecord.setPrice(order_finish.getTripOverOrder().getPrice());
+                orderRecord.setCarType(order_finish.getTripOverOrder().getCar_type());
                 SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd HH:mm");
                 String dateStr = sdf.format(new Date());
                 orderRecord.setOrderTime(dateStr);
@@ -394,7 +479,7 @@ public class PostOrderActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(String error) {
                         Log.i("","");
-                        //Cancel Order
+                        //Cancel TripOverOrder
                         cancelOrder();
                         // Try again
                         requestCar();
@@ -412,7 +497,7 @@ public class PostOrderActivity extends AppCompatActivity {
 
     private void cancelOrder()
     {
-        //Cancel Order
+        //Cancel TripOverOrder
         SocketClient.getInstance().cancelCarRequest("2", new ResponseHandler() {
             @Override
             public void onSuccess(String messageBody) {
@@ -545,16 +630,18 @@ public class PostOrderActivity extends AppCompatActivity {
                     .direction(location.getDirection()).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
 
-            if(locData!=null)
+            if(locData!=null) {
                 mBaiduMap.setMyLocationData(locData);
 
+                LatLng  ll = new LatLng(locData.latitude, locData.longitude);
+                mBaiduMap.clear();
+                mBaiduMap.addOverlay(new MarkerOptions().position(ll)
+                        .icon(BitmapDescriptorFactory
+                                .fromResource(R.drawable.ic_current_position_pin)));
 
-//            if (isFirstLoc) {
-//                isFirstLoc = false;
-            mBaiduMap.clear();
-            MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(new LatLng(locData.latitude,locData.longitude));
-            mBaiduMap.animateMapStatus(u);
-//            }
+                MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll);
+                mBaiduMap.animateMapStatus(u);
+            }
 
 //            Log.i("BaiduLocationApiDem", sb.toString());
         }

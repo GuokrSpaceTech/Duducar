@@ -86,11 +86,14 @@ public class LoginActivity extends AppCompatActivity implements
 
     private int messageid;
 
-    private static final int HANDLER_LOGIN_SUCCESS = 1;
-    private static final int HANDLER_LOGIN_FAILURE = 2;
+    private static final int HANDLER_VERIFY_SUCCESS = 1;
+    private static final int HANDLER_VERIFY_FAILURE = 2;
 
     private static final int HANDLER_REGISTER_SUCCESS = 7;
     private static final int HANDLER_REGISTER_FAILURE = 8;
+
+    private static final int HANDLER_LOGIN_SUCCESS = 9;
+    private static final int HANDLER_LOGIN_FAILURE = 10;
 
     private static final int HANDLER_LOGIN_HAS_FOCUS = 3;
     private static final int HANDLER_LOGIN_HAS_NO_FOCUS = 4;
@@ -103,6 +106,7 @@ public class LoginActivity extends AppCompatActivity implements
     private ImageView mImgBackgroud;
 
     String userName;
+    String token;
     DuduApplication mApplication;
     private LoadingDialog mDialog;
     private EditTextHolder mEditUserNameEt;
@@ -220,14 +224,13 @@ public class LoginActivity extends AppCompatActivity implements
                     @Override
                     public void onSuccess(String messageBody) {
                         try {
-                            String token = "";
                             JSONObject jsonObject = new JSONObject(messageBody);
                             if (jsonObject.has("token")) token = (String) jsonObject.get("token");
                             PersonalInformation person = new PersonalInformation();
                             person.setMobile(userName);
-                            person.setToken("1111");
+                            person.setToken(token);
                             mApplication.mDaoSession.getPersonalInformationDao().insert(person);
-                            mHandler.sendEmptyMessage(HANDLER_LOGIN_SUCCESS);
+                            mHandler.sendEmptyMessage(HANDLER_VERIFY_SUCCESS);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -235,12 +238,12 @@ public class LoginActivity extends AppCompatActivity implements
 
                     @Override
                     public void onFailure(String error) {
-                        mHandler.sendEmptyMessage(HANDLER_LOGIN_FAILURE);
+                        mHandler.sendEmptyMessage(HANDLER_VERIFY_FAILURE);
                     }
 
                     @Override
                     public void onTimeout() {
-                        mHandler.sendEmptyMessage(HANDLER_LOGIN_FAILURE);
+                        mHandler.sendEmptyMessage(HANDLER_VERIFY_FAILURE);
                     }
                 });
 
@@ -279,13 +282,37 @@ public class LoginActivity extends AppCompatActivity implements
             case HANDLER_REGISTER_FAILURE:
                 WinToast.toast(LoginActivity.this, "获取验证码失败");
                 break;
-            case HANDLER_LOGIN_SUCCESS:
+            case HANDLER_VERIFY_SUCCESS:
                 if (mDialog != null) mDialog.dismiss();
-                WinToast.toast(LoginActivity.this, R.string.login_success);
+                SocketClient.getInstance().sendLoginReguest(userName, "2", token, new ResponseHandler(Looper.getMainLooper()) {
+                    @Override
+                    public void onSuccess(String messageBody) {
+                        mHandler.sendEmptyMessage(HANDLER_LOGIN_SUCCESS);
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+                        mHandler.sendEmptyMessage(HANDLER_LOGIN_FAILURE);
+                    }
+
+                    @Override
+                    public void onTimeout() {
+                        mHandler.sendEmptyMessage(HANDLER_LOGIN_FAILURE);
+                    }
+                });
+
+//                WinToast.toast(LoginActivity.this, R.string.login_success);
+//                setResult(RESULT_OK);
+//                finish();
+                break;
+            case HANDLER_LOGIN_FAILURE:
+                WinToast.toast(LoginActivity.this, R.string.login_failure);
+                break;
+            case HANDLER_LOGIN_SUCCESS:
                 setResult(RESULT_OK);
                 finish();
                 break;
-            case HANDLER_LOGIN_FAILURE:
+            case HANDLER_VERIFY_FAILURE:
                 if (mDialog != null) mDialog.dismiss();
                 WinToast.toast(LoginActivity.this, R.string.login_failure);
                 setResult(RESULT_CANCELED);

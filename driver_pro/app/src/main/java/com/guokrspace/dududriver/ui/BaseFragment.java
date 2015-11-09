@@ -1,6 +1,5 @@
 package com.guokrspace.dududriver.ui;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;

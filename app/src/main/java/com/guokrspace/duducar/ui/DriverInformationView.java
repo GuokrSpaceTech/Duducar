@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.guokrspace.duducar.R;
@@ -30,13 +31,13 @@ import static android.support.v4.content.PermissionChecker.checkSelfPermission;
 /**
  * TODO: document your custom view class.
  */
-public class DriverInformationView extends LinearLayout {
+public class DriverInformationView extends RelativeLayout {
 
 
     GestureDetectorCompat mDetector;
 
     //UI
-    private LinearLayout root;
+    private RelativeLayout root;
     public ImageView mDriverImageView;
     public ImageView mCarImageView;
     public ImageView mPhoneIconImageView;
@@ -55,21 +56,28 @@ public class DriverInformationView extends LinearLayout {
         public boolean handleMessage(Message message) {
 
             if (message.what == 0x1001) {
-                float distancY = (float) message.obj;
+                float distancY = 0;
 
-                if (distancY > 0) //Scroll up by 60dp
+                if(message.obj!=null) {
+                    distancY = (float) message.obj;
+                }
+
+                int rectangle_width = mCarDescLLayout.getWidth();
+                int rectangle_height = mCarDescLLayout.getHeight();
+
+                if (distancY >= 0) //Scrollup by 30dp
                 {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
-                        root.animate().translationY(dpToPx(getResources(), -60));
+                        root.animate().translationY(dpToPx(getResources(), 80));
 
-                        mDriverImageView.animate().translationX(dpToPx(getResources(), 100)); //left
-                        mCarImageView.animate().translationX(dpToPx(getResources(), -100)); //right
+                        mDriverImageView.animate().translationX(rectangle_width/4); //left
+                        mCarImageView.animate().translationX(-rectangle_width/4); //right
 
-                        mPhoneIconImageView.animate().translationY(dpToPx(getResources(), 50)); //down
-                        mPhoneIconImageView.animate().translationX(dpToPx(getResources(), -200)); //Left
+                        mPhoneIconImageView.animate().translationY(rectangle_height/2); //down
+                        mPhoneIconImageView.animate().translationX(-rectangle_width/2); //Left
 
-                        mCarPlateNumberTextView.animate().translationY(dpToPx(getResources(), 50)); //down
-                        mCarPlateNumberTextView.animate().translationX(dpToPx(getResources(), 200)); //Right
+                        mCarPlateNumberTextView.animate().translationY(rectangle_height/2); //down
+                        mCarPlateNumberTextView.animate().translationX(rectangle_width/2); //Right
 
                         mCarDescLLayout.setVisibility(VISIBLE);
                         mCarDescLLayout.requestLayout();
@@ -114,7 +122,7 @@ public class DriverInformationView extends LinearLayout {
     }
 
     private void init(Context context) {
-        root = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.driver_information_view, this, true);
+        root = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.driver_information_view, this, true);
         mDriverImageView = (ImageView) findViewById(R.id.imageViewDriver);
         mCarImageView = (ImageView) findViewById(R.id.imageViewCar);
         mPhoneIconImageView = (ImageView) findViewById(R.id.imageViewPhoneIcon);
@@ -127,8 +135,6 @@ public class DriverInformationView extends LinearLayout {
 
         mDetector = new GestureDetectorCompat(context, new MyGestureListener());
     }
-
-    ;
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -219,6 +225,10 @@ public class DriverInformationView extends LinearLayout {
 
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
+            Message message = mHandler.obtainMessage();
+            message.what = 0x1001;
+            message.obj = 0f;
+            mHandler.sendMessage(message);
             return super.onSingleTapUp(e);
         }
 
