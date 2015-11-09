@@ -257,13 +257,10 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     //进行自动登陆
     private void doLogin(PersonalInformation user) {
         Log.e("hyman", user.getMobile() + " " + user.getToken() + " " + user.getId());
-<<<<<<< HEAD
         if (user == null) {
             return;
         }
         Log.e("daddy", user.getMobile() + " " + user.getToken() + " " + user.getId());
-=======
->>>>>>> e4f7c7ee26083e986211dd87067e68c4c3b9ac4c
         SocketClient.getInstance().autoLoginRequest(user.getMobile(), "1", user.getToken(), new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
@@ -525,7 +522,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 
 //            Log.i("BaiduLocationApiDem", sb.toString());
         }
-
+    }
         private void sendHeartBeat(MyLocationData locData) {
             HeartBeatMessage msg = new HeartBeatMessage();
             msg.setCmd("heartbeat");
@@ -535,37 +532,6 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             msg.setSpeed(String.valueOf(locData.speed));
 
             SocketClient.getInstance().sendHeartBeat(msg, new ResponseHandler(Looper.myLooper()) {
-<<<<<<< HEAD
-                        @Override
-                        public void onSuccess(String messageBody) {
-                            Log.i("HeartBeat Response", messageBody);
-                        }
-
-                        @Override
-                        public void onFailure(String error) {
-                            Log.i("HeartBeat error", error);
-                            if (error.contains("login")) {
-                                List localUsers = DuduDriverApplication.getInstance().
-                                        mDaoSession.getPersonalInformationDao().
-                                        queryBuilder().list();
-                                if (localUsers != null && localUsers.size() > 0) {
-                                    userInfo = (PersonalInformation) localUsers.get(0);
-                                    doLogin(userInfo);
-                                }
-                            }
-                        }
-
-
-                        @Override
-                        public void onTimeout() {
-                            Log.i("HeartBeat timeout", "Response Timeout");
-                        }
-                    }
-
-            );
-                Log.i("daddy hearbeat", msg.getStatus() + " - currentStatus");
-            }
-=======
                 @Override
                 public void onSuccess(String messageBody) {
                     Log.i("HeartBeat Response", messageBody);
@@ -595,69 +561,5 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 }
             });
             Log.i("daddy hearbeat", msg.getStatus() + " - currentStatus");
->>>>>>> e4f7c7ee26083e986211dd87067e68c4c3b9ac4c
         }
-
-
-    public class OrderBrefInformation implements Serializable {
-
-        public String getStartPoint() {
-            return startPoint;
-        }
-
-        public void setStartPoint(String startPoint) {
-            this.startPoint = startPoint;
-        }
-
-        public String getDistance() {
-            return distance;
-        }
-
-        public void setDistance(String distance) {
-            this.distance = distance;
-        }
-
-        public String getEndPoint() {
-            return endPoint;
-        }
-
-        public void setEndPoint(String endPoint) {
-            this.endPoint = endPoint;
-        }
-
-        private String startPoint;
-        private String endPoint;
-        private String distance;
-
-        public String getOrder_no() {
-            return order_no;
-        }
-
-        public void setOrder_no(String order_no) {
-            this.order_no = order_no;
-        }
-
-        private String order_no;
-
-        public LatLng getStLatLng() {
-            return stLatLng;
-        }
-
-        public void setStLatLng(LatLng stLatLng) {
-            this.stLatLng = stLatLng;
-        }
-
-        public LatLng getEdLatLng() {
-            return edLatLng;
-        }
-
-        public void setEdLatLng(LatLng edLatLng) {
-            this.edLatLng = edLatLng;
-        }
-
-        private LatLng stLatLng;
-
-        private LatLng edLatLng;
-
     }
-}
