@@ -257,13 +257,10 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     //进行自动登陆
     private void doLogin(PersonalInformation user) {
         Log.e("hyman", user.getMobile() + " " + user.getToken() + " " + user.getId());
-<<<<<<< HEAD
         if (user == null) {
             return;
         }
         Log.e("daddy", user.getMobile() + " " + user.getToken() + " " + user.getId());
-=======
->>>>>>> e4f7c7ee26083e986211dd87067e68c4c3b9ac4c
         SocketClient.getInstance().autoLoginRequest(user.getMobile(), "1", user.getToken(), new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
