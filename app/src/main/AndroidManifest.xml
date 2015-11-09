@@ -43,6 +43,7 @@
 
         <activity
             android:name=".PreOrderActivity"
+            android:logo="@drawable/drawericon"
             android:label="嘟嘟打车" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

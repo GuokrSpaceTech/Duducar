@@ -1,38 +1,54 @@
 package com.guokrspace.dududriver.model;
 
+import com.baidu.mapapi.model.LatLng;
+
+import java.io.Serializable;
+
 /**
  * Created by daddyfang on 15/11/2.
  */
-public class OrderItem {
+public class OrderItem implements Serializable {
 
-    private Passenger passenger;
-    private String orderNo;
+    private String CMD;
 
-    public Passenger getPassenger() {
-        return passenger;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setPassenger(Passenger passenger) {
-        this.passenger = passenger;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
-    public String getOrderNo() {
-        return orderNo;
+    private Order order;
+
+    public String getCMD() {
+        return CMD;
     }
 
-    public void setOrderNo(String orderNo) {
-        this.orderNo = orderNo;
+    public void setCMD(String CMD) {
+        this.CMD = CMD;
     }
 
+    public String getDistance() {
+        return distance;
+    }
 
-    public class Passenger{
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+
+    private String distance;
+
+    public class Order implements Serializable{
 
         String start_lat;
         String start_lng;
-        String end_lat;
-        String end_lng;
-        String mobile;
-
+        String destination_lat;
+        String destination_lng;
+        String passenger_mobile;
+        String start;
+        String destination;
+        String id;
 
         public String getStart_lat() {
             return start_lat;
@@ -42,36 +58,60 @@ public class OrderItem {
             this.start_lat = start_lat;
         }
 
-        public String getEnd_lat() {
-            return end_lat;
-        }
-
-        public void setEnd_lat(String end_lat) {
-            this.end_lat = end_lat;
-        }
-
-        public String getEnd_lng() {
-            return end_lng;
-        }
-
-        public void setEnd_lng(String end_lng) {
-            this.end_lng = end_lng;
-        }
-
-        public String getMobile() {
-            return mobile;
-        }
-
-        public void setMobile(String mobile) {
-            this.mobile = mobile;
-        }
-
         public String getStart_lng() {
             return start_lng;
         }
 
         public void setStart_lng(String start_lng) {
             this.start_lng = start_lng;
+        }
+
+        public String getDestination_lat() {
+            return destination_lat;
+        }
+
+        public void setDestination_lat(String destination_lat) {
+            this.destination_lat = destination_lat;
+        }
+
+        public String getDestination_lng() {
+            return destination_lng;
+        }
+
+        public void setDestination_lng(String destination_lng) {
+            this.destination_lng = destination_lng;
+        }
+
+        public String getPassenger_mobile() {
+            return passenger_mobile;
+        }
+
+        public void setPassenger_mobile(String passenger_mobile) {
+            this.passenger_mobile = passenger_mobile;
+        }
+
+        public String getStart() {
+            return start;
+        }
+
+        public void setStart(String start) {
+            this.start = start;
+        }
+
+        public String getDestination() {
+            return destination;
+        }
+
+        public void setDestination(String destination) {
+            this.destination = destination;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
         }
     }
 

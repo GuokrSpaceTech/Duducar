@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">嘟嘟打车</string>
+    <string name="app_name">嘟嘟专车</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_main">MainActivity</string>
 
@@ -14,7 +14,7 @@
     <string name="login_success">"登录成功"</string>
     <string name="login_failure">"登录失败"</string>
 
-    <string name="title_section1">我要打车</string>
+    <string name="nearby">附近有%d辆车</string>
     <string name="title_section2">个人信息</string>
     <string name="title_section3">历史订单</string>
 

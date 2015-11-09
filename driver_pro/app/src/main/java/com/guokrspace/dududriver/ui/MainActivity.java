@@ -34,6 +34,8 @@ import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.adapter.TabPagerAdapter;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.database.PersonalInformation;
+import com.guokrspace.dududriver.model.BaseInfo;
+import com.guokrspace.dududriver.model.ConfirmItem;
 import com.guokrspace.dududriver.model.Loaction;
 import com.guokrspace.dududriver.model.OrderItem;
 import com.guokrspace.dududriver.net.ResponseHandler;
@@ -47,6 +49,10 @@ import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 import com.guokrspace.dududriver.view.ListenProgressView;
 import com.viewpagerindicator.TabPageIndicator;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.Serializable;
 import java.util.List;
 
 import butterknife.Bind;
@@ -56,15 +62,15 @@ import butterknife.OnClick;
 /**
  * Created by hyman on 15/10/22.
  */
-public class MainActivity extends BaseActivity implements OnGetGeoCoderResultListener, Handler.Callback {
+public class MainActivity extends BaseActivity implements Handler.Callback {
 
     @Bind(R.id.pattern_btn)
     Button btnPattern;
     @OnClick(R.id.pattern_btn) public void showMainOrderDialog() {
         //
-        MainOrderDialog dialog = new MainOrderDialog(context);
-        dialog.setCancelable(true);
-        dialog.show(getSupportFragmentManager(), "mainorderdialog");
+//        MainOrderDialog dialog = new MainOrderDialog(context);
+//        dialog.setCancelable(true);
+//        dialog.show(getSupportFragmentManager(), "mainorderdialog");
 
     }
     private Context context;
@@ -72,6 +78,8 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     private ViewPager pager;
     private TabPagerAdapter mAdapter;
     private TabPageIndicator mIndicator;
+
+    private MainOrderDialog dialog = null;
 
     private View buttonGroup;
 
@@ -86,21 +94,24 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 
     private static final int HANDLE_LOGIN_FAILURE = 100;
     private static final int NEW_ORDER_ARRIVE = 101;
-    private static final int REJECT_ORDER = 102;
-    private static final int ACCEPT_ORDER = 103;
-    private static final int CALL_PASSENGER = 104;
-    private static final int HANG_OUT = 105;
-    private static final int GOT_PASSENGER = 106;
-    private static final int FINISH_TRIP = 107;
+    private static final int HANDLE_BASEINFO = 103;
+//    private static final int REJECT_ORDER = 102;
+//    private static final int ACCEPT_ORDER = 103;
+//    private static final int CALL_PASSENGER = 104;
+//    private static final int HANG_OUT = 105;
+//    private static final int GOT_PASSENGER = 106;
+//    private static final int FINISH_TRIP = 107;
     //TODO:OTHER thing
 
     private PersonalInformation userInfo;
 
     private OrderItem orderItem = null;
-    private OrderBrefInformation orderBref = null;
+//    private OrderBrefInformation orderBref = null;
+    private ConfirmItem confirmItem = null;
+    private BaseInfo baseInfo = null;
 
-    private GeoCoder mGeoCoder = null;
-    private int geoTimes = 1;
+//    private GeoCoder mGeoCoder = null;
+//    private int geoTimes = 1;
     // 定位相关
     LocationClient mLocClient;
     public MyLocationListener myListener = new MyLocationListener();
@@ -138,8 +149,8 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         initLocation();
         mLocClient.start();
 
-        mGeoCoder = GeoCoder.newInstance();
-        mGeoCoder.setOnGetGeoCodeResultListener(this);
+//        mGeoCoder = GeoCoder.newInstance();
+//        mGeoCoder.setOnGetGeoCodeResultListener(this);
     }
 
     @Override
@@ -151,9 +162,9 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
          *
          */
         isOnline = (boolean) SharedPreferencesUtils.getParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, false);
-        if (!isOnline && DuduDriverApplication.getInstance().initPersonalInformation()) {
+        if (DuduDriverApplication.getInstance().initPersonalInformation()) {
             if (!isNetworkAvailable()) {
-                showToast("网络不可用，现在时离线状态");
+                showToast("网络不可用，现在是离线状态");
             }
             List localUsers = DuduDriverApplication.getInstance().
                     mDaoSession.getPersonalInformationDao().
@@ -161,6 +172,23 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
             if (localUsers != null && localUsers.size() > 0) {
                 userInfo = (PersonalInformation) localUsers.get(0);
                 doLogin(userInfo);
+                SocketClient.getInstance().pullBaseInfo(new ResponseHandler() {
+                    @Override
+                    public void onSuccess(String messageBody) {
+                        baseInfo = (BaseInfo)FastJsonTools.getObject(messageBody, BaseInfo.class);
+                        mHandler.sendEmptyMessage(HANDLE_BASEINFO);
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+                        //返回基础信息失败
+                    }
+
+                    @Override
+                    public void onTimeout() {
+                        //超时
+                    }
+                });
             }
         }
 
@@ -168,19 +196,55 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         SocketClient.getInstance().registerServerMessageHandler(MessageTag.PATCH_ORDER, new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
+                Log.e("Mainactivity", "confirm order handler");
                 orderItem = FastJsonTools.getObject(messageBody, OrderItem.class);
+                Log.e("Daddy ", messageBody + "  " + orderItem.getCMD() + " "+ orderItem.getOrder().getDestination_lat() + "::" + orderItem.getOrder().getDestination_lng());
+//                if()
                 mHandler.sendEmptyMessage(NEW_ORDER_ARRIVE);
+            }
+            @Override
+            public void onFailure(String error) {
+                Log.e("Mainactivity", "register order handler error");
+            }
+            @Override
+            public void onTimeout() {
+                Log.e("Mainactivity", "register order handler time out");
+            }
+        });
+
+        //监听派单取消的通知
+        SocketClient.getInstance().registerServerMessageHandler(MessageTag.ORDER_CANCEL, new ResponseHandler(Looper.myLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                try {
+                    JSONObject mCancel = new JSONObject(messageBody);
+                    if(orderItem == null || mCancel.get("order_no") != orderItem.getOrder().getId()
+                            || CommonUtil.getCurrentStatus() != Constants.STATUS_HOLD){
+                        return;
+                    }
+                    orderItem = null;
+                    if(dialog != null){
+                        dialog.dismiss();
+                        dialog = null;
+                    }
+                    CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+                } catch (JSONException e){
+                    e.printStackTrace();
+                }
+
+
             }
 
             @Override
             public void onFailure(String error) {
+
             }
 
             @Override
             public void onTimeout() {
+
             }
         });
-
     }
 
     @Override
@@ -193,10 +257,18 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
     //进行自动登陆
     private void doLogin(PersonalInformation user) {
         Log.e("hyman", user.getMobile() + " " + user.getToken() + " " + user.getId());
+<<<<<<< HEAD
+        if (user == null) {
+            return;
+        }
+        Log.e("daddy", user.getMobile() + " " + user.getToken() + " " + user.getId());
+=======
+>>>>>>> e4f7c7ee26083e986211dd87067e68c4c3b9ac4c
         SocketClient.getInstance().autoLoginRequest(user.getMobile(), "1", user.getToken(), new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
                 showCustomToast("登陆成功");
+                Log.e("login in success!", "messageBody" + messageBody);
                 SharedPreferencesUtils.setParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, true);
                 isOnline = true;
             }
@@ -204,12 +276,15 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
             @Override
             public void onFailure(String error) {
                 showCustomToast("登陆失败");
+                Log.e("login in failure!", "errorbody " + error);
+
                 mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_LOGIN_FAILURE), 500);
             }
 
             @Override
             public void onTimeout() {
                 Log.e("hyman", "登陆超时");
+
                 mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_LOGIN_FAILURE), 500);
             }
         });
@@ -240,6 +315,11 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 
                 isListeneing = !isListeneing;
                 if (isListeneing) {
+                    if (!isOnline && userInfo != null) {
+                        CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
+                        doLogin(userInfo);
+                        return false;
+                    }
                     CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
                 } else {
                     CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
@@ -262,18 +342,25 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                     isListeneing = true;
                     break;
                 }
-                orderBref = new OrderBrefInformation();
+//                orderBref = new OrderBrefInformation();
                 LatLng startLoaction = new LatLng(
-                        Double.valueOf(orderItem.getPassenger().getStart_lat()), Double.valueOf(orderItem.getPassenger().getStart_lng()));
-                mGeoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(startLoaction));
+                        Double.valueOf(orderItem.getOrder().getStart_lat()), Double.valueOf(orderItem.getOrder().getStart_lng()));
+//                mGeoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(startLoaction));
                 LatLng endLoaction = new LatLng(
-                        Double.valueOf(orderItem.getPassenger().getEnd_lat()), Double.valueOf(orderItem.getPassenger().getEnd_lng()));
-                mGeoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(endLoaction));
-                orderBref.setDistance(String.valueOf(DistanceUtil.getDistance(startLoaction, endLoaction)));
-                orderBref.setOrder_no(orderItem.getOrderNo());
+                        Double.valueOf(orderItem.getOrder().getDestination_lat()), Double.valueOf(orderItem.getOrder().getDestination_lng()));
+//                mGeoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(endLoaction));
+                orderItem.setDistance(String.valueOf(DistanceUtil.getDistance(startLoaction, endLoaction)));
+//                orderBref.setDistance(String.valueOf(DistanceUtil.getDistance(startLoaction, endLoaction)));
+//                orderItem.setStLatLng(startLoaction);
+//                orderBref.setStLatLng(startLoaction);
+//                orderItem.setEdLatLng(endLoaction);
+//                orderBref.setEdLatLng(endLoaction);
+//                orderItem.get("长沙市登高路59号2楼");
+//                orderItem.setEdAddress("攸县第一中学女生宿舍");
                 //显示派单dialog
                 if(CommonUtil.getCurrentStatus() == Constants.STATUS_WAIT){
-                    MainOrderDialog dialog = new MainOrderDialog(context, orderBref);
+                    dialog = new MainOrderDialog(context, orderItem);
+                    Log.e("Daddy m", "orderItem"+ orderItem.getOrder().getStart() + " "+ orderItem.getOrder().getDestination() + " ");
                     dialog.setCancelable(true);
                     dialog.show(getSupportFragmentManager(), "mainorderdialog");
                     //选择界面不听单
@@ -283,60 +370,15 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 }
 
                 break;
+            case HANDLE_BASEINFO:
+                if(baseInfo == null){
+
+                }
+                break;
             default:
                 break;
         }
         return false;
-    }
-
-    @Override
-    public void onGetGeoCodeResult(GeoCodeResult result) {
-        if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
-            Toast.makeText(this, "抱歉，未能找到结果", Toast.LENGTH_LONG)
-                    .show();
-            return;
-        }
-//        mBaiduMap.clear();
-//        mBaiduMap.addOverlay(new MarkerOptions().position(result.getLocation())
-//                .icon(BitmapDescriptorFactory
-//                        .fromResource(R.drawable.icon_marka)));
-//        mBaiduMap.setMapStatus(MapStatusUpdateFactory.newLatLng(result
-//                .getLocation()));
-        String strInfo = String.format("纬度：%f 经度：%f",
-                result.getLocation().latitude, result.getLocation().longitude);
-        Toast.makeText(this, strInfo, Toast.LENGTH_LONG).show();
-
-    }
-
-    @Override
-    public void onGetReverseGeoCodeResult(ReverseGeoCodeResult result) {
-        if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
-            Toast.makeText(this, "抱歉，订单位置异常", Toast.LENGTH_LONG)
-                    .show();
-            return;
-        }
-
-        if(orderItem == null || orderBref == null){
-            Toast.makeText(this, "抱歉，订单数据异常", Toast.LENGTH_SHORT)
-                    .show();
-            return;
-        }
-        if(geoTimes == 1){
-            orderBref.setStartPoint(result.getAddress());
-            geoTimes++;
-        } else if(geoTimes == 2) {
-            orderBref.setEndPoint(result.getAddress());
-            geoTimes--;
-        } else {
-            Log.e("MainActivity ", "geoTime wrong must be 1 or 2");
-            return;
-        }
-//        mReqLoc = result.getLocation();
-//        mReqAddress = result.getAddress();
-
-//        city = result.getAddressDetail().city;
-//        callForCarButton.setText("上车地点:\n" + result.getAddress() + "\n点击叫车");
-
     }
 
     /**
@@ -486,13 +528,44 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
 
         private void sendHeartBeat(MyLocationData locData) {
             HeartBeatMessage msg = new HeartBeatMessage();
-            msg.setCmd("hearbeat");
+            msg.setCmd("heartbeat");
             msg.setStatus(CommonUtil.getCurrentStatus());
             msg.setLat(String.valueOf(locData.latitude));
             msg.setLng(String.valueOf(locData.longitude));
             msg.setSpeed(String.valueOf(locData.speed));
 
             SocketClient.getInstance().sendHeartBeat(msg, new ResponseHandler(Looper.myLooper()) {
+<<<<<<< HEAD
+                        @Override
+                        public void onSuccess(String messageBody) {
+                            Log.i("HeartBeat Response", messageBody);
+                        }
+
+                        @Override
+                        public void onFailure(String error) {
+                            Log.i("HeartBeat error", error);
+                            if (error.contains("login")) {
+                                List localUsers = DuduDriverApplication.getInstance().
+                                        mDaoSession.getPersonalInformationDao().
+                                        queryBuilder().list();
+                                if (localUsers != null && localUsers.size() > 0) {
+                                    userInfo = (PersonalInformation) localUsers.get(0);
+                                    doLogin(userInfo);
+                                }
+                            }
+                        }
+
+
+                        @Override
+                        public void onTimeout() {
+                            Log.i("HeartBeat timeout", "Response Timeout");
+                        }
+                    }
+
+            );
+                Log.i("daddy hearbeat", msg.getStatus() + " - currentStatus");
+            }
+=======
                 @Override
                 public void onSuccess(String messageBody) {
                     Log.i("HeartBeat Response", messageBody);
@@ -522,11 +595,11 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
                 }
             });
             Log.i("daddy hearbeat", msg.getStatus() + " - currentStatus");
+>>>>>>> e4f7c7ee26083e986211dd87067e68c4c3b9ac4c
         }
-    }
 
 
-    public class OrderBrefInformation {
+    public class OrderBrefInformation implements Serializable {
 
         public String getStartPoint() {
             return startPoint;
@@ -565,6 +638,26 @@ public class MainActivity extends BaseActivity implements OnGetGeoCoderResultLis
         }
 
         private String order_no;
+
+        public LatLng getStLatLng() {
+            return stLatLng;
+        }
+
+        public void setStLatLng(LatLng stLatLng) {
+            this.stLatLng = stLatLng;
+        }
+
+        public LatLng getEdLatLng() {
+            return edLatLng;
+        }
+
+        public void setEdLatLng(LatLng edLatLng) {
+            this.edLatLng = edLatLng;
+        }
+
+        private LatLng stLatLng;
+
+        private LatLng edLatLng;
 
     }
 }

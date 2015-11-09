@@ -83,7 +83,7 @@ public class ButtonRectangle extends Button {
 		}
 		if(text != null){
 			textButton = new TextView(getContext());
-			textButton.setText(text);
+//			textButton.setText(text);
 			textButton.setTextColor(Color.WHITE);
 			textButton.setTypeface(null, Typeface.BOLD);
 			LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT);
@@ -146,5 +146,8 @@ public class ButtonRectangle extends Button {
 			invalidate();
 		}
 	}
-	
+
+	public void setButtonText(String text){
+		textButton.setText(text);
+	}
 }

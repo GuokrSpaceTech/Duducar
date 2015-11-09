@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_margin="20dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginRight="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <TextView
+                android:text="王师傅"
+                android:textColor="@android:color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:text="湘AER998"
+                android:textColor="@android:color/black"
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            </LinearLayout>
+            <TextView
+                android:text="黑色本田雅阁"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <RatingBar
+                style="@style/heartRatingBar"
+                android:rating="4"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_marginLeft="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_phoneicon"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:padding="10dp">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="35"
+            android:layout_height="1px"
+            android:layout_gravity="center"
+            android:background="@android:color/darker_gray"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="30"
+            android:textSize="6pt"
+            android:gravity="center"
+            android:text="支付成功"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="35"
+            android:layout_height="1px"
+            android:layout_gravity="center"
+            android:background="@android:color/darker_gray"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="车费"
+            android:textColor="@android:color/black"
+            android:id="@+id/textView2"
+            android:layout_weight="20"
+            android:gravity="center" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="38"
+            android:id="@+id/textViewFee"
+            android:layout_weight="60"
+            android:gravity="center"
+            android:textSize="30pt"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="元"
+            android:textColor="@android:color/black"
+            android:id="@+id/textView4"
+            android:layout_weight="20"
+            android:gravity="center" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:padding="10dp">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="35"
+            android:layout_height="1px"
+            android:layout_gravity="center"
+            android:background="@android:color/darker_gray"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="30"
+            android:textSize="6pt"
+            android:gravity="center"
+            android:text="匿名评价司机"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="35"
+            android:layout_height="1px"
+            android:layout_gravity="center"
+            android:background="@android:color/darker_gray"/>
+
+
+    </LinearLayout>
+
+    <RatingBar
+        style="@style/heartRatingBar"
+        android:rating="4"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="您的评价让我们做的更好"
+        android:textColor="#009fe8"
+        android:id="@+id/textView5"
+        android:gravity="center"
+        android:layout_marginTop="20dp" />
+
+
+</LinearLayout>

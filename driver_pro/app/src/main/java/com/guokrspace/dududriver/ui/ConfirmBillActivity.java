@@ -14,6 +14,10 @@ import android.widget.TextView;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.gc.materialdesign.widgets.Dialog;
 import com.guokrspace.dududriver.R;
+import com.guokrspace.dududriver.common.Constants;
+import com.guokrspace.dududriver.model.OrderItem;
+import com.guokrspace.dududriver.util.CommonUtil;
+import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 import com.guokrspace.dududriver.view.CircleImageView;
 
 import butterknife.Bind;
@@ -68,6 +72,8 @@ public class ConfirmBillActivity extends BaseActivity {
     private Context context;
     private Dialog dialog;
 
+    private OrderItem orderItem;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +89,13 @@ public class ConfirmBillActivity extends BaseActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        btnConfirm.setButtonText("确认订单");
+
+        Bundle bundle = getIntent().getExtras();
+        orderItem = (OrderItem) bundle.get("orderItem");
+        tvMyPosition.setText(orderItem.getOrder().getStart());
+        tvPassengerPosition.setText(orderItem.getOrder().getDestination());
+
         initDialog();
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,9 +107,12 @@ public class ConfirmBillActivity extends BaseActivity {
 
     private void initDialog() {
         dialog = new Dialog(context, getString(R.string.confirm_dialog_content));
+        dialog.getButtonAccept().setButtonText("自己支付");
+        dialog.getButtonCancel().setButtonText("交易完成");
         dialog.setOnCancelButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
                 dialog.dismiss();
             }
         });
@@ -104,7 +120,6 @@ public class ConfirmBillActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 // TODO: 进入付款详情界面，乘客未付款则需要司机代付
-                showToast("i'm fangfangbest");
                 startActivity(new Intent(context, OrderDetailActivity.class));
                 finish();
             }

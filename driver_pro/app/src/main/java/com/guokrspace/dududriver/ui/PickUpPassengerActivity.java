@@ -1,14 +1,18 @@
 package com.guokrspace.dududriver.ui;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ZoomControls;
 
 import com.baidu.location.BDLocation;
@@ -38,7 +42,15 @@ import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.gc.materialdesign.views.ButtonFlat;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.guokrspace.dududriver.R;
+import com.guokrspace.dududriver.common.Constants;
+import com.guokrspace.dududriver.model.OrderItem;
+import com.guokrspace.dududriver.net.ResponseHandler;
+import com.guokrspace.dududriver.net.SocketClient;
+import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.view.CircleImageView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -70,10 +82,41 @@ public class PickUpPassengerActivity extends BaseActivity {
     @Bind(R.id.confirm_button)
     ButtonRectangle btnConfirm;
     @OnClick(R.id.confirm_button) public void enterConfirmPage() {
-        startActivity(new Intent(this, ConfirmBillActivity.class));
-        this.finish();
+
+        if(orderItem == null){
+            showToast("订单出现异常,请重新等候派单!");
+            CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+            //TODO: 回退
+            return;
+        }
+        SocketClient.getInstance().startOrder(orderItem.getOrder().getId(), new ResponseHandler(Looper.myLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                //进入最后导航界面
+                CommonUtil.changeCurStatus(Constants.STATUS_GOT);
+                initGoDestView();
+            }
+
+            @Override
+            public void onFailure(String error) {
+
+            }
+
+            @Override
+            public void onTimeout() {
+                Log.e("PickUp", "time out! ");
+                //服务器未响应,重新发送请求
+                btnConfirm.callOnClick();
+            }
+        });
+
     }
     private Context context;
+
+    private OrderItem orderItem;
+//    private MainActivity.OrderBrefInformation orderBrefInformation;
+    private BDLocation mLoaction;
+
     private BaiduMap mBaiduMap;
     private LocationClient mLocationClient;
     private LocationClientOption mLocationClientOption;
@@ -81,6 +124,7 @@ public class PickUpPassengerActivity extends BaseActivity {
     private OverlayOptions myOptions;
     private OverlayOptions passengerOptions;
     private boolean isFirstLoc = true;
+    private boolean isSeconLoc = false;
     private Marker myMarker;
     private Marker passengerMarker;
     private BitmapDescriptor passengerDescriptor = null;
@@ -91,7 +135,7 @@ public class PickUpPassengerActivity extends BaseActivity {
     private RoutePlanSearch routePlanSearch;
     private boolean customDefaultIcon = true;
     private PlanNode st = null;
-    private PlanNode ed = PlanNode.withLocation(passengerLatLng);
+    private PlanNode ed = null;
     private OnGetRoutePlanResultListener routePlanResultListener = new OnGetRoutePlanResultListener() {
         @Override
         public void onGetWalkingRouteResult(WalkingRouteResult walkingRouteResult) {
@@ -107,6 +151,7 @@ public class PickUpPassengerActivity extends BaseActivity {
         public void onGetDrivingRouteResult(DrivingRouteResult drivingRouteResult) {
             //获取驾车线路规划结果
             if (drivingRouteResult == null || drivingRouteResult.error != SearchResult.ERRORNO.NO_ERROR) {
+                Log.e("DADDY", drivingRouteResult + ".." + drivingRouteResult.error);
                 showToast("抱歉，未找到结果");
             }
             if (drivingRouteResult.error == SearchResult.ERRORNO.AMBIGUOUS_ROURE_ADDR) {
@@ -117,6 +162,7 @@ public class PickUpPassengerActivity extends BaseActivity {
             }
 
             if (drivingRouteResult.error == SearchResult.ERRORNO.NO_ERROR) {
+                mBaiduMap.clear();
                 DrivingRouteOverlay overlay = new MyDrivingRouteOverlay(mBaiduMap);
                 mBaiduMap.setOnMarkerClickListener(overlay);
                 overlay.setData(drivingRouteResult.getRouteLines().get(0));
@@ -156,32 +202,30 @@ public class PickUpPassengerActivity extends BaseActivity {
             if (location == null || mMapview == null)
                 return;
 
+            mLoaction = location;
             MyLocationData locData = new MyLocationData.Builder()
                     .accuracy(location.getRadius())
                             // 此处设置开发者获取到的方向信息，顺时针0-360
                     .direction(location.getDirection()).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
-//            mBaiduMap.setMyLocationData(locData);//设置定位数据
             LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
-            /*if (myMarker != null) {
-                myMarker.remove();
+
+            if(isFirstLoc || isSeconLoc){
+                st = PlanNode.withLocation(ll);
+                Log.e("daddy", isFirstLoc + " : " + isSeconLoc + " " + st + "  " + ed);
+                if(isFirstLoc){
+                    routePlanSearch = RoutePlanSearch.newInstance();
+                    routePlanSearch.drivingSearch(new DrivingRoutePlanOption().from(st).to(ed));
+                    routePlanSearch.setOnGetRoutePlanResultListener(routePlanResultListener);
+                } else {
+                    routePlanSearch.drivingSearch(new DrivingRoutePlanOption().from(st).to(ed));
+                    Log.e("daddy", "second");
+                }
+                isFirstLoc = isSeconLoc = false;
+                Log.e("BDLocation listener", "route");
             }
-            myOptions = new MarkerOptions()//
-                    .position(ll)
-                    .icon(mCurrentMarker)
-                    .zIndex(9);
-            myMarker = (Marker) mBaiduMap.addOverlay(myOptions);*/
-            st = PlanNode.withLocation(ll);
-            routePlanSearch.drivingSearch(new DrivingRoutePlanOption().from(st).to(ed));
-
-
-
-            if (isFirstLoc) {
-                isFirstLoc = false;
-                MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(ll, 16);//设置中心及缩放级别
-                mBaiduMap.animateMapStatus(u);
-            }
-
+            MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(ll, 16);//设置中心及缩放级别
+            mBaiduMap.animateMapStatus(u);
         }
     };
 
@@ -191,14 +235,33 @@ public class PickUpPassengerActivity extends BaseActivity {
         setContentView(R.layout.activity_pickuppassenger);
         context = PickUpPassengerActivity.this;
         ButterKnife.bind(this);
-        initView();
+
+        Bundle bundle = getIntent().getExtras();
+        if(bundle!=null) {
+            orderItem = (OrderItem) bundle.getSerializable("orderItem");
+            initGetPassView();
+        } else {
+            Log.e("PickUpPassengerActivity", "wrong params in order");
+        }
+
     }
 
-    private void initView() {
-        toolbar.setTitle("去送乘客");
+    private void initGetPassView() {
+        toolbar.setTitle("去接乘客");
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        tvIllustration.setText("去 " + orderItem.getOrder().getStart() + "  送尾号 " + orderItem.getOrder().getPassenger_mobile().substring(7));
+        btnConfirm.setButtonText("确认乘客上车");
+
+        tvMyPosition.setText(orderItem.getOrder().getStart());
+        tvPassengerPosition.setText(orderItem.getOrder().getDestination());
+        LatLng startLoaction = new LatLng(
+                Double.valueOf(orderItem.getOrder().getStart_lat()), Double.valueOf(orderItem.getOrder().getStart_lng()));
+//
+        passengerLatLng = startLoaction;
+        ed = PlanNode.withLocation(passengerLatLng);
 
         mBaiduMap = mMapview.getMap();
         mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);//普通地图
@@ -214,10 +277,6 @@ public class PickUpPassengerActivity extends BaseActivity {
         }
         zoom.setVisibility(View.GONE);
 
-        routePlanSearch = RoutePlanSearch.newInstance();
-        routePlanSearch.setOnGetRoutePlanResultListener(routePlanResultListener);
-
-
         MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(16.0f);
         mBaiduMap.setMapStatus(msu);
 
@@ -228,13 +287,102 @@ public class PickUpPassengerActivity extends BaseActivity {
         mBaiduMap.setMyLocationEnabled(true);
         mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
         mCurrentMarker = BitmapDescriptorFactory.fromResource(R.mipmap.myposition);
-//        mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(mCurrentMode, true, mCurrentMarker));
-        passengerDescriptor = BitmapDescriptorFactory.fromResource(R.mipmap.passenger_position);
-//        passengerOptions = new MarkerOptions().position(passengerLatLng).icon(passengerDescriptor).zIndex(9);
-//        mBaiduMap.addOverlay(passengerOptions);
+        mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(mCurrentMode, true, mCurrentMarker));
         // 定位初始化
         initLocation();
         mLocationClient.start();
+    }
+
+    private void initGoDestView(){
+
+        Log.e("initGoDestView", "step1 ");
+        toolbar.setTitle("订单开始");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        CommonUtil.changeCurStatus(Constants.STATUS_RUN);
+
+        btnConfirm.setButtonText("确认完成订单");
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO:无论如何都要结束订单
+                SocketClient.getInstance().endOrder(new ResponseHandler(Looper.myLooper()) {
+                    @Override
+                    public void onSuccess(String messageBody) {
+                        //
+                        Intent intent = new Intent(PickUpPassengerActivity.this, ConfirmBillActivity.class);
+                        intent.putExtra("orderItem", orderItem);
+                        startActivity(intent);
+                        CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+                        Log.e("PickUpPassengerActivity ", "end order failure" + error);
+                        Toast.makeText(context, "订单出现意外!", Toast.LENGTH_SHORT);
+                        Intent intent = new Intent(PickUpPassengerActivity.this, ConfirmBillActivity.class);
+                        intent.putExtra("orderItem", orderItem);
+                        CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                    @Override
+                    public void onTimeout() {
+                        Log.e("PickUpPassengerActivity ", "end order time out");
+                        Toast.makeText(context, "网络状况较差!", Toast.LENGTH_SHORT);
+                        Intent intent = new Intent(PickUpPassengerActivity.this, ConfirmBillActivity.class);
+                        intent.putExtra("orderItem", orderItem);
+                        CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
+                        startActivity(intent);
+                    }
+                });
+
+            }
+        });
+
+        tvPassengerPosition.setText(orderItem.getOrder().getDestination());
+        LatLng endLoaction = new LatLng(
+                Double.valueOf(orderItem.getOrder().getDestination_lat()), Double.valueOf(orderItem.getOrder().getDestination_lng()));
+//
+        passengerLatLng = endLoaction;
+        ed = PlanNode.withLocation(passengerLatLng);
+
+//        mBaiduMap.clear();
+//        mBaiduMap = mMapview.getMap();
+//        mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);//普通地图
+        // 隐藏缩放控件
+//        int childCount = mMapview.getChildCount();
+//        View zoom = null;
+//        for (int i = 0; i < childCount; i++) {
+//            View child = mMapview.getChildAt(i);
+//            if (child instanceof ZoomControls) {
+//                zoom = child;
+//                break;
+//            }
+//        }
+//        zoom.setVisibility(View.GONE);
+
+        MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(16.0f);
+        mBaiduMap.setMapStatus(msu);
+
+        //禁止转动地图
+//        mBaiduMap.getUiSettings().setRotateGesturesEnabled(false);
+
+        // 开启定位图层
+//        mBaiduMap.setMyLocationEnabled(true);
+//        mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
+//        mCurrentMarker = BitmapDescriptorFactory.fromResource(R.mipmap.myposition);
+//        mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(mCurrentMode, true, mCurrentMarker));
+//        passengerDescriptor = BitmapDescriptorFactory.fromResource(R.mipmap.passenger_position);
+
+        // 定位再次初始化
+        isSeconLoc = true;
+//        initLocation();
+//        mLocationClient.start();
     }
 
     private void initLocation() {
@@ -286,6 +434,5 @@ public class PickUpPassengerActivity extends BaseActivity {
             mMapview = null;
         }
     }
-
 
 }

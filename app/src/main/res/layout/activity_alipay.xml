@@ -22,7 +22,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="30"
-            android:textSize="12sp"
+            android:textSize="6pt"
             android:gravity="center"
             android:text="车费详情"/>
         <View
@@ -43,6 +43,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="车费"
+            android:textColor="@android:color/black"
             android:id="@+id/textView2"
             android:layout_weight="20"
             android:gravity="center" />
@@ -54,13 +55,14 @@
             android:id="@+id/textViewFee"
             android:layout_weight="60"
             android:gravity="center"
-            android:textSize="28dp"
+            android:textSize="30pt"
             android:textColor="@android:color/black" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="元"
+            android:textColor="@android:color/black"
             android:id="@+id/textView4"
             android:layout_weight="20"
             android:gravity="center" />
@@ -83,7 +85,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="30"
-            android:textSize="12sp"
+            android:textSize="6pt"
             android:gravity="center"
             android:text="支付方式"/>
         <View
@@ -95,40 +97,77 @@
     </LinearLayout>
 
     <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="30dp"
+        android:paddingRight="30dp">
+
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@drawable/alipayicon"
+        android:id="@+id/alipayicon" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/alipayicon"
+        android:textColor="@android:color/black"
+        android:textSize="8pt"
+        android:text="支付宝支付"
+        android:id="@+id/textView5" />
+
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/radioButtonAlipay"
+        android:checked="true"
+        android:layout_alignParentRight="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
+        android:layout_marginTop="10dp">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView4" />
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:background="@drawable/weichaticon"
+            android:id="@+id/weichaticon" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="支付宝"
-            android:id="@+id/textView5" />
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/weichaticon"
+            android:textColor="@android:color/black"
+            android:textSize="8pt"
+            android:text="微信支付"
+            android:id="@+id/textView6" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/radioButton"
-            android:checked="true"
-            android:layout_alignParentEnd="true" />
+            android:id="@+id/radioButtonWechat"
+            android:checked="false"
+            android:layout_alignParentRight="true" />
     </RelativeLayout>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="支付宝支付38元"
+        android:text="支付宝支付39.9元"
+        android:textColor="@android:color/white"
+        android:textSize="10pt"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="40dp"
         android:id="@+id/buttonPayConfirm"
+        android:background="@drawable/button_blue_background_selector"
         android:onClick="pay" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="支付后得到红包"
-        android:id="@+id/textViewSystemPrompt"
-        android:layout_gravity="center" />
 </LinearLayout>

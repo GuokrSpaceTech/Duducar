@@ -15,7 +15,9 @@
     <color name="rc_text_color_select_btn_disable">#97d9b3</color>
 
     <!--actionbar-->
-    <color name="de_actionbar_bg">#0195ff</color>
+    <!--<color name="de_actionbar_bg">#0195ff</color>-->
+    <color name="de_actionbar_bg">#212b37</color>
+
     <!---->
     <color name="de_item_select">#f3f3f3</color>
     <color name="de_action_color">#3498DB</color>

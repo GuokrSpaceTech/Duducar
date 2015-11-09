@@ -122,10 +122,11 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
         keyWorldsView.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable arg0) {
-//                mPoiSearch.searchNearby(new PoiNearbySearchOption()
-//                        .location(mReqLoc)
-//                        .radius(20000) //20Km
-//                        .keyword(editSearchKey.getText().toString()));
+                mPoiSearch.searchNearby(new PoiNearbySearchOption()
+                        .location(mReqLoc)
+                        .radius(50000) //50Km
+                        .keyword(editSearchKey.getText().toString()));
+                mSoftManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
 
             @Override
@@ -137,53 +138,12 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
                 if (cs.length() <= 0) {
                     return;
                 }
-//                String city = ((TextView) findViewById(R.id.city)).getText().toString();
                 /**
                  * 使用建议搜索服务获取建议列表，结果在onSuggestionResult()中更新
                  */
                 mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).keyword(cs.toString()).city("长沙"));
-
-
-//                mPoiSearch.searchInCity((new PoiCitySearchOption())
-//                        .city(mCity)
-//                        .keyword(editSearchKey.getText().toString())
-//                        .pageNum(load_Index));
-
-                mSoftManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
             }
         });
-
-        Button searchButton = (Button)findViewById(R.id.search);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                searchButtonProcess(view);
-            }
-        });
-//        Button nextBatchData = (Button)findViewById(R.id.map_next_data);
-//        nextBatchData.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                load_Index++;
-//                searchButtonProcess(null);
-//            }
-//        });
-    }
-
-    /**
-     * 影响搜索按钮点击事件
-     *
-     * @param v
-     */
-    public void searchButtonProcess(View v) {
-
-        mPoiSearch.searchNearby(new PoiNearbySearchOption()
-                .location(mReqLoc)
-                .radius(100000) //100Km
-                .keyword(editSearchKey.getText().toString()));
-        mSoftManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-
-
     }
 
     @Override
@@ -205,10 +165,6 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
             finish();
             return true;
         }
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -227,18 +183,11 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
             return;
         }
         if (result.error == SearchResult.ERRORNO.NO_ERROR) {
-
             mDataset.clear();
             mDataset.addAll(result.getAllPoi());
             mAdapter.mDataset = mDataset;
             mAdapter.notifyDataSetChanged();
 
-//            ((MainActivity)mContext).mBaiduMap.clear();
-//            PoiOverlay overlay = new MyPoiOverlay(((MainActivity)mContext).mBaiduMap);
-//            ((MainActivity)mContext).mBaiduMap.setOnMarkerClickListener(overlay);
-//            overlay.setData(result);
-//            overlay.addToMap();
-//            overlay.zoomToSpan();
             return;
         }
         if (result.error == SearchResult.ERRORNO.AMBIGUOUS_KEYWORD) {
@@ -286,9 +235,11 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
         public class ViewHolder extends RecyclerView.ViewHolder {
             // each data item is just a string in this case
             public TextView mSearchResultItemTextView;
+            public TextView mSearchResultDescrptionItemTextView;
             public ViewHolder(View v) {
                 super(v);
                 mSearchResultItemTextView = (TextView)v.findViewById(R.id.resultTextView);
+                mSearchResultDescrptionItemTextView = (TextView)v.findViewById(R.id.resultDescriptionTextView);
             }
         }
 
@@ -304,7 +255,6 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.search_result_item, parent, false);
             // set the view's size, margins, paddings and layout parameters
-
             ViewHolder vh = new ViewHolder(v);
             return vh;
         }
@@ -329,6 +279,7 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
                     finish();
                 }
             });
+            holder.mSearchResultDescrptionItemTextView.setText(mDataset.get(position).address);
         }
 
         // Return the size of your dataset (invoked by the layout manager)
