@@ -22,12 +22,6 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.location.Poi;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.search.core.SearchResult;
-import com.baidu.mapapi.search.geocode.GeoCodeResult;
-import com.baidu.mapapi.search.geocode.GeoCoder;
-import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
-import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
-import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.baidu.mapapi.utils.DistanceUtil;
 import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.R;
@@ -36,7 +30,6 @@ import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.database.PersonalInformation;
 import com.guokrspace.dududriver.model.BaseInfo;
 import com.guokrspace.dududriver.model.ConfirmItem;
-import com.guokrspace.dududriver.model.Loaction;
 import com.guokrspace.dududriver.model.OrderItem;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
@@ -172,7 +165,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             if (localUsers != null && localUsers.size() > 0) {
                 userInfo = (PersonalInformation) localUsers.get(0);
                 doLogin(userInfo);
-                SocketClient.getInstance().pullBaseInfo(new ResponseHandler() {
+                SocketClient.getInstance().pullBaseInfo(new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
                         baseInfo = (BaseInfo)FastJsonTools.getObject(messageBody, BaseInfo.class);
