@@ -202,8 +202,12 @@ public class PreOrderActivity extends AppCompatActivity
          * Login with Token
          */
         List persons = mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().list();
-        if (persons.size() > 0)
+        if (persons.size() > 0 && persons.get(0) != null) {
             mApplication.mPersonalInformation = (PersonalInformation) persons.get(0);
+        } else {
+            startActivity(new Intent(PreOrderActivity.this, LoginActivity.class));
+            finish();
+        }
         String token = mApplication.mPersonalInformation.getToken();
         String mobile = mApplication.mPersonalInformation.getMobile();
         SocketClient.getInstance().sendLoginReguest(mobile, "2", token, new ResponseHandler(Looper.getMainLooper()) {

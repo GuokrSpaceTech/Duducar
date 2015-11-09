@@ -40,6 +40,9 @@ public class SocketClient {
     public ResponseHandler messageParsor;
 
     public static SocketClient getInstance() {
+        if (s_socketClient == null) {
+            new SocketClient();
+        }
         return s_socketClient;
     }
     /**
