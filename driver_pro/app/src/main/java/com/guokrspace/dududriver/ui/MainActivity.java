@@ -22,12 +22,6 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.location.Poi;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.search.core.SearchResult;
-import com.baidu.mapapi.search.geocode.GeoCodeResult;
-import com.baidu.mapapi.search.geocode.GeoCoder;
-import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
-import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
-import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.baidu.mapapi.utils.DistanceUtil;
 import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.R;
@@ -36,7 +30,6 @@ import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.database.PersonalInformation;
 import com.guokrspace.dududriver.model.BaseInfo;
 import com.guokrspace.dududriver.model.ConfirmItem;
-import com.guokrspace.dududriver.model.Loaction;
 import com.guokrspace.dududriver.model.OrderItem;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
@@ -172,7 +165,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             if (localUsers != null && localUsers.size() > 0) {
                 userInfo = (PersonalInformation) localUsers.get(0);
                 doLogin(userInfo);
-                SocketClient.getInstance().pullBaseInfo(new ResponseHandler() {
+                SocketClient.getInstance().pullBaseInfo(new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
                         baseInfo = (BaseInfo)FastJsonTools.getObject(messageBody, BaseInfo.class);
@@ -522,7 +515,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 
 //            Log.i("BaiduLocationApiDem", sb.toString());
         }
-
+    }
         private void sendHeartBeat(MyLocationData locData) {
             HeartBeatMessage msg = new HeartBeatMessage();
             msg.setCmd("heartbeat");
@@ -532,37 +525,6 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             msg.setSpeed(String.valueOf(locData.speed));
 
             SocketClient.getInstance().sendHeartBeat(msg, new ResponseHandler(Looper.myLooper()) {
-<<<<<<< HEAD
-                        @Override
-                        public void onSuccess(String messageBody) {
-                            Log.i("HeartBeat Response", messageBody);
-                        }
-
-                        @Override
-                        public void onFailure(String error) {
-                            Log.i("HeartBeat error", error);
-                            if (error.contains("login")) {
-                                List localUsers = DuduDriverApplication.getInstance().
-                                        mDaoSession.getPersonalInformationDao().
-                                        queryBuilder().list();
-                                if (localUsers != null && localUsers.size() > 0) {
-                                    userInfo = (PersonalInformation) localUsers.get(0);
-                                    doLogin(userInfo);
-                                }
-                            }
-                        }
-
-
-                        @Override
-                        public void onTimeout() {
-                            Log.i("HeartBeat timeout", "Response Timeout");
-                        }
-                    }
-
-            );
-                Log.i("daddy hearbeat", msg.getStatus() + " - currentStatus");
-            }
-=======
                 @Override
                 public void onSuccess(String messageBody) {
                     Log.i("HeartBeat Response", messageBody);
@@ -592,69 +554,5 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 }
             });
             Log.i("daddy hearbeat", msg.getStatus() + " - currentStatus");
->>>>>>> e4f7c7ee26083e986211dd87067e68c4c3b9ac4c
         }
-
-
-    public class OrderBrefInformation implements Serializable {
-
-        public String getStartPoint() {
-            return startPoint;
-        }
-
-        public void setStartPoint(String startPoint) {
-            this.startPoint = startPoint;
-        }
-
-        public String getDistance() {
-            return distance;
-        }
-
-        public void setDistance(String distance) {
-            this.distance = distance;
-        }
-
-        public String getEndPoint() {
-            return endPoint;
-        }
-
-        public void setEndPoint(String endPoint) {
-            this.endPoint = endPoint;
-        }
-
-        private String startPoint;
-        private String endPoint;
-        private String distance;
-
-        public String getOrder_no() {
-            return order_no;
-        }
-
-        public void setOrder_no(String order_no) {
-            this.order_no = order_no;
-        }
-
-        private String order_no;
-
-        public LatLng getStLatLng() {
-            return stLatLng;
-        }
-
-        public void setStLatLng(LatLng stLatLng) {
-            this.stLatLng = stLatLng;
-        }
-
-        public LatLng getEdLatLng() {
-            return edLatLng;
-        }
-
-        public void setEdLatLng(LatLng edLatLng) {
-            this.edLatLng = edLatLng;
-        }
-
-        private LatLng stLatLng;
-
-        private LatLng edLatLng;
-
     }
-}
