@@ -12,51 +12,74 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.25"
+            android:layout_gravity="center">
+
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_margin="20dp"
-            android:layout_width="48dp"
-            android:layout_height="48dp" />
+            android:id="@+id/driverAvatar"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_margin="20dp" />
+        </RelativeLayout>
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_marginRight="40dp"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.5"
             android:layout_height="wrap_content">
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
             <TextView
+                android:id="@+id/driverName"
                 android:text="王师傅"
+                android:textSize="8pt"
                 android:textColor="@android:color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <TextView
+                android:id="@+id/carPlateNumber"
                 android:text="湘AER998"
+                android:textSize="8pt"
                 android:textColor="@android:color/black"
                 android:layout_marginLeft="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             </LinearLayout>
             <TextView
+                android:id="@+id/carDescription"
                 android:text="黑色本田雅阁"
+                android:textSize="8pt"
                 android:textColor="@android:color/black"
                 android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <RatingBar
+                android:id="@+id/ratingBarSmall"
                 style="@style/heartRatingBar"
                 android:rating="4"
+                android:stepSize="0.15"
+                android:numStars="5"
                 android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <ImageView
-            android:layout_marginLeft="40dp"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="0.25">
+        <ImageView
+            android:id="@+id/phone"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:background="@drawable/ic_phoneicon"/>
+        </RelativeLayout>
     </LinearLayout>
 
 
@@ -77,7 +100,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="30"
-            android:textSize="6pt"
+            android:textSize="8pt"
             android:gravity="center"
             android:text="支付成功"/>
         <View
@@ -98,16 +121,17 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="车费"
+            android:textSize="8pt"
             android:textColor="@android:color/black"
             android:id="@+id/textView2"
             android:layout_weight="20"
             android:gravity="center" />
 
         <TextView
+            android:id="@+id/price"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="38"
-            android:id="@+id/textViewFee"
             android:layout_weight="60"
             android:gravity="center"
             android:textSize="30pt"
@@ -117,6 +141,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="元"
+            android:textSize="8pt"
             android:textColor="@android:color/black"
             android:id="@+id/textView4"
             android:layout_weight="20"
@@ -140,7 +165,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="30"
-            android:textSize="6pt"
+            android:textSize="8pt"
             android:gravity="center"
             android:text="匿名评价司机"/>
         <View
@@ -154,8 +179,11 @@
     </LinearLayout>
 
     <RatingBar
-        style="@style/heartRatingBar"
+        android:id="@+id/ratingBarBig"
+        style="@style/heartRatingBarBig"
         android:rating="4"
+        android:stepSize="0.15"
+        android:numStars="5"
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
