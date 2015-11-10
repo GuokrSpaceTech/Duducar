@@ -5,17 +5,13 @@ package com.guokrspace.dududriver.common;
  */
 public enum  MoreOptionType {
 
-    SUGGESTION(0, "推荐"),
+    GUIDE(0, "专车指南"),
 
     ORDER_MAP(1, "订单地图"),
 
-    CAR_UPDATE(2, "车型升级"),
+    MESSAGE(2, "消息通知"),
 
-    MESSAGE(3, "消息通知"),
-
-    GUIDE(4, "专车指南"),
-
-    SETTING(5, "设置");
+    SETTING(3, "设置");
 
     private int val;
 
@@ -49,6 +45,6 @@ public enum  MoreOptionType {
                 return mot;
             }
         }
-        return SUGGESTION;
+        return GUIDE;
     }
 }

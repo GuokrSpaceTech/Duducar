@@ -203,7 +203,6 @@ public class PreOrderActivity extends AppCompatActivity
          * Login with Token
          */
         List persons = mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().list();
-<<<<<<< HEAD
         if (persons.size() > 0 && persons.get(0) != null) {
             mApplication.mPersonalInformation = (PersonalInformation) persons.get(0);
         } else {
@@ -215,31 +214,20 @@ public class PreOrderActivity extends AppCompatActivity
         SocketClient.getInstance().sendLoginReguest(mobile, "2", token, new ResponseHandler(Looper.getMainLooper()) {
             @Override
             public void onSuccess(String messageBody) {
-                Log.i("","Login Success");
+                Log.i("", "Login Success");
             }
-=======
-        if (persons.size() > 0) {
-            mApplication.mPersonalInformation = (PersonalInformation) persons.get(0);
-            String token = mApplication.mPersonalInformation.getToken();
-            String mobile = mApplication.mPersonalInformation.getMobile();
-            SocketClient.getInstance().sendLoginReguest(mobile, "2", token, new ResponseHandler(Looper.getMainLooper()) {
-                @Override
-                public void onSuccess(String messageBody) {
-                    Log.i("", "Login Success");
-                }
->>>>>>> master
 
-                @Override
-                public void onFailure(String error) {
-                    Log.i("", "Login Failure");
-                }
+            @Override
+            public void onFailure(String error) {
+                Log.i("", "Login Failure");
+            }
 
-                @Override
-                public void onTimeout() {
-                    Log.i("", "Login Timeout");
-                }
-            });
-        }
+            @Override
+            public void onTimeout() {
+                Log.i("", "Login Timeout");
+            }
+        });
+
     }
 
     private void initListener() {

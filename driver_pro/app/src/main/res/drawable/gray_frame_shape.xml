@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-    <stroke android:color="@color/group_list_gray" android:width="1px" />
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <item>
+        <shape android:shape="rectangle">
+            <stroke android:width="1px" android:color="@color/group_list_gray"/>
+        </shape>
+    </item>
+    <item android:top="1px" android:bottom="1px">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/app_main_theme" />
+        </shape>
+    </item>
+</layer-list>
