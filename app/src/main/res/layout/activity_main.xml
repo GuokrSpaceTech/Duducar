@@ -132,8 +132,6 @@
                             android:layout_weight="90"
                             android:id="@+id/destButton" />
                     </FrameLayout>
-
-
                 </LinearLayout>
 
                 <Button

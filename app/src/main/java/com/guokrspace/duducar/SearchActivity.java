@@ -70,7 +70,7 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
     ResultListAdapter mAdapter;
 
     private String  mCity;
-
+    private SearchLocation location;
     private Context mContext;
 
     @Override
@@ -82,7 +82,7 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null) {
             mCity = bundle.getString(ARG_CITY);
-            SearchLocation location = (SearchLocation)bundle.get("location");
+            location = (SearchLocation)bundle.get("location");
             if(location!=null)
                 mReqLoc = location.getLocation();
         }
@@ -102,10 +102,9 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
         sugAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_dropdown_item_1line);
         keyWorldsView.setAdapter(sugAdapter);
 
-//        editCity = (TextView) findViewById(R.id.city);
-//        editCity.setText(mCity);
-
         editSearchKey = (EditText) findViewById(R.id.searchkey);
+
+        editSearchKey.setText("");
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -144,6 +143,9 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
                 mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).keyword(cs.toString()).city("长沙"));
             }
         });
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
     }
 
     @Override

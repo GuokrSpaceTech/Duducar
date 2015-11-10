@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/hyman/Duducar/driver_pro/app/build/intermediates/exploded-aar/driver_pro/MaterialDesign/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="3da2c5239055b17ec353988687f82765b8b33586">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/classes-e09067977e2ca7a6772ff5aa6a98551e7569e81f.jar" />
+    </item>
+
+</items>

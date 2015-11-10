@@ -85,7 +85,7 @@ public class PostOrderActivity extends AppCompatActivity {
     SearchLocation dest;
     DriverInfo driver;
     TripStart order_start;
-    TripOver  order_finish;
+    TripOver order_finish;
     DuduApplication mApplication;
 
     //Activity Start RequestCode
@@ -101,34 +101,33 @@ public class PostOrderActivity extends AppCompatActivity {
     Handler mHandler = new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message message) {
-            switch (message.what)
-            {
+            switch (message.what) {
                 case MessageTag.MESSAGE_ORDER_CANCEL_CONFIRMED:
-                    if(state == ORDER_CANCELLING) {
+                    if (state == ORDER_CANCELLING) {
                         getSupportActionBar().setTitle("订单已经取消");
                         finish();
                     }
                     break;
                 case MessageTag.MESSAGE_ORDER_DISPATCHED:
-                    if(state == WAITING_FOR_ORDER_CONFIRM)
-                    {   //The driverview moves up by 140dp
-                        LinearLayout bmapLayout = (LinearLayout)findViewById(R.id.bmapLayout);
-                        RelativeLayout.LayoutParams paramRL = (RelativeLayout.LayoutParams)bmapLayout.getLayoutParams();
-                        paramRL.height =  bmapLayout.getHeight() - dpToPx(getResources(),120);
+                    if (state == WAITING_FOR_ORDER_CONFIRM) {   //The driverview moves up by 140dp
+                        LinearLayout bmapLayout = (LinearLayout) findViewById(R.id.bmapLayout);
+                        RelativeLayout.LayoutParams paramRL = (RelativeLayout.LayoutParams) bmapLayout.getLayoutParams();
+                        paramRL.height = bmapLayout.getHeight() - dpToPx(getResources(), 120);
                         bmapLayout.requestLayout();
 
-                        driverView = (DriverInformationView)findViewById(R.id.driverView);
-                        RelativeLayout.LayoutParams params = ( RelativeLayout.LayoutParams)driverView.getLayoutParams();
+                        driverView = (DriverInformationView) findViewById(R.id.driverView);
+                        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) driverView.getLayoutParams();
 
-                        RelativeLayout container = (RelativeLayout)findViewById(R.id.container);
+                        RelativeLayout container = (RelativeLayout) findViewById(R.id.container);
                         container.requestLayout();
 
                         orderStatusString = "出租车即将到达";
                         getSupportActionBar().setTitle(orderStatusString);
 
-                        if(driver!=null) {
+                        if (driver != null) {
                             updateDriverUI(driver);
-                            TextView cancelPrompt = (TextView)findViewById(R.id.cancelPromptTextView);
+                            mApplication.mDriverDetail = driver.getDriver();
+                            TextView cancelPrompt = (TextView) findViewById(R.id.cancelPromptTextView);
                             cancelPrompt.setVisibility(View.GONE);
                             mProgressBar.setVisibility(View.GONE);
                             mFab.setVisibility(View.GONE);
@@ -138,9 +137,9 @@ public class PostOrderActivity extends AppCompatActivity {
                 case MessageTag.MESSAGE_CAR_ARRIVED:
                     orderStatusString = "已经上车";
                     getSupportActionBar().setTitle(orderStatusString);
+
                     //修正上车地点
-                    if(order_start!=null)
-                    {
+                    if (order_start != null) {
                         Double lat = Double.parseDouble(order_start.getOrder().getStart_lat());
                         Double lng = Double.parseDouble(order_start.getOrder().getStart_lng());
                         LatLng ll = new LatLng(lat, lng);
@@ -155,8 +154,7 @@ public class PostOrderActivity extends AppCompatActivity {
                     break;
 
                 case MessageTag.MESSAGE_ORDER_COMPLETED:
-                    startActivity(new Intent(mContext, AlipayActivity.class));
-                    if(order_finish!=null) {
+                    if (order_finish != null) {
                         orderStatusString = String.format("到达%s", order_finish.getTripOverOrder().getDestination());
                         getSupportActionBar().setTitle(orderStatusString);
 
@@ -197,9 +195,9 @@ public class PostOrderActivity extends AppCompatActivity {
 
         //Get Args
         Bundle bundle = getIntent().getExtras();
-        if(bundle!=null){
-            start = (SearchLocation)bundle.get("start");
-            dest = (SearchLocation)bundle.get("dest");
+        if (bundle != null) {
+            start = (SearchLocation) bundle.get("start");
+            dest = (SearchLocation) bundle.get("dest");
             requestCar();
         }
 
@@ -236,7 +234,7 @@ public class PostOrderActivity extends AppCompatActivity {
         mBaiduMap.setMapStatus(msu);
 
         //UI
-        mProgressBar = (ProgressBar)findViewById(R.id.progressBar);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         mFab = (FloatingActionButton) findViewById(R.id.fab);
         mFab.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -251,9 +249,7 @@ public class PostOrderActivity extends AppCompatActivity {
         });
 
         // Debug
-
-
-                mFab.setOnClickListener(new View.OnClickListener() {
+        mFab.setOnClickListener(new View.OnClickListener() {
 ////            @Override
 ////            public void onClick(View view) {
 ////                mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_COMPLETED);
@@ -287,7 +283,7 @@ public class PostOrderActivity extends AppCompatActivity {
 //            }
 //        });
 
-        //        mFab.setOnClickListener(new View.OnClickListener() {
+            //        mFab.setOnClickListener(new View.OnClickListener() {
 ////            @Override
 ////            public void onClick(View view) {
 ////                mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_COMPLETED);
@@ -302,8 +298,8 @@ public class PostOrderActivity extends AppCompatActivity {
                 order.setDestination("麓山南路36号");
                 order.setStart_lat("28.18539");
                 order.setStart_lng("112.949728");
-        order.setDestination_lat("28.18539");
-        order.setDestination_lng("112.949728");
+                order.setDestination_lat("28.18539");
+                order.setDestination_lng("112.949728");
                 order.setCar_type("1");
 
                 order_finish.setTripOverOrder(order);
@@ -318,6 +314,9 @@ public class PostOrderActivity extends AppCompatActivity {
                 detail.setPicture("http://img4.imgtn.bdimg.com/it/u=1519979105,1747027397&fm=21&gp=0.jpg");
                 detail.setRating(4);
                 driver.setDriver(detail);
+
+                mApplication.mDriverDetail = driver.getDriver();
+
                 mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_COMPLETED);
             }
         });
@@ -332,11 +331,11 @@ public class PostOrderActivity extends AppCompatActivity {
 //            }
 //        });
 
-        mStartTextView = (TextView)findViewById(R.id.textViewStart);
-        mDestTextView = (TextView)findViewById(R.id.textViewDestination);
-        if(start!=null)
+        mStartTextView = (TextView) findViewById(R.id.textViewStart);
+        mDestTextView = (TextView) findViewById(R.id.textViewDestination);
+        if (start != null)
             mStartTextView.setText(start.getAddress());
-        if(dest!=null)
+        if (dest != null)
             mDestTextView.setText(dest.getAddress());
 
         state = WAITING_FOR_ORDER_CONFIRM;
@@ -344,7 +343,10 @@ public class PostOrderActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("正在预约中...");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mApplication = (DuduApplication)getApplicationContext();
+        mApplication = (DuduApplication) getApplicationContext();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
     }
 
     @Override
@@ -359,10 +361,12 @@ public class PostOrderActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(String error) {}
+            public void onFailure(String error) {
+            }
 
             @Override
-            public void onTimeout() {}
+            public void onTimeout() {
+            }
         });
 
         SocketClient.getInstance().registerServerMessageHandler(MessageTag.TRIP_START, new ResponseHandler(Looper.myLooper()) {
@@ -426,9 +430,9 @@ public class PostOrderActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if(mCurrentMarker!=null)
+        if (mCurrentMarker != null)
             mCurrentMarker.recycle();
-        if(mLocClient!=null)
+        if (mLocClient != null)
             mLocClient.stop();
         super.onDestroy();
     }
@@ -453,14 +457,13 @@ public class PostOrderActivity extends AppCompatActivity {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, res.getDisplayMetrics());
     }
 
-    private void requestCar()
-    {
-        String startAddr = (start==null) ? "":start.getAddress();
-        String destAddr = (dest==null) ? "":dest.getAddress();
-        Double startLat =  (start==null) ? 0D:start.getLat();
-        Double destLat = (dest==null) ? 0D:dest.getLat();
-        Double startLng =  (start==null) ? 0D:start.getLng();
-        Double destLng = (dest==null) ? 0D:dest.getLat();
+    private void requestCar() {
+        String startAddr = (start == null) ? "" : start.getAddress();
+        String destAddr = (dest == null) ? "" : dest.getAddress();
+        Double startLat = (start == null) ? 0D : start.getLat();
+        Double destLat = (dest == null) ? 0D : dest.getLat();
+        Double startLng = (start == null) ? 0D : start.getLng();
+        Double destLng = (dest == null) ? 0D : dest.getLng();
         SocketClient.getInstance().sendCarRequest(
                 "2",
                 startAddr,
@@ -474,11 +477,12 @@ public class PostOrderActivity extends AppCompatActivity {
                 "1",
                 new ResponseHandler(Looper.getMainLooper()) {
                     @Override
-                    public void onSuccess(String messageBody) {}
+                    public void onSuccess(String messageBody) {
+                    }
 
                     @Override
                     public void onFailure(String error) {
-                        Log.i("","");
+                        Log.i("", "");
                         //Cancel TripOverOrder
                         cancelOrder();
                         // Try again
@@ -495,8 +499,7 @@ public class PostOrderActivity extends AppCompatActivity {
                 });
     }
 
-    private void cancelOrder()
-    {
+    private void cancelOrder() {
         //Cancel TripOverOrder
         SocketClient.getInstance().cancelCarRequest("2", new ResponseHandler() {
             @Override
@@ -516,10 +519,8 @@ public class PostOrderActivity extends AppCompatActivity {
         });
     }
 
-    private void updateDriverUI(DriverInfo driver)
-    {
-        if(driverView!=null)
-        {
+    private void updateDriverUI(DriverInfo driver) {
+        if (driverView != null) {
             Picasso.with(mContext)
                     .load(driver.getDriver().getAvatar())
                     .centerCrop().fit().into(driverView.mDriverImageView);
@@ -630,10 +631,10 @@ public class PostOrderActivity extends AppCompatActivity {
                     .direction(location.getDirection()).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
 
-            if(locData!=null) {
+            if (locData != null) {
                 mBaiduMap.setMyLocationData(locData);
 
-                LatLng  ll = new LatLng(locData.latitude, locData.longitude);
+                LatLng ll = new LatLng(locData.latitude, locData.longitude);
                 mBaiduMap.clear();
                 mBaiduMap.addOverlay(new MarkerOptions().position(ll)
                         .icon(BitmapDescriptorFactory

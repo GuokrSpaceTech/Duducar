@@ -42,12 +42,9 @@
             android:value="yWIyrGPVMWZt9Y7gYA9SVeHx" />
 
         <activity
-            android:name=".PreOrderActivity"
-            android:logo="@drawable/drawericon"
-            android:label="嘟嘟打车" >
+            android:name=".PreOrderActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -67,7 +64,6 @@
 
         <activity
             android:name=".PostOrderActivity"
-            android:label="@string/title_activity_order_cab"
             android:parentActivityName=".PreOrderActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -75,8 +71,10 @@
         </activity>
         <activity android:name=".CostEstimateActivity" />
         <activity
-            android:name=".AlipayActivity"
-            android:label="@string/title_activity_alipay" >
+            android:name=".AlipayActivity">
+        </activity>
+        <activity
+            android:name=".RatingActivity" >
         </activity>
     </application>
 

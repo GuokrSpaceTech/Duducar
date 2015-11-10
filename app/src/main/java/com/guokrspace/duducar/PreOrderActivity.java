@@ -140,9 +140,6 @@ public class PreOrderActivity extends AppCompatActivity
         nearByCarsTextView = (TextView)findViewById(R.id.nearByCarsTextView);
         callCabButton = (Button)findViewById(R.id.callaCabButton);
 
-//        Toolbar myToolbar = (Toolbar)findViewById(R.id.my_toolbar);
-//        setSupportActionBar(myToolbar);
-
         // 地图初始化
         mMapView = (MapView) findViewById(R.id.bmapView);
         mBaiduMap = mMapView.getMap();
@@ -203,31 +200,29 @@ public class PreOrderActivity extends AppCompatActivity
          * Login with Token
          */
         List persons = mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().list();
-        if (persons.size() > 0 && persons.get(0) != null) {
+        if (persons.size() > 0) {
             mApplication.mPersonalInformation = (PersonalInformation) persons.get(0);
-        } else {
-            startActivity(new Intent(PreOrderActivity.this, LoginActivity.class));
-            finish();
+            String token = mApplication.mPersonalInformation.getToken();
+            String mobile = mApplication.mPersonalInformation.getMobile();
+            if(SocketClient.getInstance()!=null) {
+                SocketClient.getInstance().sendLoginReguest(mobile, "2", token, new ResponseHandler(Looper.getMainLooper()) {
+                    @Override
+                    public void onSuccess(String messageBody) {
+                        Log.i("", "Login Success");
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+                        Log.i("", "Login Failure");
+                    }
+
+                    @Override
+                    public void onTimeout() {
+                        Log.i("", "Login Timeout");
+                    }
+                });
+            }
         }
-        String token = mApplication.mPersonalInformation.getToken();
-        String mobile = mApplication.mPersonalInformation.getMobile();
-        SocketClient.getInstance().sendLoginReguest(mobile, "2", token, new ResponseHandler(Looper.getMainLooper()) {
-            @Override
-            public void onSuccess(String messageBody) {
-                Log.i("", "Login Success");
-            }
-
-            @Override
-            public void onFailure(String error) {
-                Log.i("", "Login Failure");
-            }
-
-            @Override
-            public void onTimeout() {
-                Log.i("", "Login Timeout");
-            }
-        });
-
     }
 
     private void initListener() {
@@ -245,31 +240,6 @@ public class PreOrderActivity extends AppCompatActivity
                     intent.putExtra("start", start);
                     intent.putExtra("dest", dest);
                     startActivityForResult(intent, 0x6002);
-
-//                    if (orderConfirmationView == null) {
-//                        orderConfirmationView = new OrderConfirmationView(mContext);
-//                        final RelativeLayout container = (RelativeLayout) findViewById(R.id.container);
-//                        final FrameLayout mainmapview = (FrameLayout) findViewById(R.id.mainmapview);
-//
-//                        container.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//
-//                                int heightInDpofConfirmView = 160;
-//
-//                                ViewGroup.LayoutParams paramRL = mainmapview.getLayoutParams();
-//                                paramRL.height = mainmapview.getHeight() - dpToPx(getResources(), heightInDpofConfirmView);
-//                                mainmapview.requestLayout();
-//
-//                                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.FILL_PARENT);
-//                                params.addRule(RelativeLayout.BELOW, mainmapview.getId());
-//                                container.addView(orderConfirmationView, 1, params);
-//                                container.requestLayout();
-//
-//                                isShowingOrderConfirmatinoView = true;
-//                            }
-//                        });
-//                    }
                 }
             }
         });
@@ -306,6 +276,7 @@ public class PreOrderActivity extends AppCompatActivity
 
                 Intent intent = new Intent(mContext, SearchActivity.class);
                 intent.putExtra("location", start);
+                intent.putExtra("city", city);
                 startActivityForResult(intent, ACTIVITY_SEARCH_START_REQUEST);
             }
         });
@@ -315,8 +286,9 @@ public class PreOrderActivity extends AppCompatActivity
             public void onClick(View view) {
 
                 Intent intent = new Intent(mContext, SearchActivity.class);
-                intent.putExtra("location", start);
-                startActivityForResult(intent, ACTIVITY_SEARCH_START_REQUEST);
+                intent.putExtra("location", start); //Search nearby from the start
+                intent.putExtra("city", city);
+                startActivityForResult(intent, ACTIVITY_SEARCH_DEST_REQUEST);
             }
         });
     }
@@ -375,6 +347,8 @@ public class PreOrderActivity extends AppCompatActivity
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_drawericon);
         actionBar.setTitle(mTitle);
     }
 
@@ -405,23 +379,6 @@ public class PreOrderActivity extends AppCompatActivity
             if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 getSupportFragmentManager().popBackStack();
                 return true; //Just return, do not toggle the drawer
-            } else if (isShowingOrderConfirmatinoView == true) //If the confirmview is showing
-            {
-                isShowingOrderConfirmatinoView = false;
-                //Just hide the OrderConfirmationView
-                {
-//                    final RelativeLayout container = (RelativeLayout) findViewById(R.id.container);
-//                    if (orderConfirmationView != null) {
-//                        container.removeView(orderConfirmationView);
-//                    }
-//                    final FrameLayout mainmapview = (FrameLayout) findViewById(R.id.mainmapview);
-//                    ViewGroup.LayoutParams paramRL = mainmapview.getLayoutParams();
-//                    paramRL.height = ViewGroup.LayoutParams.MATCH_PARENT;
-//                    mainmapview.requestLayout();
-//                    container.requestLayout();
-
-                    return true; //Just return, do not toggle the drawer
-                }
             }
         }
 
@@ -474,13 +431,15 @@ public class PreOrderActivity extends AppCompatActivity
 
                 Bundle bundle = data.getExtras();
                 if (bundle != null) {
-                    SearchLocation location = (SearchLocation) bundle.get("location");
-                    LatLng searchLoc = location.getLocation();
+                    start = (SearchLocation) bundle.get("location");
+                    LatLng searchLoc = start.getLocation();
+
+                    startLocButton.setText(start.getAddress());
 
                     mBaiduMap.clear();
                     mBaiduMap.addOverlay(new MarkerOptions().position(searchLoc)
                             .icon(BitmapDescriptorFactory
-                                    .fromResource(R.drawable.caricon)));
+                                    .fromResource(R.drawable.ic_current_position_pin)));
                     mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLng(searchLoc));
                     mGeoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(searchLoc));
                 }
@@ -488,6 +447,8 @@ public class PreOrderActivity extends AppCompatActivity
                 Bundle bundle = data.getExtras();
                 if (bundle != null) {
                     dest = (SearchLocation) bundle.get("location");
+                    destLocButton.setText(dest.getAddress());
+
                     Intent intent = new Intent(mContext, CostEstimateActivity.class);
                     intent.putExtra("start", start);
                     intent.putExtra("dest", dest);
