@@ -65,6 +65,46 @@ public class CommonUtil {
         return currentStatus;
     }
 
+    public static int getOrderDealInfoId() {
+        return orderDealInfoId;
+    }
 
+    public static void setOrderDealInfoId(int orderDealInfoId) {
+        CommonUtil.orderDealInfoId = orderDealInfoId;
+    }
+
+    private static int orderDealInfoId;
+
+    public static double getCurLat() {
+        return curLat;
+    }
+
+    public static void setCurLat(double curLat) {
+        CommonUtil.curLat = curLat;
+    }
+
+    public static double getCurLng() {
+        return curLng;
+    }
+
+    public static void setCurLng(double curLng) {
+        CommonUtil.curLng = curLng;
+    }
+
+    public static long getCurTime() {
+        return curTime;
+    }
+
+    public static void setCurTime(long curTime) {
+        CommonUtil.curTime = curTime;
+    }
+
+    public static double curLat;
+    public static double curLng;
+    public static long curTime;
+
+    public static double countPrice(double mileage, double low){
+        return 10 * mileage + low * 1.5 + 0.01;
+    }
 
 }

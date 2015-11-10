@@ -89,7 +89,7 @@ public class ConfirmBillActivity extends BaseActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        btnConfirm.setButtonText("确认订单");
+        btnConfirm.setButtonText("确认账单");
 
         Bundle bundle = getIntent().getExtras();
         orderItem = (OrderItem) bundle.get("orderItem");
@@ -107,8 +107,9 @@ public class ConfirmBillActivity extends BaseActivity {
 
     private void initDialog() {
         dialog = new Dialog(context, getString(R.string.confirm_dialog_content));
-        dialog.getButtonAccept().setButtonText("自己支付");
-        dialog.getButtonCancel().setButtonText("交易完成");
+        dialog.addCancelButton("自己支付");
+//        dialog.getButtonAccept().setButtonText("自己支付");
+//        dialog.getButtonCancel().setButtonText("交易完成");
         dialog.setOnCancelButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -139,9 +140,5 @@ public class ConfirmBillActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
-        if (dialog != null) {
-            dialog.dismiss();
-            dialog = null;
-        }
     }
 }
