@@ -67,8 +67,8 @@ public class CostEstimateActivity extends AppCompatActivity {
         if(startLoc!=null && endLoc!=null)
         {
             Double distance = DistanceUtil.getDistance(startLoc.getLocation(), endLoc.getLocation());
-            int price_high = (int) (distance * 1.3 / 1000); //meter -> km
-            int price_low  = (int) (distance * 1.1 / 1000); //meter -> km
+            int price_high = (int) (distance * 3.2 / 1000); //meter -> km
+            int price_low  = (int) (distance * 3 / 1000); //meter -> km
 
             String estimation = String.format("%d-%d",price_low,price_high);
             costEstTextView.setText(estimation);

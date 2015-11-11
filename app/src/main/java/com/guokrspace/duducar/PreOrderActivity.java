@@ -159,6 +159,9 @@ public class PreOrderActivity extends AppCompatActivity
         }
         zoom.setVisibility(View.GONE);
 
+        LatLng initLoc = new LatLng(28.173,112.9584);
+        MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(initLoc);
+        mBaiduMap.animateMapStatus(u);
         mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
         MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(16.0f);
         mBaiduMap.setMapStatus(msu);

@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
@@ -41,26 +42,28 @@ public class AlipayActivity extends ActionBarActivity {
     public static final String SELLER = "1946742250@qq.com";
     // 商户私钥，pkcs8格式
     public static final String RSA_PRIVATE =
-            "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBALvlB3umV2aGN0bW" +
-            "10UfLBMlTBH9/gAFocJxDZ/c2SbWR7dOJAakVfjrZx2qdzCSEF1lV1jFo53+ZVTA" +
-            "9kRjkhB//D8w5IEmNxf5Ie9vGSN4exPbQPJ+U543nlDjmeF4SHOeJ0Z1Ulw8m7gP" +
-            "IcpNTekTZ0tI3sXmjYCreFsX73FTAgMBAAECgYBfUPoQ0ft4eRHFj+s4l22mcL88" +
-            "SVr26+R5XRyKQmCugPl0leFUtT0fv1taA0Xfj9lZZ7V9xRURayJAcnr7in9nnNX8" +
-            "SWz+z7MhlIzFmkuIWxVvT/AGp+sf1e7+NKF9QdfR2Hlrgg9iVc42kGxCKNKcB9s/" +
-            "uqoszdCN9jFIW3ZWoQJBAN+cPZytoP+96vPXYrb5Fuyonf8rOo0Gik7g7AF3wGWi" +
-            "OVQ02+VJ7BrVupG0rXiGfMVErN9Sstz46kkrheIe33kCQQDXHGfHu+rZIhua9ujC" +
-            "R9qZHT3OqSwbm4dvNZPLsoYSz3jjliMzj/kzhpl5pZTKo7/RVhr4kileNdSwI6na" +
-            "PSgrAkBWlCkq4/NlcgRpu2iGTfW5ViQuq281MWYV2nKmstY0w9YMq5bEtZWMYlql" +
-            "ld5gvznKK6f/pAaLFnmoMQjan3eJAkAZSI5uLIk7AkZKXZEYHMf1zTkRjFLR3+L4" +
-            "UEzR2Wbm2Rn1bhUvH1IEG2L4qFynwL1wBnXfF5bjKuKX3Wk+bIfHAkBwbiXSzGH/" +
-            "uI5R7nTRA4lF7yq+IDdwPTNDOTMnehiksvLlgoM+BvtQcF9h9pl9B4JD7qMtRu+M" +
-            "GowzroFBqRpV";
+            "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAOpsoA3pTu1jxVg4" +
+            "2GVX+niS2Y0UQHe4uxn5lIDiOOvOPhBDFrPhVi8s4RTWR89PGQSOLlH6CzyUXNwV" +
+            "98aFrditHLNk+zuOetm/gRU7dzA9SsZTGQ2e2oT39EWft07R4WoZmXRP7B3Xp8U8" +
+            "6U8rO578M8w4ZA1KHMwkxxjqhPJ9AgMBAAECgYBADnad1obOr1iZhs76wlOa5uWz" +
+            "ezkyfbQCoQRHQ4myRaUH5I0rkgNu2KCYhQUSTNbVO9TEacLwRsopCYevI5AhAxxT" +
+            "ANGoL4eeYSeaYZJoBiUeYu6UpX78Hhy/GWNVDFLkm42FT9Il3Zi0bf/jtg/mVmzK" +
+            "k8NzA0ePf994ALvOMQJBAPxOKrViXOh64s3n3W3cZ3F+dXLsBWhnNOzYlT5cSGoQ" +
+            "K4ud0bGGIDs7LQ72poJwARXd4H0ZwJR4rwMnoQbIFF8CQQDt2204/ndcwOx38iQs" +
+            "V7AkpCrK1WEg11tK2lBJE3TiaiIoZhgbWNCc9ZJO79UeTuYku5MXx8XHuw+WZs23" +
+            "MkajAkEAsknuRiSO8L09njE1uNdhxcKN7jq4i5E6xg86T0nY5hItI0jPkDnudsyX" +
+            "R5amDVBmg/Q5GU3kV0Z8racIVAl40wJAfsm2YOkTyzdzVUSXj6N2WzG/NbukOJNT" +
+            "MIVKwolChuY4Kvyw4PLo0KH+SWGCYtN/zhjGgaiVfq/x0SQfiAWerQJBAIVWunH9" +
+            "KckyXpEIFhCeIbx5blSZ2OTcDzqm++GsjP9eFxDxluqSolglnaQpJEwg6PeoWhiw" +
+            "kYSGL5z3CmCjQCI=";
+
     // 支付宝公钥
     public static final String RSA_PUBLIC =
             "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDI6d306Q8fIfCOaTXyiUeJHkrIvYISRcc73s3vF1ZT7XN8RNPwJxo8pWaJMmvyTn9N4HQ632qJBVHf8sxHi/fEsraprwCtzvzQETrNRwVxLO5jVmRGi60j8Ue1efIlzPXV9je9mkjzOmdssymZkh2QhUrCmZYI/FCEa3/cNMW0QIDAQAB";
 
     private OrderDetail tripOverOrderDetail;
     private Button payButton;
+    private TextView feeTextView;
     private static final int SDK_PAY_FLAG = 1;
     private static final int SDK_CHECK_FLAG = 2;
 
@@ -132,24 +135,15 @@ public class AlipayActivity extends ActionBarActivity {
 
         //UI
         payButton = (Button)findViewById(R.id.buttonPayConfirm);
+        feeTextView = (TextView)findViewById(R.id.textViewFee);
 
         //Get Arguments
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null)
         {
             tripOverOrderDetail = (OrderDetail) bundle.get("order");
+            feeTextView.setText(tripOverOrderDetail.getOrg_price());
         }
-
-        //Debug
-//        tripOverOrderDetail = new TripOverOrder("0.01");
-//        tripOverOrderDetail.setCar_type("1");
-//        tripOverOrderDetail.setDestination("");
-//        tripOverOrderDetail.setDestination_lat("28.173");
-//        tripOverOrderDetail.setDestination_lng("112.9584");
-//        tripOverOrderDetail.setMileage("24");
-//        tripOverOrderDetail.setPrice("32");
-//        tripOverOrderDetail.setStart_lat("28.189");
-//        tripOverOrderDetail.setStart_lng("112.96");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
@@ -219,9 +213,6 @@ public class AlipayActivity extends ActionBarActivity {
                 // 构造PayTask 对象
                 PayTask alipay = new PayTask(AlipayActivity.this);
 
-                // 设置为沙箱模式，不设置默认为线上环境
-                 alipay.checkAccountIfExist();
-
                 // 调用支付接口，获取支付结果
                 String result = alipay.pay(payInfo);
 
@@ -241,8 +232,13 @@ public class AlipayActivity extends ActionBarActivity {
     /**
      * create the order info. 创建订单信息
      */
-    public String getOrderInfo(OrderDetail tripOverOrderDetail) {
-
+    public String getOrderInfo(OrderDetail tripOverOrderDetail){
+        String notifyUrl = "";
+        try {
+            notifyUrl = URLEncoder.encode("http://120.24.237.15:81/index.php?s=api/Pay/getAlipayResult", "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         // 签约合作者身份ID
         String orderInfo = "partner=" + "\"" + PARTNER + "\"";
 
@@ -256,13 +252,13 @@ public class AlipayActivity extends ActionBarActivity {
         orderInfo += "&subject=" + "\"" + tripOverOrderDetail.getDestination() + "\"";
 
         // 商品详情
-        orderInfo += "&body=" + "\"" +  tripOverOrderDetail.getMileage() + "\"";
+        orderInfo += "&body=" + "\"" +  tripOverOrderDetail.getOrderNum() + "\"";
 
         // 商品金额
-        orderInfo += "&total_fee=" + "\"" + tripOverOrderDetail.getMileage() + "\"";
+        orderInfo += "&total_fee=" + "\"" + tripOverOrderDetail.getOrg_price() + "\"";
 
         // 服务器异步通知页面路径
-        orderInfo += "&notify_url=" + "\"http://120.24.237.15:81/index.php?s=api/Pay/getAlipayResult" + "\"";
+        orderInfo += "&notify_url=" + notifyUrl;
 
         // 服务接口名称， 固定值
         orderInfo += "&service=\"mobile.securitypay.pay\"";

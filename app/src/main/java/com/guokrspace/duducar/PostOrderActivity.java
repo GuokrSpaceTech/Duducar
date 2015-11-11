@@ -12,6 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -202,6 +203,10 @@ public class PostOrderActivity extends AppCompatActivity {
         mBaiduMap.getUiSettings().setScrollGesturesEnabled(false);
         mBaiduMap.getUiSettings().setZoomGesturesEnabled(false);
 
+        LatLng initLoc = new LatLng(28.173,112.9584);
+        MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(initLoc);
+        mBaiduMap.animateMapStatus(u);
+
         // 定位初始化
         initLocation();
         mLocClient.start();
@@ -238,7 +243,7 @@ public class PostOrderActivity extends AppCompatActivity {
         });
 
         // Debug
-        mFab.setOnClickListener(new View.OnClickListener() {
+//        mFab.setOnClickListener(new View.OnClickListener() {
 ////            @Override
 ////            public void onClick(View view) {
 ////                mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_COMPLETED);
@@ -277,20 +282,20 @@ public class PostOrderActivity extends AppCompatActivity {
 ////            public void onClick(View view) {
 ////                mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_COMPLETED);
 ////            }
+////
+//            @Override
+//            public void onClick(View view) {
+//                order_finish = new TripOver();
 //
-            @Override
-            public void onClick(View view) {
-                order_finish = new TripOver();
-
-                String messageBody = "{\"id\":29,\"orderNum\":\"12345678889\",\"driver_id\":3,\"passenger_id\":3,\"passenger_mobile\":\"13900000002\"," +
-                        "\"start\":\"\\u6e56\\u5357\\u7701\\u957f\\u6c99\\u5e02\\u5cb3\\u9e93\\u533a\\u767b\\u9ad8\\u8def4-2\"," +
-                        "\"destination\":\"\\u83ab\\u4fea\\u82b1\\u56ed\",\"start_lat\":28.185693,\"start_lng\":112.949612," +
-                        "\"destination_lat\":28.185693,\"destination_lng\":112.949612,\"start_time\":1447162569," +
-                        "\"end_time\":1447162579,\"pre_mileage\":\"0.00\",\"pre_price\":\"0.00\",\"car_type\":1,\"rent_type\":0,\"additional_price\":\"\"," +
-                        "\"org_price\":\"0.01\",\"isCancel\":\"\"," +
-                        "\"mileage\":\"0.0\",\"sumprice\":\"\",\"create_time\":1447162560,\"isCityline\":0,\"cityline_id\":\"\",\"pay_time\":\"\",\"pay_type\":\"\",\"status\":4,\"rating\":0}";
-
-                OrderDetail detail = FastJsonTools.getObject(messageBody, OrderDetail.class);
+//                String messageBody = "{\"id\":29,\"orderNum\":\"12345678889\",\"driver_id\":3,\"passenger_id\":3,\"passenger_mobile\":\"13900000002\"," +
+//                        "\"start\":\"\\u6e56\\u5357\\u7701\\u957f\\u6c99\\u5e02\\u5cb3\\u9e93\\u533a\\u767b\\u9ad8\\u8def4-2\"," +
+//                        "\"destination\":\"\\u83ab\\u4fea\\u82b1\\u56ed\",\"start_lat\":28.185693,\"start_lng\":112.949612," +
+//                        "\"destination_lat\":28.185693,\"destination_lng\":112.949612,\"start_time\":1447162569," +
+//                        "\"end_time\":1447162579,\"pre_mileage\":\"0.00\",\"pre_price\":\"0.00\",\"car_type\":1,\"rent_type\":0,\"additional_price\":\"\"," +
+//                        "\"org_price\":\"0.01\",\"isCancel\":\"\"," +
+//                        "\"mileage\":\"0.0\",\"sumprice\":\"\",\"create_time\":1447162560,\"isCityline\":0,\"cityline_id\":\"\",\"pay_time\":\"\",\"pay_type\":\"\",\"status\":4,\"rating\":0}";
+//
+//                OrderDetail detail = FastJsonTools.getObject(messageBody, OrderDetail.class);
 
 
 
@@ -314,11 +319,11 @@ public class PostOrderActivity extends AppCompatActivity {
 //                detail.setRating(4);
 //                driver.setDriver(detail);
 
-                mApplication.mDriverDetail = driver.getDriver();
-
-                mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_COMPLETED);
-            }
-        });
+//                mApplication.mDriverDetail = driver.getDriver();
+//
+//                mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_COMPLETED);
+//            }
+//        });
 
         mStartTextView = (TextView) findViewById(R.id.textViewStart);
         mDestTextView = (TextView) findViewById(R.id.textViewDestination);
@@ -419,7 +424,18 @@ public class PostOrderActivity extends AppCompatActivity {
          */
         timer = new Timer();
         timer.scheduleAtFixedRate(new MyTimerTask(), 2000, 3 * 1000);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId())
+        {
+            case android.R.id.home:
+                setResult(RESULT_OK);
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

@@ -63,11 +63,7 @@
             android:process=":remote" />
 
         <activity
-            android:name=".PostOrderActivity"
-            android:parentActivityName=".PreOrderActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".PreOrderActivity" />
+            android:name=".PostOrderActivity">
         </activity>
         <activity android:name=".CostEstimateActivity" />
         <activity

@@ -40,6 +40,8 @@ import com.baidu.mapapi.search.sug.SuggestionResult;
 import com.baidu.mapapi.search.sug.SuggestionSearch;
 import com.baidu.mapapi.search.sug.SuggestionSearchOption;
 import com.guokrspace.duducar.communication.message.SearchLocation;
+import com.guokrspace.duducar.database.DaoSession;
+import com.guokrspace.duducar.database.SearchHistory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +76,9 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
     private SearchLocation location;
     private Context mContext;
 
+    private DaoSession dbSession;
+    private DuduApplication mApplication;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +93,10 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
                 mReqLoc = location.getLocation();
         }
 
+
         mContext = this;
+        mApplication =(DuduApplication)getApplicationContext();
+        dbSession = mApplication.mDaoSession;
 
         //Init the search components
         mPoiSearch = PoiSearch.newInstance();
@@ -127,7 +135,11 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
                             .location(mReqLoc)
                             .radius(50000) //50Km
                             .keyword(editSearchKey.getText().toString()));
-                    mSoftManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+//                    mSoftManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    SearchHistory searchHistory = new SearchHistory();
+                    searchHistory.setAddress(editSearchKey.getText().toString());
+                    searchHistory.setDetails("");
+                    dbSession.getSearchHistoryDao().insert(searchHistory);
                 }
 
                 @Override

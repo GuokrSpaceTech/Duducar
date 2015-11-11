@@ -160,7 +160,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="支付宝支付39.9元"
+        android:text="确认支付"
         android:textColor="@android:color/white"
         android:textSize="10pt"
         android:layout_marginLeft="20dp"
