@@ -2,6 +2,7 @@ package com.guokrspace.dududriver.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -85,6 +86,8 @@ public class ConfirmBillActivity extends BaseActivity {
 
     private void initView() {
         toolbar.setTitle("确认账单");
+        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.return_icon));
+        toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -107,8 +110,8 @@ public class ConfirmBillActivity extends BaseActivity {
 
     private void initDialog() {
         dialog = new Dialog(context, getString(R.string.confirm_dialog_content));
-        dialog.getButtonAccept().setButtonText("自己支付");
-        dialog.getButtonCancel().setButtonText("交易完成");
+//        dialog.getButtonAccept().setButtonText("自己支付");
+//        dialog.getButtonCancel().setButtonText("交易完成");
         dialog.setOnCancelButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -36,11 +36,11 @@ public class ListenProgressView extends View{
 
     private float sRadius = 0;//内圆半径即为外圆半径减去diff的值
 
-    private float diff = DisplayUtil.dp2px(8);
+    private float diff = DisplayUtil.dp2px(6);
 
     private int size;//自定义view的宽、高
 
-    private int scannerColor = Color.parseColor("#FFEE7600");
+    private int scannerColor = Color.parseColor("#ffff4444");
 
     private static final String texts[] =  new String [] {"点击听单", "听单中"};
 
@@ -93,7 +93,7 @@ public class ListenProgressView extends View{
 
     private Paint initTextPaint() {
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(scannerColor);
+        paint.setColor(Color.WHITE);
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setAntiAlias(true);
         paint.setTextSize(DisplayUtil.dp2px(20));
@@ -102,14 +102,14 @@ public class ListenProgressView extends View{
 
     private Paint initInnerCirclePaint() {
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(Color.WHITE);
+        paint.setColor(Color.parseColor("#FF2F3B4A"));
         paint.setAntiAlias(true);
         return paint;
     }
 
     private Paint initScannerPaint() {
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        Shader shader = new SweepGradient(size / 2, size / 2, Color.TRANSPARENT, scannerColor);
+        Shader shader = new SweepGradient(size / 2, size / 2, new int[]{Color.WHITE, scannerColor, scannerColor, scannerColor}, null);
         paint.setShader(shader);
         paint.setAntiAlias(true);
         return paint;
@@ -117,7 +117,7 @@ public class ListenProgressView extends View{
 
     private Paint initTranslucentPaint() {
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(Color.WHITE);
+        paint.setColor(Color.BLACK);
         paint.setAlpha(100);
         return paint;
     }

@@ -1,8 +1,10 @@
 package com.guokrspace.dududriver.ui;
 
-import android.app.AlertDialog;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.v7.widget.Toolbar;
@@ -10,7 +12,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ZoomControls;
@@ -39,8 +40,6 @@ import com.baidu.mapapi.search.route.PlanNode;
 import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
-import com.gc.materialdesign.views.ButtonFlat;
-import com.gc.materialdesign.views.ButtonRectangle;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.model.OrderItem;
@@ -48,9 +47,6 @@ import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
 import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.view.CircleImageView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -69,18 +65,17 @@ public class PickUpPassengerActivity extends BaseActivity {
     TextView tvMyPosition;
     @Bind(R.id.passengerposition_textview)
     TextView tvPassengerPosition;
-    @Bind(R.id.passenger_info)
-    Button btnPassengerInfo;
     @Bind(R.id.call_passenger)
     Button btnCallPassenger;
-    @Bind(R.id.illustration_textview)
-    TextView tvIllustration;
-    @Bind(R.id.navi_passenger)
-    ImageButton ibNaviPassenger;
+    @OnClick(R.id.call_passenger)
+    public void callPassenger() {
+        Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:111111"));
+        startActivity(callIntent);
+    }
     @Bind(R.id.pickup_mapview)
     MapView mMapview;
     @Bind(R.id.confirm_button)
-    ButtonRectangle btnConfirm;
+    Button btnConfirm;
     @OnClick(R.id.confirm_button) public void enterConfirmPage() {
 
         if(orderItem == null){
@@ -102,6 +97,7 @@ public class PickUpPassengerActivity extends BaseActivity {
 
             }
 
+            @SuppressLint("NewApi")
             @Override
             public void onTimeout() {
                 Log.e("PickUp", "time out! ");
@@ -248,18 +244,16 @@ public class PickUpPassengerActivity extends BaseActivity {
 
     private void initGetPassView() {
         toolbar.setTitle("去接乘客");
+        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.return_icon));
+        toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        tvIllustration.setText("去 " + orderItem.getOrder().getStart() + "  送尾号 " + orderItem.getOrder().getPassenger_mobile().substring(7));
-        btnConfirm.setButtonText("确认乘客上车");
 
         tvMyPosition.setText(orderItem.getOrder().getStart());
         tvPassengerPosition.setText(orderItem.getOrder().getDestination());
         LatLng startLoaction = new LatLng(
                 Double.valueOf(orderItem.getOrder().getStart_lat()), Double.valueOf(orderItem.getOrder().getStart_lng()));
-//
         passengerLatLng = startLoaction;
         ed = PlanNode.withLocation(passengerLatLng);
 
@@ -303,7 +297,7 @@ public class PickUpPassengerActivity extends BaseActivity {
 
         CommonUtil.changeCurStatus(Constants.STATUS_RUN);
 
-        btnConfirm.setButtonText("确认完成订单");
+        btnConfirm.setText("确认完成订单");
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -321,7 +315,7 @@ public class PickUpPassengerActivity extends BaseActivity {
 
                     @Override
                     public void onFailure(String error) {
-                        Log.e("PickUpPassengerActivity ", "end order failure" + error);
+                        Log.e("PickUpPassengerAct", "end order failure" + error);
                         Toast.makeText(context, "订单出现意外!", Toast.LENGTH_SHORT);
                         Intent intent = new Intent(PickUpPassengerActivity.this, ConfirmBillActivity.class);
                         intent.putExtra("orderItem", orderItem);
@@ -332,7 +326,7 @@ public class PickUpPassengerActivity extends BaseActivity {
 
                     @Override
                     public void onTimeout() {
-                        Log.e("PickUpPassengerActivity ", "end order time out");
+                        Log.e("PickUpPassengerAct", "end order time out");
                         Toast.makeText(context, "网络状况较差!", Toast.LENGTH_SHORT);
                         Intent intent = new Intent(PickUpPassengerActivity.this, ConfirmBillActivity.class);
                         intent.putExtra("orderItem", orderItem);

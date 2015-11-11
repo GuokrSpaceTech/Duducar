@@ -2,6 +2,7 @@ package com.guokrspace.dududriver.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -51,7 +52,6 @@ public class OrderDetailActivity extends BaseActivity {
     private Context context;
     @OnClick(R.id.continue_order_acccept) public void goBackHome() {
         CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
-//        startActivity(new Intent(OrderDetailActivity.this, MainActivity.class));
         finish();
     }
 
@@ -66,6 +66,8 @@ public class OrderDetailActivity extends BaseActivity {
 
     private void initView() {
         toolbar.setTitle("订单详情");
+        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.return_icon));
+        toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -75,7 +77,6 @@ public class OrderDetailActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
-                startActivity(new Intent(OrderDetailActivity.this, MainActivity.class));
                 finish();
             }
         });

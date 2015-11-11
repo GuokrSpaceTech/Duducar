@@ -5,12 +5,15 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.adapter.OptionGridAdapter;
+import com.guokrspace.dududriver.util.DisplayUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -62,7 +65,6 @@ public class MoreFragment extends BaseFragment implements OnStartDragListener {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.addItemDecoration(new MarginDecoration(getActivity()));
         mRecyclerView.setAdapter(adapter);
-
 
         final int spanCount = getResources().getInteger(R.integer.grid_item);
         final GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), spanCount);

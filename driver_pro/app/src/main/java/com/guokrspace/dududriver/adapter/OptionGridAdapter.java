@@ -5,18 +5,21 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.MoreOptionType;
 import com.guokrspace.dududriver.ui.SettingActivity;
+import com.guokrspace.dududriver.util.DisplayUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,11 +54,9 @@ public class OptionGridAdapter extends RecyclerView.Adapter<OptionGridAdapter.It
         this.context = context;
         this.mDragStartListener = onStartDragListener;
         mItemText = context.getResources().getStringArray(R.array.more_option_text);
-        mItemResId = new int[]{R.mipmap.suggest,
+        mItemResId = new int[]{R.mipmap.guide,
                 R.mipmap.map,
-                R.mipmap.upgrade,
                 R.mipmap.msg,
-                R.mipmap.guide,
                 R.mipmap.setting};
         for (int i = 0; i < mItemText.length; i++) {
             mItems.add(new ItemData(mItemText[i], mItemResId[i]));
@@ -65,6 +66,9 @@ public class OptionGridAdapter extends RecyclerView.Adapter<OptionGridAdapter.It
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.more_recyclerview_item, parent, false);
+        int h = (DisplayUtil.SCREEN_WIDTH_PIXELS - DisplayUtil.designedDP2px(2 * 16 + 2 * 5)) / 2;
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(-1, h);
+        view.setLayoutParams(layoutParams);
         ItemViewHolder mViewHolder = new ItemViewHolder(view);
         return mViewHolder;
     }
@@ -92,7 +96,6 @@ public class OptionGridAdapter extends RecyclerView.Adapter<OptionGridAdapter.It
                 } else if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_UP) {
                     if (isClickOver) {
                         //跳转
-                        Toast.makeText(context, "haha", Toast.LENGTH_SHORT).show();
                         aheadPage(position);
 
                     } else {
@@ -107,13 +110,7 @@ public class OptionGridAdapter extends RecyclerView.Adapter<OptionGridAdapter.It
 
     private void aheadPage(int position) {
         switch (MoreOptionType.getByVal(position)) {
-            case SUGGESTION:
-
-                break;
             case ORDER_MAP:
-
-                break;
-            case CAR_UPDATE:
 
                 break;
             case MESSAGE:

@@ -38,6 +38,9 @@ public class DuduDriverApplication extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
+        //初始化屏幕计算工具
+        DisplayUtil.init(this);
+
         instance = this;
         //初始化显示工具类
         DisplayUtil.init(getApplicationContext());

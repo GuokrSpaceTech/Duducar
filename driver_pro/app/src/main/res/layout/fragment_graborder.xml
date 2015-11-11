@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
+    android:background="@color/app_main_theme"
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_vertical_margin">
@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="抢单0单"
-            android:textColor="@color/white"
+            android:textColor="@color/yellow"
             android:textSize="26sp"
             android:textStyle="bold" />
 
@@ -40,15 +40,56 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dip"
             android:text="在线0小时"
-            android:textColor="@color/white"
+            android:textColor="@color/yellow"
             android:textSize="26sp"
             android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="车型："
+            android:textColor="@color/light_gray"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            />
+        <TextView android:id="@+id/car_tyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="舒适、普通"
+            android:textColor="@color/light_gray"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
+    </LinearLayout>
+    <LinearLayout android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="实时："
+            android:textColor="@color/light_gray"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            />
+        <TextView android:id="@+id/order_pattern"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="抢单模式"
+            android:textColor="@color/light_gray"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="3dp"
         android:orientation="horizontal">
 
         <TextView
@@ -64,7 +105,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0.00"
-            android:textColor="@color/orange"
+            android:textColor="@color/order_word_red"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -82,7 +123,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0%"
-            android:textColor="@color/orange"
+            android:textColor="@color/order_word_red"
             android:textSize="20sp"
             android:textStyle="bold" />
     </LinearLayout>

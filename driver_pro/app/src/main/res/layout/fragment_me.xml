@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/transparent"
+    android:background="@color/app_main_theme"
     android:orientation="vertical"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin">
@@ -98,7 +98,7 @@
         android:layout_width="fill_parent"
         android:layout_height="40dp"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:background="@color/translucent_white">
+        android:background="@color/translucent_black">
 
         <ImageView
             android:id="@+id/balance_icon"
@@ -137,7 +137,7 @@
             android:layout_toLeftOf="@id/balance_more_arrow"
             android:singleLine="true"
             android:text="￥268.61"
-            android:textColor="@color/orange"
+            android:textColor="@color/yellow"
             android:textSize="22sp"
             android:textStyle="bold" />
     </RelativeLayout>
@@ -147,7 +147,7 @@
         android:layout_width="fill_parent"
         android:layout_height="40dp"
         android:layout_marginTop="@dimen/grid_item_margin"
-        android:background="@color/translucent_white">
+        android:background="@color/translucent_black">
 
         <ImageView
             android:id="@+id/search_icon"
@@ -186,7 +186,7 @@
             android:layout_toLeftOf="@id/search_more_arrow"
             android:singleLine="true"
             android:text="分成、账单、补贴地图等"
-            android:textColor="@color/light_gray"
+            android:textColor="@color/translucent_white"
             android:textSize="14sp"
             android:textStyle="bold" />
     </RelativeLayout>
