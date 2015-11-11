@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
@@ -20,8 +21,12 @@ import android.widget.Toast;
 import com.alipay.sdk.app.PayTask;
 import com.guokrspace.duducar.alipay.PayResult;
 import com.guokrspace.duducar.alipay.SignUtils;
+import com.guokrspace.duducar.communication.ResponseHandler;
+import com.guokrspace.duducar.communication.SocketClient;
 import com.guokrspace.duducar.communication.message.DriverDetail;
+import com.guokrspace.duducar.communication.message.OrderDetail;
 import com.guokrspace.duducar.communication.message.TripOverOrder;
+import com.guokrspace.duducar.ui.WinToast;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -44,7 +49,7 @@ public class RatingActivity extends ActionBarActivity {
     private ImageView phoneImageView;
     private TextView  priceTextView;
 
-    private TripOverOrder mOrder;
+    private OrderDetail mOrder;
     private DriverDetail mDriver;
 
     private Handler mHandler= new Handler() {
@@ -74,7 +79,7 @@ public class RatingActivity extends ActionBarActivity {
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null)
         {
-            mOrder = (TripOverOrder)bundle.get("order");
+            mOrder = (OrderDetail)bundle.get("order");
         }
         mDriver = ((DuduApplication)getApplicationContext()).mDriverDetail;
 
@@ -93,12 +98,32 @@ public class RatingActivity extends ActionBarActivity {
                 //Call the number
             }
         });
-        priceTextView.setText(mOrder.getPrice());
+        if(mOrder!=null) {
+            priceTextView.setText(mOrder.getOrg_price());
+        }
         ratingBarBig.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
                 //Send Rating Request
                 ratingBar.setRating(v);
+                SocketClient.getInstance().sendRatingRequest(mOrder.getId(), (int) v, new ResponseHandler(Looper.getMainLooper()) {
+                    @Override
+                    public void onSuccess(String messageBody) {
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+                    }
+
+                    @Override
+                    public void onTimeout() {
+                    }
+                });
+
+                WinToast.toast(RatingActivity.this, "谢谢评价。");
+
+                finish();
+
             }
         });
 
@@ -111,5 +136,20 @@ public class RatingActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if (id == android.R.id.home)
+        {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -5,10 +5,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +20,9 @@ import android.widget.Toast;
 import com.alipay.sdk.app.PayTask;
 import com.guokrspace.duducar.alipay.PayResult;
 import com.guokrspace.duducar.alipay.SignUtils;
+import com.guokrspace.duducar.communication.ResponseHandler;
+import com.guokrspace.duducar.communication.SocketClient;
+import com.guokrspace.duducar.communication.message.OrderDetail;
 import com.guokrspace.duducar.communication.message.TripOverOrder;
 
 import java.io.UnsupportedEncodingException;
@@ -54,7 +59,7 @@ public class AlipayActivity extends ActionBarActivity {
     public static final String RSA_PUBLIC =
             "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDI6d306Q8fIfCOaTXyiUeJHkrIvYISRcc73s3vF1ZT7XN8RNPwJxo8pWaJMmvyTn9N4HQ632qJBVHf8sxHi/fEsraprwCtzvzQETrNRwVxLO5jVmRGi60j8Ue1efIlzPXV9je9mkjzOmdssymZkh2QhUrCmZYI/FCEa3/cNMW0QIDAQAB";
 
-    private TripOverOrder tripOverOrderDetail;
+    private OrderDetail tripOverOrderDetail;
     private Button payButton;
     private static final int SDK_PAY_FLAG = 1;
     private static final int SDK_CHECK_FLAG = 2;
@@ -82,9 +87,28 @@ public class AlipayActivity extends ActionBarActivity {
                             } else {
                                 // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
                                 Toast.makeText(AlipayActivity.this, "支付失败", Toast.LENGTH_SHORT).show();
+                                Long timestamp = System.currentTimeMillis();
+                                SocketClient.getInstance().sendPayOverRequest(tripOverOrderDetail.getId(), timestamp, tripOverOrderDetail.getOrg_price(), 1 ,new ResponseHandler(Looper.getMainLooper()) {
+                                    @Override
+                                    public void onSuccess(String messageBody) {
+                                        Log.i("","");
+                                    }
+
+                                    @Override
+                                    public void onFailure(String error) {
+                                        Log.i("","");
+                                    }
+
+                                    @Override
+                                    public void onTimeout() {
+                                        Log.i("","");
+                                    }
+                                });
                                 Intent intent = new Intent(mContext, RatingActivity.class);
                                 intent.putExtra("order", tripOverOrderDetail);
                                 startActivity(intent);
+
+                                finish();
                             }
                         }
                         break;
@@ -113,22 +137,23 @@ public class AlipayActivity extends ActionBarActivity {
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null)
         {
-            tripOverOrderDetail = (TripOverOrder) bundle.get("order");
+            tripOverOrderDetail = (OrderDetail) bundle.get("order");
         }
 
         //Debug
-        tripOverOrderDetail = new TripOverOrder("0.01");
-        tripOverOrderDetail.setCar_type("1");
-        tripOverOrderDetail.setDestination("");
-        tripOverOrderDetail.setDestination_lat("28.173");
-        tripOverOrderDetail.setDestination_lng("112.9584");
-        tripOverOrderDetail.setMileage("24");
-        tripOverOrderDetail.setPrice("32");
-        tripOverOrderDetail.setStart_lat("28.189");
-        tripOverOrderDetail.setStart_lng("112.96");
+//        tripOverOrderDetail = new TripOverOrder("0.01");
+//        tripOverOrderDetail.setCar_type("1");
+//        tripOverOrderDetail.setDestination("");
+//        tripOverOrderDetail.setDestination_lat("28.173");
+//        tripOverOrderDetail.setDestination_lng("112.9584");
+//        tripOverOrderDetail.setMileage("24");
+//        tripOverOrderDetail.setPrice("32");
+//        tripOverOrderDetail.setStart_lat("28.189");
+//        tripOverOrderDetail.setStart_lng("112.96");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+
     }
 
     @Override
@@ -145,9 +170,9 @@ public class AlipayActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == android.R.id.home)
+        {
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
@@ -216,7 +241,7 @@ public class AlipayActivity extends ActionBarActivity {
     /**
      * create the order info. 创建订单信息
      */
-    public String getOrderInfo(TripOverOrder tripOverOrderDetail) {
+    public String getOrderInfo(OrderDetail tripOverOrderDetail) {
 
         // 签约合作者身份ID
         String orderInfo = "partner=" + "\"" + PARTNER + "\"";
@@ -237,8 +262,7 @@ public class AlipayActivity extends ActionBarActivity {
         orderInfo += "&total_fee=" + "\"" + tripOverOrderDetail.getMileage() + "\"";
 
         // 服务器异步通知页面路径
-        orderInfo += "&notify_url=" + "\"" + ""
-                + "\"";
+        orderInfo += "&notify_url=" + "\"http://120.24.237.15:81/index.php?s=api/Pay/getAlipayResult" + "\"";
 
         // 服务接口名称， 固定值
         orderInfo += "&service=\"mobile.securitypay.pay\"";

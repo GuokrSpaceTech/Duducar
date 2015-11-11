@@ -59,6 +59,7 @@ import com.guokrspace.duducar.communication.message.NearByCars;
 import com.guokrspace.duducar.communication.message.SearchLocation;
 import com.guokrspace.duducar.database.PersonalInformation;
 import com.guokrspace.duducar.ui.OrderConfirmationView;
+import com.guokrspace.duducar.ui.WinToast;
 
 import java.util.List;
 import java.util.Timer;
@@ -90,7 +91,7 @@ public class PreOrderActivity extends AppCompatActivity
     TextView startLocButton;
     TextView destLocButton;
     TextView nearByCarsTextView;
-    Button callCabButton;
+    TextView callCabButton;
     OrderConfirmationView orderConfirmationView;
 
     //地址解析
@@ -125,6 +126,8 @@ public class PreOrderActivity extends AppCompatActivity
     private CharSequence mTitle;
 
     private Timer timer;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,38 +194,32 @@ public class PreOrderActivity extends AppCompatActivity
         conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         /*
+         * Login if socket connected
+         */
+        Thread thead = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true)
+                {
+                    if(mTcpClient==null) continue;
+
+                    if(mTcpClient.isSocketConnected()==false)
+                        continue;
+                    else {
+                        sendLoginRequest(mTcpClient);
+                        break;
+                    }
+                }
+            }
+        });
+        thead.start();
+
+        /*
          * Init the data
          */
         start = new SearchLocation();
         mApplication = (DuduApplication) getApplicationContext();
 
-        /*
-         * Login with Token
-         */
-        List persons = mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().list();
-        if (persons.size() > 0) {
-            mApplication.mPersonalInformation = (PersonalInformation) persons.get(0);
-            String token = mApplication.mPersonalInformation.getToken();
-            String mobile = mApplication.mPersonalInformation.getMobile();
-            if(SocketClient.getInstance()!=null) {
-                SocketClient.getInstance().sendLoginReguest(mobile, "2", token, new ResponseHandler(Looper.getMainLooper()) {
-                    @Override
-                    public void onSuccess(String messageBody) {
-                        Log.i("", "Login Success");
-                    }
-
-                    @Override
-                    public void onFailure(String error) {
-                        Log.i("", "Login Failure");
-                    }
-
-                    @Override
-                    public void onTimeout() {
-                        Log.i("", "Login Timeout");
-                    }
-                });
-            }
-        }
     }
 
     private void initListener() {
@@ -234,7 +231,9 @@ public class PreOrderActivity extends AppCompatActivity
                 if (persons.size() <= 0) { //Not Logged in
                     Intent intent = new Intent(mContext, LoginActivity.class);
                     startActivityForResult(intent, ACTVITY_LOGIN_REQUEST);
-                } else {
+                } else if(dest==null) {
+                    WinToast.toast(PreOrderActivity.this, "请先输入目的地");
+                }else{
                     mApplication.mPersonalInformation = (PersonalInformation) persons.get(0);
                     Intent intent = new Intent(mContext,PostOrderActivity.class);
                     intent.putExtra("start", start);
@@ -374,7 +373,6 @@ public class PreOrderActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
-
             //If there are fragments showing
             if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 getSupportFragmentManager().popBackStack();
@@ -448,6 +446,8 @@ public class PreOrderActivity extends AppCompatActivity
                 if (bundle != null) {
                     dest = (SearchLocation) bundle.get("location");
                     destLocButton.setText(dest.getAddress());
+                    destLocButton.setTextColor(getResources().getColor(android.R.color.black));
+                    callCabButton.setEnabled(true);
 
                     Intent intent = new Intent(mContext, CostEstimateActivity.class);
                     intent.putExtra("start", start);
@@ -456,7 +456,6 @@ public class PreOrderActivity extends AppCompatActivity
                     startActivityForResult(intent, ACTVITY_COST_ESTIMATE_REQUEST);
                 }
             } else if (requestCode == ACTVITY_COST_ESTIMATE_REQUEST) {
-//                mHandler.sendEmptyMessage(MessageTag.MSG_TOGGLE_CONFIRMVIEW);
             }
         }
 
@@ -470,12 +469,6 @@ public class PreOrderActivity extends AppCompatActivity
                     .show();
             return;
         }
-//        mBaiduMap.clear();
-//        mBaiduMap.addOverlay(new MarkerOptions().position(result.getLocation())
-//                .icon(BitmapDescriptorFactory
-//                        .fromResource(R.drawable.icon_marka)));
-//        mBaiduMap.setMapStatus(MapStatusUpdateFactory.newLatLng(result
-//                .getLocation()));
         String strInfo = String.format("纬度：%f 经度：%f",
                 result.getLocation().latitude, result.getLocation().longitude);
         Toast.makeText(this, strInfo, Toast.LENGTH_LONG).show();
@@ -576,12 +569,14 @@ public class PreOrderActivity extends AppCompatActivity
                     .direction(location.getDirection()).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
 
-            if (locData != null)
-                mBaiduMap.setMyLocationData(locData);
+            try {
+                if (locData != null)
+                    mBaiduMap.setMyLocationData(locData);
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
 
-            mCurrentLocation = new LatLng(location.getLatitude(),
-                    location.getLongitude());
-
+            mCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
             if (isFirstLoc) {
                 isFirstLoc = false;
@@ -728,6 +723,32 @@ public class PreOrderActivity extends AppCompatActivity
     public int dpToPx(Resources res, int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, res.getDisplayMetrics());
     }
+
+
+    public void sendLoginRequest(SocketClient socketClient)
+    {
+        List persons = mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().limit(1).list();
+        if(persons.size()==1) {
+            PersonalInformation person = (PersonalInformation) persons.get(0);
+            socketClient.sendLoginReguest(person.getMobile(), "2", person.getToken(), new ResponseHandler(Looper.getMainLooper()) {
+                @Override
+                public void onSuccess(String messageBody) {
+                    Log.i("","");
+                }
+
+                @Override
+                public void onFailure(String error) {
+                    Log.i("","");
+                }
+
+                @Override
+                public void onTimeout() {
+                    Log.i("","");
+                }
+            });
+        }
+    }
+
 
     private class MyTimerTask extends TimerTask {
         @Override

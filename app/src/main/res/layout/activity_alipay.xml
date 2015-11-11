@@ -22,7 +22,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="30"
-            android:textSize="6pt"
+            android:textSize="8pt"
             android:gravity="center"
             android:text="车费详情"/>
         <View
@@ -85,7 +85,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="30"
-            android:textSize="6pt"
+            android:textSize="8pt"
             android:gravity="center"
             android:text="支付方式"/>
         <View

@@ -27,6 +27,7 @@ public class SocketClient {
     private static SocketClient s_socketClient;
     private String serverMessage;
     private int messageid;
+    private boolean socketConnected = false;
     /**
      * Specify the Server Ip Address here. Whereas our Socket Server is started.
      * */
@@ -105,6 +106,13 @@ public class SocketClient {
         return ret;
     }
 
+    public boolean isSocketConnected() {
+        return socketConnected;
+    }
+
+    public void setSocketConnected(boolean socketConnected) {
+        this.socketConnected = socketConnected;
+    }
 
     public void stopClient(){
         mRun = false;
@@ -168,6 +176,12 @@ public class SocketClient {
                                 String errorMsg = String.format("Unregisted Message: %s", serverMessage);
                                 Log.i("DuduCar", errorMsg);
                             }
+                        } else if(jsonObject.has("status")) { // {"status:1"} the initial message
+                            int status = (int)jsonObject.get("status");
+                            if(status == 1)//Connection Success
+                            {
+                                socketConnected = true;
+                            }
                         }
 
                         Log.e("RESPONSE FROM SERVER", "S: Received Message: '" + serverMessage + "'");
@@ -185,6 +199,7 @@ public class SocketClient {
                 //the socket must be closed. It is not possible to reconnect to this socket
                 // after it is closed, which means a new socket instance has to be created.
                 socket.close();
+                socketConnected = false;
             }
 
         } catch (Exception e) {
@@ -337,5 +352,46 @@ public class SocketClient {
 
         return ret;
     }
+
+    public int sendRatingRequest(int orderid, int rating, ResponseHandler handler)
+    {
+        int ret = -1;
+        JSONObject carmsg = new JSONObject();
+        try {
+            carmsg.put("cmd", MessageTag.getInstance().Command(MessageTag.RATING_SERVICE));
+            carmsg.put("role","2");
+            carmsg.put("order_id",orderid);
+            carmsg.put("rating",rating);
+            ret = sendMessage(carmsg, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return ret;
+    }
+//
+//    order_id
+//    * 		pay_price 实际支付金额
+//    * 		pay_time  支付时间
+//    * 		pay_type  支付方式 1-支付宝 2-微信 3-银联
+    public int sendPayOverRequest( int orderid ,Long timestamp, String price, int type, ResponseHandler handler)
+    {
+        int ret = -1;
+        JSONObject carmsg = new JSONObject();
+        try {
+            carmsg.put("cmd", MessageTag.getInstance().Command(MessageTag.PAY_OVER));
+            carmsg.put("role","2");
+            carmsg.put("pay_price",price);
+            carmsg.put("pay_time",timestamp);
+            carmsg.put("pay_type",type);
+            carmsg.put("order_id", orderid);
+            ret = sendMessage(carmsg, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return ret;
+    }
+
 
 }

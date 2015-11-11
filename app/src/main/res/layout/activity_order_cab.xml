@@ -18,16 +18,15 @@
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:src="@android:drawable/ic_menu_close_clear_cancel" />
 
         <TextView
             android:id="@+id/cancelPromptTextView"
-            android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/fab"
             android:background="@android:color/darker_gray"
             android:textColor="@android:color/white"
-            android:layout_height="wrap_content"
             android:padding="2dp"
             android:text="长按取消订单" />
     </RelativeLayout>

@@ -5,7 +5,7 @@ package com.guokrspace.duducar.communication.message;
  */
 public class TripStart {
     String cmd;
-    TripStartOrder order;
+    OrderDetail order;
 
     public String getCmd() {
         return cmd;
@@ -15,11 +15,11 @@ public class TripStart {
         this.cmd = cmd;
     }
 
-    public TripStartOrder getOrder() {
+    public OrderDetail getOrder() {
         return order;
     }
 
-    public void setOrder(TripStartOrder order) {
+    public void setOrder(OrderDetail order) {
         this.order = order;
     }
 }

@@ -1,11 +1,13 @@
 package com.guokrspace.duducar.communication.message;
 
+import com.guokrspace.duducar.PreOrderActivity;
+
 /**
  * Created by kai on 10/29/15.
  */
 public class TripOver {
     String cmd;
-    TripOverOrder tripOverOrder;
+    OrderDetail order;
 
     public String getCmd() {
         return cmd;
@@ -15,12 +17,12 @@ public class TripOver {
         this.cmd = cmd;
     }
 
-    public TripOverOrder getTripOverOrder() {
-        return tripOverOrder;
+    public OrderDetail getOrder() {
+        return order;
     }
 
-    public void setTripOverOrder(TripOverOrder tripOverOrder) {
-        this.tripOverOrder = tripOverOrder;
+    public void setOrder(OrderDetail order) {
+        this.order = order;
     }
 }
 

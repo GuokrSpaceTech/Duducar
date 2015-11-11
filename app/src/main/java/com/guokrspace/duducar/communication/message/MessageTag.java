@@ -54,6 +54,9 @@ public class MessageTag {
     public static final int CANCEL_ORDER_RESP = 0x1006;
     public static final int TRIP_START = 0x1007;
     public static final int TRIP_OVER = 0x1008;
+    public static final int ORDER_ACCEPT = 0x100E;
+    public static final int RATING_SERVICE = 0x100F;
+    public static final int PAY_OVER = 0x1010;
 
     public static MessageTag getInstance(){
         if(s_instance == null) new MessageTag();
@@ -71,14 +74,17 @@ public class MessageTag {
         MessageTag.put("create_order_resp",CREATE_ORDER_RESP);
         MessageTag.put("cancel_order",CANCEL_ORDER_REQ);
         MessageTag.put("cancel_order_resp",CANCEL_ORDER_RESP);
-        MessageTag.put("trip_start",TRIP_START);
-        MessageTag.put("trip_over",TRIP_OVER);
+        MessageTag.put("order_start",TRIP_START);
+        MessageTag.put("order_end",TRIP_OVER);
         MessageTag.put("register",REGISTER_REQ);
         MessageTag.put("register_resp",REGISTER_RESP);
         MessageTag.put("verify",VERIFY_REQ);
         MessageTag.put("verify_resp",VERIFY_RESP);
         MessageTag.put("login",VERIFY_REQ);
         MessageTag.put("login_resp",VERIFY_RESP);
+        MessageTag.put("order_accept", ORDER_ACCEPT);
+        MessageTag.put("comment", RATING_SERVICE);
+        MessageTag.put("pay_over", PAY_OVER);
     }
 
     public int Tag(String command)
