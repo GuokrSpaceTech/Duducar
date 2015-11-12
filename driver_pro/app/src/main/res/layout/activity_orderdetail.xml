@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/app_main_theme"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -58,6 +59,7 @@
                         android:ellipsize="end"
                         android:maxLines="2"
                         android:text="长沙轮渡"
+                        android:textColor="@android:color/white"
                         android:textSize="22sp" />
                 </LinearLayout>
 
@@ -87,6 +89,7 @@
                         android:ellipsize="end"
                         android:maxLines="2"
                         android:text="友阿百货"
+                        android:textColor="@android:color/white"
                         android:textSize="22sp" />
                 </LinearLayout>
 
@@ -102,29 +105,41 @@
                     android:src="@mipmap/call_passenger" />
             </RelativeLayout>
 
-            <FrameLayout
-                android:layout_width="fill_parent"
-                android:layout_height="30dp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
                 android:layout_marginTop="70dp"
-                android:paddingLeft="@dimen/bill_item_padding"
-                android:paddingRight="@dimen/bill_item_padding">
+                android:orientation="horizontal"
+                android:padding="10dp">
 
                 <View
-                    android:layout_width="fill_parent"
+                    android:layout_width="0dp"
                     android:layout_height="1px"
-                    android:layout_gravity="center_vertical"
-                    android:background="@color/light_gray" />
+                    android:layout_gravity="center"
+                    android:layout_weight="35"
+                    android:background="@android:color/darker_gray" />
 
                 <TextView
                     android:id="@+id/order_status"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="30"
+                    android:gravity="center"
                     android:text="未支付"
-                    android:textColor="@color/holo_red_light"
-                    android:textSize="23sp"
-                    android:textStyle="bold" />
-            </FrameLayout>
+                    android:textColor="@color/light_gray"
+                    android:textSize="20sp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1px"
+                    android:layout_gravity="center"
+                    android:layout_weight="35"
+                    android:background="@android:color/darker_gray" />
+            </LinearLayout>
+
 
             <RelativeLayout
                 android:id="@+id/total_bill"
@@ -138,6 +153,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:text="34.4"
+                    android:textColor="@android:color/white"
                     android:textSize="40sp"
                     android:textStyle="bold" />
 
@@ -148,6 +164,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_toRightOf="@id/bill_sum"
                     android:text="元"
+                    android:textColor="@android:color/white"
                     android:textStyle="normal" />
             </RelativeLayout>
 
@@ -169,6 +186,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="查看收费明细"
+                    android:textColor="@color/white"
                     android:textSize="20sp" />
             </LinearLayout>
 
@@ -196,7 +214,7 @@
             android:layout_width="120dp"
             android:layout_height="fill_parent"
             android:layout_marginRight="16dp"
-            android:background="@color/material_blue"
+            android:background="@color/translucent_black"
             android:text="收车"
             android:textSize="6sp" />
 
@@ -205,7 +223,7 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:background="@color/orange"
+            android:background="@color/sky_blue"
             android:text="完成，继续听单"
             android:textSize="6sp" />
     </LinearLayout>

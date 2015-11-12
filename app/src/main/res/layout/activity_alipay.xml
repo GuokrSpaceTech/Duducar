@@ -22,7 +22,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="30"
-            android:textSize="6pt"
+            android:textSize="8pt"
             android:gravity="center"
             android:text="车费详情"/>
         <View
@@ -85,7 +85,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="30"
-            android:textSize="6pt"
+            android:textSize="8pt"
             android:gravity="center"
             android:text="支付方式"/>
         <View
@@ -160,7 +160,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="支付宝支付39.9元"
+        android:text="确认支付"
         android:textColor="@android:color/white"
         android:textSize="10pt"
         android:layout_marginLeft="20dp"

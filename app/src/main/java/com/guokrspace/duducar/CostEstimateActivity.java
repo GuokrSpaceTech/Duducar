@@ -34,15 +34,13 @@ public class CostEstimateActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("费用估算");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        startPointRLayout = (RelativeLayout)findViewById(R.id.startPointLinearLayout);
-        destPointRLayout  = (RelativeLayout)findViewById(R.id.destPointLinearLayout);
         costEstTextView = (TextView)findViewById(R.id.textViewCostEst);
         startTextView = (TextView)findViewById(R.id.startPointTextView);
-        endTextView = (TextView)findViewById(R.id.endPointTextView);
+        endTextView = (TextView)findViewById(R.id.destPointTextView);
 
         context = this;
 
-        startPointRLayout.setOnClickListener(new View.OnClickListener() {
+        startTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent inent = new Intent(context, SearchActivity.class);
@@ -50,7 +48,7 @@ public class CostEstimateActivity extends AppCompatActivity {
             }
         });
 
-        destPointRLayout.setOnClickListener(new View.OnClickListener() {
+        endTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent inent = new Intent(context, SearchActivity.class);
@@ -69,15 +67,18 @@ public class CostEstimateActivity extends AppCompatActivity {
         if(startLoc!=null && endLoc!=null)
         {
             Double distance = DistanceUtil.getDistance(startLoc.getLocation(), endLoc.getLocation());
-            int price_high = (int) (distance * 1.3 / 1000); //meter -> km
-            int price_low  = (int) (distance * 1.1 / 1000); //meter -> km
+            int price_high = (int) (distance * 3.2 / 1000); //meter -> km
+            int price_low  = (int) (distance * 3 / 1000); //meter -> km
 
-            String estimation = String.format("估计价格￥：%d-%d",price_low,price_high);
+            String estimation = String.format("%d-%d",price_low,price_high);
             costEstTextView.setText(estimation);
 
             startTextView.setText(startLoc.getAddress());
             endTextView.setText(endLoc.getAddress());
         }
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
     }
 
     @Override

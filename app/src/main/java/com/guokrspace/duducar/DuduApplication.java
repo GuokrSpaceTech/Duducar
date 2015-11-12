@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.baidu.mapapi.SDKInitializer;
+import com.guokrspace.duducar.communication.message.DriverDetail;
 import com.guokrspace.duducar.database.DaoMaster;
 import com.guokrspace.duducar.database.DaoSession;
 import com.guokrspace.duducar.database.PersonalInformation;
@@ -27,6 +28,7 @@ public class DuduApplication extends Application{
     public DaoSession mDaoSession;
 
     public PersonalInformation mPersonalInformation;
+    public DriverDetail mDriverDetail;
 
     @Override
     public void onCreate() {
@@ -55,8 +57,7 @@ public class DuduApplication extends Application{
             String s = intent.getAction();
 
             if (s.equals(SDKInitializer.SDK_BROADTCAST_ACTION_STRING_PERMISSION_CHECK_ERROR)) {
-            } else if (s
-                    .equals(SDKInitializer.SDK_BROADCAST_ACTION_STRING_NETWORK_ERROR)) {
+            } else if (s.equals(SDKInitializer.SDK_BROADCAST_ACTION_STRING_NETWORK_ERROR)) {
             }
         }
     }

@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +40,8 @@ import com.baidu.mapapi.search.sug.SuggestionResult;
 import com.baidu.mapapi.search.sug.SuggestionSearch;
 import com.baidu.mapapi.search.sug.SuggestionSearchOption;
 import com.guokrspace.duducar.communication.message.SearchLocation;
+import com.guokrspace.duducar.database.DaoSession;
+import com.guokrspace.duducar.database.SearchHistory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,8 +73,11 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
     ResultListAdapter mAdapter;
 
     private String  mCity;
-
+    private SearchLocation location;
     private Context mContext;
+
+    private DaoSession dbSession;
+    private DuduApplication mApplication;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,12 +88,15 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null) {
             mCity = bundle.getString(ARG_CITY);
-            SearchLocation location = (SearchLocation)bundle.get("location");
+            location = (SearchLocation)bundle.get("location");
             if(location!=null)
                 mReqLoc = location.getLocation();
         }
 
+
         mContext = this;
+        mApplication =(DuduApplication)getApplicationContext();
+        dbSession = mApplication.mDaoSession;
 
         //Init the search components
         mPoiSearch = PoiSearch.newInstance();
@@ -102,10 +111,9 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
         sugAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_dropdown_item_1line);
         keyWorldsView.setAdapter(sugAdapter);
 
-//        editCity = (TextView) findViewById(R.id.city);
-//        editCity.setText(mCity);
-
         editSearchKey = (EditText) findViewById(R.id.searchkey);
+
+        editSearchKey.setText("");
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -119,31 +127,40 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
         /**
          * 当输入关键字变化时，动态更新建议列表
          */
-        keyWorldsView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable arg0) {
-                mPoiSearch.searchNearby(new PoiNearbySearchOption()
-                        .location(mReqLoc)
-                        .radius(50000) //50Km
-                        .keyword(editSearchKey.getText().toString()));
-                mSoftManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
-                if (cs.length() <= 0) {
-                    return;
+        if(mReqLoc!=null) {
+            keyWorldsView.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void afterTextChanged(Editable arg0) {
+                    mPoiSearch.searchNearby(new PoiNearbySearchOption()
+                            .location(mReqLoc)
+                            .radius(50000) //50Km
+                            .keyword(editSearchKey.getText().toString()));
+//                    mSoftManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    SearchHistory searchHistory = new SearchHistory();
+                    searchHistory.setAddress(editSearchKey.getText().toString());
+                    searchHistory.setDetails("");
+                    dbSession.getSearchHistoryDao().insert(searchHistory);
                 }
-                /**
-                 * 使用建议搜索服务获取建议列表，结果在onSuggestionResult()中更新
-                 */
-                mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).keyword(cs.toString()).city("长沙"));
-            }
-        });
+
+                @Override
+                public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+                }
+
+                @Override
+                public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                    if (cs.length() <= 0) {
+                        return;
+                    }
+                    /**
+                     * 使用建议搜索服务获取建议列表，结果在onSuggestionResult()中更新
+                     */
+                    mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).keyword(cs.toString()).city("长沙"));
+                }
+            });
+        }
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
     }
 
     @Override
@@ -236,10 +253,12 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
             // each data item is just a string in this case
             public TextView mSearchResultItemTextView;
             public TextView mSearchResultDescrptionItemTextView;
+            public RelativeLayout mRLayout;
             public ViewHolder(View v) {
                 super(v);
                 mSearchResultItemTextView = (TextView)v.findViewById(R.id.resultTextView);
                 mSearchResultDescrptionItemTextView = (TextView)v.findViewById(R.id.resultDescriptionTextView);
+                mRLayout = (RelativeLayout)v.findViewById(R.id.itemRLayout);
             }
         }
 
@@ -265,7 +284,8 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
             // - get element from your dataset at this position
             // - replace the contents of the view with that element
             holder.mSearchResultItemTextView.setText(mDataset.get(position).name);
-            holder.mSearchResultItemTextView.setOnClickListener(new View.OnClickListener() {
+            holder.mSearchResultDescrptionItemTextView.setText(mDataset.get(position).address);
+            holder.mRLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mLoc = mDataset.get(position).location;
@@ -279,7 +299,6 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
                     finish();
                 }
             });
-            holder.mSearchResultDescrptionItemTextView.setText(mDataset.get(position).address);
         }
 
         // Return the size of your dataset (invoked by the layout manager)

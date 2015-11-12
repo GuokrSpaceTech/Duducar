@@ -1,21 +1,29 @@
 package com.guokrspace.duducar;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
 import com.guokrspace.duducar.alipay.PayResult;
 import com.guokrspace.duducar.alipay.SignUtils;
+import com.guokrspace.duducar.communication.ResponseHandler;
+import com.guokrspace.duducar.communication.SocketClient;
+import com.guokrspace.duducar.communication.message.OrderDetail;
 import com.guokrspace.duducar.communication.message.TripOverOrder;
 
 import java.io.UnsupportedEncodingException;
@@ -27,21 +35,36 @@ import java.util.Random;
 
 public class AlipayActivity extends ActionBarActivity {
 
+    Context mContext;
     // 商户PID
     public static final String PARTNER = "2088121002293318";
     // 商户收款账号
     public static final String SELLER = "1946742250@qq.com";
     // 商户私钥，pkcs8格式
-    public static final String RSA_PRIVATE = "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBALvlB3umV2aGN0bW10UfLBMlTBH9/gAFocJxDZ/c2SbWR7dOJAakVfjrZx2qdzCSEF1lV1jFo53+ZVTA9kRjkhB//D8w5IEmNxf5Ie9vGSN4exPbQPJ+U543nlDjmeF4SHOeJ0Z1Ulw8m7gPIcpNTekTZ0tI3sXmjYCreFsX73FTAgMBAAECgYBfUPoQ0ft4eRHFj+s4l22mcL88SVr26+R5XRyKQmCugPl0leFUtT0fv1taA0Xfj9lZZ7V9xRURayJAcnr7in9nnNX8SWz+z7MhlIzFmkuIWxVvT/AGp+sf1e7+NKF9QdfR2Hlrgg9iVc42kGxCKNKcB9s/uqoszdCN9jFIW3ZWoQJBAN+cPZytoP+96vPXYrb5Fuyonf8rOo0Gik7g7AF3wGWiOVQ02+VJ7BrVupG0rXiGfMVErN9Sstz46kkrheIe33kCQQDXHGfHu+rZIhua9ujCR9qZHT3OqSwbm4dvNZPLsoYSz3jjliMzj/kzhpl5pZTKo7/RVhr4kileNdSwI6naPSgrAkBWlCkq4/NlcgRpu2iGTfW5ViQuq281MWYV2nKmstY0w9YMq5bEtZWMYlqlld5gvznKK6f/pAaLFnmoMQjan3eJAkAZSI5uLIk7AkZKXZEYHMf1zTkRjFLR3+L4UEzR2Wbm2Rn1bhUvH1IEG2L4qFynwL1wBnXfF5bjKuKX3Wk+bIfHAkBwbiXSzGH/uI5R7nTRA4lF7yq+IDdwPTNDOTMnehiksvLlgoM+BvtQcF9h9pl9B4JD7qMtRu+MGowzroFBqRpV";
+    public static final String RSA_PRIVATE =
+            "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAOpsoA3pTu1jxVg4" +
+            "2GVX+niS2Y0UQHe4uxn5lIDiOOvOPhBDFrPhVi8s4RTWR89PGQSOLlH6CzyUXNwV" +
+            "98aFrditHLNk+zuOetm/gRU7dzA9SsZTGQ2e2oT39EWft07R4WoZmXRP7B3Xp8U8" +
+            "6U8rO578M8w4ZA1KHMwkxxjqhPJ9AgMBAAECgYBADnad1obOr1iZhs76wlOa5uWz" +
+            "ezkyfbQCoQRHQ4myRaUH5I0rkgNu2KCYhQUSTNbVO9TEacLwRsopCYevI5AhAxxT" +
+            "ANGoL4eeYSeaYZJoBiUeYu6UpX78Hhy/GWNVDFLkm42FT9Il3Zi0bf/jtg/mVmzK" +
+            "k8NzA0ePf994ALvOMQJBAPxOKrViXOh64s3n3W3cZ3F+dXLsBWhnNOzYlT5cSGoQ" +
+            "K4ud0bGGIDs7LQ72poJwARXd4H0ZwJR4rwMnoQbIFF8CQQDt2204/ndcwOx38iQs" +
+            "V7AkpCrK1WEg11tK2lBJE3TiaiIoZhgbWNCc9ZJO79UeTuYku5MXx8XHuw+WZs23" +
+            "MkajAkEAsknuRiSO8L09njE1uNdhxcKN7jq4i5E6xg86T0nY5hItI0jPkDnudsyX" +
+            "R5amDVBmg/Q5GU3kV0Z8racIVAl40wJAfsm2YOkTyzdzVUSXj6N2WzG/NbukOJNT" +
+            "MIVKwolChuY4Kvyw4PLo0KH+SWGCYtN/zhjGgaiVfq/x0SQfiAWerQJBAIVWunH9" +
+            "KckyXpEIFhCeIbx5blSZ2OTcDzqm++GsjP9eFxDxluqSolglnaQpJEwg6PeoWhiw" +
+            "kYSGL5z3CmCjQCI=";
+
     // 支付宝公钥
-    public static final String RSA_PUBLIC = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDI6d306Q8fIfCOaTXyiUeJHkrIvYISRcc73s3vF1ZT7XN8RNPwJxo8pWaJMmvyTn9N4HQ632qJBVHf8sxHi/fEsraprwCtzvzQETrNRwVxLO5jVmRGi60j8Ue1efIlzPXV9je9mkjzOmdssymZkh2QhUrCmZYI/FCEa3/cNMW0QIDAQAB";
+    public static final String RSA_PUBLIC =
+            "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDI6d306Q8fIfCOaTXyiUeJHkrIvYISRcc73s3vF1ZT7XN8RNPwJxo8pWaJMmvyTn9N4HQ632qJBVHf8sxHi/fEsraprwCtzvzQETrNRwVxLO5jVmRGi60j8Ue1efIlzPXV9je9mkjzOmdssymZkh2QhUrCmZYI/FCEa3/cNMW0QIDAQAB";
 
-   private TripOverOrder tripOverOrderDetail;
-   private Button payButton;
-
-
+    private OrderDetail tripOverOrderDetail;
+    private Button payButton;
+    private TextView feeTextView;
     private static final int SDK_PAY_FLAG = 1;
-
     private static final int SDK_CHECK_FLAG = 2;
 
     private Handler mHandler= new Handler() {
@@ -57,27 +80,44 @@ public class AlipayActivity extends ActionBarActivity {
 
                         // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                         if (TextUtils.equals(resultStatus, "9000")) {
-                            Toast.makeText(AlipayActivity.this, "支付成功",
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(AlipayActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
                         } else {
                             // 判断resultStatus 为非“9000”则代表可能支付失败
                             // “8000”代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
                             if (TextUtils.equals(resultStatus, "8000")) {
                                 Toast.makeText(AlipayActivity.this, "支付结果确认中",
                                         Toast.LENGTH_SHORT).show();
-
                             } else {
                                 // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
-                                Toast.makeText(AlipayActivity.this, "支付失败",
-                                        Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AlipayActivity.this, "支付失败", Toast.LENGTH_SHORT).show();
+                                Long timestamp = System.currentTimeMillis();
+                                SocketClient.getInstance().sendPayOverRequest(tripOverOrderDetail.getId(), timestamp, tripOverOrderDetail.getOrg_price(), 1 ,new ResponseHandler(Looper.getMainLooper()) {
+                                    @Override
+                                    public void onSuccess(String messageBody) {
+                                        Log.i("","");
+                                    }
 
+                                    @Override
+                                    public void onFailure(String error) {
+                                        Log.i("","");
+                                    }
+
+                                    @Override
+                                    public void onTimeout() {
+                                        Log.i("","");
+                                    }
+                                });
+                                Intent intent = new Intent(mContext, RatingActivity.class);
+                                intent.putExtra("order", tripOverOrderDetail);
+                                startActivity(intent);
+
+                                finish();
                             }
                         }
                         break;
                     }
                     case SDK_CHECK_FLAG: {
-                        Toast.makeText(AlipayActivity.this, "检查结果为：" + msg.obj,
-                                Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AlipayActivity.this, "检查结果为：" + msg.obj, Toast.LENGTH_SHORT).show();
                         break;
                     }
                     default:
@@ -91,25 +131,23 @@ public class AlipayActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alipay);
 
+        mContext = this;
+
         //UI
         payButton = (Button)findViewById(R.id.buttonPayConfirm);
+        feeTextView = (TextView)findViewById(R.id.textViewFee);
 
         //Get Arguments
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null)
         {
-            tripOverOrderDetail = (TripOverOrder) bundle.get("order");
+            tripOverOrderDetail = (OrderDetail) bundle.get("order");
+            feeTextView.setText(tripOverOrderDetail.getOrg_price());
         }
-        //Debug
-        tripOverOrderDetail = new TripOverOrder("0.01");
-        tripOverOrderDetail.setCar_type("1");
-        tripOverOrderDetail.setDestination("");
-        tripOverOrderDetail.setDestination_lat("28.173");
-        tripOverOrderDetail.setDestination_lng("112.9584");
-        tripOverOrderDetail.setMileage("24");
-        tripOverOrderDetail.setPrice("32");
-        tripOverOrderDetail.setStart_lat("28.189");
-        tripOverOrderDetail.setStart_lng("112.96");
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+
     }
 
     @Override
@@ -126,9 +164,9 @@ public class AlipayActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == android.R.id.home)
+        {
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
@@ -136,7 +174,6 @@ public class AlipayActivity extends ActionBarActivity {
 
     /**
      * call alipay sdk pay. 调用SDK支付
-     *
      */
     public void pay(View v) {
         if (TextUtils.isEmpty(PARTNER) || TextUtils.isEmpty(RSA_PRIVATE)
@@ -148,7 +185,6 @@ public class AlipayActivity extends ActionBarActivity {
                             new DialogInterface.OnClickListener() {
                                 public void onClick(
                                         DialogInterface dialoginterface, int i) {
-                                    //
                                     finish();
                                 }
                             }).show();
@@ -176,6 +212,7 @@ public class AlipayActivity extends ActionBarActivity {
             public void run() {
                 // 构造PayTask 对象
                 PayTask alipay = new PayTask(AlipayActivity.this);
+
                 // 调用支付接口，获取支付结果
                 String result = alipay.pay(payInfo);
 
@@ -194,10 +231,14 @@ public class AlipayActivity extends ActionBarActivity {
 
     /**
      * create the order info. 创建订单信息
-     *
      */
-    public String getOrderInfo(TripOverOrder tripOverOrderDetail) {
-
+    public String getOrderInfo(OrderDetail tripOverOrderDetail){
+        String notifyUrl = "";
+        try {
+            notifyUrl = URLEncoder.encode("http://120.24.237.15:81/index.php?s=api/Pay/getAlipayResult", "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         // 签约合作者身份ID
         String orderInfo = "partner=" + "\"" + PARTNER + "\"";
 
@@ -211,14 +252,13 @@ public class AlipayActivity extends ActionBarActivity {
         orderInfo += "&subject=" + "\"" + tripOverOrderDetail.getDestination() + "\"";
 
         // 商品详情
-        orderInfo += "&body=" + "\"" +  tripOverOrderDetail.getMileage() + "\"";
+        orderInfo += "&body=" + "\"" +  tripOverOrderDetail.getOrderNum() + "\"";
 
         // 商品金额
-        orderInfo += "&total_fee=" + "\"" + tripOverOrderDetail.getMileage() + "\"";
+        orderInfo += "&total_fee=" + "\"" + tripOverOrderDetail.getOrg_price() + "\"";
 
         // 服务器异步通知页面路径
-        orderInfo += "&notify_url=" + "\"" + "http://www.yunxiaoche.com"
-                + "\"";
+        orderInfo += "&notify_url=" + notifyUrl;
 
         // 服务接口名称， 固定值
         orderInfo += "&service=\"mobile.securitypay.pay\"";
@@ -240,7 +280,7 @@ public class AlipayActivity extends ActionBarActivity {
         // orderInfo += "&extern_token=" + "\"" + extern_token + "\"";
 
         // 支付宝处理完请求后，当前页面跳转到商户指定页面的路径，可空
-        orderInfo += "&return_url=\"m.alipay.com\"";
+        orderInfo += "&return_url=\"\"";
 
         // 调用银行卡支付，需配置此参数，参与签名， 固定值 （需要签约《无线银行卡快捷支付》才能使用）
         // orderInfo += "&paymethod=\"expressGateway\"";
@@ -250,7 +290,6 @@ public class AlipayActivity extends ActionBarActivity {
 
     /**
      * get the out_trade_no for an order. 生成商户订单号，该值在商户端应保持唯一（可自定义格式规范）
-     *
      */
     public String getOutTradeNo() {
         SimpleDateFormat format = new SimpleDateFormat("MMddHHmmss",
@@ -266,7 +305,6 @@ public class AlipayActivity extends ActionBarActivity {
 
     /**
      * sign the order info. 对订单信息进行签名
-     *
      * @param content
      *            待签名订单信息
      */
@@ -276,7 +314,6 @@ public class AlipayActivity extends ActionBarActivity {
 
     /**
      * get the sign type we use. 获取签名方式
-     *
      */
     public String getSignType() {
         return "sign_type=\"RSA\"";

@@ -20,6 +20,7 @@ public class DAODBGenerator {
 
         addConfig(schema);
         addOrder(schema);
+        addSearchRecord(schema);
 
         new DaoGenerator().generateAll(schema, "src-gen");
     }
@@ -44,5 +45,13 @@ public class DAODBGenerator {
         order.addStringProperty("price");
         order.addStringProperty("carType");
         order.addStringProperty("orderTime");
+    }
+
+    private static void addSearchRecord(Schema schema)
+    {
+        Entity searchHistory = schema.addEntity("SearchHistory");
+        searchHistory.addIdProperty().primaryKey().autoincrement();
+        searchHistory.addStringProperty("address");
+        searchHistory.addStringProperty("details");
     }
 }

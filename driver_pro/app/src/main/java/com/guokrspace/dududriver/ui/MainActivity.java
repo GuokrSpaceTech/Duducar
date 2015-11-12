@@ -57,6 +57,13 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 
     @Bind(R.id.pattern_btn)
     Button btnPattern;
+    @OnClick(R.id.pattern_btn) public void showMainOrderDialog() {
+        //
+        MainOrderDialog dialog = new MainOrderDialog(context);
+        dialog.setCancelable(true);
+        dialog.show(getSupportFragmentManager(), "mainorderdialog");
+
+    }
     private Context context;
 
     private ViewPager pager;

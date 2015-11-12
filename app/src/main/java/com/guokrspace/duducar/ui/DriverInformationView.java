@@ -68,7 +68,7 @@ public class DriverInformationView extends RelativeLayout {
                 if (distancY >= 0) //Scrollup by 30dp
                 {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
-                        root.animate().translationY(dpToPx(getResources(), 80));
+                        root.animate().translationY(dpToPx(getResources(), -80));
 
                         mDriverImageView.animate().translationX(rectangle_width/4); //left
                         mCarImageView.animate().translationX(-rectangle_width/4); //right

@@ -42,6 +42,9 @@ public class SearchLocation implements Serializable {
 
     public LatLng getLocation()
     {
-       return new LatLng(lat, lng);
+        if(lat!=null && lng !=null)
+           return new LatLng(lat, lng);
+        else
+            return null;
     }
 }

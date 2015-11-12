@@ -3,6 +3,7 @@ package com.guokrspace.duducar.communication;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 
 import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
 
@@ -69,7 +70,7 @@ public abstract class ResponseHandler implements ResponseHandleInterface {
 
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+            Log.e("RESPONSE FROM SERVER", "S: Received Message: '" + responseString + "'");        }
     }
 
     private void sendSuccessMessage(String messagebody)

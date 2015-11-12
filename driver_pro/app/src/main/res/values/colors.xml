@@ -29,7 +29,11 @@
     <color name="material_blue">#0277bd</color>
     <color name="material_light_green">#b2dfdb</color>
     <color name="orange">#ffa000</color>
+    <color name="yellow">#FFFD38</color>
     <color name="translucent_black">#660A0A0A</color>
     <color name="translucent_white">#55FFFFFF</color>
     <color name="holo_red_light">#ffff4444</color>
+    <color name="app_main_theme">#2F3B4A</color>
+    <color name="order_word_red">#F05B30</color>
+    <color name="dark_red">#BB404D</color>
 </resources>

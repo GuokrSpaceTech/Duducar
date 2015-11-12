@@ -59,6 +59,7 @@ import com.guokrspace.duducar.communication.message.NearByCars;
 import com.guokrspace.duducar.communication.message.SearchLocation;
 import com.guokrspace.duducar.database.PersonalInformation;
 import com.guokrspace.duducar.ui.OrderConfirmationView;
+import com.guokrspace.duducar.ui.WinToast;
 
 import java.util.List;
 import java.util.Timer;
@@ -90,7 +91,7 @@ public class PreOrderActivity extends AppCompatActivity
     TextView startLocButton;
     TextView destLocButton;
     TextView nearByCarsTextView;
-    Button callCabButton;
+    TextView callCabButton;
     OrderConfirmationView orderConfirmationView;
 
     //地址解析
@@ -126,6 +127,8 @@ public class PreOrderActivity extends AppCompatActivity
 
     private Timer timer;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,9 +142,6 @@ public class PreOrderActivity extends AppCompatActivity
         destLocButton = (TextView) findViewById(R.id.destButton);
         nearByCarsTextView = (TextView)findViewById(R.id.nearByCarsTextView);
         callCabButton = (Button)findViewById(R.id.callaCabButton);
-
-//        Toolbar myToolbar = (Toolbar)findViewById(R.id.my_toolbar);
-//        setSupportActionBar(myToolbar);
 
         // 地图初始化
         mMapView = (MapView) findViewById(R.id.bmapView);
@@ -159,6 +159,9 @@ public class PreOrderActivity extends AppCompatActivity
         }
         zoom.setVisibility(View.GONE);
 
+        LatLng initLoc = new LatLng(28.173,112.9584);
+        MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(initLoc);
+        mBaiduMap.animateMapStatus(u);
         mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
         MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(16.0f);
         mBaiduMap.setMapStatus(msu);
@@ -194,8 +197,9 @@ public class PreOrderActivity extends AppCompatActivity
         conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         /*
-         * Init the data
+         * Login if socket connected
          */
+<<<<<<< HEAD
         start = new SearchLocation();
         mApplication = (DuduApplication) getApplicationContext();
 
@@ -212,18 +216,32 @@ public class PreOrderActivity extends AppCompatActivity
                 public void onSuccess(String messageBody) {
                     Log.i("", "Login Success");
                 }
+=======
+        Thread thead = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true)
+                {
+                    if(mTcpClient==null) continue;
+>>>>>>> 9dae55d96f5af9fd0c93481389286f76d584745c
 
-                @Override
-                public void onFailure(String error) {
-                    Log.i("", "Login Failure");
+                    if(mTcpClient.isSocketConnected()==false)
+                        continue;
+                    else {
+                        sendLoginRequest(mTcpClient);
+                        break;
+                    }
                 }
+            }
+        });
+        thead.start();
 
-                @Override
-                public void onTimeout() {
-                    Log.i("", "Login Timeout");
-                }
-            });
-        }
+        /*
+         * Init the data
+         */
+        start = new SearchLocation();
+        mApplication = (DuduApplication) getApplicationContext();
+
     }
 
     private void initListener() {
@@ -235,37 +253,14 @@ public class PreOrderActivity extends AppCompatActivity
                 if (persons.size() <= 0) { //Not Logged in
                     Intent intent = new Intent(mContext, LoginActivity.class);
                     startActivityForResult(intent, ACTVITY_LOGIN_REQUEST);
-                } else {
+                } else if(dest==null) {
+                    WinToast.toast(PreOrderActivity.this, "请先输入目的地");
+                }else{
                     mApplication.mPersonalInformation = (PersonalInformation) persons.get(0);
                     Intent intent = new Intent(mContext,PostOrderActivity.class);
                     intent.putExtra("start", start);
                     intent.putExtra("dest", dest);
                     startActivityForResult(intent, 0x6002);
-
-//                    if (orderConfirmationView == null) {
-//                        orderConfirmationView = new OrderConfirmationView(mContext);
-//                        final RelativeLayout container = (RelativeLayout) findViewById(R.id.container);
-//                        final FrameLayout mainmapview = (FrameLayout) findViewById(R.id.mainmapview);
-//
-//                        container.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//
-//                                int heightInDpofConfirmView = 160;
-//
-//                                ViewGroup.LayoutParams paramRL = mainmapview.getLayoutParams();
-//                                paramRL.height = mainmapview.getHeight() - dpToPx(getResources(), heightInDpofConfirmView);
-//                                mainmapview.requestLayout();
-//
-//                                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.FILL_PARENT);
-//                                params.addRule(RelativeLayout.BELOW, mainmapview.getId());
-//                                container.addView(orderConfirmationView, 1, params);
-//                                container.requestLayout();
-//
-//                                isShowingOrderConfirmatinoView = true;
-//                            }
-//                        });
-//                    }
                 }
             }
         });
@@ -302,6 +297,7 @@ public class PreOrderActivity extends AppCompatActivity
 
                 Intent intent = new Intent(mContext, SearchActivity.class);
                 intent.putExtra("location", start);
+                intent.putExtra("city", city);
                 startActivityForResult(intent, ACTIVITY_SEARCH_START_REQUEST);
             }
         });
@@ -311,8 +307,9 @@ public class PreOrderActivity extends AppCompatActivity
             public void onClick(View view) {
 
                 Intent intent = new Intent(mContext, SearchActivity.class);
-                intent.putExtra("location", start);
-                startActivityForResult(intent, ACTIVITY_SEARCH_START_REQUEST);
+                intent.putExtra("location", start); //Search nearby from the start
+                intent.putExtra("city", city);
+                startActivityForResult(intent, ACTIVITY_SEARCH_DEST_REQUEST);
             }
         });
     }
@@ -371,6 +368,8 @@ public class PreOrderActivity extends AppCompatActivity
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_drawericon);
         actionBar.setTitle(mTitle);
     }
 
@@ -396,28 +395,10 @@ public class PreOrderActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == android.R.id.home) {
-
             //If there are fragments showing
             if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 getSupportFragmentManager().popBackStack();
                 return true; //Just return, do not toggle the drawer
-            } else if (isShowingOrderConfirmatinoView == true) //If the confirmview is showing
-            {
-                isShowingOrderConfirmatinoView = false;
-                //Just hide the OrderConfirmationView
-                {
-//                    final RelativeLayout container = (RelativeLayout) findViewById(R.id.container);
-//                    if (orderConfirmationView != null) {
-//                        container.removeView(orderConfirmationView);
-//                    }
-//                    final FrameLayout mainmapview = (FrameLayout) findViewById(R.id.mainmapview);
-//                    ViewGroup.LayoutParams paramRL = mainmapview.getLayoutParams();
-//                    paramRL.height = ViewGroup.LayoutParams.MATCH_PARENT;
-//                    mainmapview.requestLayout();
-//                    container.requestLayout();
-
-                    return true; //Just return, do not toggle the drawer
-                }
             }
         }
 
@@ -470,13 +451,15 @@ public class PreOrderActivity extends AppCompatActivity
 
                 Bundle bundle = data.getExtras();
                 if (bundle != null) {
-                    SearchLocation location = (SearchLocation) bundle.get("location");
-                    LatLng searchLoc = location.getLocation();
+                    start = (SearchLocation) bundle.get("location");
+                    LatLng searchLoc = start.getLocation();
+
+                    startLocButton.setText(start.getAddress());
 
                     mBaiduMap.clear();
                     mBaiduMap.addOverlay(new MarkerOptions().position(searchLoc)
                             .icon(BitmapDescriptorFactory
-                                    .fromResource(R.drawable.caricon)));
+                                    .fromResource(R.drawable.ic_current_position_pin)));
                     mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLng(searchLoc));
                     mGeoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(searchLoc));
                 }
@@ -484,6 +467,10 @@ public class PreOrderActivity extends AppCompatActivity
                 Bundle bundle = data.getExtras();
                 if (bundle != null) {
                     dest = (SearchLocation) bundle.get("location");
+                    destLocButton.setText(dest.getAddress());
+                    destLocButton.setTextColor(getResources().getColor(android.R.color.black));
+                    callCabButton.setEnabled(true);
+
                     Intent intent = new Intent(mContext, CostEstimateActivity.class);
                     intent.putExtra("start", start);
                     intent.putExtra("dest", dest);
@@ -491,7 +478,6 @@ public class PreOrderActivity extends AppCompatActivity
                     startActivityForResult(intent, ACTVITY_COST_ESTIMATE_REQUEST);
                 }
             } else if (requestCode == ACTVITY_COST_ESTIMATE_REQUEST) {
-//                mHandler.sendEmptyMessage(MessageTag.MSG_TOGGLE_CONFIRMVIEW);
             }
         }
 
@@ -505,12 +491,6 @@ public class PreOrderActivity extends AppCompatActivity
                     .show();
             return;
         }
-//        mBaiduMap.clear();
-//        mBaiduMap.addOverlay(new MarkerOptions().position(result.getLocation())
-//                .icon(BitmapDescriptorFactory
-//                        .fromResource(R.drawable.icon_marka)));
-//        mBaiduMap.setMapStatus(MapStatusUpdateFactory.newLatLng(result
-//                .getLocation()));
         String strInfo = String.format("纬度：%f 经度：%f",
                 result.getLocation().latitude, result.getLocation().longitude);
         Toast.makeText(this, strInfo, Toast.LENGTH_LONG).show();
@@ -611,12 +591,14 @@ public class PreOrderActivity extends AppCompatActivity
                     .direction(location.getDirection()).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
 
-            if (locData != null)
-                mBaiduMap.setMyLocationData(locData);
+            try {
+                if (locData != null)
+                    mBaiduMap.setMyLocationData(locData);
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
 
-            mCurrentLocation = new LatLng(location.getLatitude(),
-                    location.getLongitude());
-
+            mCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
             if (isFirstLoc) {
                 isFirstLoc = false;
@@ -763,6 +745,32 @@ public class PreOrderActivity extends AppCompatActivity
     public int dpToPx(Resources res, int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, res.getDisplayMetrics());
     }
+
+
+    public void sendLoginRequest(SocketClient socketClient)
+    {
+        List persons = mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().limit(1).list();
+        if(persons.size()==1) {
+            PersonalInformation person = (PersonalInformation) persons.get(0);
+            socketClient.sendLoginReguest(person.getMobile(), "2", person.getToken(), new ResponseHandler(Looper.getMainLooper()) {
+                @Override
+                public void onSuccess(String messageBody) {
+                    Log.i("","");
+                }
+
+                @Override
+                public void onFailure(String error) {
+                    Log.i("","");
+                }
+
+                @Override
+                public void onTimeout() {
+                    Log.i("","");
+                }
+            });
+        }
+    }
+
 
     private class MyTimerTask extends TimerTask {
         @Override

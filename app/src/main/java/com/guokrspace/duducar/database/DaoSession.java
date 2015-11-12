@@ -20,9 +20,11 @@ public class DaoSession extends AbstractDaoSession {
 
     private final DaoConfig personalInformationDaoConfig;
     private final DaoConfig orderRecordDaoConfig;
+    private final DaoConfig searchHistoryDaoConfig;
 
     private final PersonalInformationDao personalInformationDao;
     private final OrderRecordDao orderRecordDao;
+    private final SearchHistoryDao searchHistoryDao;
 
     public DaoSession(SQLiteDatabase db, IdentityScopeType type, Map<Class<? extends AbstractDao<?, ?>>, DaoConfig>
             daoConfigMap) {
@@ -34,16 +36,22 @@ public class DaoSession extends AbstractDaoSession {
         orderRecordDaoConfig = daoConfigMap.get(OrderRecordDao.class).clone();
         orderRecordDaoConfig.initIdentityScope(type);
 
+        searchHistoryDaoConfig = daoConfigMap.get(SearchHistoryDao.class).clone();
+        searchHistoryDaoConfig.initIdentityScope(type);
+
         personalInformationDao = new PersonalInformationDao(personalInformationDaoConfig, this);
         orderRecordDao = new OrderRecordDao(orderRecordDaoConfig, this);
+        searchHistoryDao = new SearchHistoryDao(searchHistoryDaoConfig, this);
 
         registerDao(PersonalInformation.class, personalInformationDao);
         registerDao(OrderRecord.class, orderRecordDao);
+        registerDao(SearchHistory.class, searchHistoryDao);
     }
     
     public void clear() {
         personalInformationDaoConfig.getIdentityScope().clear();
         orderRecordDaoConfig.getIdentityScope().clear();
+        searchHistoryDaoConfig.getIdentityScope().clear();
     }
 
     public PersonalInformationDao getPersonalInformationDao() {
@@ -52,6 +60,10 @@ public class DaoSession extends AbstractDaoSession {
 
     public OrderRecordDao getOrderRecordDao() {
         return orderRecordDao;
+    }
+
+    public SearchHistoryDao getSearchHistoryDao() {
+        return searchHistoryDao;
     }
 
 }

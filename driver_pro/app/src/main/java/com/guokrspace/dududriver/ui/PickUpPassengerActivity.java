@@ -1,7 +1,10 @@
 package com.guokrspace.dududriver.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.v7.widget.Toolbar;
@@ -9,7 +12,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ZoomControls;
@@ -64,18 +66,17 @@ public class PickUpPassengerActivity extends BaseActivity {
     TextView tvMyPosition;
     @Bind(R.id.passengerposition_textview)
     TextView tvPassengerPosition;
-    @Bind(R.id.passenger_info)
-    Button btnPassengerInfo;
     @Bind(R.id.call_passenger)
     Button btnCallPassenger;
-    @Bind(R.id.illustration_textview)
-    TextView tvIllustration;
-    @Bind(R.id.navi_passenger)
-    ImageButton ibNaviPassenger;
+    @OnClick(R.id.call_passenger)
+    public void callPassenger() {
+        Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:111111"));
+        startActivity(callIntent);
+    }
     @Bind(R.id.pickup_mapview)
     MapView mMapview;
     @Bind(R.id.confirm_button)
-    ButtonRectangle btnConfirm;
+    Button btnConfirm;
     @OnClick(R.id.confirm_button) public void enterConfirmPage() {
 
         if(orderItem == null){
@@ -98,6 +99,7 @@ public class PickUpPassengerActivity extends BaseActivity {
 
             }
 
+            @SuppressLint("NewApi")
             @Override
             public void onTimeout() {
                 Log.e("PickUp", "time out! ");
@@ -268,19 +270,17 @@ public class PickUpPassengerActivity extends BaseActivity {
 
     private void initGetPassView() {
         toolbar.setTitle("去接乘客");
+        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.return_icon));
+        toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        tvIllustration.setText("去 " + orderItem.getOrder().getStart() + "  送尾号 " + orderItem.getOrder().getPassenger_mobile().substring(7));
-        btnConfirm.setButtonText("确认乘客上车");
 
         tvMyPosition.setText(orderItem.getOrder().getStart());
         tvPassengerPosition.setText(orderItem.getOrder().getDestination());
 
         passengerLatLng =  new LatLng(
                 Double.valueOf(orderItem.getOrder().getStart_lat()), Double.valueOf(orderItem.getOrder().getStart_lng()));
-
         ed = PlanNode.withLocation(passengerLatLng);
 
         mBaiduMap = mMapview.getMap();
@@ -324,7 +324,7 @@ public class PickUpPassengerActivity extends BaseActivity {
 
         CommonUtil.changeCurStatus(Constants.STATUS_RUN);
 
-        btnConfirm.setButtonText("确认完成订单");
+        btnConfirm.setText("确认完成订单");
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -344,6 +344,7 @@ public class PickUpPassengerActivity extends BaseActivity {
 
                     @Override
                     public void onFailure(String error) {
+                        Log.e("PickUpPassengerAct", "end order failure" + error);
                         Toast.makeText(context, "订单出现意外!", Toast.LENGTH_SHORT);
                         Intent intent = new Intent(PickUpPassengerActivity.this, ConfirmBillActivity.class);
                         intent.putExtra("orderItem", orderItem);
@@ -354,6 +355,7 @@ public class PickUpPassengerActivity extends BaseActivity {
 
                     @Override
                     public void onTimeout() {
+                        Log.e("PickUpPassengerAct", "end order time out");
                         Toast.makeText(context, "网络状况较差!", Toast.LENGTH_SHORT);
                         Intent intent = new Intent(PickUpPassengerActivity.this, ConfirmBillActivity.class);
                         intent.putExtra("orderItem", orderItem);

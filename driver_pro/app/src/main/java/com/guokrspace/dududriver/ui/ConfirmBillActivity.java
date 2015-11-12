@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -120,6 +121,8 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
 
     private void initView() {
         toolbar.setTitle("确认账单");
+        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.return_icon));
+        toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

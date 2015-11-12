@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -54,7 +55,9 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
     @Bind(R.id.accept_rl)
     RelativeLayout acceptLayout;
     @Bind(R.id.order_cancel)
-    ImageButton btnCancel;
+    Button btnCancel;
+    @Bind(R.id.show_map)
+    Button btnShowMap;
 
     private Context context;
 //    private Thread thread;
@@ -98,9 +101,9 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
         btnCancel.setOnClickListener(this);
         acceptLayout.setOnClickListener(this);
         mHandler = new Handler(this);
-        tvDistance.setText("距离你大约 " + order.getDistance() + " 公里");
-        tvOrderOrigin.setText(" " + order.getOrder().getStart());
-        tvOrderDestination.setText(" " + order.getOrder().getDestination());
+//        tvDistance.setText("距离你大约 " + order.getDistance() + " 公里");
+//        tvOrderOrigin.setText(" " + order.getOrder().getStart());
+//        tvOrderDestination.setText(" " + order.getOrder().getDestination());
         myTimeTick = new MyTimeTick(MAX_TIME);
         myTimeTick.startTimer();
 //        TimerTick(MAX_TIME);

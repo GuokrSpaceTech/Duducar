@@ -1,6 +1,8 @@
 package com.guokrspace.duducar.communication.message;
 
-public class TripOverOrder {
+import java.io.Serializable;
+
+public class TripOverOrder implements Serializable {
     String id;
     String destination;
     String start_lat;
