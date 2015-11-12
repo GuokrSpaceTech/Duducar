@@ -1,6 +1,5 @@
 package com.guokrspace.dududriver.ui;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,9 +15,6 @@ import android.widget.Toast;
 import android.widget.ZoomControls;
 
 import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
@@ -27,7 +23,6 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MyLocationConfiguration;
-import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.overlayutil.DrivingRouteOverlay;
@@ -40,7 +35,6 @@ import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.baidu.mapapi.utils.DistanceUtil;
-import com.gc.materialdesign.views.ButtonFlat;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
@@ -50,8 +44,6 @@ import com.guokrspace.dududriver.net.SocketClient;
 import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.view.CircleImageView;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -223,6 +215,7 @@ public class PickUpPassengerActivity extends BaseActivity {
         calTimerTask = new TimerTask() {
             @Override
             public void run() {
+                Log.e("daddy", "task is runnin as " + CommonUtil.getCurrentStatus());
                 tmpDistance += DistanceUtil.getDistance(new LatLng(preLat, preLng), new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng()));
                 if (CommonUtil.getCurrentStatus() == Constants.STATUS_RUN) {//开车中
                     if (++times == 6) {//1 min
@@ -237,14 +230,15 @@ public class PickUpPassengerActivity extends BaseActivity {
                     preLat = CommonUtil.getCurLat();
                     preLng = CommonUtil.getCurLng();
                 } else { //非法状态下停止
-                    endCharging();
+                    stopCharging();
                 }
             }
         };
         calTimer.schedule(calTimerTask, 1000, 10000);
     }
 
-    private void endCharging(){
+    private void stopCharging(){
+        Log.e("daddy", "start to stop");
         if(calTimer != null){
             calTimer.cancel();
             calTimer = null;
@@ -254,39 +248,6 @@ public class PickUpPassengerActivity extends BaseActivity {
             calTimerTask = null;
         }
     }
-//    private BDLocationListener mDBLocationListener = new BDLocationListener() {
-//        @Override
-//        public void onReceiveLocation(BDLocation location) {
-//            // map view 销毁后不在处理新接收的位置
-//            if (location == null || mMapview == null)
-//                return;
-//
-//            mLoaction = location;
-//            MyLocationData locData = new MyLocationData.Builder()
-//                    .accuracy(location.getRadius())
-//                            // 此处设置开发者获取到的方向信息，顺时针0-360
-//                    .direction(location.getDirection()).latitude(location.getLatitude())
-//                    .longitude(location.getLongitude()).build();
-//            LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
-//
-//            if(isFirstLoc || isSeconLoc){
-//                st = PlanNode.withLocation(ll);
-//                Log.e("daddy", isFirstLoc + " : " + isSeconLoc + " " + st + "  " + ed);
-//                if(isFirstLoc){
-//                    routePlanSearch = RoutePlanSearch.newInstance();
-//                    routePlanSearch.drivingSearch(new DrivingRoutePlanOption().from(st).to(ed));
-//                    routePlanSearch.setOnGetRoutePlanResultListener(routePlanResultListener);
-//                } else {
-//                    routePlanSearch.drivingSearch(new DrivingRoutePlanOption().from(st).to(ed));
-//                    Log.e("daddy", "second");
-//                }
-//                isFirstLoc = isSeconLoc = false;
-//                Log.e("BDLocation listener", "route");
-//            }
-//            MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(ll, 16);//设置中心及缩放级别
-//            mBaiduMap.animateMapStatus(u);
-//        }
-//    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -356,7 +317,6 @@ public class PickUpPassengerActivity extends BaseActivity {
 
     private void initGoDestView(){
 
-        Log.e("initGoDestView", "step1 ");
         toolbar.setTitle("订单开始");
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -369,7 +329,8 @@ public class PickUpPassengerActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 //TODO:无论如何都要结束订单
-                endCharging();
+                stopCharging();
+                Log.e("daddy", "stop thread");
                 SocketClient.getInstance().endOrder(CommonUtil.countPrice(curDistance, lowSpeedTime) + "", curDistance + "", new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
@@ -414,27 +375,10 @@ public class PickUpPassengerActivity extends BaseActivity {
         mBaiduMap.setMapStatus(msu);
 
         // 定位再次初始化
-//        isSeconLoc = true;
         st = PlanNode.withLocation(new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng()));
         routePlanSearch.drivingSearch(new DrivingRoutePlanOption().from(st).to(ed));
     }
 
-//    private void initLocation() {
-//        mLocationClient = new LocationClient(getApplicationContext());
-//        mLocationClientOption = new LocationClientOption();
-//        mLocationClientOption.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);//可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
-//        mLocationClientOption.setCoorType("bd09ll");//可选，默认gcj02，设置返回的定位结果坐标系
-//        int span = 5000;
-//        mLocationClientOption.setScanSpan(span);//可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
-//        mLocationClientOption.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
-//        mLocationClientOption.setOpenGps(true);//可选，默认false,设置是否使用gps
-//        mLocationClientOption.setLocationNotify(true);//可选，默认false，设置是否当gps有效时按照1S1次频率输出GPS结果
-//        mLocationClientOption.setIgnoreKillProcess(false);//可选，默认false，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认杀死
-//        mLocationClientOption.SetIgnoreCacheException(false);//可选，默认false，设置是否收集CRASH信息，默认收集
-//        mLocationClientOption.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤gps仿真结果，默认需要
-//        mLocationClient.setLocOption(mLocationClientOption);
-//        mLocationClient.registerLocationListener(mDBLocationListener);
-//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

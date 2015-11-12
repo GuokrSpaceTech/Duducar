@@ -325,8 +325,8 @@ public class SocketClient {
         JSONObject edOrder = new JSONObject();
         try {
             edOrder.put("cmd", "order_end");
-            edOrder.put("price", "0.01");
-            edOrder.put("mileage", "1");
+            edOrder.put("price", price);
+            edOrder.put("mileage", mileage);
             edOrder.put("lat", CommonUtil.getCurLat());
             edOrder.put("lng", CommonUtil.getCurLng());
             edOrder.put("role", "1");

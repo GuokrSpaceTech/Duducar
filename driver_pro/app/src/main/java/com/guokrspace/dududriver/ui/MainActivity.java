@@ -57,8 +57,6 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 
     @Bind(R.id.pattern_btn)
     Button btnPattern;
-    @OnClick(R.id.pattern_btn) public void showMainOrderDialog() {
-    }
     private Context context;
 
     private ViewPager pager;
@@ -100,9 +98,8 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         context = this;
-        initView();
         CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
-
+        initView();
 
         mHandler = new Handler(this);
 
@@ -277,7 +274,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         mIndicator.setCurrentItem(1);//设置启动首先显示的抢单界面
 
         buttonGroup = (View) findViewById(R.id.button_group_layout);
-        ListenProgressView listenProgressView = (ListenProgressView) buttonGroup.findViewById(R.id.listenprogressview);
+        final ListenProgressView listenProgressView = (ListenProgressView) buttonGroup.findViewById(R.id.listenprogressview);
         listenProgressView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -287,19 +284,21 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                     LogUtil.e("MainActivity ", "runing can not click the button ");
                     return true;
                 }
-
+                Log.e("daddy", "start is listener" + isListeneing);
                 isListeneing = !isListeneing;
                 if (isListeneing) {
 
                     if (!isOnline && userInfo != null) {
                         CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
                         doLogin(userInfo);
+                        isListeneing = !isListeneing;
                         return false;
                     }
                     CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
                 } else {
                     CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
                 }
+                listenProgressView.changeViewStatus();
                 return false;
             }
         });
@@ -381,148 +380,6 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             e.printStackTrace();
         }
 
-//        mLocClient.stop();
         stopService(duduService);
     }
-
-
-//    /**
-//     * 定位SDK监听函数
-//     */
-//    public class MyLocationListener implements BDLocationListener {
-//
-//        @Override
-//        public void onReceiveLocation(BDLocation location) {
-//            //Receive Location
-//            StringBuffer sb = new StringBuffer(256);
-//            sb.append("time : ");
-//            sb.append(location.getTime());
-//            sb.append("\nerror code : ");
-//            sb.append(location.getLocType());
-//            sb.append("\nlatitude : ");
-//            sb.append(location.getLatitude());
-//            sb.append("\nlontitude : ");
-//            sb.append(location.getLongitude());
-//            sb.append("\nradius : ");
-//            sb.append(location.getRadius());
-//            if (location.getLocType() == BDLocation.TypeGpsLocation) {// GPS定位结果
-//                sb.append("\nspeed : ");
-//                sb.append(location.getSpeed());// 单位：公里每小时
-//                sb.append("\nsatellite : ");
-//                sb.append(location.getSatelliteNumber());
-//                sb.append("\nheight : ");
-//                sb.append(location.getAltitude());// 单位：米
-//                sb.append("\ndirection : ");
-//                sb.append(location.getDirection());// 单位度
-//                sb.append("\naddr : ");
-//                sb.append(location.getAddrStr());
-//                sb.append("\ndescribe : ");
-//                sb.append("gps定位成功");
-//
-//            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {// 网络定位结果
-//                sb.append("\naddr : ");
-//                sb.append(location.getAddrStr());
-//                //运营商信息
-//                sb.append("\noperationers : ");
-//                sb.append(location.getOperators());
-//                sb.append("\ndescribe : ");
-//                sb.append("网络定位成功");
-//            } else if (location.getLocType() == BDLocation.TypeOffLineLocation) {// 离线定位结果
-//                sb.append("\ndescribe : ");
-//                sb.append("离线定位成功，离线定位结果也是有效的");
-//            } else if (location.getLocType() == BDLocation.TypeServerError) {
-//                sb.append("\ndescribe : ");
-//                sb.append("服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因");
-//            } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
-//                sb.append("\ndescribe : ");
-//                sb.append("网络不同导致定位失败，请检查网络是否通畅");
-//            } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
-//                sb.append("\ndescribe : ");
-//                sb.append("无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机");
-//            }
-//            sb.append("\nlocationdescribe : ");
-//            sb.append(location.getLocationDescribe());// 位置语义化信息
-//            List<Poi> list = location.getPoiList();// POI数据
-//            if (list != null) {
-//                sb.append("\npoilist size = : ");
-//                sb.append(list.size());
-//                for (Poi p : list) {
-//                    sb.append("\npoi= : ");
-//                    sb.append(p.getId() + " " + p.getName() + " " + p.getRank());
-//                }
-//            }
-//
-//            // map view 销毁后不在处理新接收的位置
-//            if (location == null)
-//                return;
-//
-//            MyLocationData curLocaData = new MyLocationData.Builder()
-//                    .accuracy(location.getRadius())
-//                            // 此处设置开发者获取到的方向信息，顺时针0-360
-//                    .direction(location.getDirection()).latitude(location.getLatitude())
-//                    .longitude(location.getLongitude()).build();
-//
-//            CommonUtil.setCurLat(curLocaData.latitude);
-//            CommonUtil.setCurLng(curLocaData.longitude);
-//
-//            sendHeartBeat(curLocaData);
-//
-////            Log.i("BaiduLocationApiDem", sb.toString());
-//        }
-//    }
-//        private void sendHeartBeat(MyLocationData locData) {
-//            HeartBeatMessage msg = new HeartBeatMessage();
-//            msg.setCmd("heartbeat");
-//            msg.setStatus(CommonUtil.getCurrentStatus());
-//            msg.setLat(String.valueOf(locData.latitude));
-//            msg.setLng(String.valueOf(locData.longitude));
-//            msg.setSpeed(String.valueOf(locData.speed));
-//
-//            SocketClient.getInstance().sendHeartBeat(msg, new ResponseHandler(Looper.myLooper()) {
-//                @Override
-//                public void onSuccess(String messageBody) {
-//                    Log.i("HeartBeat Response", messageBody);
-//                    //将登陆状态置为true
-//                    boolean isOnline = (boolean) SharedPreferencesUtils.getParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, false);
-//                    if (!isOnline) {
-//                        SharedPreferencesUtils.setParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, true);
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(String error) {
-//                    Log.i("HeartBeat Response", error);
-//                    //将登陆状态置为true
-//                    boolean isOnline = (boolean) SharedPreferencesUtils.getParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, false);
-//                    if (!isOnline) {
-//                        SharedPreferencesUtils.setParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, true);
-//                    }
-//                    if (error.contains("please login")) {
-//                        if (userInfo != null) {
-//                            doLogin(userInfo);
-//                        } else {
-//                            List userInfos = DuduDriverApplication.getInstance().mDaoSession.getPersonalInformationDao().
-//                                    queryBuilder().list();
-//                            if (userInfos.size() < 1) {
-//                                //未注册
-//                                Log.e("MainActivity ", "not log up, no user information in db");
-//                            } else {
-//                                userInfo = (PersonalInformation) userInfos.get(0);
-//                                doLogin(userInfo);
-//                                Log.i("HeartBeat Response: " ,"Login again !");
-//                            }
-//                        }
-//                    }
-//                }
-//
-//                @Override
-//                public void onTimeout() {
-//                    Log.i("HeartBeat", "Response Timeout");
-//                    showToast("网络异常...");
-//                    //将登陆状态置为false
-//                    SharedPreferencesUtils.setParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, false);
-//                }
-//            });
-//            Log.i("daddy hearbeat", msg.getStatus() + " - currentStatus");
-//        }
-    }
+}

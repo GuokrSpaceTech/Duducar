@@ -104,7 +104,7 @@ public class CommonUtil {
     public static long curTime;
 
     public static double countPrice(double mileage, double low){
-        return 10 * mileage + low * 1.5 + 0.01;
+        return 10 * mileage + low * 0.1 + 0.01;
     }
 
 }
