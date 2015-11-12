@@ -193,6 +193,7 @@ public class AlipayActivity extends ActionBarActivity {
         // 订单
         String orderInfo = getOrderInfo(tripOverOrderDetail);
 
+
         // 对订单做RSA 签名
         String sign = sign(orderInfo);
         try {

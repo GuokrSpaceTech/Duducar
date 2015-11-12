@@ -76,6 +76,9 @@
         <activity
             android:name=".ui.OrderDetailActivity"
             android:label="订单详情" />
+        <activity
+            android:name=".ui.OrderMapActivity"
+            android:label="订单地图" />
     </application>
 
 

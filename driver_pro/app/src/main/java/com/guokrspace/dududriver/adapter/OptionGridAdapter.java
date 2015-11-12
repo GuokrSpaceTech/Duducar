@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.MoreOptionType;
+import com.guokrspace.dududriver.ui.OrderMapActivity;
 import com.guokrspace.dududriver.ui.SettingActivity;
 import com.guokrspace.dududriver.util.DisplayUtil;
 
@@ -111,7 +112,7 @@ public class OptionGridAdapter extends RecyclerView.Adapter<OptionGridAdapter.It
     private void aheadPage(int position) {
         switch (MoreOptionType.getByVal(position)) {
             case ORDER_MAP:
-
+                context.startActivity(new Intent(context, OrderMapActivity.class));
                 break;
             case MESSAGE:
 
