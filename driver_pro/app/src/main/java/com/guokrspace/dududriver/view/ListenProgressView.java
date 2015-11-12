@@ -202,5 +202,10 @@ public class ListenProgressView extends View{
         invalidate();
     }
 
+    public boolean isCircling(){
+        //是不是在听单页面
+        return isListening;
+    }
+
 
 }

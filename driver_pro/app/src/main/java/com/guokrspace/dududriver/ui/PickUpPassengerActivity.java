@@ -40,10 +40,12 @@ import com.baidu.mapapi.utils.DistanceUtil;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
+import com.guokrspace.dududriver.common.VoiceCommand;
 import com.guokrspace.dududriver.model.OrderItem;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
 import com.guokrspace.dududriver.util.CommonUtil;
+import com.guokrspace.dududriver.util.VoiceUtil;
 import com.guokrspace.dududriver.view.CircleImageView;
 
 import java.util.Timer;
@@ -70,8 +72,14 @@ public class PickUpPassengerActivity extends BaseActivity {
     Button btnCallPassenger;
     @OnClick(R.id.call_passenger)
     public void callPassenger() {
-        Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:111111"));
-        startActivity(callIntent);
+        String mobile = orderItem.getOrder().getPassenger_mobile();
+        if(mobile != null && mobile.length() == 11){
+            VoiceUtil.startSpeaking(VoiceCommand.CALL_PASSENEGER);
+            Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:"+mobile));
+            startActivity(callIntent);
+        } else {
+            Log.e("PickUpPassengerActivity", "乘客手机号码问题" + mobile);
+        }
     }
     @Bind(R.id.pickup_mapview)
     MapView mMapview;
@@ -81,15 +89,19 @@ public class PickUpPassengerActivity extends BaseActivity {
 
         if(orderItem == null){
             showToast("订单出现异常,请重新等候派单!");
+            VoiceUtil.startSpeaking(VoiceCommand.EXCEPTION);
             CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+            finish();
             //TODO: 回退
             return;
         }
+
         SocketClient.getInstance().startOrder(orderItem.getOrder().getId(), new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
                 //进入最后导航界面, 开始计费
-                CommonUtil.changeCurStatus(Constants.STATUS_GOT);
+                VoiceUtil.startSpeaking(VoiceCommand.PICKUP_DONE);
+                CommonUtil.changeCurStatus(Constants.STATUS_RUN);
                 initGoDestView();
                 startCharging();
             }
@@ -104,6 +116,7 @@ public class PickUpPassengerActivity extends BaseActivity {
             public void onTimeout() {
                 Log.e("PickUp", "time out! ");
                 //服务器未响应,重新发送请求
+                VoiceUtil.startSpeaking(VoiceCommand.TIME_OUT_ALERT);
                 btnConfirm.callOnClick();
             }
         });
@@ -116,13 +129,6 @@ public class PickUpPassengerActivity extends BaseActivity {
 
     private BaiduMap mBaiduMap;
     private BitmapDescriptor mCurrentMarker = null;
-    private OverlayOptions myOptions;
-    private OverlayOptions passengerOptions;
-    private boolean isFirstLoc = true;
-    private boolean isSeconLoc = false;
-    private Marker myMarker;
-    private Marker passengerMarker;
-    private BitmapDescriptor passengerDescriptor = null;
 
     private LatLng passengerLatLng = new LatLng(28.169544, 112.957194);
 
@@ -192,15 +198,30 @@ public class PickUpPassengerActivity extends BaseActivity {
     private MyLocationConfiguration.LocationMode mCurrentMode;
     private double preLat;
     private double preLng;
-    private double preTime;
+    private double preDis;
     private double curDistance;
     private int lowSpeedTime;
     private int minutes;
     private int times;
+    private double secDistance;
     private double tmpDistance;
-    private double lowSpeedDistance = 0.3333;
+    private double LOWSPEEDDISTANACE = 333.3; // m/min
+    private double STRANGEDISTANCE = 33.3; // m/s
     private Timer calTimer;
     private TimerTask calTimerTask;
+
+//    private void startRanging(){
+//        curDistance = 100000.0d;
+//        calTimer = new Timer();
+//        final LatLng passLatlng = new LatLng(Double.parseDouble(orderItem.getOrder().getStart_lat()), Double.parseDouble(orderItem.getOrder().getStart_lng()));
+//        calTimerTask = new TimerTask() {
+//            @Override
+//            public void run() {
+//                //计算当前到乘客的距离
+//                curDistance = DistanceUtil.getDistance(new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng()), passLatlng);
+//            }
+//        }
+//    }
 
     private void startCharging(){
             //TODO: to charge
@@ -209,26 +230,38 @@ public class PickUpPassengerActivity extends BaseActivity {
         minutes = 0;
         preLat = CommonUtil.getCurLat();
         preLng = CommonUtil.getCurLng();
-        preTime= CommonUtil.getCurTime();
 
         times = 0;
+        preDis = 0;
+        secDistance=0d;
         tmpDistance=0d;
         calTimer = new Timer();
         calTimerTask = new TimerTask() {
             @Override
             public void run() {
                 Log.e("daddy", "task is runnin as " + CommonUtil.getCurrentStatus());
-                tmpDistance += DistanceUtil.getDistance(new LatLng(preLat, preLng), new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng()));
+
+                secDistance = DistanceUtil.getDistance(new LatLng(preLat, preLng), new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng()));
+                if ((secDistance * 1000 / (System.currentTimeMillis() - CommonUtil.getCurTime())) >= STRANGEDISTANCE) { //这一次的距离跳转异常
+                    //drop it
+                    tmpDistance += preDis;
+                } else {
+                    tmpDistance += secDistance;
+                    preDis = secDistance;
+                }
+
                 if (CommonUtil.getCurrentStatus() == Constants.STATUS_RUN) {//开车中
                     if (++times == 6) {//1 min
                         minutes++;
-                        if (tmpDistance <= lowSpeedDistance) {//这一分钟内是低速行驶
+                        if (tmpDistance <= LOWSPEEDDISTANACE) {//这一分钟内是低速行驶
                             lowSpeedTime++;
                         }
+
                         curDistance += tmpDistance;
                         tmpDistance = 0;
                         times = 0;
                     }
+
                     preLat = CommonUtil.getCurLat();
                     preLng = CommonUtil.getCurLng();
                 } else { //非法状态下停止
@@ -330,40 +363,14 @@ public class PickUpPassengerActivity extends BaseActivity {
             public void onClick(View v) {
                 //TODO:无论如何都要结束订单
                 stopCharging();
-                Log.e("daddy", "stop thread");
-                SocketClient.getInstance().endOrder(CommonUtil.countPrice(curDistance, lowSpeedTime) + "", curDistance + "", new ResponseHandler(Looper.myLooper()) {
-                    @Override
-                    public void onSuccess(String messageBody) {
-                        //
-                        Intent intent = new Intent(PickUpPassengerActivity.this, ConfirmBillActivity.class);
-                        intent.putExtra("orderItem", orderItem);
-                        startActivity(intent);
-                        CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
-                        finish();
-                    }
-
-                    @Override
-                    public void onFailure(String error) {
-                        Log.e("PickUpPassengerAct", "end order failure" + error);
-                        Toast.makeText(context, "订单出现意外!", Toast.LENGTH_SHORT);
-                        Intent intent = new Intent(PickUpPassengerActivity.this, ConfirmBillActivity.class);
-                        intent.putExtra("orderItem", orderItem);
-                        CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
-                        startActivity(intent);
-                        finish();
-                    }
-
-                    @Override
-                    public void onTimeout() {
-                        Log.e("PickUpPassengerAct", "end order time out");
-                        Toast.makeText(context, "网络状况较差!", Toast.LENGTH_SHORT);
-                        Intent intent = new Intent(PickUpPassengerActivity.this, ConfirmBillActivity.class);
-                        intent.putExtra("orderItem", orderItem);
-                        CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
-                        startActivity(intent);
-                    }
-                });
-
+                VoiceUtil.startSpeaking(VoiceCommand.ORDER_FINISHED);
+                Intent intent = new Intent(PickUpPassengerActivity.this, ConfirmBillActivity.class);
+                intent.putExtra("orderItem", orderItem);
+                intent.putExtra("mileage", curDistance);
+                intent.putExtra("lowspeed", lowSpeedTime);
+                startActivity(intent);
+                CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
+                finish();
             }
         });
 
@@ -407,7 +414,6 @@ public class PickUpPassengerActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
-//        mLocationClient.stop();
         mBaiduMap.setMyLocationEnabled(false);
         if (mMapview != null) {
             mMapview.onDestroy();

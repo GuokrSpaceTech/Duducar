@@ -13,6 +13,7 @@ import com.guokrspace.dududriver.database.DaoSession;
 import com.guokrspace.dududriver.database.PersonalInformation;
 import com.guokrspace.dududriver.database.PersonalInformationDao;
 import com.guokrspace.dududriver.util.DisplayUtil;
+import com.guokrspace.dududriver.util.VoiceUtil;
 
 import java.util.List;
 
@@ -44,6 +45,8 @@ public class DuduDriverApplication extends Application{
         instance = this;
         //初始化显示工具类
         DisplayUtil.init(getApplicationContext());
+        //初始化语音播报类
+        VoiceUtil.init(getApplicationContext());
         // 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
         SDKInitializer.initialize(this);
 

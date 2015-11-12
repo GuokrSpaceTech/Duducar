@@ -1,7 +1,9 @@
 package com.guokrspace.dududriver.ui;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,12 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
-import com.baidu.location.Poi;
-import com.baidu.mapapi.map.MyLocationData;
+
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
 import com.guokrspace.dududriver.DuduDriverApplication;
@@ -31,8 +28,6 @@ import com.guokrspace.dududriver.model.OrderItem;
 import com.guokrspace.dududriver.net.DuduService;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
-//import com.guokrspace.dududriver.net.DuduService;
-import com.guokrspace.dududriver.net.message.HeartBeatMessage;
 import com.guokrspace.dududriver.net.message.MessageTag;
 import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.FastJsonTools;
@@ -48,7 +43,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by hyman on 15/10/22.
@@ -57,13 +51,6 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 
     @Bind(R.id.pattern_btn)
     Button btnPattern;
-    @OnClick(R.id.pattern_btn) public void showMainOrderDialog() {
-        //
-        MainOrderDialog dialog = new MainOrderDialog(context);
-        dialog.setCancelable(true);
-        dialog.show(getSupportFragmentManager(), "mainorderdialog");
-
-    }
     private Context context;
 
     private ViewPager pager;
@@ -73,6 +60,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     private MainOrderDialog dialog = null;
 
     private View buttonGroup;
+    private ListenProgressView listenProgressView;
 
     private SocketClient mTcpClient = null;
     private connectTask conctTask = null;
@@ -87,16 +75,14 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     private static final int HANDLE_LOGIN_FAILURE = 100;
     private static final int NEW_ORDER_ARRIVE = 101;
     private static final int HANDLE_BASEINFO = 103;
+    private static final int ORDER_CANCELED = 104;
+    private static final int ADJUST_STATUS = 105;
     //TODO:OTHER thing
 
     private PersonalInformation userInfo;
 
     private OrderItem orderItem = null;
     private BaseInfo baseInfo = null;
-
-    // 定位相关
-//    LocationClient mLocClient;
-//    public MyLocationListener myListener = new MyLocationListener();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +92,14 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         ButterKnife.bind(this);
         context = this;
         CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
+
+         /*
+         * Check if use has logined
+         */
+        if (!DuduDriverApplication.getInstance().initPersonalInformation()) {
+            startActivity(new Intent(this, LoginActivity.class));
+        }
+
         initView();
 
         mHandler = new Handler(this);
@@ -124,13 +118,13 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         conctTask = new connectTask(); //Connect to server
         conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-        /*
-         * Start Location
-         */
-//        initLocation();
-//        mLocClient.start();
 
+
+        /*
+         * Start Location & Send Heartbeat  Service
+         */
         duduService = new Intent(getBaseContext(), DuduService.class);
+        registerBroadcastReceiver();
         startService(duduService);
 
     }
@@ -174,20 +168,26 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             }
         }
 
+        /*
+        * 调整circle状态
+        * */
+        mHandler.sendEmptyMessage(ADJUST_STATUS);
+
         //注册派单监听
         SocketClient.getInstance().registerServerMessageHandler(MessageTag.PATCH_ORDER, new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
                 Log.e("Mainactivity", "confirm order handler");
                 orderItem = FastJsonTools.getObject(messageBody, OrderItem.class);
-                Log.e("Daddy ", messageBody + "  " + orderItem.getCMD() + " "+ orderItem.getOrder().getDestination_lat() + "::" + orderItem.getOrder().getDestination_lng());
-//                if()
+                Log.e("Daddy ", messageBody + "  " + orderItem.getCMD() + " " + orderItem.getOrder().getDestination_lat() + "::" + orderItem.getOrder().getDestination_lng());
                 mHandler.sendEmptyMessage(NEW_ORDER_ARRIVE);
             }
+
             @Override
             public void onFailure(String error) {
                 Log.e("Mainactivity", "register order handler error");
             }
+
             @Override
             public void onTimeout() {
                 Log.e("Mainactivity", "register order handler time out");
@@ -200,31 +200,23 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             public void onSuccess(String messageBody) {
                 try {
                     JSONObject mCancel = new JSONObject(messageBody);
-                    if(orderItem == null || mCancel.get("order_no") != orderItem.getOrder().getId()
-                            || CommonUtil.getCurrentStatus() != Constants.STATUS_HOLD){
+                    if (orderItem == null || mCancel.get("order_no") != orderItem.getOrder().getId()
+                            || CommonUtil.getCurrentStatus() != Constants.STATUS_HOLD) {
+                        //订单已经取消或者已经接到乘客  无法取消订单
                         return;
                     }
-                    orderItem = null;
-                    if(dialog != null){
-                        dialog.dismiss();
-                        dialog = null;
-                    }
-                    CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
-                } catch (JSONException e){
+                    mHandler.sendEmptyMessage(ORDER_CANCELED);
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
             }
 
             @Override
             public void onFailure(String error) {
-
             }
 
             @Override
             public void onTimeout() {
-
             }
         });
     }
@@ -236,9 +228,16 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         mHandler.removeMessages(HANDLE_LOGIN_FAILURE);
     }
 
+
+    //监听service传来的消息
+    private void registerBroadcastReceiver(){
+        ServiceReceiver receiver = new ServiceReceiver();
+        IntentFilter filter = new IntentFilter(Constants.SERVICE_BROADCAST);
+        filter.addAction(Constants.SERVICE_ACTION_RELOGIN);
+        registerReceiver(receiver, filter);
+    }
     //进行自动登陆
     private void doLogin(PersonalInformation user) {
-        Log.e("hyman", user.getMobile() + " " + user.getToken() + " " + user.getId());
         if (user == null) {
             return;
         }
@@ -281,20 +280,21 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         mIndicator.setCurrentItem(1);//设置启动首先显示的抢单界面
 
         buttonGroup = (View) findViewById(R.id.button_group_layout);
-        final ListenProgressView listenProgressView = (ListenProgressView) buttonGroup.findViewById(R.id.listenprogressview);
+        listenProgressView = (ListenProgressView) buttonGroup.findViewById(R.id.listenprogressview);
         listenProgressView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                String currStatus = CommonUtil.getCurrentStatus();
-                if (currStatus == Constants.STATUS_RUN || currStatus == Constants.STATUS_GOT) {
-                    //error stats
-                    LogUtil.e("MainActivity ", "runing can not click the button ");
-                    return true;
-                }
                 Log.e("daddy", "start is listener" + isListeneing);
                 isListeneing = !isListeneing;
-                if (isListeneing) {
 
+                String currStatus = CommonUtil.getCurrentStatus();
+                if (currStatus == Constants.STATUS_RUN || currStatus == Constants.STATUS_DEAL
+                        || currStatus == Constants.STATUS_GET) {
+                    //error stats
+                    LogUtil.e("MainActivity ", "runing can not click the button ");
+                }
+
+                if (isListeneing) {
                     if (!isOnline && userInfo != null) {
                         CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
                         doLogin(userInfo);
@@ -305,11 +305,14 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 } else {
                     CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
                 }
-                listenProgressView.changeViewStatus();
+                if(listenProgressView.isCircling() != isListeneing){
+                    listenProgressView.changeViewStatus();
+                }
                 return false;
             }
         });
     }
+
 
     @Override
     public boolean handleMessage(Message msg) {
@@ -321,6 +324,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 break;
             case NEW_ORDER_ARRIVE:
                 if (orderItem == null) {
+                    Log.e("daddy", "orderItem fail ");
                     isListeneing = true;
                     break;
                 }
@@ -331,20 +335,44 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 orderItem.setDistance(String.valueOf(DistanceUtil.getDistance(startLoaction, endLoaction)));
                 //显示派单dialog
                 if(CommonUtil.getCurrentStatus() == Constants.STATUS_WAIT){
+
                     dialog = new MainOrderDialog(context, orderItem);
                     Log.e("Daddy m", "orderItem"+ orderItem.getOrder().getStart() + " "+ orderItem.getOrder().getDestination() + " ");
                     dialog.setCancelable(true);
+                    if(dialog.isResumed()){}
                     dialog.show(getSupportFragmentManager(), "mainorderdialog");
+
                     //选择界面不听单
-                    CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
+                    CommonUtil.changeCurStatus(Constants.STATUS_DEAL);
                 } else {
                     Log.e("MainActivity ", "wrong status to get new order!");
                 }
 
                 break;
+            case ORDER_CANCELED:
+                orderItem = null;
+                if(dialog != null && dialog.isVisible()){
+                    dialog.dismiss();
+                    dialog = null;
+                }
+                CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+                break;
             case HANDLE_BASEINFO:
                 if(baseInfo == null){
 
+                }
+                break;
+            case ADJUST_STATUS:
+                if(CommonUtil.getCurrentStatus() == Constants.STATUS_WAIT) {
+                    isListeneing = true;
+                    if (!listenProgressView.isCircling()) {
+                        listenProgressView.changeViewStatus();
+                    }
+                } else {
+                    isListeneing = false;
+                    if(listenProgressView.isCircling()){
+                        listenProgressView.changeViewStatus();
+                    }
                 }
                 break;
             default:
@@ -389,4 +417,22 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 
         stopService(duduService);
     }
+
+    public class ServiceReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            switch (action){
+                case Constants.SERVICE_ACTION_RELOGIN:
+                    if(userInfo != null) {
+                        doLogin(userInfo);
+                    }
+                    break;
+                default:
+                    return;
+            }
+        }
+    }
+
 }

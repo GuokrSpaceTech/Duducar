@@ -14,11 +14,15 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
+import com.guokrspace.dududriver.DuduDriverApplication;
+import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.database.PersonalInformation;
+import com.guokrspace.dududriver.model.BaseInfo;
 import com.guokrspace.dududriver.model.DistanceInfoListItem;
 import com.guokrspace.dududriver.net.message.HeartBeatMessage;
 import com.guokrspace.dududriver.ui.MainActivity;
 import com.guokrspace.dududriver.util.CommonUtil;
+import com.guokrspace.dududriver.util.FastJsonTools;
 import com.guokrspace.dududriver.util.LogUtil;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 
@@ -140,21 +144,17 @@ public class DuduService extends Service {
             public void onSuccess(String messageBody) {
                 Log.i("HeartBeat Response", messageBody);
                 //将登陆状态置为true
-                boolean isOnline = (boolean) SharedPreferencesUtils.getParam(DuduService.this, SharedPreferencesUtils.LOGIN_STATE, false);
-                if (!isOnline) {
-                    SharedPreferencesUtils.setParam(DuduService.this, SharedPreferencesUtils.LOGIN_STATE, true);
-                }
+                SharedPreferencesUtils.setParam(DuduService.this, SharedPreferencesUtils.LOGIN_STATE, true);
             }
 
             @Override
             public void onFailure(String error) {
                 Log.i("HeartBeat Response", error);
-                //将登陆状态置为true
-                boolean isOnline = (boolean) SharedPreferencesUtils.getParam(DuduService.this, SharedPreferencesUtils.LOGIN_STATE, false);
-                if (!isOnline) {
-                    SharedPreferencesUtils.setParam(DuduService.this, SharedPreferencesUtils.LOGIN_STATE, true);
+                if(error.contains("login")){//登陆出现问题
+                    //将登陆状态置为false
+                    SharedPreferencesUtils.setParam(DuduService.this, SharedPreferencesUtils.LOGIN_STATE, false);
+                    sendBroadCast(Constants.SERVICE_ACTION_RELOGIN);
                 }
-
             }
 
             @Override
@@ -167,5 +167,10 @@ public class DuduService extends Service {
         });
     }
 
+    private void sendBroadCast(String action){
+        Intent intent = new Intent();
+        intent.setAction(action);
+        sendBroadcast(intent);
+    }
 }
 
