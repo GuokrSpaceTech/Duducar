@@ -191,21 +191,20 @@ public class ListenProgressView extends View{
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         getParent().requestDisallowInterceptTouchEvent(true);
-        int action = event.getAction() & MotionEvent.ACTION_MASK;
-        switch (action) {
-            case MotionEvent.ACTION_DOWN:
-                //切换当前的听单状态
-                isListening = ! isListening;
-                index++;
-                text = texts[index % 2];
-                invalidate();
-                break;
-            case MotionEvent.ACTION_UP:
-                break;
-            default:
-                break;
-        }
         return super.onTouchEvent(event);
+    }
+
+    public void changeViewStatus(){
+        //切换当前的听单状态
+        isListening = ! isListening;
+        index++;
+        text = texts[index % 2];
+        invalidate();
+    }
+
+    public boolean isCircling(){
+        //是不是在听单页面
+        return isListening;
     }
 
 

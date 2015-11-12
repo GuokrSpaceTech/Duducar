@@ -309,6 +309,8 @@ public class SocketClient {
         try {
             stOrder.put("cmd", "order_start");
             stOrder.put("role", "1");
+            stOrder.put("lat", CommonUtil.getCurLat());
+            stOrder.put("lng", CommonUtil.getCurLng());
             stOrder.put("order_no", order_no);
             ret = sendMessage(stOrder, handler, 5);
         } catch (JSONException e){
@@ -318,11 +320,15 @@ public class SocketClient {
         return ret;
     }
 
-    public int endOrder(ResponseHandler handler){
+    public int endOrder(String price, String mileage, ResponseHandler handler){
         int ret = -1;
         JSONObject edOrder = new JSONObject();
         try {
             edOrder.put("cmd", "order_end");
+            edOrder.put("price", price);
+            edOrder.put("mileage", mileage);
+            edOrder.put("lat", CommonUtil.getCurLat());
+            edOrder.put("lng", CommonUtil.getCurLng());
             edOrder.put("role", "1");
             ret = sendMessage(edOrder, handler, 5);
         } catch (JSONException e){

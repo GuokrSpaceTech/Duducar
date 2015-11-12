@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
@@ -15,21 +14,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
+import com.guokrspace.dududriver.common.VoiceCommand;
 import com.guokrspace.dududriver.model.OrderItem;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
 import com.guokrspace.dududriver.util.CommonUtil;
+import com.guokrspace.dududriver.util.VoiceUtil;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.DecimalFormat;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -60,10 +58,8 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
     Button btnShowMap;
 
     private Context context;
-//    private Thread thread;
     private MyTimeTick myTimeTick;
     private Handler mHandler;
-    private boolean threadStopFlag = false;
 
     private OrderItem order;
 
@@ -101,12 +97,22 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
         btnCancel.setOnClickListener(this);
         acceptLayout.setOnClickListener(this);
         mHandler = new Handler(this);
-//        tvDistance.setText("距离你大约 " + order.getDistance() + " 公里");
-//        tvOrderOrigin.setText(" " + order.getOrder().getStart());
-//        tvOrderDestination.setText(" " + order.getOrder().getDestination());
+        Log.e("daddy", "distance " + order.getDistance());
+        double distance = Math.floor(Double.valueOf(order.getDistance()));
+        String distanceStr = "";
+        if(distance <= 999){
+            distanceStr = "距离你只有大约 " + distance + " 米";
+        } else {
+            distanceStr = "距离你大约 " + new DecimalFormat(".#").format(distance/1000.0d) + " 公里";
+        }
+        tvDistance.setText(distanceStr);
+        tvOrderOrigin.setText(" " + order.getOrder().getStart());
+        tvOrderDestination.setText(" " + order.getOrder().getDestination());
+
+        VoiceUtil.startSpeaking(VoiceCommand.NEW_ORDER_ARRIVE + ", " + distanceStr);
+
         myTimeTick = new MyTimeTick(MAX_TIME);
         myTimeTick.startTimer();
-//        TimerTick(MAX_TIME);
     }
 
     private Context retContext(){
@@ -133,16 +139,13 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-//        if (thread != null && thread.isAlive()) {
-//            thread.interrupt();
-//            thread = null;
-//        }
 
         mHandler.removeMessages(HANDLE_TIMERTICK);
         switch (v.getId()) {
             case R.id.order_cancel:
                 this.dismiss();
                 myTimeTick.stopTimer();
+                VoiceUtil.startSpeaking(VoiceCommand.ORDER_REJECT);
                 //取消订单,重新听单
                 CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
                 break;
@@ -156,15 +159,17 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
                     public void onSuccess(String messageBody) {
                         //发送成功了
                         Toast.makeText(retContext(), "接单成功!", Toast.LENGTH_SHORT).show();
+                        VoiceUtil.startSpeaking(VoiceCommand.ORDER_ACCEPT);
                         mHandler.sendEmptyMessage(INTENT_TO_PICKUP);
-
-                        Log.e("MainOrderDialog", "success up order");
+                        CommonUtil.changeCurStatus(Constants.STATUS_GET);
+                        dismiss();
                     }
 
                     @Override
                     public void onFailure(String error) {
                         //接单失败
-                        Toast.makeText(retContext(), "接单失败,马上为您派发新单!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(retContext(), "接单失败,正在为您重新派单!", Toast.LENGTH_SHORT).show();
+                        VoiceUtil.startSpeaking(VoiceCommand.ORDER_FAILER);
                         CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
                         disMiss();
                     }
@@ -172,12 +177,11 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
                     @Override
                     public void onTimeout() {
                         Toast.makeText(retContext(), "服务器响应超时,请等待下次派单!", Toast.LENGTH_SHORT).show();
+                        VoiceUtil.startSpeaking(VoiceCommand.TIME_OUT_ALERT);
                         CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
                         disMiss();
                     }
                 });
-//                CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
-//                this.dismiss();
                 break;
             default:
                 break;
@@ -190,22 +194,21 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
             case HANDLE_TIMERTICK:
                 if (tvOrderSecond != null) {
                     tvOrderSecond.setText(msg.obj + "");
+                    if((Integer)msg.obj <= 5 && !VoiceUtil.isSpeaking()){
+                        VoiceUtil.startSpeaking("嘟");
+                    }
                 }
                 break;
             case HANDLER_TIMER_TIMEOUT:
-                threadStopFlag = true;
                 this.dismiss();
                 //超时返回监听状态
+                VoiceUtil.stopSpeaking();
+                VoiceUtil.startSpeaking(VoiceCommand.ORDER_AUTO_CANCEL);
                 CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
                 break;
             case INTENT_TO_PICKUP:
                 //确认完毕进入导航页面
                 Intent intent = new Intent(context, PickUpPassengerActivity.class);
-//                List orderList = new ArrayList();
-//                orderList.add(order);
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable("orderItem", (ArrayList) orderList);
-//                intent.putExtras(bundle);
                 intent.putExtra("orderItem", order);
                 startActivity(intent);
                 dismiss();

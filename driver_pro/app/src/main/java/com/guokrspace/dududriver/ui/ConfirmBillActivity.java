@@ -1,34 +1,43 @@
 package com.guokrspace.dududriver.ui;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.gc.materialdesign.widgets.Dialog;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
+import com.guokrspace.dududriver.common.VoiceCommand;
 import com.guokrspace.dududriver.model.OrderItem;
+import com.guokrspace.dududriver.net.ResponseHandler;
+import com.guokrspace.dududriver.net.SocketClient;
+import com.guokrspace.dududriver.net.message.MessageTag;
 import com.guokrspace.dududriver.util.CommonUtil;
-import com.guokrspace.dududriver.util.SharedPreferencesUtils;
+import com.guokrspace.dududriver.util.VoiceUtil;
 import com.guokrspace.dududriver.view.CircleImageView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by hyman on 15/11/3.
  */
-public class ConfirmBillActivity extends BaseActivity {
+public class ConfirmBillActivity extends BaseActivity implements Handler.Callback {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -75,6 +84,10 @@ public class ConfirmBillActivity extends BaseActivity {
 
     private OrderItem orderItem;
 
+    private Handler mHandler;
+
+    private final int PAY_OVER = 0X001;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +95,26 @@ public class ConfirmBillActivity extends BaseActivity {
         context = ConfirmBillActivity.this;
         ButterKnife.bind(this);
         initView();
+        mHandler = new Handler(this);
+
+        SocketClient.getInstance().registerServerMessageHandler(MessageTag.PAY_OVER, new ResponseHandler(Looper.myLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                Log.e(ConfirmBillActivity.class + "", "pay over success!");
+                mHandler.sendEmptyMessage(PAY_OVER);
+            }
+
+            @Override
+            public void onFailure(String error) {
+                Log.e(ConfirmBillActivity.class + "", "pay over failure!");
+                Toast.makeText(context, "对方支付失败!", Toast.LENGTH_SHORT);
+            }
+
+            @Override
+            public void onTimeout() {
+                Log.e(ConfirmBillActivity.class + "", "pay over time out!");
+            }
+        });
     }
 
     private void initView() {
@@ -92,10 +125,12 @@ public class ConfirmBillActivity extends BaseActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        btnConfirm.setButtonText("确认订单");
+        btnConfirm.setButtonText("确认账单");
 
         Bundle bundle = getIntent().getExtras();
         orderItem = (OrderItem) bundle.get("orderItem");
+        final double curDistance = bundle.getDouble("mileage");
+        final double lowSpeedTime= bundle.getInt("lowspeed");
         tvMyPosition.setText(orderItem.getOrder().getStart());
         tvPassengerPosition.setText(orderItem.getOrder().getDestination());
 
@@ -103,27 +138,76 @@ public class ConfirmBillActivity extends BaseActivity {
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 dialog.show();
+                dialog.getButtonAccept().setButtonText("等待乘客付款");
+                dialog.getButtonCancel().setButtonText("司机代付");
+                dialog.getButtonAccept().setClickable(false);
+                dialog.getButtonAccept().setEnabled(false);
+                dialog.getButtonCancel().setClickable(false);
+                dialog.getButtonCancel().setEnabled(false);
+                dialog.setCancelable(false);
+
+                OnKeyListener keylistener = new OnKeyListener(){
+                    public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                        if (keyCode==KeyEvent.KEYCODE_BACK&&event.getRepeatCount()==0) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                };
+                dialog.setOnKeyListener(keylistener);
+
+                SocketClient.getInstance().endOrder(CommonUtil.countPrice(curDistance, lowSpeedTime) + "", curDistance + "", new ResponseHandler(Looper.myLooper()) {
+                    @Override
+                    public void onSuccess(String messageBody) {
+                        Log.e("PickUpPassengerAct", "success " + messageBody);
+                        dialog.getButtonCancel().setEnabled(true);
+                        dialog.getButtonCancel().setClickable(true);
+                        VoiceUtil.startSpeaking(VoiceCommand.WAIT_FOR_PAY);
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+                        Log.e("PickUpPassengerAct", "end order failure" + error);
+                        Toast.makeText(context, "正在发送账单...", Toast.LENGTH_SHORT);
+                        btnConfirm.callOnClick();
+                    }
+
+                    @Override
+                    public void onTimeout() {
+                        Log.e("PickUpPassengerAct", "end order time out");
+                        Toast.makeText(context, "网络状况较差!", Toast.LENGTH_SHORT);
+                        VoiceUtil.startSpeaking(VoiceCommand.TIME_OUT_ALERT);
+                        btnConfirm.callOnClick();
+                        CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
+                    }
+                });
+
+
             }
         });
     }
 
     private void initDialog() {
         dialog = new Dialog(context, getString(R.string.confirm_dialog_content));
-//        dialog.getButtonAccept().setButtonText("自己支付");
-//        dialog.getButtonCancel().setButtonText("交易完成");
+        dialog.setCancelable(false);
         dialog.setOnCancelButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
-                dialog.dismiss();
+                // TODO: 进入付款详情界面，乘客未付款则需要司机代付
+                VoiceUtil.startSpeaking(VoiceCommand.DRIVER_PAY);
+                startActivity(new Intent(context, OrderDetailActivity.class));
+                finish();
             }
         });
         dialog.setOnAcceptButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 进入付款详情界面，乘客未付款则需要司机代付
-                startActivity(new Intent(context, OrderDetailActivity.class));
+                CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+                dialog.dismiss();
+                startActivity(new Intent(context, MainActivity.class));
                 finish();
             }
         });
@@ -132,6 +216,8 @@ public class ConfirmBillActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
+            if(dialog != null)
+                dialog.dismiss();
             this.finish();
             return true;
         }
@@ -142,9 +228,38 @@ public class ConfirmBillActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
-        if (dialog != null) {
-            dialog.dismiss();
-            dialog = null;
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        switch (msg.what){
+            case PAY_OVER:
+                if(null != dialog && dialog.isShowing()){
+                    Toast.makeText(context, "用户支付完成!", Toast.LENGTH_SHORT);
+
+                    VoiceUtil.startSpeaking(VoiceCommand.PAY_OVER);
+
+                    dialog.getButtonAccept().setButtonText("收款成功!继续听单");
+                    dialog.getButtonCancel().setButtonText("收车");
+                    dialog.getButtonAccept().setClickable(true);
+                    dialog.getButtonAccept().setEnabled(true);
+                    dialog.getButtonCancel().setClickable(true);
+                    dialog.getButtonCancel().setEnabled(true);
+
+                    dialog.getButtonCancel().setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
+                            dialog.dismiss();
+                            startActivity(new Intent(context, MainActivity.class));
+                            finish();
+                        }
+                    });
+                }
+                break;
+            default:
+                return false;
         }
+        return false;
     }
 }

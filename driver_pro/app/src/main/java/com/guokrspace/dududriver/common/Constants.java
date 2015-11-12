@@ -17,7 +17,12 @@ public class Constants {
 
     public static String STATUS_HOLD = "0";
     public static String STATUS_WAIT = "1";
-    public static String STATUS_GOT  = "2";
-    public static String STATUS_RUN  = "3";
+    public static String STATUS_DEAL = "2";
+    public static String STATUS_GET  = "3";
+    public static String STATUS_RUN  = "4";
+
+    public static final String SERVICE_BROADCAST = "SERVICE_BROADCAST";
+    public static final String SERVICE_ACTION_RELOGIN = "LOG_IN_ERROR_TRY_AGAIN";
+
 
 }

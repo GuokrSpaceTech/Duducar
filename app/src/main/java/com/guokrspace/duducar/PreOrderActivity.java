@@ -199,12 +199,31 @@ public class PreOrderActivity extends AppCompatActivity
         /*
          * Login if socket connected
          */
+<<<<<<< HEAD
+        start = new SearchLocation();
+        mApplication = (DuduApplication) getApplicationContext();
+
+        /*
+         * Login with Token
+         */
+        List persons = mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().list();
+        if (persons.size() > 0) {
+            mApplication.mPersonalInformation = (PersonalInformation) persons.get(0);
+            String token = mApplication.mPersonalInformation.getToken();
+            String mobile = mApplication.mPersonalInformation.getMobile();
+            SocketClient.getInstance().sendLoginReguest(mobile, "2", token, new ResponseHandler(Looper.getMainLooper()) {
+                @Override
+                public void onSuccess(String messageBody) {
+                    Log.i("", "Login Success");
+                }
+=======
         Thread thead = new Thread(new Runnable() {
             @Override
             public void run() {
                 while(true)
                 {
                     if(mTcpClient==null) continue;
+>>>>>>> 9dae55d96f5af9fd0c93481389286f76d584745c
 
                     if(mTcpClient.isSocketConnected()==false)
                         continue;
