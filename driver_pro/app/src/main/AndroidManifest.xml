@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.guokrspace.dududriver" >
+    package="com.guokrspace.dududriver">
 
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -30,21 +30,12 @@
     <!-- 打电话权限 -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
-    <!-- 科大讯飞索取权限 -->
-    <!--获取手机录音机使用权限，听写、识别、语义理解需要用到此权限 -->
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-    <!--允许程序改变网络连接状态 -->
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
-    <!--读取手机信息权限 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-
-
     <application
         android:name=".DuduDriverApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppBaseTheme" >
+        android:theme="@style/AppBaseTheme">
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="qGx8XpcPAkQ0nGbyml3IlNOt" />
@@ -54,10 +45,9 @@
             android:label="" />
         <activity
             android:name=".ui.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -67,6 +57,7 @@
         <activity
             android:name=".ui.SettingActivity"
             android:label="设置" />
+
         <activity
             android:name=".ui.PostOrderActivity"
             android:label="订单" />
@@ -74,7 +65,7 @@
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote" />
+            android:process=":remote"/>
 
         <activity
             android:name=".ui.PickUpPassengerActivity"
@@ -85,12 +76,10 @@
         <activity
             android:name=".ui.OrderDetailActivity"
             android:label="订单详情" />
-
-        <service
-            android:name=".net.DuduService"
-            android:enabled="true"
-            android:exported="true" >
-        </service>
+        <activity
+            android:name=".ui.OrderMapActivity"
+            android:label="订单地图" />
     </application>
+
 
 </manifest>

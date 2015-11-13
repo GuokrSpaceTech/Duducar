@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="#33CFCFCF"
+    android:background="#22CFCFCF"
     android:paddingTop="10dp"
     android:paddingBottom="10dp">
 
@@ -12,9 +12,10 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:background="@drawable/pattern_btn_bg_selector"
-        android:text="语音模式"
+        android:text="模式"
         android:textColor="@color/orange"
         android:textSize="18sp"
+        android:visibility="gone"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"/>
 

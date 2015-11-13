@@ -13,7 +13,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="10月20日 星期二"
         android:textColor="#72B1D6"
         android:textSize="16sp"
         android:textStyle="bold" />
@@ -29,7 +28,7 @@
             android:id="@+id/ordernum_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="抢单0单"
+            android:text="已完成0单"
             android:textColor="@color/yellow"
             android:textSize="26sp"
             android:textStyle="bold" />

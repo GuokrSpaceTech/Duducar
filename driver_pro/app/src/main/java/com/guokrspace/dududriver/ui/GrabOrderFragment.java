@@ -26,7 +26,9 @@ import com.guokrspace.dududriver.adapter.OrderListAdapter;
 import com.guokrspace.dududriver.model.OrderListItem;
 import com.guokrspace.dududriver.view.DividerItemDecoration;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -93,6 +95,11 @@ public class GrabOrderFragment extends BaseFragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM月dd日 EEEE");
+        String today = dateFormat.format(date);
+        tvDate.setText(today);
     }
 
     private List<OrderListItem> initData() {
