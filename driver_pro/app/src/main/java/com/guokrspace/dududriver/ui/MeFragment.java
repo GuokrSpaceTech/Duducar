@@ -2,12 +2,14 @@ package com.guokrspace.dududriver.ui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -15,10 +17,11 @@ import android.widget.TextView;
 
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.adapter.RecordListAdapter;
+import com.guokrspace.dududriver.model.BaseInfo;
 import com.guokrspace.dududriver.model.RecordListItem;
+import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 import com.guokrspace.dududriver.view.CircleImageView;
 import com.guokrspace.dududriver.view.DividerItemDecoration;
-import com.guokrspace.dududriver.view.ListenProgressView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +32,7 @@ import butterknife.ButterKnife;
 /**
  * Created by hyman on 15/10/23.
  */
-public class MeFragment extends BaseFragment {
+public class MeFragment extends BaseFragment implements Handler.Callback {
 
     @Bind(R.id.avatar_civ)
     CircleImageView civAvatar;
@@ -45,6 +48,8 @@ public class MeFragment extends BaseFragment {
     TextView tvPraiseRate;
     @Bind(R.id.balance_icon)
     ImageView ivBalance;
+    @Bind(R.id.balance_tv)
+    TextView tvBanlance;
     @Bind(R.id.balance_rl)
     RelativeLayout balanceLayout;
     @Bind(R.id.search_rl)
@@ -58,6 +63,10 @@ public class MeFragment extends BaseFragment {
 //    @Bind(R.id.over_btn)
 //    Button btnOver;
     private Context context;
+    private BaseInfo baseInfo;
+    private Handler mHandler;
+
+    public static final int LOAD_BASEINFO = 0x100;
 
     private RecordListAdapter mAdapter;
 
@@ -66,10 +75,14 @@ public class MeFragment extends BaseFragment {
         return meFragment;
     }
 
+    public Handler getHanlder(){
+        mHandler = new Handler(this);
+        return mHandler;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -99,5 +112,26 @@ public class MeFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        switch (msg.what){
+            case LOAD_BASEINFO:
+                Log.e("daddy", "baseinfo ");
+                baseInfo = (BaseInfo) SharedPreferencesUtils.getParam(getActivity(), "baseinfo", new BaseInfo());
+                if(baseInfo != null){
+                    tvName.setText(baseInfo.getDriverInfo().getName());
+                    mRatingbar.setNumStars(Integer.parseInt(baseInfo.getDriverInfo().getRating()));
+                    tvRating.setText(Integer.parseInt(baseInfo.getDriverInfo().getRating()) + " 星");
+                    tvOderNum.setText(String.format(getResources().getString(R.string.my_order_num), Integer.parseInt(baseInfo.getDriverInfo().getTotal_order())));
+                    tvPraiseRate.setText(String.format(getResources().getString(R.string.height_praise_rate), Float.parseFloat(baseInfo.getDriverInfo().getFavorable_rate())));
+                    tvBanlance.setText(" " + baseInfo.getDriverInfo().getBalance());
+                }
+            break;
+            default:
+                break;
+        }
+        return false;
     }
 }

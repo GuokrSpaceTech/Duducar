@@ -44,9 +44,13 @@ import com.guokrspace.dududriver.common.VoiceCommand;
 import com.guokrspace.dududriver.model.OrderItem;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
+import com.guokrspace.dududriver.net.message.MessageTag;
 import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.VoiceUtil;
 import com.guokrspace.dududriver.view.CircleImageView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -117,7 +121,7 @@ public class PickUpPassengerActivity extends BaseActivity {
                 Log.e("PickUp", "time out! ");
                 //服务器未响应,重新发送请求
                 VoiceUtil.startSpeaking(VoiceCommand.TIME_OUT_ALERT);
-                btnConfirm.callOnClick();
+//                btnConfirm.callOnClick();
             }
         });
 
@@ -408,6 +412,39 @@ public class PickUpPassengerActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         mMapview.onResume();
+
+        //监听派单取消的通知
+        SocketClient.getInstance().registerServerMessageHandler(MessageTag.ORDER_CANCEL, new ResponseHandler(Looper.myLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                try {
+                    JSONObject mCancel = new JSONObject(messageBody);
+                    if (orderItem == null || mCancel.get("order_no") != orderItem.getOrder().getId()) {
+                        //订单已经取消或者已经接到乘客  无法取消订单
+                        return;
+                    }
+                    if(CommonUtil.getCurrentStatus() == Constants.STATUS_DEAL || CommonUtil.getCurrentStatus() == Constants.STATUS_GET){
+                        //选择接单阶段或者乘客还未上车阶段可以取消
+                        VoiceUtil.startSpeaking(VoiceCommand.ORDER_CANCEL);
+                        orderItem = null;
+                        CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+                        startActivity(new Intent(PickUpPassengerActivity.this, MainActivity.class));
+                        finish();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(String error) {
+            }
+
+            @Override
+            public void onTimeout() {
+            }
+        });
+
     }
 
     @Override

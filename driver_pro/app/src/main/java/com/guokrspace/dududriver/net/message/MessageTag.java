@@ -56,8 +56,8 @@ public class MessageTag {
     public static final int TRIP_OVER = 0x1008;
 
     //daddy
-    public static final int PATCH_ORDER = 0X1009;
-    public static final int ORDER_CANCEL = 0x1010;
+    public static final int PATCH_ORDER = 0x1009;
+    public static final int ORDER_CANCEL = 0x1012;
     public static final int PAY_OVER = 0x1011;
 
 //    public static final int ORDER_CONFIRM = 0X1010;
@@ -87,7 +87,7 @@ public class MessageTag {
 
         //daddy
         MessageTag.put("order", PATCH_ORDER);
-        MessageTag.put("order_cancel", ORDER_CANCEL);
+        MessageTag.put("user_cancel_order", ORDER_CANCEL);
         MessageTag.put("pay_over", PAY_OVER);
     }
 

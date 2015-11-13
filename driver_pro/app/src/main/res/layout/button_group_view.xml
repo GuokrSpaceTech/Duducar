@@ -12,7 +12,7 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:background="@drawable/pattern_btn_bg_selector"
-        android:text="模式"
+        android:text="语音模式"
         android:textColor="@color/orange"
         android:textSize="18sp"
         android:layout_centerVertical="true"

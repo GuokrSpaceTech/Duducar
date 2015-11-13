@@ -23,11 +23,13 @@ import com.gc.materialdesign.widgets.Dialog;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.common.VoiceCommand;
+import com.guokrspace.dududriver.model.BaseInfo;
 import com.guokrspace.dududriver.model.OrderItem;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
 import com.guokrspace.dududriver.net.message.MessageTag;
 import com.guokrspace.dududriver.util.CommonUtil;
+import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 import com.guokrspace.dududriver.util.VoiceUtil;
 import com.guokrspace.dududriver.view.CircleImageView;
 
@@ -148,9 +150,9 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
                 dialog.getButtonCancel().setEnabled(false);
                 dialog.setCancelable(false);
 
-                OnKeyListener keylistener = new OnKeyListener(){
+                OnKeyListener keylistener = new OnKeyListener() {
                     public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                        if (keyCode==KeyEvent.KEYCODE_BACK&&event.getRepeatCount()==0) {
+                        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
                             return true;
                         } else {
                             return false;
@@ -159,7 +161,7 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
                 };
                 dialog.setOnKeyListener(keylistener);
 
-                SocketClient.getInstance().endOrder(CommonUtil.countPrice(curDistance, lowSpeedTime) + "", curDistance + "", new ResponseHandler(Looper.myLooper()) {
+                SocketClient.getInstance().endOrder(countPrice(curDistance, lowSpeedTime) + "", curDistance + "", new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
                         Log.e("PickUpPassengerAct", "success " + messageBody);
@@ -181,13 +183,30 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
                         Toast.makeText(context, "网络状况较差!", Toast.LENGTH_SHORT);
                         VoiceUtil.startSpeaking(VoiceCommand.TIME_OUT_ALERT);
                         btnConfirm.callOnClick();
-                        CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
                     }
                 });
 
 
             }
         });
+    }
+
+    private double countPrice(double mileage, double lowtime) {
+        BaseInfo baseInfo = (BaseInfo) SharedPreferencesUtils.getParam(context, "baseinfo", new BaseInfo());
+        if(baseInfo != null){
+            int starting_price = Integer.parseInt(baseInfo.getCharge_rule().getStarting_price());
+            double starting_distance = Double.parseDouble(baseInfo.getCharge_rule().getStarting_distance());
+            double km_price = Double.parseDouble(baseInfo.getCharge_rule().getKm_price());
+            double low_speed_price = Double.parseDouble(baseInfo.getCharge_rule().getLow_speed_price());
+            mileage = mileage/1000.0d;
+            if(mileage <= starting_distance + 1){
+                return starting_price + low_speed_price * lowtime;
+            }
+            mileage = mileage - starting_distance;
+            return starting_price + mileage * km_price + lowtime * low_speed_price ;
+        } else {
+            return mileage / 1000.0d * 8 + lowtime * 0.1  + 0.01;
+        }
     }
 
     private void initDialog() {
@@ -239,7 +258,7 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
 
                     VoiceUtil.startSpeaking(VoiceCommand.PAY_OVER);
 
-                    dialog.getButtonAccept().setButtonText("收款成功!继续听单");
+                    dialog.getButtonAccept().setButtonText("继续听单");
                     dialog.getButtonCancel().setButtonText("收车");
                     dialog.getButtonAccept().setClickable(true);
                     dialog.getButtonAccept().setEnabled(true);

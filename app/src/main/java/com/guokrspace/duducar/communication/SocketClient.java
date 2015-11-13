@@ -1,5 +1,13 @@
 package com.guokrspace.duducar.communication;
 
+import android.os.Message;
+import android.util.Log;
+
+import com.guokrspace.duducar.communication.message.MessageTag;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
@@ -8,14 +16,6 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.HashMap;
-
-import android.os.Message;
-import android.util.Log;
-
-import com.guokrspace.duducar.communication.message.MessageTag;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * @author Prashant Adesara, Kai Yang
@@ -207,6 +207,21 @@ public class SocketClient {
         }
     }
 
+    public int sendHeartBeat(DuduService.HeartBeatMessage heartBeatMessage, ResponseHandler handler){
+        int ret = -1;
+        JSONObject heartbeat = new JSONObject();
+        try {
+            heartbeat.put("cmd", heartBeatMessage.getCmd());
+            heartbeat.put("role", "1");
+            heartbeat.put("lat",heartBeatMessage.getLat());
+            heartbeat.put("lng", heartBeatMessage.getLng());
+            ret = sendMessage(heartbeat, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return ret;
+    }
 
     HashMap<Integer, MessageDispatcher> messageDispatchQueue = new HashMap<>();
     public class MessageDispatcher{
@@ -289,6 +304,22 @@ public class SocketClient {
             loginmsg.put("token",token);
             ret = sendMessage(loginmsg, handler, 5);
         } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return ret;
+    }
+
+    public int sendOrderCancel(String role, ResponseHandler handler){
+
+        int ret = -1;
+
+        JSONObject cancelmsg = new JSONObject();
+        try {
+            cancelmsg.put("cmd", "cancel_order");
+            cancelmsg.put("role", role);
+            ret = sendMessage(cancelmsg, handler, 5);
+        } catch (JSONException e){
             e.printStackTrace();
         }
 

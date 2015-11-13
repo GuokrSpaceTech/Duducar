@@ -16,7 +16,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
@@ -52,11 +51,13 @@ import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
+import com.guokrspace.duducar.communication.DuduService;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
 import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
 import com.guokrspace.duducar.communication.message.NearByCars;
 import com.guokrspace.duducar.communication.message.SearchLocation;
+import com.guokrspace.duducar.database.CommonUtil;
 import com.guokrspace.duducar.database.PersonalInformation;
 import com.guokrspace.duducar.ui.OrderConfirmationView;
 import com.guokrspace.duducar.ui.WinToast;
@@ -126,6 +127,8 @@ public class PreOrderActivity extends AppCompatActivity
     private CharSequence mTitle;
 
     private Timer timer;
+
+    private Intent duduService;
 
 
 
@@ -199,31 +202,13 @@ public class PreOrderActivity extends AppCompatActivity
         /*
          * Login if socket connected
          */
-<<<<<<< HEAD
-        start = new SearchLocation();
-        mApplication = (DuduApplication) getApplicationContext();
 
-        /*
-         * Login with Token
-         */
-        List persons = mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().list();
-        if (persons.size() > 0) {
-            mApplication.mPersonalInformation = (PersonalInformation) persons.get(0);
-            String token = mApplication.mPersonalInformation.getToken();
-            String mobile = mApplication.mPersonalInformation.getMobile();
-            SocketClient.getInstance().sendLoginReguest(mobile, "2", token, new ResponseHandler(Looper.getMainLooper()) {
-                @Override
-                public void onSuccess(String messageBody) {
-                    Log.i("", "Login Success");
-                }
-=======
         Thread thead = new Thread(new Runnable() {
             @Override
             public void run() {
                 while(true)
                 {
                     if(mTcpClient==null) continue;
->>>>>>> 9dae55d96f5af9fd0c93481389286f76d584745c
 
                     if(mTcpClient.isSocketConnected()==false)
                         continue;
@@ -241,7 +226,6 @@ public class PreOrderActivity extends AppCompatActivity
          */
         start = new SearchLocation();
         mApplication = (DuduApplication) getApplicationContext();
-
     }
 
     private void initListener() {
@@ -409,6 +393,7 @@ public class PreOrderActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         mMapView.onDestroy();
+        stopService(duduService);
         if (mCurrentMarker != null) mCurrentMarker.recycle();
         mLocClient.stop();
         try {
@@ -600,6 +585,11 @@ public class PreOrderActivity extends AppCompatActivity
 
             mCurrentLocation = new LatLng(location.getLatitude(), location.getLongitude());
 
+            CommonUtil.setCurLat(location.getLatitude());
+            CommonUtil.setCurLng(location.getLongitude());
+            CommonUtil.setCurTime(System.currentTimeMillis());
+            CommonUtil.setLocationSuccess(true);
+
             if (isFirstLoc) {
                 isFirstLoc = false;
                 mGeoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(mCurrentLocation));
@@ -755,6 +745,10 @@ public class PreOrderActivity extends AppCompatActivity
             socketClient.sendLoginReguest(person.getMobile(), "2", person.getToken(), new ResponseHandler(Looper.getMainLooper()) {
                 @Override
                 public void onSuccess(String messageBody) {
+                    //登陆成功,发送心跳包
+                    Log.e("daddy   ", "start service");
+                    duduService = new Intent(getApplicationContext(), DuduService.class);
+                    startService(duduService);
                     Log.i("","");
                 }
 
@@ -776,33 +770,40 @@ public class PreOrderActivity extends AppCompatActivity
         @Override
         public void run() {
             if (start != null) {
-                SocketClient.getInstance().sendNearByCarRequestTest(28.173D, 112.9584D, "1", new ResponseHandler(Looper.getMainLooper()) {
-                    @Override
-                    public void onSuccess(String messageBody) {
 
-                        NearByCars nearByCars = FastJsonTools.getObject(messageBody, NearByCars.class);
+                if(System.currentTimeMillis() - CommonUtil.getCurTime() > 1000 * 60){
+                    //TODO :百度地图定位 60秒超时
+                }
 
-                        mBaiduMap.clear();
-                        for (NearByCars.CarLocation loc : nearByCars.getCars()) {
-                            LatLng ll = new LatLng(loc.getLat(), loc.getLng());
-                            mBaiduMap.addOverlay(new MarkerOptions().position(ll).icon(BitmapDescriptorFactory.fromResource(R.drawable.caricon)));
+                if(CommonUtil.isLocationSuccess()){//定位成功
+
+                    SocketClient.getInstance().sendNearByCarRequestTest(CommonUtil.getCurLat(), CommonUtil.getCurLng(), "1", new ResponseHandler(Looper.getMainLooper()) {
+                        @Override
+                        public void onSuccess(String messageBody) {
+
+                            NearByCars nearByCars = FastJsonTools.getObject(messageBody, NearByCars.class);
+
+                            mBaiduMap.clear();
+                            for (NearByCars.CarLocation loc : nearByCars.getCars()) {
+                                LatLng ll = new LatLng(loc.getLat(), loc.getLng());
+                                mBaiduMap.addOverlay(new MarkerOptions().position(ll).icon(BitmapDescriptorFactory.fromResource(R.drawable.caricon)));
+                            }
+
+                            String nearbyString = String.format(getResources().getString(R.string.nearby), nearByCars.getCars().size());
+                            nearByCarsTextView.setText(nearbyString);
                         }
 
-                        String nearbyString = String.format(getResources().getString(R.string.nearby), nearByCars.getCars().size());
-                        nearByCarsTextView.setText(nearbyString);
-                    }
+                        @Override
+                        public void onFailure(String error) {
 
-                    @Override
-                    public void onFailure(String error) {
+                        }
 
-                    }
+                        @Override
+                        public void onTimeout() {
 
-                    @Override
-                    public void onTimeout() {
-
-                    }
-                });
-
+                        }
+                    });
+                }
             }
         }
     }
