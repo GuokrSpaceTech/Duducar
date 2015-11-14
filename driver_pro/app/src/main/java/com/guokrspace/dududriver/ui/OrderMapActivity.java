@@ -232,24 +232,6 @@ public class OrderMapActivity extends BaseActivity implements View.OnClickListen
         return super.onOptionsItemSelected(item);
     }
 
-    /*@Override
-    public boolean handleMessage(Message msg) {
-        Log.e("hyman12345", "what is : " + msg.what);
-        switch (msg.what) {
-            case HANDLE_SHOW_HEATMAP:
-                //在地图上添加热力图
-                if (heatmap != null) {
-                    Log.e("hyman12345", "heatmap is not null");
-                }
-                mBaiduMap.addHeatMap(heatmap);
-                mMapView.invalidate();
-                break;
-            default:
-                break;
-        }
-        return false;
-    }*/
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -280,9 +262,6 @@ public class OrderMapActivity extends BaseActivity implements View.OnClickListen
             switch (msg.what) {
                 case HANDLE_SHOW_HEATMAP:
                     //在地图上添加热力图
-                    if (heatmap != null) {
-                        Log.e("hyman12345", "heatmap is not null");
-                    }
                     mBaiduMap.addHeatMap(heatmap);
                     mMapView.invalidate();
                     break;

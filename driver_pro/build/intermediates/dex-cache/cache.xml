@@ -2,165 +2,172 @@
 <items version="2" >
 
     <item
-        jar="/Users/daddyfang/.gradle/caches/modules-2/files-2.1/org.java-websocket/Java-WebSocket/1.3.0/db2658f013fb163de4a99274c2eb9e17efe535d2/Java-WebSocket-1.3.0.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="db2658f013fb163de4a99274c2eb9e17efe535d2">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/Java-WebSocket-1.3.0-41bf318c7d573b0e56709448091c3ee0981afc93.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="4fcf0b1879f8caf497c073e1432d398e9e2988c1">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/classes-2b3b439c33f5e321f1c9d56501833a364b212dfd.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/.gradle/caches/modules-2/files-2.1/de.greenrobot/greendao/1.3.7/dda08161d004c4df96938da6909f1c2b96cd33c8/greendao-1.3.7.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="dda08161d004c4df96938da6909f1c2b96cd33c8">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/greendao-1.3.7-9dea7193e68f012bc1e69c24a8c6c0ced570ddb3.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/exploded-aar/com.github.dexafree/materiallist/3.0.1/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="70036e565f7b7e4345e788ee814e91dd15c4d76e">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/classes-dfe5fce838f0be14185ce3922f05a3839c5f39e4.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/exploded-aar/driver_pro/indicator_library/unspecified/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="08c7504d2dcdf1a4e72403f797bc8b44033d8834">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/classes-462042cf492026d7eea92016892b45b4f18cd065.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/.gradle/caches/modules-2/files-2.1/com.github.nkzawa/engine.io-client/0.3.1/3ca9d0d53a27ecb88538ed874be417cfa827db5d/engine.io-client-0.3.1.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="3ca9d0d53a27ecb88538ed874be417cfa827db5d">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/engine.io-client-0.3.1-00c98112609b4f965a846174806b693829eb8b1d.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/22.2.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="97f7e239e86ef994de894818fdd8a71d2e89d6aa">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/classes-38e603f705b556ee2b5e212629ed88dcde378120.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/Duducar/driver_pro/app/libs/Msc.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="6490d46678cc51ecd56be6bf2ab741ea940c61b8">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/Msc-93f926780a03307b41892a6ecf0bc78aed572797.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/.gradle/caches/modules-2/files-2.1/org.freemarker/freemarker/2.3.20/5ad6bea46b5af666d88c260c8acc6a03408723c8/freemarker-2.3.20.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="5ad6bea46b5af666d88c260c8acc6a03408723c8">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/freemarker-2.3.20-dd92bb1eff465e0c6a36dedf5a5062a8d7208a52.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/.gradle/caches/modules-2/files-2.1/com.koushikdutta.async/androidasync/2.1.6/e3d5f6ab2003e31f2cf5ea61b4731a21e9517935/androidasync-2.1.6.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="e3d5f6ab2003e31f2cf5ea61b4731a21e9517935">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/androidasync-2.1.6-aa1a4bd306907ee6a623da6a1d928aee1445791a.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.1.0/support-annotations-23.1.0.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="92e3fc113ec3ee36b64603a38857b95700025633">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/support-annotations-23.1.0-104b691ff3d352babeb6a0b671421908a07e449d.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/Duducar/driver_pro/app/libs/BaiduLBS_Android.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="878b9c2f2bab7b98178746afd77dd0bf7fba34b1">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/BaiduLBS_Android-b1d0e8185383bd509957bc380c1f13c1b55d49ce.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/exploded-aar/driver_pro/MaterialDesign/unspecified/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="76beb7238e22c0f39829b685461a6d4212c80eda">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/classes-e2dfd72351c53ca1b1ee04d8dcfb93d1994d8bba.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="ddde541c289c8b816a8f8fd6c325d80788c522a6">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/classes-ad1925e419c749399fc838895e1ae71126a3894a.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/.gradle/caches/modules-2/files-2.1/com.squareup.picasso/picasso/2.4.0/f36d2d4e3a36b3259aaf9d004d29b4cdc6c1bfb2/picasso-2.4.0.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="f36d2d4e3a36b3259aaf9d004d29b4cdc6c1bfb2">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/picasso-2.4.0-a96d4a3eceaa6953acbf85561c901567a006896a.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/.gradle/caches/modules-2/files-2.1/de.greenrobot/greendao-generator/1.3.1/2f757df97b422e40bf99f71094e5d105c98f32e7/greendao-generator-1.3.1.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="2f757df97b422e40bf99f71094e5d105c98f32e7">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/greendao-generator-1.3.1-7733f54bff6bd05cf3693fc64e4a630b93288881.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/Duducar/driver_pro/app/libs/Sunflower.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="f8496c158133b25df48b19455d0907340cea5d4e">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/Sunflower-939e8c251c929174b70e28a4198630db2c233094.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/.gradle/caches/modules-2/files-2.1/com.jakewharton/butterknife/7.0.1/d5d13ea991eab0252e3710e5df3d6a9d4b21d461/butterknife-7.0.1.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="d5d13ea991eab0252e3710e5df3d6a9d4b21d461">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/butterknife-7.0.1-af6371e2774e7126c44d3330dabc260e37289ce2.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/.gradle/caches/modules-2/files-2.1/com.github.nkzawa/socket.io-client/0.3.0/8dfd7cf8d1124acb027b3ffd53eafcc518af3ba9/socket.io-client-0.3.0.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="8dfd7cf8d1124acb027b3ffd53eafcc518af3ba9">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/socket.io-client-0.3.0-a2688343b4c31dfe2082e17745b1218492013408.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.0.1/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="4356e230a981d1bbf047d848b91bc0d9b7c5bacc">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/classes-3ac7d7f0d73e2595b0026711a83546948507e4ad.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/.gradle/caches/modules-2/files-2.1/com.nineoldandroids/library/2.4.0/e9b63380f3a242dbdbf103a2355ad7e43bad17cb/library-2.4.0.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/library-2.4.0-553bf8ab4b3c4e9d17e057eed236e7178ce632cc.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.0/jars/libs/internal_impl-23.1.0.jar"
+        jar="/Users/hyman/Duducar/driver_pro/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.0/jars/libs/internal_impl-23.1.0.jar"
         jumboMode="false"
         revision="23.0.1"
         sha1="8716243bf04bae8d6c9ca94d27b9a9be7236f0a3">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/internal_impl-23.1.0-a8409e0e683d04ae09ca21b868da2c3f165fcdb3.jar" />
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/internal_impl-23.1.0-5c9a91f3d992bcb81aebab574a6c631357c4e8be.jar" />
     </item>
     <item
-        jar="/Users/daddyfang/.gradle/caches/modules-2/files-2.1/com.alibaba/fastjson/1.1.34.android/bef1d1224be099c387794bce1bdf81b38f37c6ce/fastjson-1.1.34.android.jar"
+        jar="/Users/hyman/Duducar/driver_pro/app/libs/Msc.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="6490d46678cc51ecd56be6bf2ab741ea940c61b8">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/Msc-d94d4d215c211e2dabf53485539a35c3362f3eaf.jar" />
+    </item>
+    <item
+        jar="/Users/hyman/.gradle/caches/modules-2/files-2.1/com.koushikdutta.async/androidasync/2.1.6/e3d5f6ab2003e31f2cf5ea61b4731a21e9517935/androidasync-2.1.6.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="e3d5f6ab2003e31f2cf5ea61b4731a21e9517935">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/androidasync-2.1.6-417b1281efb1072c5eeb4c89afb2d000fa595341.jar" />
+    </item>
+    <item
+        jar="/Users/hyman/.gradle/caches/modules-2/files-2.1/org.freemarker/freemarker/2.3.20/5ad6bea46b5af666d88c260c8acc6a03408723c8/freemarker-2.3.20.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="5ad6bea46b5af666d88c260c8acc6a03408723c8">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/freemarker-2.3.20-6fea73d7c3612a38ab435fa0a7f05f75810f18cf.jar" />
+    </item>
+    <item
+        jar="/Users/hyman/Duducar/driver_pro/app/build/intermediates/exploded-aar/com.github.dexafree/materiallist/3.0.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="70036e565f7b7e4345e788ee814e91dd15c4d76e">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/classes-ace575141623ff2f4bd8e80f59278c0c3863d6ea.jar" />
+    </item>
+    <item
+        jar="/Users/hyman/Duducar/driver_pro/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/23.0.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="4356e230a981d1bbf047d848b91bc0d9b7c5bacc">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/classes-cf794f73c1bcd516a5358933ca68774959e8d21c.jar" />
+    </item>
+    <item
+        jar="/Users/hyman/Duducar/driver_pro/app/build/intermediates/exploded-aar/com.android.support/support-v4/23.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="ddde541c289c8b816a8f8fd6c325d80788c522a6">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/classes-b5ebc2110d41d0d917a01cf88d3cdcf62ac61211.jar" />
+    </item>
+    <item
+        jar="/Users/hyman/.gradle/caches/modules-2/files-2.1/de.greenrobot/greendao-generator/1.3.1/2f757df97b422e40bf99f71094e5d105c98f32e7/greendao-generator-1.3.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="2f757df97b422e40bf99f71094e5d105c98f32e7">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/greendao-generator-1.3.1-4039c23d85f7ea05a5cfbadaca41a0d743bb242d.jar" />
+    </item>
+    <item
+        jar="/Users/hyman/Duducar/driver_pro/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="4fcf0b1879f8caf497c073e1432d398e9e2988c1">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/classes-9fd1331e242ffc9291743abeff45d51034506746.jar" />
+    </item>
+    <item
+        jar="/Users/hyman/.gradle/caches/modules-2/files-2.1/com.squareup.picasso/picasso/2.4.0/f36d2d4e3a36b3259aaf9d004d29b4cdc6c1bfb2/picasso-2.4.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="f36d2d4e3a36b3259aaf9d004d29b4cdc6c1bfb2">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/picasso-2.4.0-02b78399e4f7cbea87140b497b55a857955905fa.jar" />
+    </item>
+    <item
+        jar="/Users/hyman/.gradle/caches/modules-2/files-2.1/de.greenrobot/greendao/1.3.7/dda08161d004c4df96938da6909f1c2b96cd33c8/greendao-1.3.7.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="dda08161d004c4df96938da6909f1c2b96cd33c8">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/greendao-1.3.7-4e4d7c9ae2aa3ef97c2237a26bd80365f6ae962a.jar" />
+    </item>
+    <item
+        jar="/Users/hyman/Duducar/driver_pro/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/22.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="97f7e239e86ef994de894818fdd8a71d2e89d6aa">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/classes-b7613165544174e9beea6364665e0f307752eada.jar" />
+    </item>
+    <item
+        jar="/Users/hyman/Duducar/driver_pro/app/libs/Sunflower.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="f8496c158133b25df48b19455d0907340cea5d4e">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/Sunflower-37f136a95fc8c9c355d103864c02d7c071e31fde.jar" />
+    </item>
+    <item
+        jar="/Users/hyman/.gradle/caches/modules-2/files-2.1/com.github.nkzawa/socket.io-client/0.3.0/8dfd7cf8d1124acb027b3ffd53eafcc518af3ba9/socket.io-client-0.3.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="8dfd7cf8d1124acb027b3ffd53eafcc518af3ba9">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/socket.io-client-0.3.0-59ab7c4e2c267679d38f6a7a9577891d45e65a65.jar" />
+    </item>
+    <item
+        jar="/Users/hyman/.gradle/caches/modules-2/files-2.1/org.java-websocket/Java-WebSocket/1.3.0/db2658f013fb163de4a99274c2eb9e17efe535d2/Java-WebSocket-1.3.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="db2658f013fb163de4a99274c2eb9e17efe535d2">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/Java-WebSocket-1.3.0-4b44317b38a5c6accbc6a586e241506ae0c9dd88.jar" />
+    </item>
+    <item
+        jar="/Users/hyman/.gradle/caches/modules-2/files-2.1/com.github.nkzawa/engine.io-client/0.3.1/3ca9d0d53a27ecb88538ed874be417cfa827db5d/engine.io-client-0.3.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="3ca9d0d53a27ecb88538ed874be417cfa827db5d">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/engine.io-client-0.3.1-84af88aeff287d82502d0afcd2240201e318ae67.jar" />
+    </item>
+    <item
+        jar="/Users/hyman/Duducar/driver_pro/app/libs/BaiduLBS_Android.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="878b9c2f2bab7b98178746afd77dd0bf7fba34b1">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/BaiduLBS_Android-d0c672f0259189ca8f2fdd7e9cc7c2ada62f12b4.jar" />
+    </item>
+    <item
+        jar="/Users/hyman/Duducar/driver_pro/app/build/intermediates/exploded-aar/com.hannesdorfmann/adapterdelegates/1.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="daa2262c8852fc79bdf4f72c927295c0a8a1d677">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/classes-a41cd8624b10fdfecb99512a84444caf8b479ea5.jar" />
+    </item>
+    <item
+        jar="/Users/hyman/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.1.0/support-annotations-23.1.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="92e3fc113ec3ee36b64603a38857b95700025633">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/support-annotations-23.1.0-162c7bd05bad08dc45e77696fdd7b7bbef24820f.jar" />
+    </item>
+    <item
+        jar="/Users/hyman/.gradle/caches/modules-2/files-2.1/com.jakewharton/butterknife/7.0.1/d5d13ea991eab0252e3710e5df3d6a9d4b21d461/butterknife-7.0.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d5d13ea991eab0252e3710e5df3d6a9d4b21d461">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/butterknife-7.0.1-bfedb3105be712e1856f7a60c42c24ab1f7b8c57.jar" />
+    </item>
+    <item
+        jar="/Users/hyman/Duducar/driver_pro/app/build/intermediates/exploded-aar/driver_pro/MaterialDesign/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1cd22b1a4f867711b0ab8d80cd08e5fd57704984">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/classes-e09067977e2ca7a6772ff5aa6a98551e7569e81f.jar" />
+    </item>
+    <item
+        jar="/Users/hyman/Duducar/driver_pro/app/build/intermediates/exploded-aar/driver_pro/indicator_library/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="20bb9d6d428a66341dfee27367527e3d69c349c3">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/classes-126997302508e8af4fee96f5bfe593a08900bacf.jar" />
+    </item>
+    <item
+        jar="/Users/hyman/.gradle/caches/modules-2/files-2.1/com.alibaba/fastjson/1.1.34.android/bef1d1224be099c387794bce1bdf81b38f37c6ce/fastjson-1.1.34.android.jar"
         jumboMode="false"
         revision="23.0.1"
         sha1="bef1d1224be099c387794bce1bdf81b38f37c6ce">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/fastjson-1.1.34.android-642005a48ad53f2f9cb810e4c1c07b7b4c043122.jar" />
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/fastjson-1.1.34.android-a36c7482080074dddc9c44625d475250d2f34820.jar" />
+    </item>
+    <item
+        jar="/Users/hyman/.gradle/caches/modules-2/files-2.1/com.nineoldandroids/library/2.4.0/e9b63380f3a242dbdbf103a2355ad7e43bad17cb/library-2.4.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/library-2.4.0-59c01d9b0998b0933c04c1f19b50a9b2c7475d29.jar" />
     </item>
 
 </items>

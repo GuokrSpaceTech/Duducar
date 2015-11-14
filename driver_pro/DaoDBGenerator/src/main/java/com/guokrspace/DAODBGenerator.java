@@ -16,12 +16,12 @@ public class DAODBGenerator {
      */
 
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(1000, "com.guokrspace");
+        Schema schema = new Schema(1001, "com.guokrspace.dududriver.database");
 
         addConfig(schema);
         addOrder(schema);
 
-        new DaoGenerator().generateAll(schema, "src-gen");
+        new DaoGenerator().generateAll(schema, "/Users/hyman/Duducar/driver_pro/app/src/main/java");
     }
 
     private static void addConfig(Schema schema) {
@@ -34,6 +34,7 @@ public class DAODBGenerator {
     private static void addOrder(Schema schema){
         Entity order = schema.addEntity("OrderRecord");
         order.addIdProperty().autoincrement();
+        order.addStringProperty("phoneNum");
         order.addStringProperty("startAddr");
         order.addStringProperty("destAddr");
         order.addStringProperty("startLat");

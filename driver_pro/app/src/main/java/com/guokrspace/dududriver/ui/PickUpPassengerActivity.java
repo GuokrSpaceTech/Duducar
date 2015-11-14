@@ -1,10 +1,12 @@
 package com.guokrspace.dududriver.ui;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.v7.widget.Toolbar;
@@ -111,7 +113,7 @@ public class PickUpPassengerActivity extends BaseActivity {
 
             }
 
-            @SuppressLint("NewApi")
+            @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
             @Override
             public void onTimeout() {
                 Log.e("PickUp", "time out! ");
@@ -304,7 +306,6 @@ public class PickUpPassengerActivity extends BaseActivity {
     private void initGetPassView() {
         toolbar.setTitle("去接乘客");
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.return_icon));
-        toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

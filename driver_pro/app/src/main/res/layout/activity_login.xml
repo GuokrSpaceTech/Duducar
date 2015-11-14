@@ -151,17 +151,6 @@
                 android:text="@string/app_sign_up"
                 android:textColor="@color/main_regist" />
 
-            <Button
-                android:id="@+id/app_skip_bt"
-                style="@style/DemoTextStyleBig1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dip"
-                android:layout_marginRight="30dip"
-                android:layout_marginTop="24dip"
-                android:background="@drawable/de_login_selector"
-                android:text="跳过"
-                android:textColor="@color/main_regist" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

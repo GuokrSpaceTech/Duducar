@@ -42,4 +42,5 @@
     <string name="low_speed_text">低速%1$d分钟</string>
     <string name="low_speed_cost">%1$.1f元</string>
     <string name="confirm_dialog_content">请您确认费用无误，并提示乘客先付款后下车</string>
+    <string name="wealth_add_notice">乘客尾号%1$s支付%2$.2f元，您此单收入请到“我的余额”查看详情</string>
 </resources>

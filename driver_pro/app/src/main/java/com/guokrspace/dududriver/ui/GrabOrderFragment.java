@@ -11,23 +11,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
-import com.baidu.location.Poi;
-import com.baidu.mapapi.map.MapStatusUpdate;
-import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.map.MyLocationData;
-import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.guokrspace.dududriver.R;
-import com.guokrspace.dududriver.adapter.OrderListAdapter;
+import com.guokrspace.dududriver.adapter.NoticeAdapter;
+import com.guokrspace.dududriver.model.BaseNoticeItem;
+import com.guokrspace.dududriver.model.DenseOrderNotice;
 import com.guokrspace.dududriver.model.OrderListItem;
+import com.guokrspace.dududriver.model.UnKnowNotice;
+import com.guokrspace.dududriver.model.WealthNotice;
 import com.guokrspace.dududriver.view.DividerItemDecoration;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -53,7 +48,7 @@ public class GrabOrderFragment extends BaseFragment {
     RecyclerView mRecyclerView;
     private Context context;
 
-    private OrderListAdapter mAdapter;
+    private NoticeAdapter mAdapter;
 
 
     public static GrabOrderFragment newInstance() {
@@ -90,7 +85,7 @@ public class GrabOrderFragment extends BaseFragment {
     }
 
     private void initView() {
-        mAdapter = new OrderListAdapter(initData(), context);
+        mAdapter = new NoticeAdapter(getActivity(), initData());
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
@@ -102,11 +97,16 @@ public class GrabOrderFragment extends BaseFragment {
         tvDate.setText(today);
     }
 
-    private List<OrderListItem> initData() {
-        List<OrderListItem> data = new ArrayList<>();
+    private List<BaseNoticeItem> initData() {
+        List<BaseNoticeItem> data = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            data.add(new OrderListItem("10-09 15:52", "发现订单密集区域，点击查看~" + i));
+            data.add(new DenseOrderNotice("10-09 15:52", "发现订单密集区域，点击查看~" + i));
+            data.add(new WealthNotice("11-13 21:29", "4188", "34.40"));
+            if (i < 3) {
+                data.add(new UnKnowNotice());
+            }
         }
+        Collections.shuffle(data);
         return data;
     }
 

@@ -36,4 +36,9 @@
     <color name="app_main_theme">#2F3B4A</color>
     <color name="order_word_red">#F05B30</color>
     <color name="dark_red">#BB404D</color>
+    <!-- swiperefreshlayout -->
+    <color name="materialRed">#FFC93437</color>
+    <color name="materialBlue">#FF375BF1</color>
+    <color name="materialYellow">#FFF7D23E</color>
+    <color name="materialGreen">#FF34A350</color>
 </resources>

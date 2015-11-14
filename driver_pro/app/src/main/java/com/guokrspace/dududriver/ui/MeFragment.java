@@ -1,13 +1,16 @@
 package com.guokrspace.dududriver.ui;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -18,7 +21,6 @@ import com.guokrspace.dududriver.adapter.RecordListAdapter;
 import com.guokrspace.dududriver.model.RecordListItem;
 import com.guokrspace.dududriver.view.CircleImageView;
 import com.guokrspace.dududriver.view.DividerItemDecoration;
-import com.guokrspace.dududriver.view.ListenProgressView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +31,7 @@ import butterknife.ButterKnife;
 /**
  * Created by hyman on 15/10/23.
  */
-public class MeFragment extends BaseFragment {
+public class MeFragment extends BaseFragment implements Handler.Callback{
 
     @Bind(R.id.avatar_civ)
     CircleImageView civAvatar;
@@ -51,6 +53,8 @@ public class MeFragment extends BaseFragment {
     RelativeLayout searchLayout;
     @Bind(R.id.order_records)
     RecyclerView mRecyclerView;
+    @Bind(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout refreshLayout;
 //    @Bind(R.id.pattern_btn)
 //    Button btnPattern;
 //    @Bind(R.id.listenprogressview)
@@ -59,7 +63,13 @@ public class MeFragment extends BaseFragment {
 //    Button btnOver;
     private Context context;
 
+    private static final int HANDLE_REFRESH_OVER = 111;
+
     private RecordListAdapter mAdapter;
+
+    private boolean isRefreshing = false;
+
+    private Handler mHandler = new Handler();
 
     public static MeFragment newInstance() {
         final MeFragment meFragment = new MeFragment();
@@ -81,10 +91,31 @@ public class MeFragment extends BaseFragment {
     }
 
     private void initView() {
+        //初始化历史订单列表
         mAdapter = new RecordListAdapter(getActivity(), initData());
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+
+        //初始化SwipeRefreshLayout
+        Resources resources = getActivity().getResources();
+        refreshLayout.setColorSchemeColors(resources.getColor(R.color.materialRed),
+                resources.getColor(R.color.materialBlue),
+                resources.getColor(R.color.materialYellow),
+                resources.getColor(R.color.materialGreen));
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
+            @Override
+            public void onRefresh() {
+
+                if (isNetworkAvailable() && !isRefreshing) {
+                    // TODO 获取历史订单数据
+
+                }
+            }
+
+        });
+
     }
 
     private List<RecordListItem> initData() {
@@ -99,5 +130,16 @@ public class MeFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        switch (msg.what) {
+            case HANDLE_REFRESH_OVER:
+                break;
+            default:
+                break;
+        }
+        return false;
     }
 }

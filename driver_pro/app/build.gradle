@@ -80,4 +80,5 @@ dependencies {
     compile 'com.koushikdutta.async:androidasync:2.+'
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.alibaba:fastjson:1.1.34.android'
+    compile 'com.hannesdorfmann:adapterdelegates:1.1.0'
 }

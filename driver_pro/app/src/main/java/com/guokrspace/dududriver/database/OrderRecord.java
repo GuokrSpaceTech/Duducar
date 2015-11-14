@@ -7,6 +7,7 @@ package com.guokrspace.dududriver.database;
 public class OrderRecord {
 
     private Long id;
+    private String phoneNum;
     private String startAddr;
     private String destAddr;
     private String startLat;
@@ -25,8 +26,9 @@ public class OrderRecord {
         this.id = id;
     }
 
-    public OrderRecord(Long id, String startAddr, String destAddr, String startLat, String startLng, String destLat, String destLng, String mileage, String price, String carType, String orderTime) {
+    public OrderRecord(Long id, String phoneNum, String startAddr, String destAddr, String startLat, String startLng, String destLat, String destLng, String mileage, String price, String carType, String orderTime) {
         this.id = id;
+        this.phoneNum = phoneNum;
         this.startAddr = startAddr;
         this.destAddr = destAddr;
         this.startLat = startLat;
@@ -45,6 +47,14 @@ public class OrderRecord {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getPhoneNum() {
+        return phoneNum;
+    }
+
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
     }
 
     public String getStartAddr() {

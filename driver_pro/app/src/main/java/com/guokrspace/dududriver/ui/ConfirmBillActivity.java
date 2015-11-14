@@ -1,10 +1,12 @@
 package com.guokrspace.dududriver.ui;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -168,6 +170,7 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
                         VoiceUtil.startSpeaking(VoiceCommand.WAIT_FOR_PAY);
                     }
 
+                    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
                     @Override
                     public void onFailure(String error) {
                         Log.e("PickUpPassengerAct", "end order failure" + error);
@@ -175,6 +178,7 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
                         btnConfirm.callOnClick();
                     }
 
+                    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
                     @Override
                     public void onTimeout() {
                         Log.e("PickUpPassengerAct", "end order time out");

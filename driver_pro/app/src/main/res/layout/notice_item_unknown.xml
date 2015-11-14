@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00ffffff"
+    android:paddingTop="10dp"
+    android:paddingBottom="16dp"
+    android:orientation="vertical"
+    android:id="@+id/itemLLayout">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="24dp">
+
+        <ImageView
+            android:id="@+id/unknow_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/unknown"
+            android:layout_centerVertical="true"/>
+
+        <ImageButton android:id="@+id/notice_delete_btn"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/delete_button_bg"
+            android:layout_alignParentRight="true"
+            android:scaleType="centerCrop"
+            android:background="#00ffffff"
+            android:layout_centerVertical="true"/>
+    </RelativeLayout>
+    <TextView android:id="@+id/notice_description_tv"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="27dp"
+        android:text="这条通知来至外星..."
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:layout_marginTop="10dp"
+        android:maxLines="2"
+        android:ellipsize="end"/>
+</LinearLayout>

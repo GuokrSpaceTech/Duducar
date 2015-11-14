@@ -14,6 +14,10 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 
 import com.baidu.mapapi.model.LatLng;
@@ -30,6 +34,7 @@ import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
 import com.guokrspace.dududriver.net.message.MessageTag;
 import com.guokrspace.dududriver.util.CommonUtil;
+import com.guokrspace.dududriver.util.DisplayUtil;
 import com.guokrspace.dududriver.util.FastJsonTools;
 import com.guokrspace.dududriver.util.LogUtil;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
@@ -61,6 +66,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 
     private View buttonGroup;
     private ListenProgressView listenProgressView;
+    private Button btnOver;
 
     private SocketClient mTcpClient = null;
     private connectTask conctTask = null;
@@ -68,6 +74,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     private boolean isOnline = false;
     private boolean isVisiable = false;
     private boolean isListeneing = false;
+    private boolean isOverButtonVisiable = false;
 
     private Handler mHandler;
     private Intent duduService;
@@ -282,6 +289,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         buttonGroup = (View) findViewById(R.id.button_group_layout);
         listenProgressView = (ListenProgressView) buttonGroup.findViewById(R.id.listenprogressview);
         listenProgressView.setOnTouchListener(new View.OnTouchListener() {
+
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 Log.e("daddy", "start is listener" + isListeneing);
@@ -301,6 +309,10 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                         isListeneing = !isListeneing;
                         return false;
                     }
+                    if (!isOverButtonVisiable) {
+                        // TODO: 将这个动画放到听单按钮触发成功的逻辑处
+                        initStartAnim();
+                    }
                     CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
                 } else {
                     CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
@@ -308,9 +320,86 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 if(listenProgressView.isCircling() != isListeneing){
                     listenProgressView.changeViewStatus();
                 }
+
                 return false;
             }
         });
+        btnOver = (Button) buttonGroup.findViewById(R.id.over_btn);
+//        btnOver.setClickable(false);
+        btnOver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO:收车逻辑，并执行隐藏收车按钮动画
+                initStopAnim();
+                CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
+                if (listenProgressView.isCircling()) {
+                    isListeneing = !isListeneing;
+                    listenProgressView.changeViewStatus();
+                }
+            }
+        });
+
+
+    }
+
+    //收车按钮收起动画
+    private void initStopAnim() {
+        AnimationSet animSet = new AnimationSet(true);
+        TranslateAnimation btnOutTransAnim = new TranslateAnimation(0, -DisplayUtil.SCREEN_WIDTH_PIXELS / 2 + DisplayUtil.dp2px(40), 0, 0);
+        animSet.addAnimation(btnOutTransAnim);
+        AlphaAnimation btnOutAlphaAnim = new AlphaAnimation(1, 0);
+        animSet.addAnimation(btnOutAlphaAnim);
+        animSet.setRepeatCount(0);
+        animSet.setDuration(1000);
+        animSet.setFillAfter(true);
+        animSet.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                btnOver.setVisibility(View.INVISIBLE);
+                btnOver.setClickable(false);
+                isOverButtonVisiable = !isOverButtonVisiable;
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        btnOver.startAnimation(animSet);
+    }
+
+    //收车按钮显示动画
+    private void initStartAnim() {
+        AnimationSet animSet = new AnimationSet(true);
+        TranslateAnimation btnOutTransAnim = new TranslateAnimation(-DisplayUtil.SCREEN_WIDTH_PIXELS / 2 + DisplayUtil.dp2px(40), 0, 0, 0);
+        animSet.addAnimation(btnOutTransAnim);
+        AlphaAnimation btnOutAlphaAnim = new AlphaAnimation(0, 1);
+        animSet.addAnimation(btnOutAlphaAnim);
+        animSet.setRepeatCount(0);
+        animSet.setDuration(1000);
+        animSet.setFillAfter(true);
+        animSet.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                btnOver.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                btnOver.setClickable(true);
+                isOverButtonVisiable = !isOverButtonVisiable;
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        btnOver.startAnimation(animSet);
     }
 
 
