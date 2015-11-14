@@ -5,6 +5,12 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.guokrspace.dududriver.DuduDriverApplication;
+
+import java.text.DecimalFormat;
+import java.util.Calendar;
+import java.util.TimeZone;
+
 /**
  * Created by hyman on 15/10/22.
  */
@@ -103,4 +109,60 @@ public class CommonUtil {
     public static double curLng;
     public static long curTime;
 
+    public static void updateToday(){
+        TimeZone.setDefault(TimeZone.getTimeZone("GTM-8"));
+        Calendar mCalendar = Calendar.getInstance();
+        String today =  mCalendar.get(Calendar.YEAR) + "-" + mCalendar.get(Calendar.DAY_OF_YEAR);
+
+        if(!today.equals(SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), "today", new String("20151")))){
+            initTodayAllWork();
+            initTodayCash();
+            initTodayDoneWork();
+            SharedPreferencesUtils.setParam(DuduDriverApplication.getInstance(), "today", today);
+        }
+    }
+
+    public static int getTodayDoneWork(){
+        return (int) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), "todaydonework", new Integer(0));
+    }
+
+    public static void addTodayDoneWork(){
+        SharedPreferencesUtils.setParam(DuduDriverApplication.getInstance(), "todaydonework", new Integer(getTodayDoneWork() + 1));
+    }
+
+    private static void initTodayDoneWork(){
+        SharedPreferencesUtils.setParam(DuduDriverApplication.getInstance(), "todaydonework", new Integer(0));
+    }
+
+    private static int getTodayAllWork(){
+        return (int) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), "todayallwork", new Integer(0));
+    }
+
+    public static void addTodayAllWork(){
+        SharedPreferencesUtils.setParam(DuduDriverApplication.getInstance(), "todayallwork", new Integer(getTodayAllWork() + 1));
+    }
+
+    public static String getTodayWorkRate(){
+        if(getTodayAllWork() == 0){
+            return "0";
+        }
+        double rate = ((double)getTodayDoneWork() * 100.00D) / ((double)getTodayAllWork());
+        return new DecimalFormat("###.0").format(rate) ;
+    }
+
+    private static void initTodayAllWork(){
+        SharedPreferencesUtils.setParam(DuduDriverApplication.getInstance(), "todayallwork", new Integer(0));
+    }
+
+    public static float getTodayCash(){
+        return (float)SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), "todaycash", new Float(0.0));
+    }
+
+    public static void addTodayCash(float cash){
+        SharedPreferencesUtils.setParam(DuduDriverApplication.getInstance(), "todaycash", new Float(getTodayCash() + cash));
+    }
+
+    private static void initTodayCash(){
+        SharedPreferencesUtils.setParam(DuduDriverApplication.getInstance(), "todaycash", new Double(0));
+    }
 }

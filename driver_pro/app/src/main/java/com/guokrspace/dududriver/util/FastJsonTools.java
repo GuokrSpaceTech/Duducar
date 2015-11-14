@@ -4,6 +4,8 @@ package com.guokrspace.dududriver.util;
  * Created by Yang Kai on 14-11-17.
  */
 
+import android.util.Log;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 
@@ -29,7 +31,9 @@ public class FastJsonTools {
         try {
             t = JSON.parseObject(jsonString, cls);
         } catch (Exception e) {
+            e.printStackTrace();
         }
+        Log.e("daddy", t.toString());
         return t;
     }
 

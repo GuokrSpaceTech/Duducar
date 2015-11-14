@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +16,9 @@ import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.adapter.NoticeAdapter;
 import com.guokrspace.dududriver.model.BaseNoticeItem;
 import com.guokrspace.dududriver.model.DenseOrderNotice;
-import com.guokrspace.dududriver.model.OrderListItem;
 import com.guokrspace.dududriver.model.UnKnowNotice;
 import com.guokrspace.dududriver.model.WealthNotice;
+import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.view.DividerItemDecoration;
 
 import java.text.SimpleDateFormat;
@@ -61,6 +62,7 @@ public class GrabOrderFragment extends BaseFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e("daddy","oncreate" + CommonUtil.getTodayDoneWork());
 
     }
 
@@ -68,6 +70,7 @@ public class GrabOrderFragment extends BaseFragment {
     public void onAttach(Context context) {
         this.context = context;
         super.onAttach(context);
+        Log.e("daddy", "onattach" + CommonUtil.getTodayDoneWork());
     }
 
     @Nullable
@@ -75,12 +78,14 @@ public class GrabOrderFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_graborder, container, false);
         ButterKnife.bind(this, view);
+        Log.e("daddy", "oncreateview" + CommonUtil.getTodayDoneWork());
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.e("daddy", "onviewcreated" + CommonUtil.getTodayDoneWork());
         initView();
     }
 
@@ -95,6 +100,12 @@ public class GrabOrderFragment extends BaseFragment {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM月dd日 EEEE");
         String today = dateFormat.format(date);
         tvDate.setText(today);
+
+        tvOrderNum.setText("已完成 " + CommonUtil.getTodayDoneWork() + " 单");
+        tvOnlineTime.setText("");
+        tvIncome.setText(CommonUtil.getTodayCash() + "");
+        tvTurnoverRate.setText( CommonUtil.getTodayWorkRate() + " %");
+
     }
 
     private List<BaseNoticeItem> initData() {

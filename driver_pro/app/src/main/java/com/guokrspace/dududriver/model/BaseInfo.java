@@ -1,11 +1,34 @@
 package com.guokrspace.dududriver.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by daddyfang on 15/11/4.
  */
 public class BaseInfo {
 
+    public Map<String, Object> getBaseInfo(){
+        Map<String, Object> info = new HashMap<String, Object>();
+
+        info.put("name", driver.getName());
+        info.put("avatar", driver.getAvatar());
+        info.put("plate", driver.getPlate());
+        info.put("rating", driver.getRating());
+        info.put("total_order", driver.getTotal_order());
+        info.put("balance", driver.getBalance());
+        info.put("favorable_rate", driver.getFavorable_rate());
+
+        info.put("km_price", charge_rule.getKm_price());
+        info.put("low_speed_price", charge_rule.getLow_speed_price());
+        info.put("starting_distance", charge_rule.getStarting_distance());
+        info.put("starting_price", charge_rule.getStarting_price());
+
+        return info;
+    }
+
     public BaseInfo(){
+
 
     }
 
@@ -18,23 +41,35 @@ public class BaseInfo {
     }
 
     private Charge_rule charge_rule;
-    private Driver driverInfo;
 
-    public Driver getDriverInfo() {
-        return driverInfo;
+    public Driver getDriver() {
+        return driver;
     }
 
-    public void setDriverInfo(Driver driverInfo) {
-        this.driverInfo = driverInfo;
+    public void setDriver(Driver driver) {
+        this.driver = driver;
     }
 
-    public CompanyInfo getCompanyInfo() {
-        return companyInfo;
+    private Driver driver;
+    private String message_id;
+
+    public String getMessage_id() {
+        return message_id;
     }
 
-    public void setCompanyInfo(CompanyInfo companyInfo) {
-        this.companyInfo = companyInfo;
+    public void setMessage_id(String message_id) {
+        this.message_id = message_id;
     }
+
+    public String getCMD() {
+        return CMD;
+    }
+
+    public void setCMD(String CMD) {
+        this.CMD = CMD;
+    }
+
+    private String CMD;
 
     public String getStatus() {
         return status;
@@ -44,31 +79,7 @@ public class BaseInfo {
         this.status = status;
     }
 
-    private CompanyInfo companyInfo;
     private String status;
-
-    public class CompanyInfo{
-        private String companyName;
-
-        public String getTeamName() {
-            return teamName;
-        }
-
-        public void setTeamName(String teamName) {
-            this.teamName = teamName;
-        }
-
-        public String getCompanyName() {
-            return companyName;
-        }
-
-        public void setCompanyName(String companyName) {
-            this.companyName = companyName;
-        }
-
-        private String teamName;
-
-    }
 
     public class Driver{
         public String getName() {
@@ -81,6 +92,17 @@ public class BaseInfo {
 
         private String name;
         private String plate;
+
+
+        public String getAvatar() {
+            return avatar;
+        }
+
+        public void setAvatar(String avatar) {
+            this.avatar = avatar;
+        }
+
+        private String avatar;
 
         public String getPlate() {
             return plate;
@@ -165,6 +187,5 @@ public class BaseInfo {
         private String starting_distance;
         private String km_price;
         private String low_speed_price;
-
     }
 }

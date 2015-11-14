@@ -7,6 +7,8 @@ public class VoiceCommand {
 
     public static final String CONNECT_SERVER = "正在连接服务器..";
     public static final String WAIT_FOR_ORDER = "开始听单";
+    public static final String HOLD_CAR = "收车";
+    public static final String CONTINUE_WAIT = "继续听单";
     public static final String FINISH_LISTENERING = "结束听单";
     public static final String NEW_ORDER_ARRIVE = "收到新的订单";
     public static final String ORDER_AUTO_CANCEL= "超时, 自动放弃订单,等待重新派单";

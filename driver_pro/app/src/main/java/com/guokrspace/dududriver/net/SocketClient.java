@@ -227,6 +227,7 @@ public class SocketClient {
 
     public void registerServerMessageHandler( int cmd, ResponseHandler target)
     {
+        Log.e("daddy", "register  " + cmd);
         serverMessageDispatchMap.put(cmd, target);
     }
 

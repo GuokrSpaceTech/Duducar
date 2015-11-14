@@ -1,42 +1,24 @@
 package com.guokrspace.duducar;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.media.Image;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.alipay.sdk.app.PayTask;
-import com.guokrspace.duducar.alipay.PayResult;
-import com.guokrspace.duducar.alipay.SignUtils;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
 import com.guokrspace.duducar.communication.message.DriverDetail;
 import com.guokrspace.duducar.communication.message.OrderDetail;
-import com.guokrspace.duducar.communication.message.TripOverOrder;
 import com.guokrspace.duducar.ui.WinToast;
 import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Random;
 
 public class RatingActivity extends ActionBarActivity {
 
@@ -121,7 +103,7 @@ public class RatingActivity extends ActionBarActivity {
                 });
 
                 WinToast.toast(RatingActivity.this, "谢谢评价。");
-
+                startActivity(new Intent(RatingActivity.this, PreOrderActivity.class));
                 finish();
 
             }

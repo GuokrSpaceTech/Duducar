@@ -4,14 +4,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Process;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -23,7 +20,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-
 
 import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.R;
@@ -37,8 +33,6 @@ import com.guokrspace.dududriver.view.WinToast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.List;
 
 
 public class LoginActivity extends BaseActivity implements

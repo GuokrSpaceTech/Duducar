@@ -136,6 +136,13 @@ public class PreOrderActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mApplication = (DuduApplication) getApplicationContext();
+        List persons = mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().list();
+        if (persons.size() <= 0) { //Not Logged in
+            Intent intent = new Intent(mContext, LoginActivity.class);
+            startActivityForResult(intent, ACTVITY_LOGIN_REQUEST);
+        }
+
         /*
          * Init the UI
          */
@@ -225,7 +232,6 @@ public class PreOrderActivity extends AppCompatActivity
          * Init the data
          */
         start = new SearchLocation();
-        mApplication = (DuduApplication) getApplicationContext();
     }
 
     private void initListener() {

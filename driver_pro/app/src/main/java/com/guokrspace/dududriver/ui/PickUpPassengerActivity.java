@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -309,10 +310,10 @@ public class PickUpPassengerActivity extends BaseActivity {
 
     private void initGetPassView() {
         toolbar.setTitle("去接乘客");
-        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.return_icon));
+//        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.return_icon));
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setHomeButtonEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         tvMyPosition.setText(orderItem.getOrder().getStart());
         tvPassengerPosition.setText(orderItem.getOrder().getDestination());
@@ -457,6 +458,15 @@ public class PickUpPassengerActivity extends BaseActivity {
             mMapview.onDestroy();
             mMapview = null;
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (KeyEvent.KEYCODE_BACK == event.getKeyCode()
+                || KeyEvent.KEYCODE_MENU == event.getKeyCode() ) {
+            return false;
+        }
+        return true;
     }
 
 }

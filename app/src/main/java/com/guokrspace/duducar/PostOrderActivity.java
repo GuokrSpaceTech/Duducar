@@ -1,6 +1,8 @@
 package com.guokrspace.duducar;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -185,6 +188,7 @@ public class PostOrderActivity extends AppCompatActivity {
 
         // ActionBar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         getSupportActionBar().setTitle(orderStatusString);
 
         //Get Args
@@ -365,6 +369,58 @@ public class PostOrderActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (KeyEvent.KEYCODE_BACK == event.getKeyCode()) {
+            cancelOption();
+        }
+        return false;
+    }
+
+    private boolean cancelOption() {
+
+        if(mFab.getVisibility() != View.VISIBLE){
+            return true;
+        }
+        final AlertDialog.Builder alterDialog = new AlertDialog.Builder(this);
+        alterDialog.setMessage("要撤销订单吗？");
+        alterDialog.setCancelable(true);
+
+        alterDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                state = ORDER_CANCELLING;
+                SocketClient.getInstance().sendOrderCancel("2",
+                        new ResponseHandler(Looper.myLooper()) {
+                            @Override
+                            public void onSuccess(String messageBody) {
+                                //取消成功
+                                mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_CANCEL_CONFIRMED);
+                            }
+
+                            @Override
+                            public void onFailure(String error) {
+                                mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_CANCEL_TIMEOUT);
+                            }
+
+                            @Override
+                            public void onTimeout() {
+
+                            }
+                        });
+            }
+        });
+        alterDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alterDialog.show();
+        return false;
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
 
@@ -452,8 +508,8 @@ public class PostOrderActivity extends AppCompatActivity {
         switch(item.getItemId())
         {
             case android.R.id.home:
-                setResult(RESULT_OK);
-                finish();
+                return cancelOption();
+            default:
                 break;
         }
         return super.onOptionsItemSelected(item);
