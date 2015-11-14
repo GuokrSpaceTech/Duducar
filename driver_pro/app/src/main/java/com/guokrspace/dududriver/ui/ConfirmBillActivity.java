@@ -25,7 +25,6 @@ import com.gc.materialdesign.widgets.Dialog;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.common.VoiceCommand;
-import com.guokrspace.dududriver.model.BaseInfo;
 import com.guokrspace.dududriver.model.OrderItem;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
@@ -61,6 +60,8 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
     TextView tvMileage;
     @Bind(R.id.mileage_cost)
     TextView tvMileageCost;
+    @Bind(R.id.low_speed_time)
+    TextView tvLowSpeedTime;
     @Bind(R.id.low_speed_cost)
     TextView tvLowSpeedCost;
     @Bind(R.id.height_speed_cost_minus)
@@ -89,6 +90,9 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
     private OrderItem orderItem;
 
     private Handler mHandler;
+    private double price;
+    private float lowcost;
+    private float milecost;
 
     private final int PAY_OVER = 0X001;
 
@@ -123,20 +127,39 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
 
     private void initView() {
         toolbar.setTitle("确认账单");
-        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.return_icon));
+//        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.return_icon));
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setHomeButtonEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         btnConfirm.setButtonText("确认账单");
 
         Bundle bundle = getIntent().getExtras();
         orderItem = (OrderItem) bundle.get("orderItem");
         final double curDistance = bundle.getDouble("mileage");
-        final double lowSpeedTime= bundle.getInt("lowspeed");
+        final int lowSpeedTime= bundle.getInt("lowspeed");
+        final float lowSpeedPrice = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), "low_speed_price", "0.55"));
+        final float startPrice = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), "starting_price", "6.5"));
+
+
+        price = countPrice(curDistance, lowSpeedTime);
+        lowcost = lowSpeedTime * lowSpeedPrice;
+        if(price - lowcost > startPrice){
+            milecost = (float)price - lowcost;
+        } else {
+            milecost = 0;
+        }
+
         tvMyPosition.setText(orderItem.getOrder().getStart());
         tvPassengerPosition.setText(orderItem.getOrder().getDestination());
+        tvBillSum.setText(price+"");
+
+        tvStartPrice.setText(String.format(getResources().getString(R.string.start_price), startPrice));
+        tvMileage.setText(String.format(getResources().getString(R.string.mileage_text), (curDistance / 1000.0f)));
+        tvMileageCost.setText(String.format(getResources().getString(R.string.mileage_cost), milecost));
+        tvLowSpeedTime.setText(String.format(getResources().getString(R.string.low_speed_text), lowSpeedTime));
+        tvLowSpeedCost.setText(String.format(getResources().getString(R.string.low_speed_cost), lowcost));
 
         initDialog();
         btnConfirm.setOnClickListener(new View.OnClickListener() {
@@ -163,7 +186,7 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
                 };
                 dialog.setOnKeyListener(keylistener);
 
-                SocketClient.getInstance().endOrder(countPrice(curDistance, lowSpeedTime) + "", curDistance + "", new ResponseHandler(Looper.myLooper()) {
+                SocketClient.getInstance().endOrder(price + "", curDistance + "", new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
                         Log.e("PickUpPassengerAct", "success " + messageBody);
@@ -195,43 +218,49 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
         });
     }
 
-    private double countPrice(double mileage, double lowtime) {
-        BaseInfo baseInfo = (BaseInfo) SharedPreferencesUtils.getParam(context, "baseinfo", new BaseInfo());
-        if(baseInfo != null){
-            int starting_price = Integer.parseInt(baseInfo.getCharge_rule().getStarting_price());
-            double starting_distance = Double.parseDouble(baseInfo.getCharge_rule().getStarting_distance());
-            double km_price = Double.parseDouble(baseInfo.getCharge_rule().getKm_price());
-            double low_speed_price = Double.parseDouble(baseInfo.getCharge_rule().getLow_speed_price());
-            mileage = mileage/1000.0d;
-            if(mileage <= starting_distance + 1){
-                return starting_price + low_speed_price * lowtime;
-            }
-            mileage = mileage - starting_distance;
-            return starting_price + mileage * km_price + lowtime * low_speed_price ;
-        } else {
-            return mileage / 1000.0d * 8 + lowtime * 0.1  + 0.01;
+    private double countPrice(double mileage, int lowtime) {
+
+        float starting_price = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), "starting_price", "5.5"));
+        float starting_distance = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), "starting_distance", "6.0"));
+        float km_price = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), "km_price", "2.0"));
+        float low_speed_price = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), "low_speed_price", "2.0"));
+        mileage = mileage/1000.0d;
+        if(mileage <= starting_distance + 1){
+            return starting_price + low_speed_price * lowtime;
         }
+        mileage = mileage - starting_distance;
+        return starting_price + mileage * km_price + lowtime * low_speed_price ;
+
     }
 
     private void initDialog() {
         dialog = new Dialog(context, getString(R.string.confirm_dialog_content));
-        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
         dialog.setOnCancelButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO: 进入付款详情界面，乘客未付款则需要司机代付
                 VoiceUtil.startSpeaking(VoiceCommand.DRIVER_PAY);
-                startActivity(new Intent(context, OrderDetailActivity.class));
+                Intent intent = new Intent(context, OrderDetailActivity.class);
+                intent.putExtra("price", price);
+                startActivity(intent);
                 finish();
+            }
+        });
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                return;
             }
         });
         dialog.setOnAcceptButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
-                dialog.dismiss();
+                VoiceUtil.startSpeaking(VoiceCommand.CONTINUE_WAIT);
                 startActivity(new Intent(context, MainActivity.class));
                 finish();
+                dialog.dismiss();
             }
         });
     }
@@ -262,6 +291,9 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
 
                     VoiceUtil.startSpeaking(VoiceCommand.PAY_OVER);
 
+                    CommonUtil.addTodayDoneWork();
+                    CommonUtil.addTodayCash((float)price);
+
                     dialog.getButtonAccept().setButtonText("继续听单");
                     dialog.getButtonCancel().setButtonText("收车");
                     dialog.getButtonAccept().setClickable(true);
@@ -273,9 +305,10 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
                         @Override
                         public void onClick(View v) {
                             CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
-                            dialog.dismiss();
+                            VoiceUtil.startSpeaking(VoiceCommand.HOLD_CAR);
                             startActivity(new Intent(context, MainActivity.class));
                             finish();
+                            dialog.dismiss();
                         }
                     });
                 }
@@ -284,5 +317,14 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
                 return false;
         }
         return false;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (KeyEvent.KEYCODE_BACK == event.getKeyCode()
+                || KeyEvent.KEYCODE_MENU == event.getKeyCode()) {
+            return false;
+        }
+        return true;
     }
 }

@@ -4,10 +4,11 @@ package com.guokrspace.dududriver.util;
  * Created by hyman on 2015-08-05.
  */
 
-import java.util.Map;
-import java.util.Set;
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import java.util.Map;
+import java.util.Set;
 
 /**
  * SharedPreferences的一个工具类，调用setParam就能保存String, Integer, Boolean, Float,

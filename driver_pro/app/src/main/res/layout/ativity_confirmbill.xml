@@ -182,6 +182,7 @@
                 android:paddingRight="@dimen/bill_item_padding">
 
                 <TextView
+                    android:id="@+id/low_speed_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/low_speed_text"

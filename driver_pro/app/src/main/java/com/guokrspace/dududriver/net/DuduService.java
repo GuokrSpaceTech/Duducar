@@ -2,7 +2,6 @@ package com.guokrspace.dududriver.net;
 
 import android.app.Service;
 import android.content.Intent;
-import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
@@ -13,21 +12,11 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.MyLocationData;
-import com.baidu.mapapi.model.LatLng;
-import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.common.Constants;
-import com.guokrspace.dududriver.database.PersonalInformation;
-import com.guokrspace.dududriver.model.BaseInfo;
-import com.guokrspace.dududriver.model.DistanceInfoListItem;
 import com.guokrspace.dududriver.net.message.HeartBeatMessage;
-import com.guokrspace.dududriver.ui.MainActivity;
 import com.guokrspace.dududriver.util.CommonUtil;
-import com.guokrspace.dududriver.util.FastJsonTools;
 import com.guokrspace.dududriver.util.LogUtil;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
-
-import java.util.List;
-import java.util.concurrent.Callable;
 
 /*
 * get baidu map location
@@ -53,7 +42,7 @@ public class DuduService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
 
         // For each start request, send a message to start a job and deliver the
         // start ID so we know which request we're stopping when we finish the job

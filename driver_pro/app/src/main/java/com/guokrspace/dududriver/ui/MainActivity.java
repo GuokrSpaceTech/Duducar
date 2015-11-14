@@ -1,17 +1,17 @@
 package com.guokrspace.dududriver.ui;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
+import android.os.*;
+import android.os.Process;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -93,7 +93,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     private PersonalInformation userInfo;
 
     private OrderItem orderItem = null;
-    private BaseInfo baseInfo = null;
+    private BaseInfo baseInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +134,6 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         duduService = new Intent(getBaseContext(), DuduService.class);
         registerBroadcastReceiver();
         startService(duduService);
-
     }
 
     @Override
@@ -164,6 +163,10 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         * 调整circle状态
         * */
         mHandler.sendEmptyMessage(ADJUST_STATUS);
+        /*
+        * 更新每天的记录
+        * */
+//        CommonUtil.updateToday();
 
         //注册派单监听
         SocketClient.getInstance().registerServerMessageHandler(MessageTag.PATCH_ORDER, new ResponseHandler(Looper.myLooper()) {
@@ -242,9 +245,10 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         SocketClient.getInstance().pullBaseInfo(new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
-                Log.e("daddy", "success" + messageBody);
                 baseInfo = (BaseInfo) FastJsonTools.getObject(messageBody, BaseInfo.class);
+                Log.e("daddy", "base" + baseInfo.getDriver().getName());
                 mHandler.sendEmptyMessage(HANDLE_BASEINFO);
+                Log.e("daddy", "send message");
             }
 
             @Override
@@ -308,6 +312,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 } else {
                     VoiceUtil.startSpeaking(VoiceCommand.FINISH_LISTENERING);
                     CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
+                    initStopAnim();
                 }
                 if (listenProgressView.isCircling() != isListeneing) {
                     listenProgressView.changeViewStatus();
@@ -323,6 +328,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             public void onClick(View v) {
                 // TODO:收车逻辑，并执行隐藏收车按钮动画
                 initStopAnim();
+                VoiceUtil.startSpeaking(VoiceCommand.HOLD_CAR);
                 CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
                 if (listenProgressView.isCircling()) {
                     isListeneing = !isListeneing;
@@ -422,6 +428,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                     Log.e("Daddy m", "orderItem"+ orderItem.getOrder().getStart() + " "+ orderItem.getOrder().getDestination() + " ");
                     dialog.setCancelable(true);
                     dialog.show(getSupportFragmentManager(), "mainorderdialog");
+                    CommonUtil.addTodayAllWork();
                     //选择界面不听单
                     CommonUtil.changeCurStatus(Constants.STATUS_DEAL);
                 } else {
@@ -434,9 +441,8 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                     pullBaseInfo();
                     break;
                 }
-                SharedPreferencesUtils.setParam(context, "baseinfo", baseInfo);
-                //TODO: afr
-                updateBaseinfo();
+                SharedPreferencesUtils.setParams(getApplicationContext(), baseInfo.getBaseInfo());
+                updateMeFragmentBaseinfo(baseInfo);
                 break;
             case ADJUST_STATUS:
                 if(CommonUtil.getCurrentStatus() == Constants.STATUS_WAIT) {
@@ -444,10 +450,16 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                     if (!listenProgressView.isCircling()) {
                         listenProgressView.changeViewStatus();
                     }
+                    if(btnOver.getVisibility() != View.VISIBLE){
+                        initStartAnim();
+                    }
                 } else {
                     isListeneing = false;
                     if(listenProgressView.isCircling()){
                         listenProgressView.changeViewStatus();
+                    }
+                    if(btnOver.getVisibility() == View.VISIBLE){
+                        initStopAnim();
                     }
                 }
                 break;
@@ -457,14 +469,16 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         return false;
     }
 
-    private void updateBaseinfo(){
+
+    private void updateMeFragmentBaseinfo(BaseInfo info){
+
         List<Fragment> list = MainActivity.this.getSupportFragmentManager().getFragments();
-        Log.e("daddy", "update" + list.size());
         for(Fragment fragment : list){
-            Log.e("daddy", "fragment" + fragment.getTag() + fragment.getClass());
             if(fragment instanceof MeFragment){//
-                Log.e("daddy", "dddd");
-                ((MeFragment) fragment).getHanlder().sendEmptyMessage(MeFragment.LOAD_BASEINFO);
+                Message msg = new Message();
+                msg.obj = info;
+                msg.what = MeFragment.LOAD_BASEINFO;
+                ((MeFragment) fragment).getHanlder().sendMessage(msg);
             }
         }
     }
@@ -522,4 +536,37 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         }
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (KeyEvent.KEYCODE_BACK == event.getKeyCode()) {
+
+            final String tmp = CommonUtil.getCurrentStatus();
+            CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
+
+            final AlertDialog.Builder alterDialog = new AlertDialog.Builder(this);
+            alterDialog.setMessage("确定退出应用？");
+            alterDialog.setCancelable(true);
+
+            alterDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                    android.os.Process.killProcess(Process.myPid());
+                }
+            });
+            alterDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if(tmp == Constants.STATUS_WAIT) {
+                        CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+                    }
+                    dialog.cancel();
+                }
+            });
+            alterDialog.show();
+        }
+
+        return false;
+    }
 }

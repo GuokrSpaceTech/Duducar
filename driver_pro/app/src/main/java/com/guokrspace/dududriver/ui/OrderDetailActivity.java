@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
@@ -14,7 +15,9 @@ import com.gc.materialdesign.views.ButtonFlat;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
+import com.guokrspace.dududriver.common.VoiceCommand;
 import com.guokrspace.dududriver.util.CommonUtil;
+import com.guokrspace.dududriver.util.VoiceUtil;
 import com.guokrspace.dududriver.view.CircleImageView;
 
 import butterknife.Bind;
@@ -51,8 +54,13 @@ public class OrderDetailActivity extends BaseActivity {
     private Context context;
     @OnClick(R.id.continue_order_acccept) public void goBackHome() {
         CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+        CommonUtil.addTodayDoneWork();
+        CommonUtil.addTodayCash(cash);
+        VoiceUtil.startSpeaking(VoiceCommand.CONTINUE_WAIT);
         finish();
     }
+
+    private float cash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,22 +68,26 @@ public class OrderDetailActivity extends BaseActivity {
         setContentView(R.layout.activity_orderdetail);
         context = OrderDetailActivity.this;
         ButterKnife.bind(this);
+        cash = (float) getIntent().getDoubleExtra("price", 6.0);
         initView();
     }
 
     private void initView() {
         toolbar.setTitle("订单详情");
-        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.return_icon));
+//        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.return_icon));
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setHomeButtonEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        tvBillSum.setText(cash + "");
 
         btnOverOrderAcccept.setButtonText("收车");
         btnOverOrderAcccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
+                VoiceUtil.startSpeaking(VoiceCommand.HOLD_CAR);
                 finish();
             }
         });
@@ -97,5 +109,14 @@ public class OrderDetailActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (KeyEvent.KEYCODE_BACK == event.getKeyCode()
+                || KeyEvent.KEYCODE_MENU == event.getKeyCode()) {
+            return false;
+        }
+        return true;
     }
 }

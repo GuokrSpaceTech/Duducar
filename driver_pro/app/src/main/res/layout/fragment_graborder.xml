@@ -59,7 +59,7 @@
         <TextView android:id="@+id/car_tyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="舒适、普通"
+            android:text="舒适型"
             android:textColor="@color/light_gray"
             android:textStyle="bold"
             android:textSize="18sp"/>
@@ -79,7 +79,7 @@
         <TextView android:id="@+id/order_pattern"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="抢单模式"
+            android:text="派单模式"
             android:textColor="@color/light_gray"
             android:textStyle="bold"
             android:textSize="18sp"/>
