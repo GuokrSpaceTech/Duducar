@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,15 +19,27 @@ import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.adapter.RecordListAdapter;
+import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.model.BaseInfo;
-import com.guokrspace.dududriver.model.RecordListItem;
+import com.guokrspace.dududriver.model.HistoryOrder;
+import com.guokrspace.dududriver.model.HistoryOrderResponseModel;
+import com.guokrspace.dududriver.model.OrderRecordListItem;
+import com.guokrspace.dududriver.net.ResponseHandler;
+import com.guokrspace.dududriver.net.SocketClient;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 import com.guokrspace.dududriver.view.CircleImageView;
 import com.guokrspace.dududriver.view.DividerItemDecoration;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -68,16 +82,84 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
 //    Button btnOver;
     private Context context;
     private BaseInfo baseInfo;
+    private LinearLayoutManager mLayoutManager;
 
     public static final int LOAD_BASEINFO = 0x100;
-
-    private static final int HANDLE_REFRESH_OVER = 111;
+    private static final int HANDLE_REFRESH_OVER = 0x111;
 
     private RecordListAdapter mAdapter;
+    private List<OrderRecordListItem> listItems = new ArrayList<>();
+
+    private int currentOrderId = Integer.MAX_VALUE;
 
     private boolean isRefreshing = false;
+    private boolean isLoading = false;
+    private boolean hasMore = true;
 
-    private Handler mHandler = new Handler();
+    private Handler mHandler = new Handler(Looper.getMainLooper(), this);
+
+    //刷新事件监听
+    private SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+
+        @Override
+        public void onRefresh() {
+
+            if (isNetworkAvailable() && !isRefreshing) {
+                // TODO 刷新、获取历史订单数据
+                SocketClient.getInstance().getHistoryOrders("old", Constants.ORDER_PAGE_NUM, currentOrderId, new ResponseHandler(Looper.myLooper()) {
+                    @Override
+                    public void onSuccess(String messageBody) {
+                        refreshLayout.setRefreshing(false);
+                        isRefreshing = false;
+                        HistoryOrderResponseModel responseModel = null;
+                        if (!TextUtils.isEmpty(messageBody)) {
+                            Log.e("hyman_log", "加载成功" + messageBody);
+//                                responseModel = FastJsonTools.getObject(messageBody, HistoryOrderResponseModel.class);
+                            responseModel = new Gson().fromJson(messageBody, HistoryOrderResponseModel.class);
+                        }
+                        List<HistoryOrder> orders = null;
+                        if (responseModel != null) {
+                            Log.e("hyman_log", "hahaha");
+                            orders = responseModel.getOrder_list();
+                            Collections.sort(orders, new Comparator<HistoryOrder>() {
+                                @Override
+                                public int compare(HistoryOrder lhs, HistoryOrder rhs) {
+                                    int lhsId = Integer.parseInt(lhs.getId());
+                                    int rhsId = Integer.parseInt(rhs.getId());
+                                    if (lhsId < rhsId) return 1;
+                                    return -1;
+                                }
+                            });
+                            if (orders.size() != 0) {
+                                listItems.clear();
+                                for (HistoryOrder order : orders) {
+                                    listItems.add(new OrderRecordListItem(order.getId(), dateFormat(order.getEnd_time()), order.getStart(), order.getDestination(), "已完成"));
+                                }
+                                mAdapter.notifyDataSetChanged();
+                            }
+                            currentOrderId = Integer.parseInt(orders.get(orders.size() - 1).getId());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+                        refreshLayout.setRefreshing(false);
+                        isRefreshing = false;
+                        showToast("刷新失败...");
+                    }
+
+                    @Override
+                    public void onTimeout() {
+                        refreshLayout.setRefreshing(false);
+                        isRefreshing = false;
+                        showToast("请求超时...");
+                    }
+                });
+//                    mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_REFRESH_OVER), 1000);
+            }
+        }
+
+    };
 
     public static MeFragment newInstance() {
         final MeFragment meFragment = new MeFragment();
@@ -104,10 +186,29 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
 
     private void initView() {
         //初始化历史订单列表
-        mAdapter = new RecordListAdapter(getActivity(), initData());
+        mAdapter = new RecordListAdapter(getActivity(), listItems);
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+
+        //添加onScrollListener实现加载更多
+        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int lastVisibleItem = mLayoutManager.findLastVisibleItemPosition();
+                int totalItemCount = mAdapter.getItemCount();
+                //lastVisibleItem >= totalItemCount - 3 表示剩下3个item自动加载
+                if (hasMore && lastVisibleItem >= totalItemCount - 3 && dy > 0) {
+                    if (isRefreshing || isLoading) {
+                        Log.d("hyman_log", "cannot load more");
+                    } else {
+                        loadMoreData();
+                    }
+                }
+            }
+        });
 
         //初始化SwipeRefreshLayout
         Resources resources = getActivity().getResources();
@@ -115,25 +216,77 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
                 resources.getColor(R.color.materialBlue),
                 resources.getColor(R.color.materialYellow),
                 resources.getColor(R.color.materialGreen));
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        //下拉刷新
+        refreshLayout.setOnRefreshListener(refreshListener);
 
+        //进入页面自动刷新
+        mHandler.postDelayed(new Runnable() {
             @Override
-            public void onRefresh() {
-
-                if (isNetworkAvailable() && !isRefreshing) {
-                    // TODO 获取历史订单数据
-
-                }
+            public void run() {
+                setRefreshing(refreshLayout, true, true);
             }
-
-        });
+        }, 2000);
 
     }
 
-    private List<RecordListItem> initData() {
-        List<RecordListItem> data = new ArrayList<>();
+    private void loadMoreData() {
+        isLoading = true;
+        // TODO: 加载数据
+        SocketClient.getInstance().getHistoryOrders("old", Constants.ORDER_PAGE_NUM, currentOrderId, new ResponseHandler(Looper.getMainLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                isLoading = false;
+                HistoryOrderResponseModel responseModel = null;
+                if (!TextUtils.isEmpty(messageBody)) {
+//                    responseModel = FastJsonTools.getObject(messageBody, HistoryOrderResponseModel.class);
+                    responseModel = new Gson().fromJson(messageBody, HistoryOrderResponseModel.class);
+                }
+                List<HistoryOrder> orders = null;
+                if (responseModel != null) {
+                    orders = responseModel.getOrder_list();
+                    Collections.sort(orders, new Comparator<HistoryOrder>() {
+                        @Override
+                        public int compare(HistoryOrder lhs, HistoryOrder rhs) {
+                            int lhsId = Integer.parseInt(lhs.getId());
+                            int rhsId = Integer.parseInt(rhs.getId());
+                            if (lhsId < rhsId) return 1;
+                            return -1;
+                        }
+                    });
+                    if (orders.size() != 0) {
+                        List<OrderRecordListItem> orderRecords = new ArrayList<OrderRecordListItem>();
+                        for (HistoryOrder order : orders) {
+                            orderRecords.add(new OrderRecordListItem(order.getId(), dateFormat(order.getEnd_time()), order.getStart(), order.getDestination(), "已完成"));
+                        }
+                        listItems.addAll(orderRecords);
+                        mAdapter.notifyDataSetChanged();
+                    }
+                    currentOrderId = Integer.parseInt(orders.get(orders.size() - 1).getId());
+                    if (orders.size() < Constants.ORDER_PAGE_NUM) {
+                        hasMore = false;
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(String error) {
+                isLoading = false;
+                showToast("加载更多失败...");
+            }
+
+            @Override
+            public void onTimeout() {
+                isLoading = false;
+                showToast("加载更多超时...");
+            }
+        });
+    }
+
+    private List<OrderRecordListItem> initData() {
+        List<OrderRecordListItem> data = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            data.add(new RecordListItem("9月27日 17:30", "长沙轮渡 湘江中路东", "友阿百货 雨花区人民中路", "已支付"));
+            data.add(new OrderRecordListItem("1", "9月27日 17:30", "长沙轮渡 湘江中路东", "友阿百货 雨花区人民中路", "已支付"));
         }
         return data;
     }
@@ -159,9 +312,50 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
                     tvBanlance.setText(" " + baseInfo.getDriverInfo().getBalance());
                 }
             break;
+            case HANDLE_REFRESH_OVER:
+                refreshLayout.setRefreshing(false);
+                showToast("加载完成");
+                isRefreshing = false;
+                break;
             default:
                 break;
         }
         return false;
+    }
+
+    //将时间转换成 MM月dd日 HH:mm 格式
+    private String dateFormat(String date) {
+        if (TextUtils.isEmpty(date)) {
+            return "一万年前";
+        }
+        Date orderDate = new Date(Long.parseLong(date));
+        SimpleDateFormat format = new SimpleDateFormat("MM月dd日 HH:mm");
+        return format.format(orderDate);
+    }
+
+    /**
+     * 著作权归作者所有。
+     * 商业转载请联系作者获得授权，非商业转载请注明出处。
+     * 作者：RxRead
+     * 链接：http://www.zhihu.com/question/35422150/answer/62708927
+     * 来源：知乎
+     */
+
+    public static void setRefreshing(SwipeRefreshLayout refreshLayout,boolean refreshing, boolean notify){
+        Class<? extends SwipeRefreshLayout> refreshLayoutClass = refreshLayout.getClass();
+        if (refreshLayoutClass != null) {
+
+            try {
+                Method setRefreshing = refreshLayoutClass.getDeclaredMethod("setRefreshing", boolean.class, boolean.class);
+                setRefreshing.setAccessible(true);
+                setRefreshing.invoke(refreshLayout, refreshing, notify);
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

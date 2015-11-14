@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.guokrspace.dududriver.R;
-import com.guokrspace.dududriver.model.RecordListItem;
+import com.guokrspace.dududriver.model.OrderRecordListItem;
 
 import java.util.List;
 
@@ -18,10 +18,10 @@ import java.util.List;
  */
 public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.RecordViewHolder> {
 
-    private List<RecordListItem> mItems = null;
+    private List<OrderRecordListItem> mItems = null;
     private Context context;
 
-    public RecordListAdapter(Context context, List<RecordListItem> data) {
+    public RecordListAdapter(Context context, List<OrderRecordListItem> data) {
         this.context = context;
         this.mItems = data;
     }

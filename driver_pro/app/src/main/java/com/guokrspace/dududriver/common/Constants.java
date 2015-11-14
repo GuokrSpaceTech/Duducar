@@ -24,5 +24,7 @@ public class Constants {
     public static final String SERVICE_BROADCAST = "SERVICE_BROADCAST";
     public static final String SERVICE_ACTION_RELOGIN = "LOG_IN_ERROR_TRY_AGAIN";
 
+    public static final int ORDER_PAGE_NUM = 10;
+
 
 }
