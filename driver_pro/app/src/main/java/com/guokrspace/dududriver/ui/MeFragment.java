@@ -68,7 +68,6 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
 //    Button btnOver;
     private Context context;
     private BaseInfo baseInfo;
-    private Handler mHandler;
 
     public static final int LOAD_BASEINFO = 0x100;
 
