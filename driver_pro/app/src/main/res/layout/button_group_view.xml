@@ -15,6 +15,7 @@
         android:text="模式"
         android:textColor="@color/orange"
         android:textSize="18sp"
+        android:visibility="gone"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
         android:visibility="gone"/>

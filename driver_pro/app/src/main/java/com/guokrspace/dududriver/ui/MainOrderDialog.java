@@ -24,8 +24,12 @@ import com.guokrspace.dududriver.common.VoiceCommand;
 import com.guokrspace.dududriver.model.OrderItem;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
+import com.guokrspace.dududriver.net.message.MessageTag;
 import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.VoiceUtil;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.Timer;
@@ -67,6 +71,7 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
     private static final int HANDLE_TIMERTICK = 999;
     private static final int HANDLER_TIMER_TIMEOUT = 888;
     private static final int INTENT_TO_PICKUP = 898;
+    private static final int ORDER_CANCELED = 899;
 
     public MainOrderDialog(Context context) {
         this.context = context;
@@ -89,10 +94,44 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.dialog_main_order, container, false);
         ButterKnife.bind(this, view);
+        initListener();
         initView();
         return view;
     }
 
+    private void initListener(){
+
+        //监听派单取消的通知
+        SocketClient.getInstance().registerServerMessageHandler(MessageTag.ORDER_CANCEL, new ResponseHandler(Looper.myLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                try {
+                    JSONObject mCancel = new JSONObject(messageBody);
+                    Log.e("daddy", "messageBody" + messageBody);
+                    if (order == null
+//                            || mCancel.get("order_no") != order.getOrder().getId()
+                            || CommonUtil.getCurrentStatus() != Constants.STATUS_DEAL) {
+                        //订单已经取消或者已经接到乘客  无法取消订单
+                        return;
+                    }
+                    mHandler.sendEmptyMessage(ORDER_CANCELED);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(String error) {
+                mHandler.sendEmptyMessage(ORDER_CANCELED);
+            }
+
+            @Override
+            public void onTimeout() {
+                mHandler.sendEmptyMessage(ORDER_CANCELED);
+            }
+        });
+
+    }
     private void initView() {
         btnCancel.setOnClickListener(this);
         acceptLayout.setOnClickListener(this);
@@ -100,7 +139,9 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
         Log.e("daddy", "distance " + order.getDistance());
         double distance = Math.floor(Double.valueOf(order.getDistance()));
         String distanceStr = "";
-        if(distance <= 999){
+        if(distance > 20000) {
+            //20公里失败
+        } else if(distance <= 999) {
             distanceStr = "距离你只有大约 " + distance + " 米";
         } else {
             distanceStr = "距离你大约 " + new DecimalFormat(".#").format(distance/1000.0d) + " 公里";
@@ -150,7 +191,7 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
                 CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
                 break;
             case R.id.accept_rl:
-                // TODO: Skip to OrderInfo page
+                // TODO: Skip to OrderInfo pagec
                 myTimeTick.stopTimer();
                  //确认接单,不听单
                 SocketClient.getInstance().orderOrder(order.getOrder().getId(), new ResponseHandler(Looper.myLooper()){
@@ -162,7 +203,6 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
                         VoiceUtil.startSpeaking(VoiceCommand.ORDER_ACCEPT);
                         mHandler.sendEmptyMessage(INTENT_TO_PICKUP);
                         CommonUtil.changeCurStatus(Constants.STATUS_GET);
-                        dismiss();
                     }
 
                     @Override
@@ -194,8 +234,9 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
             case HANDLE_TIMERTICK:
                 if (tvOrderSecond != null) {
                     tvOrderSecond.setText(msg.obj + "");
-                    if((Integer)msg.obj <= 5 && !VoiceUtil.isSpeaking()){
-                        VoiceUtil.startSpeaking("嘟");
+                    int sec = (Integer)msg.obj;
+                    if(sec <= 5 && sec > 0 &&!VoiceUtil.isSpeaking()){
+                        VoiceUtil.startSpeaking("嘀");
                     }
                 }
                 break;
@@ -212,6 +253,12 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
                 intent.putExtra("orderItem", order);
                 startActivity(intent);
                 dismiss();
+                break;
+            case ORDER_CANCELED:
+                order = null;
+                this.dismiss();
+                VoiceUtil.startSpeaking(VoiceCommand.ORDER_CANCEL);
+                CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
                 break;
             default:
                 break;

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -26,6 +27,7 @@ import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.adapter.TabPagerAdapter;
 import com.guokrspace.dududriver.common.Constants;
+import com.guokrspace.dududriver.common.VoiceCommand;
 import com.guokrspace.dududriver.database.PersonalInformation;
 import com.guokrspace.dududriver.model.BaseInfo;
 import com.guokrspace.dududriver.model.OrderItem;
@@ -38,16 +40,15 @@ import com.guokrspace.dududriver.util.DisplayUtil;
 import com.guokrspace.dududriver.util.FastJsonTools;
 import com.guokrspace.dududriver.util.LogUtil;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
+import com.guokrspace.dududriver.util.VoiceUtil;
 import com.guokrspace.dududriver.view.ListenProgressView;
 import com.viewpagerindicator.TabPageIndicator;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by hyman on 15/10/22.
@@ -56,6 +57,9 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 
     @Bind(R.id.pattern_btn)
     Button btnPattern;
+    @OnClick(R.id.pattern_btn) public void changePattern(){
+        //   voice guide on/off
+    }
     private Context context;
 
     private ViewPager pager;
@@ -98,7 +102,6 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         context = this;
-        CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
 
          /*
          * Check if use has logined
@@ -124,8 +127,6 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         mTcpClient = null;
         conctTask = new connectTask(); //Connect to server
         conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-
 
         /*
          * Start Location & Send Heartbeat  Service
@@ -155,23 +156,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             if (localUsers != null && localUsers.size() > 0) {
                 userInfo = (PersonalInformation) localUsers.get(0);
                 doLogin(userInfo);
-                SocketClient.getInstance().pullBaseInfo(new ResponseHandler(Looper.myLooper()) {
-                    @Override
-                    public void onSuccess(String messageBody) {
-                        baseInfo = (BaseInfo)FastJsonTools.getObject(messageBody, BaseInfo.class);
-                        mHandler.sendEmptyMessage(HANDLE_BASEINFO);
-                    }
 
-                    @Override
-                    public void onFailure(String error) {
-                        //返回基础信息失败
-                    }
-
-                    @Override
-                    public void onTimeout() {
-                        //超时
-                    }
-                });
             }
         }
 
@@ -201,31 +186,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             }
         });
 
-        //监听派单取消的通知
-        SocketClient.getInstance().registerServerMessageHandler(MessageTag.ORDER_CANCEL, new ResponseHandler(Looper.myLooper()) {
-            @Override
-            public void onSuccess(String messageBody) {
-                try {
-                    JSONObject mCancel = new JSONObject(messageBody);
-                    if (orderItem == null || mCancel.get("order_no") != orderItem.getOrder().getId()
-                            || CommonUtil.getCurrentStatus() != Constants.STATUS_HOLD) {
-                        //订单已经取消或者已经接到乘客  无法取消订单
-                        return;
-                    }
-                    mHandler.sendEmptyMessage(ORDER_CANCELED);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
 
-            @Override
-            public void onFailure(String error) {
-            }
-
-            @Override
-            public void onTimeout() {
-            }
-        });
     }
 
     @Override
@@ -255,6 +216,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 showCustomToast("登陆成功");
                 Log.e("login in success!", "messageBody" + messageBody);
                 SharedPreferencesUtils.setParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, true);
+                pullBaseInfo();
                 isOnline = true;
             }
 
@@ -275,6 +237,32 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         });
     }
 
+    private void pullBaseInfo(){
+
+        SocketClient.getInstance().pullBaseInfo(new ResponseHandler(Looper.myLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                Log.e("daddy", "success" + messageBody);
+                baseInfo = (BaseInfo) FastJsonTools.getObject(messageBody, BaseInfo.class);
+                mHandler.sendEmptyMessage(HANDLE_BASEINFO);
+            }
+
+            @Override
+            public void onFailure(String error) {
+                //返回基础信息失败,
+                Log.e("daddy", "error " + error);
+            }
+
+            @Override
+            public void onTimeout() {
+                //超时 重试
+                Log.e("daddy", "time out ");
+                pullBaseInfo();
+            }
+        });
+
+    }
+
     private void initView() {
         mIndicator = (TabPageIndicator) findViewById(R.id.indicator);
 
@@ -288,6 +276,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 
         buttonGroup = (View) findViewById(R.id.button_group_layout);
         listenProgressView = (ListenProgressView) buttonGroup.findViewById(R.id.listenprogressview);
+
         listenProgressView.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
@@ -306,6 +295,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                     if (!isOnline && userInfo != null) {
                         CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
                         doLogin(userInfo);
+                        VoiceUtil.startSpeaking(VoiceCommand.CONNECT_SERVER);
                         isListeneing = !isListeneing;
                         return false;
                     }
@@ -313,11 +303,13 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                         // TODO: 将这个动画放到听单按钮触发成功的逻辑处
                         initStartAnim();
                     }
+                    VoiceUtil.startSpeaking(VoiceCommand.WAIT_FOR_ORDER);
                     CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
                 } else {
+                    VoiceUtil.startSpeaking(VoiceCommand.FINISH_LISTENERING);
                     CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
                 }
-                if(listenProgressView.isCircling() != isListeneing){
+                if (listenProgressView.isCircling() != isListeneing) {
                     listenProgressView.changeViewStatus();
                 }
 
@@ -420,7 +412,8 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 LatLng startLoaction = new LatLng(
                         Double.valueOf(orderItem.getOrder().getStart_lat()), Double.valueOf(orderItem.getOrder().getStart_lng()));
                 LatLng endLoaction = new LatLng(
-                        Double.valueOf(orderItem.getOrder().getDestination_lat()), Double.valueOf(orderItem.getOrder().getDestination_lng()));
+                        CommonUtil.getCurLat(), CommonUtil.getCurLng());
+//                        Double.valueOf(orderItem.getOrder().getDestination_lat()), Double.valueOf(orderItem.getOrder().getDestination_lng()));
                 orderItem.setDistance(String.valueOf(DistanceUtil.getDistance(startLoaction, endLoaction)));
                 //显示派单dialog
                 if(CommonUtil.getCurrentStatus() == Constants.STATUS_WAIT){
@@ -428,9 +421,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                     dialog = new MainOrderDialog(context, orderItem);
                     Log.e("Daddy m", "orderItem"+ orderItem.getOrder().getStart() + " "+ orderItem.getOrder().getDestination() + " ");
                     dialog.setCancelable(true);
-                    if(dialog.isResumed()){}
                     dialog.show(getSupportFragmentManager(), "mainorderdialog");
-
                     //选择界面不听单
                     CommonUtil.changeCurStatus(Constants.STATUS_DEAL);
                 } else {
@@ -438,18 +429,14 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 }
 
                 break;
-            case ORDER_CANCELED:
-                orderItem = null;
-                if(dialog != null && dialog.isVisible()){
-                    dialog.dismiss();
-                    dialog = null;
-                }
-                CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
-                break;
             case HANDLE_BASEINFO:
                 if(baseInfo == null){
-
+                    pullBaseInfo();
+                    break;
                 }
+                SharedPreferencesUtils.setParam(context, "baseinfo", baseInfo);
+                //TODO: afr
+                updateBaseinfo();
                 break;
             case ADJUST_STATUS:
                 if(CommonUtil.getCurrentStatus() == Constants.STATUS_WAIT) {
@@ -470,6 +457,17 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         return false;
     }
 
+    private void updateBaseinfo(){
+        List<Fragment> list = MainActivity.this.getSupportFragmentManager().getFragments();
+        Log.e("daddy", "update" + list.size());
+        for(Fragment fragment : list){
+            Log.e("daddy", "fragment" + fragment.getTag() + fragment.getClass());
+            if(fragment instanceof MeFragment){//
+                Log.e("daddy", "dddd");
+                ((MeFragment) fragment).getHanlder().sendEmptyMessage(MeFragment.LOAD_BASEINFO);
+            }
+        }
+    }
     /**
      * @author Prashant Adesara
      *         receive the message from server with asyncTask

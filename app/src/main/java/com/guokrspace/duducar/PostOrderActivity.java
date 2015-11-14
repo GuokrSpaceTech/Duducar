@@ -14,7 +14,6 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -39,14 +38,11 @@ import com.baidu.mapapi.model.LatLng;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
 import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
-import com.guokrspace.duducar.communication.message.DriverDetail;
 import com.guokrspace.duducar.communication.message.DriverInfo;
 import com.guokrspace.duducar.communication.message.MessageTag;
 import com.guokrspace.duducar.communication.message.NearByCars;
-import com.guokrspace.duducar.communication.message.OrderDetail;
 import com.guokrspace.duducar.communication.message.SearchLocation;
 import com.guokrspace.duducar.communication.message.TripOver;
-import com.guokrspace.duducar.communication.message.TripOverOrder;
 import com.guokrspace.duducar.communication.message.TripStart;
 import com.guokrspace.duducar.database.OrderRecord;
 import com.guokrspace.duducar.ui.DriverInformationView;
@@ -108,6 +104,14 @@ public class PostOrderActivity extends AppCompatActivity {
                     if (state == ORDER_CANCELLING) {
                         getSupportActionBar().setTitle("订单已经取消");
                         finish();
+                    }
+                    break;
+                case MessageTag.MESSAGE_ORDER_CANCEL_TIMEOUT:
+                    if (state == ORDER_CANCELLING) {
+                        getSupportActionBar().setTitle("司机已接单,正在路上");
+                        mFab.setClickable(false);
+                        mFab.setVisibility(View.GONE);
+                        mFab.setEnabled(false);
                     }
                     break;
                 case MessageTag.MESSAGE_ORDER_DISPATCHED:
@@ -237,7 +241,24 @@ public class PostOrderActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
                 state = ORDER_CANCELLING;
 
-                mHandler.sendEmptyMessageDelayed(MessageTag.MESSAGE_ORDER_CANCEL_CONFIRMED, 2000); //Simulate the cancel is success
+                SocketClient.getInstance().sendOrderCancel("2",
+                        new ResponseHandler(Looper.myLooper()) {
+                            @Override
+                            public void onSuccess(String messageBody) {
+                                //取消成功
+                                mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_CANCEL_CONFIRMED);
+                            }
+
+                            @Override
+                            public void onFailure(String error) {
+                                mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_CANCEL_TIMEOUT);
+                            }
+
+                            @Override
+                            public void onTimeout() {
+
+                            }
+                        });
                 return false;
             }
         });
