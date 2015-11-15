@@ -10,6 +10,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.Process;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -200,16 +201,19 @@ public class LoginActivity extends BaseActivity implements
                 messageid = SocketClient.getInstance().sendRegcodeRequst(userName, "1", new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
+                        Log.e("LoginActicity daddy", "success");
                         mHandler.sendEmptyMessage(HANDLER_REGISTER_SUCCESS);
                     }
 
                     @Override
                     public void onFailure(String error) {
+                        Log.e("LoginActivity daddy", "error");
                         mHandler.sendEmptyMessage(HANDLER_REGISTER_FAILURE);
                     }
 
                     @Override
                     public void onTimeout() {
+                        Log.e("LoginActivity daddy", "time out");
                         mHandler.sendEmptyMessage(HANDLER_REGISTER_FAILURE);
                     }
                 });
