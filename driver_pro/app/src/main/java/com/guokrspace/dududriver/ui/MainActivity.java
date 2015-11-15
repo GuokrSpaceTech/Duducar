@@ -6,7 +6,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.*;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.os.Process;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -82,6 +86,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 
     private Handler mHandler;
     private Intent duduService;
+    private ServiceReceiver receiver;
 
     private static final int HANDLE_LOGIN_FAILURE = 100;
     private static final int NEW_ORDER_ARRIVE = 101;
@@ -108,6 +113,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
          */
         if (!DuduDriverApplication.getInstance().initPersonalInformation()) {
             startActivity(new Intent(this, LoginActivity.class));
+            finish();
         }
 
         initView();
@@ -119,6 +125,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
          */
         if (!DuduDriverApplication.getInstance().initPersonalInformation()) {
             startActivity(new Intent(this, LoginActivity.class));
+            finish();
         }
 
         /*
@@ -132,7 +139,6 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
          * Start Location & Send Heartbeat  Service
          */
         duduService = new Intent(getBaseContext(), DuduService.class);
-        registerBroadcastReceiver();
         startService(duduService);
     }
 
@@ -158,6 +164,8 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 
             }
         }
+
+        registerBroadcastReceiver();
 
         /*
         * 调整circle状态
@@ -196,13 +204,14 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     protected void onPause() {
         super.onPause();
         isVisiable = false;
+        unregisterReceiver(receiver);
         mHandler.removeMessages(HANDLE_LOGIN_FAILURE);
     }
 
 
     //监听service传来的消息
     private void registerBroadcastReceiver(){
-        ServiceReceiver receiver = new ServiceReceiver();
+        receiver = new ServiceReceiver();
         IntentFilter filter = new IntentFilter(Constants.SERVICE_BROADCAST);
         filter.addAction(Constants.SERVICE_ACTION_RELOGIN);
         registerReceiver(receiver, filter);
@@ -225,17 +234,18 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 
             @Override
             public void onFailure(String error) {
-                showCustomToast("登陆失败");
+                showCustomToast("登陆失败, 请重新登陆");
                 Log.e("login in failure!", "errorbody " + error);
                 isOnline = false;
-                mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_LOGIN_FAILURE), 500);
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                finish();
             }
 
             @Override
             public void onTimeout() {
                 Log.e("hyman", "登陆超时");
                 isOnline = false;
-                mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_LOGIN_FAILURE), 500);
+                mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_LOGIN_FAILURE), 10000);
             }
         });
     }
@@ -526,8 +536,11 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             String action = intent.getAction();
             switch (action){
                 case Constants.SERVICE_ACTION_RELOGIN:
-                    if(userInfo != null) {
-                        doLogin(userInfo);
+                    if(userInfo != null) { // 用户登陆出错
+                       doLogin(userInfo);
+                    } else {
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                        finish();
                     }
                     break;
                 default:

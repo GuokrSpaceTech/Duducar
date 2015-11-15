@@ -141,6 +141,7 @@ public class PreOrderActivity extends AppCompatActivity
         if (persons.size() <= 0) { //Not Logged in
             Intent intent = new Intent(mContext, LoginActivity.class);
             startActivityForResult(intent, ACTVITY_LOGIN_REQUEST);
+            finish();
         }
 
         /*
@@ -243,6 +244,7 @@ public class PreOrderActivity extends AppCompatActivity
                 if (persons.size() <= 0) { //Not Logged in
                     Intent intent = new Intent(mContext, LoginActivity.class);
                     startActivityForResult(intent, ACTVITY_LOGIN_REQUEST);
+                    finish();
                 } else if(dest==null) {
                     WinToast.toast(PreOrderActivity.this, "请先输入目的地");
                 }else{
@@ -399,7 +401,9 @@ public class PreOrderActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         mMapView.onDestroy();
-        stopService(duduService);
+        if(duduService != null) {
+            stopService(duduService);
+        }
         if (mCurrentMarker != null) mCurrentMarker.recycle();
         mLocClient.stop();
         try {

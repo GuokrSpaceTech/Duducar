@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,12 +13,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.MoreOptionType;
+import com.guokrspace.dududriver.ui.LoginActivity;
 import com.guokrspace.dududriver.ui.OrderMapActivity;
-import com.guokrspace.dududriver.ui.SettingActivity;
 import com.guokrspace.dududriver.util.DisplayUtil;
 
 import java.util.ArrayList;
@@ -121,7 +119,7 @@ public class OptionGridAdapter extends RecyclerView.Adapter<OptionGridAdapter.It
 
                 break;
             case SETTING:
-                context.startActivity(new Intent(context, SettingActivity.class));
+                context.startActivity(new Intent(context, LoginActivity.class));
                 break;
             default:
                 break;

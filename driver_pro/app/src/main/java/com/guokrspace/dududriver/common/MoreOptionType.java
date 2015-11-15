@@ -11,7 +11,7 @@ public enum  MoreOptionType {
 
     MESSAGE(2, "消息通知"),
 
-    SETTING(3, "设置");
+    SETTING(3, "账号设置");
 
     private int val;
 

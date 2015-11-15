@@ -342,8 +342,9 @@ public class LoginActivity extends BaseActivity implements
             alterDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
+                    finish();
                     Process.killProcess(Process.myPid());
+                    System.exit(0);
                 }
             });
             alterDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {

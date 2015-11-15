@@ -3,16 +3,15 @@ package com.guokrspace.duducar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.*;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.os.Process;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -24,7 +23,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.guokrspace.duducar.communication.ResponseHandler;
-import com.guokrspace.duducar.communication.message.MessageTag;
 import com.guokrspace.duducar.communication.SocketClient;
 import com.guokrspace.duducar.database.PersonalInformation;
 import com.guokrspace.duducar.ui.EditTextHolder;
@@ -351,8 +349,9 @@ public class LoginActivity extends AppCompatActivity implements
             alterDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
+                    finish();
                     android.os.Process.killProcess(Process.myPid());
+                    System.exit(0);
                 }
             });
             alterDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
