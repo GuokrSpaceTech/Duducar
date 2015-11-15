@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.guokrspace.dududriver.R;
+import com.guokrspace.dududriver.model.HistoryOrder;
 import com.guokrspace.dududriver.model.OrderRecordListItem;
 
 import java.util.List;
@@ -18,10 +19,10 @@ import java.util.List;
  */
 public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.RecordViewHolder> {
 
-    private List<OrderRecordListItem> mItems = null;
+    private List<HistoryOrder> mItems = null;
     private Context context;
 
-    public RecordListAdapter(Context context, List<OrderRecordListItem> data) {
+    public RecordListAdapter(Context context, List<HistoryOrder> data) {
         this.context = context;
         this.mItems = data;
     }
@@ -36,10 +37,10 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
     @Override
     public void onBindViewHolder(RecordViewHolder holder, int position) {
         if (mItems != null) {
-            holder.tvDate.setText(mItems.get(position).date);
-            holder.tvOrigin.setText(mItems.get(position).origin);
-            holder.tvDest.setText(mItems.get(position).destination);
-            holder.tvStatus.setText(mItems.get(position).status);
+            holder.tvDate.setText(mItems.get(position).getEnd_time());
+            holder.tvOrigin.setText(mItems.get(position).getStart());
+            holder.tvDest.setText(mItems.get(position).getDestination());
+            holder.tvStatus.setText("已完成");
         }
     }
 

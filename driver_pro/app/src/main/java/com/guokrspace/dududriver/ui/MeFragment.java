@@ -86,7 +86,7 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
     private static final int HANDLE_REFRESH_OVER = 0x111;
 
     private RecordListAdapter mAdapter;
-    private List<OrderRecordListItem> listItems = new ArrayList<>();
+    private List<HistoryOrder> listItems = new ArrayList<>();
 
     private int currentOrderId = Integer.MAX_VALUE;
 
@@ -103,6 +103,7 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
         public void onRefresh() {
 
             if (isNetworkAvailable() && !isRefreshing) {
+                currentOrderId = Integer.MAX_VALUE;
                 // TODO 刷新、获取历史订单数据
                 SocketClient.getInstance().getHistoryOrders("old", Constants.ORDER_PAGE_NUM, currentOrderId, new ResponseHandler(Looper.myLooper()) {
                     @Override
@@ -131,7 +132,8 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
                             if (orders.size() != 0) {
                                 listItems.clear();
                                 for (HistoryOrder order : orders) {
-                                    listItems.add(new OrderRecordListItem(order.getId(), dateFormat(order.getEnd_time()), order.getStart(), order.getDestination(), "已完成"));
+                                    order.setEnd_time(dateFormat(order.getEnd_time()));
+                                    listItems.add(order);
                                 }
                                 mAdapter.notifyDataSetChanged();
                             }
@@ -254,9 +256,10 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
                         }
                     });
                     if (orders.size() != 0) {
-                        List<OrderRecordListItem> orderRecords = new ArrayList<OrderRecordListItem>();
+                        List<HistoryOrder> orderRecords = new ArrayList<HistoryOrder>();
                         for (HistoryOrder order : orders) {
-                            orderRecords.add(new OrderRecordListItem(order.getId(), dateFormat(order.getEnd_time()), order.getStart(), order.getDestination(), "已完成"));
+                            order.setEnd_time(dateFormat(order.getEnd_time()));
+                            orderRecords.add(order);
                         }
                         listItems.addAll(orderRecords);
                         mAdapter.notifyDataSetChanged();
