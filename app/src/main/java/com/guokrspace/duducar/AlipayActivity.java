@@ -147,6 +147,8 @@ public class AlipayActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
 
+        AppExitUtil.getInstance().addActivity(this);
+
     }
 
     @Override

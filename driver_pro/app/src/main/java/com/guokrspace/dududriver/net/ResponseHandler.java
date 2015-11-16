@@ -3,6 +3,7 @@ package com.guokrspace.dududriver.net;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,6 +19,7 @@ public abstract class ResponseHandler implements ResponseHandleInterface {
 
     @Override
     public Object sendResponse(String response) {
+        Log.e("daddy", "response" + response);
         preParseResponse(response);
         return "1";
     }
@@ -54,6 +56,7 @@ public abstract class ResponseHandler implements ResponseHandleInterface {
 
             //Server Originated Message
             if(!jsonObject.has("message_id")) {
+                Log.e("daddy", "JSONobject" + jsonObject.toString());
                 sendSuccessMessage(responseString);
 
             } else { //Client Originated Message
@@ -86,7 +89,9 @@ public abstract class ResponseHandler implements ResponseHandleInterface {
     protected void sendMessage(Message msg) {
         if (handler == null) {
             handleMessage(msg);
-        } else if (!Thread.currentThread().isInterrupted()) { // do not send messages if request has been cancelled
+        } else if (
+//                !Thread.currentThread().isInterrupted()) {
+                !handler.getLooper().getThread().isInterrupted()) { // do not send messages if request has been cancelled
             handler.sendMessage(msg);
         }
     }

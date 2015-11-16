@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.os.Process;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -39,6 +38,7 @@ import com.guokrspace.dududriver.net.DuduService;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
 import com.guokrspace.dududriver.net.message.MessageTag;
+import com.guokrspace.dududriver.util.AppExitUtil;
 import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.DisplayUtil;
 import com.guokrspace.dududriver.util.FastJsonTools;
@@ -108,22 +108,16 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         ButterKnife.bind(this);
         context = this;
 
-         /*
-         * Check if use has logined
-         */
-        if (!DuduDriverApplication.getInstance().initPersonalInformation()) {
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
-        }
-
         initView();
 
+        AppExitUtil.getInstance().addActivity(this);
         mHandler = new Handler(this);
 
         /*
          * Check if use has logined
          */
         if (!DuduDriverApplication.getInstance().initPersonalInformation()) {
+            Log.e("daddy", "oncreate second");
             startActivity(new Intent(this, LoginActivity.class));
             finish();
         }
@@ -564,14 +558,13 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             alterDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
-                    android.os.Process.killProcess(Process.myPid());
+                    AppExitUtil.getInstance().exit();
                 }
             });
             alterDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    if(tmp == Constants.STATUS_WAIT) {
+                    if (tmp == Constants.STATUS_WAIT) {
                         CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
                     }
                     dialog.cancel();

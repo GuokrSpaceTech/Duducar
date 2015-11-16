@@ -5,13 +5,10 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
-import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.List;
 
 public abstract class ResponseHandler implements ResponseHandleInterface {
 
@@ -90,8 +87,10 @@ public abstract class ResponseHandler implements ResponseHandleInterface {
     protected void sendMessage(Message msg) {
         if (handler == null) {
             handleMessage(msg);
-        } else if (!Thread.currentThread().isInterrupted()) { // do not send messages if request has been cancelled
-            handler.sendMessage(msg);
+        } else if (
+//                !Thread.currentThread().isInterrupted()) { // do not send messages if request has been cancelled
+                !handler.getLooper().getThread().isInterrupted()) {
+        handler.sendMessage(msg);
         }
     }
 

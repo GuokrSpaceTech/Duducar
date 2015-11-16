@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.os.Process;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -117,6 +116,9 @@ public class LoginActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_login);
 
         mApplication = (DuduApplication) getApplicationContext();
+
+        AppExitUtil.getInstance().addActivity(this);
+
         initView();
     }
 
@@ -218,7 +220,7 @@ public class LoginActivity extends AppCompatActivity implements
                     mDialog.show();
                 }
 
-                messageid = SocketClient.getInstance().sendVerifyRequst(userName, "2", passWord, new ResponseHandler(Looper.getMainLooper()) {
+                messageid = SocketClient.getInstance().sendVerifyRequst(userName, "2", passWord, new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
                         try {
@@ -282,7 +284,7 @@ public class LoginActivity extends AppCompatActivity implements
                 break;
             case HANDLER_VERIFY_SUCCESS:
                 if (mDialog != null) mDialog.dismiss();
-                SocketClient.getInstance().sendLoginReguest(userName, "2", token, new ResponseHandler(Looper.getMainLooper()) {
+                SocketClient.getInstance().sendLoginReguest(userName, "2", token, new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
                         mHandler.sendEmptyMessage(HANDLER_LOGIN_SUCCESS);
@@ -349,9 +351,7 @@ public class LoginActivity extends AppCompatActivity implements
             alterDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    finish();
-                    android.os.Process.killProcess(Process.myPid());
-                    System.exit(0);
+                    AppExitUtil.getInstance().exit();
                 }
             });
             alterDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {

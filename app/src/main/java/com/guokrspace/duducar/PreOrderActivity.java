@@ -137,6 +137,9 @@ public class PreOrderActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         mApplication = (DuduApplication) getApplicationContext();
+
+        AppExitUtil.getInstance().addActivity(this);
+
         List persons = mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().list();
         if (persons.size() <= 0) { //Not Logged in
             Intent intent = new Intent(mContext, LoginActivity.class);
@@ -648,8 +651,7 @@ public class PreOrderActivity extends AppCompatActivity
             alterDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
-                    android.os.Process.killProcess(android.os.Process.myPid());
+                    AppExitUtil.getInstance().exit();
                 }
             });
             alterDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {

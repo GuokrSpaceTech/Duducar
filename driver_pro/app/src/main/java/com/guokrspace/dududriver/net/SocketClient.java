@@ -150,7 +150,6 @@ public class SocketClient {
 //                        serverMessage = convertStandardJSONString(serverMessage);
                         JSONObject jsonObject = new JSONObject(serverMessage);
                         if (jsonObject.has("message_id")) {
-
                             int messageid = (int) jsonObject.get("message_id");
                             MessageDispatcher dispatcher = messageDispatchQueue.get(messageid);
 

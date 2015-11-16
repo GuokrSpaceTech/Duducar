@@ -48,6 +48,8 @@ public class RatingActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rating);
 
+        AppExitUtil.getInstance().addActivity(this);
+
         avatarImageView = (ImageView)findViewById(R.id.driverAvatar);
         driverNameTextView = (TextView)findViewById(R.id.driverName);
         carPlateNumberTextView = (TextView)findViewById(R.id.carPlateNumber);

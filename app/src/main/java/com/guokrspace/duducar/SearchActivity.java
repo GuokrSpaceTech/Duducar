@@ -84,6 +84,8 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
+        AppExitUtil.getInstance().addActivity(this);
+
         //Get ARGs
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null) {

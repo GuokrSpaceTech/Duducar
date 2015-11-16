@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.os.Process;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -27,6 +26,7 @@ import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.database.PersonalInformation;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
+import com.guokrspace.dududriver.util.AppExitUtil;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 import com.guokrspace.dududriver.view.EditTextHolder;
 import com.guokrspace.dududriver.view.LoadingDialog;
@@ -120,11 +120,14 @@ public class LoginActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e("daddy", "create");
         mApplication = (DuduDriverApplication) getApplicationContext();
 
         setContentView(R.layout.activity_login);
 
         initView();
+
+        AppExitUtil.getInstance().addActivity(this);
     }
 
 
@@ -135,6 +138,7 @@ public class LoginActivity extends BaseActivity implements
             mDialog.dismiss();
             mDialog = null;
         }
+        Log.e("daddy", "stop");
     }
 
     protected void onPause() {
@@ -231,7 +235,7 @@ public class LoginActivity extends BaseActivity implements
                     mDialog.show();
                 }
 
-                messageid = SocketClient.getInstance().sendVerifyRequst(userName, "1", passWord, new ResponseHandler(Looper.getMainLooper()) {
+                messageid = SocketClient.getInstance().sendVerifyRequst(userName, "1", passWord, new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
                         try {
@@ -341,14 +345,14 @@ public class LoginActivity extends BaseActivity implements
 
             final AlertDialog.Builder alterDialog = new AlertDialog.Builder(this);
             alterDialog.setMessage("确定退出应用？");
+            Log.e("daddy", "showdialog");
             alterDialog.setCancelable(true);
 
             alterDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    finish();
-                    Process.killProcess(Process.myPid());
-                    System.exit(0);
+                    Log.e("daddy", "exit");
+                    AppExitUtil.getInstance().exit();
                 }
             });
             alterDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {

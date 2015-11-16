@@ -188,8 +188,8 @@ public class PostOrderActivity extends AppCompatActivity {
 
         // ActionBar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         getSupportActionBar().setTitle(orderStatusString);
+        AppExitUtil.getInstance().addActivity(this);
 
         //Get Args
         Bundle bundle = getIntent().getExtras();

@@ -2,19 +2,15 @@ package com.guokrspace.duducar;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
 import com.guokrspace.duducar.communication.message.SearchLocation;
-
-import org.w3c.dom.Text;
 
 public class CostEstimateActivity extends AppCompatActivity {
 
@@ -33,6 +29,8 @@ public class CostEstimateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cost_estimate);
         getSupportActionBar().setTitle("费用估算");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        AppExitUtil.getInstance().addActivity(this);
 
         costEstTextView = (TextView)findViewById(R.id.textViewCostEst);
         startTextView = (TextView)findViewById(R.id.startPointTextView);
