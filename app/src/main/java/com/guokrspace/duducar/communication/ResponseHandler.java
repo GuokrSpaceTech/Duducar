@@ -5,13 +5,10 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
-import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.List;
 
 public abstract class ResponseHandler implements ResponseHandleInterface {
 
@@ -48,7 +45,9 @@ public abstract class ResponseHandler implements ResponseHandleInterface {
     public ResponseHandler(Looper looper) {
         this.looper = looper == null ? Looper.myLooper() : looper;
         handler = new ResponderHandler(this, looper);
-
+        Log.e("daddy new ", Thread.currentThread().getId()+"lopp");
+        Log.e("daddy new ", looper.getThread().getId()+"lopp");
+        Log.e("daddy new", handler.getLooper().getThread().getId()+"lopp");
     }
 
     private void preParseResponse(String responseString)
@@ -88,10 +87,15 @@ public abstract class ResponseHandler implements ResponseHandleInterface {
     }
 
     protected void sendMessage(Message msg) {
+        Log.e("daddy sendmsg", Thread.currentThread().getId()+"e");
+        Log.e("daddy msg", msg.toString());
+        Log.e("daddy sendmsg", handler.getLooper().getThread().getId()+"ee");
         if (handler == null) {
             handleMessage(msg);
-        } else if (!Thread.currentThread().isInterrupted()) { // do not send messages if request has been cancelled
-            handler.sendMessage(msg);
+        } else if (
+//                !Thread.currentThread().isInterrupted()) { // do not send messages if request has been cancelled
+                !handler.getLooper().getThread().isInterrupted()) {
+        handler.sendMessage(msg);
         }
     }
 

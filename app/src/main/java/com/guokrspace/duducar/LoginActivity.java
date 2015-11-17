@@ -4,15 +4,15 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.*;
-import android.os.Process;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -23,8 +23,8 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.guokrspace.duducar.communication.DuduService;
 import com.guokrspace.duducar.communication.ResponseHandler;
-import com.guokrspace.duducar.communication.message.MessageTag;
 import com.guokrspace.duducar.communication.SocketClient;
 import com.guokrspace.duducar.database.PersonalInformation;
 import com.guokrspace.duducar.ui.EditTextHolder;
@@ -119,6 +119,9 @@ public class LoginActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_login);
 
         mApplication = (DuduApplication) getApplicationContext();
+
+        AppExitUtil.getInstance().addActivity(this);
+
         initView();
     }
 
@@ -189,7 +192,8 @@ public class LoginActivity extends AppCompatActivity implements
 
                 mRegcodeBt.setEnabled(false);
                 TimerTick(60);
-
+                Log.e("daddy login", Thread.currentThread().getId() + "d");
+                Log.e("daddy login", Looper.myLooper().getThread().getId()+"d");
                 messageid = SocketClient.getInstance().sendRegcodeRequst(userName, "2", new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
@@ -219,8 +223,9 @@ public class LoginActivity extends AppCompatActivity implements
                 if (mDialog != null && !mDialog.isShowing()) {
                     mDialog.show();
                 }
-
-                messageid = SocketClient.getInstance().sendVerifyRequst(userName, "2", passWord, new ResponseHandler(Looper.getMainLooper()) {
+                Log.e("daddy very", Thread.currentThread().getId() + "v");
+                Log.e("daddy very", Looper.myLooper().getThread().getId()+"v");
+                messageid = SocketClient.getInstance().sendVerifyRequst(userName, "2", passWord, new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
                         try {
@@ -284,7 +289,7 @@ public class LoginActivity extends AppCompatActivity implements
                 break;
             case HANDLER_VERIFY_SUCCESS:
                 if (mDialog != null) mDialog.dismiss();
-                SocketClient.getInstance().sendLoginReguest(userName, "2", token, new ResponseHandler(Looper.getMainLooper()) {
+                SocketClient.getInstance().sendLoginReguest(userName, "2", token, new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
                         mHandler.sendEmptyMessage(HANDLER_LOGIN_SUCCESS);
@@ -351,8 +356,8 @@ public class LoginActivity extends AppCompatActivity implements
             alterDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
-                    android.os.Process.killProcess(Process.myPid());
+                    stopService(new Intent(getApplicationContext(), DuduService.class));
+                    AppExitUtil.getInstance().exit();
                 }
             });
             alterDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {

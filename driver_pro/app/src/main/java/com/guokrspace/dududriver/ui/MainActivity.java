@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.*;
-import android.os.Process;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -35,6 +37,7 @@ import com.guokrspace.dududriver.net.DuduService;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
 import com.guokrspace.dududriver.net.message.MessageTag;
+import com.guokrspace.dududriver.util.AppExitUtil;
 import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.DisplayUtil;
 import com.guokrspace.dududriver.util.FastJsonTools;
@@ -72,8 +75,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     private ListenProgressView listenProgressView;
     private Button btnOver;
 
-    private SocketClient mTcpClient = null;
-    private connectTask conctTask = null;
+
 
     private boolean isOnline = false;
     private boolean isVisiable = false;
@@ -82,6 +84,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 
     private Handler mHandler;
     private Intent duduService;
+    private ServiceReceiver receiver;
 
     private static final int HANDLE_LOGIN_FAILURE = 100;
     private static final int NEW_ORDER_ARRIVE = 101;
@@ -103,36 +106,24 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         ButterKnife.bind(this);
         context = this;
 
-         /*
-         * Check if use has logined
-         */
-        if (!DuduDriverApplication.getInstance().initPersonalInformation()) {
-            startActivity(new Intent(this, LoginActivity.class));
-        }
-
         initView();
 
+        AppExitUtil.getInstance().addActivity(this);
         mHandler = new Handler(this);
 
         /*
          * Check if use has logined
          */
         if (!DuduDriverApplication.getInstance().initPersonalInformation()) {
+            Log.e("daddy", "oncreate second");
             startActivity(new Intent(this, LoginActivity.class));
+            finish();
         }
-
-        /*
-         * Init the SocketClient
-         */
-        mTcpClient = null;
-        conctTask = new connectTask(); //Connect to server
-        conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         /*
          * Start Location & Send Heartbeat  Service
          */
         duduService = new Intent(getBaseContext(), DuduService.class);
-        registerBroadcastReceiver();
         startService(duduService);
     }
 
@@ -158,6 +149,8 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 
             }
         }
+
+        registerBroadcastReceiver();
 
         /*
         * 调整circle状态
@@ -196,13 +189,14 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     protected void onPause() {
         super.onPause();
         isVisiable = false;
+        unregisterReceiver(receiver);
         mHandler.removeMessages(HANDLE_LOGIN_FAILURE);
     }
 
 
     //监听service传来的消息
     private void registerBroadcastReceiver(){
-        ServiceReceiver receiver = new ServiceReceiver();
+        receiver = new ServiceReceiver();
         IntentFilter filter = new IntentFilter(Constants.SERVICE_BROADCAST);
         filter.addAction(Constants.SERVICE_ACTION_RELOGIN);
         registerReceiver(receiver, filter);
@@ -225,17 +219,18 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 
             @Override
             public void onFailure(String error) {
-                showCustomToast("登陆失败");
+                showCustomToast("登陆失败, 请重新登陆");
                 Log.e("login in failure!", "errorbody " + error);
                 isOnline = false;
-                mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_LOGIN_FAILURE), 500);
+                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                finish();
             }
 
             @Override
             public void onTimeout() {
                 Log.e("hyman", "登陆超时");
                 isOnline = false;
-                mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_LOGIN_FAILURE), 500);
+                mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_LOGIN_FAILURE), 10000);
             }
         });
     }
@@ -482,25 +477,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             }
         }
     }
-    /**
-     * @author Prashant Adesara
-     *         receive the message from server with asyncTask
-     */
-    public class connectTask extends AsyncTask<String, String, SocketClient> {
-        @Override
-        protected SocketClient doInBackground(String... message) {
-            //we create a TCPClient object and
-            mTcpClient = new SocketClient();
-            mTcpClient.run();
 
-            return null;
-        }
-
-        @Override
-        protected void onProgressUpdate(String... values) {
-            super.onProgressUpdate(values);
-        }
-    }
 
     @Override
     protected void onDestroy() {
@@ -508,15 +485,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         SharedPreferencesUtils.setParam(this, SharedPreferencesUtils.LOGIN_STATE, false);
         isOnline = false;
 
-        try {
-            mTcpClient.stopClient();
-            conctTask.cancel(true);
-            conctTask = null;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        stopService(duduService);
     }
 
     public class ServiceReceiver extends BroadcastReceiver {
@@ -526,8 +495,11 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             String action = intent.getAction();
             switch (action){
                 case Constants.SERVICE_ACTION_RELOGIN:
-                    if(userInfo != null) {
-                        doLogin(userInfo);
+                    if(userInfo != null) { // 用户登陆出错
+                       doLogin(userInfo);
+                    } else {
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                        finish();
                     }
                     break;
                 default:
@@ -551,14 +523,14 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             alterDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
-                    android.os.Process.killProcess(Process.myPid());
+                    stopService(duduService);
+                    AppExitUtil.getInstance().exit();
                 }
             });
             alterDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    if(tmp == Constants.STATUS_WAIT) {
+                    if (tmp == Constants.STATUS_WAIT) {
                         CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
                     }
                     dialog.cancel();

@@ -8,8 +8,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.os.Process;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,8 +24,10 @@ import android.widget.ImageView;
 import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.database.PersonalInformation;
+import com.guokrspace.dududriver.net.DuduService;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
+import com.guokrspace.dududriver.util.AppExitUtil;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 import com.guokrspace.dududriver.view.EditTextHolder;
 import com.guokrspace.dududriver.view.LoadingDialog;
@@ -92,6 +94,7 @@ public class LoginActivity extends BaseActivity implements
      */
     private static final int HANDLER_LOGIN_SUCCESS = 1;//登陆成功
     private static final int HANDLER_LOGIN_FAILURE = 2;//登陆失败
+    private static final int HANDLER_LOGIN_TIMEOUT = 0;//登陆超时
 
     private static final int HANDLER_REGISTER_SUCCESS = 7;//获取验证码成功
     private static final int HANDLER_REGISTER_FAILURE = 8;//获取验证码失败
@@ -119,11 +122,14 @@ public class LoginActivity extends BaseActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e("daddy", "create");
         mApplication = (DuduDriverApplication) getApplicationContext();
 
         setContentView(R.layout.activity_login);
 
         initView();
+
+        AppExitUtil.getInstance().addActivity(this);
     }
 
 
@@ -134,6 +140,7 @@ public class LoginActivity extends BaseActivity implements
             mDialog.dismiss();
             mDialog = null;
         }
+        Log.e("daddy", "stop");
     }
 
     protected void onPause() {
@@ -197,20 +204,24 @@ public class LoginActivity extends BaseActivity implements
                 mRegcodeBt.setEnabled(false);
                 TimerTick(60);
 
+                Log.e("daddy", "ddddd");
                 messageid = SocketClient.getInstance().sendRegcodeRequst(userName, "1", new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
+                        Log.e("LoginActicity daddy", "success");
                         mHandler.sendEmptyMessage(HANDLER_REGISTER_SUCCESS);
                     }
 
                     @Override
                     public void onFailure(String error) {
+                        Log.e("LoginActivity daddy", "error");
                         mHandler.sendEmptyMessage(HANDLER_REGISTER_FAILURE);
                     }
 
                     @Override
                     public void onTimeout() {
-                        mHandler.sendEmptyMessage(HANDLER_REGISTER_FAILURE);
+                        Log.e("LoginActivity daddy", "time out");
+                        mHandler.sendEmptyMessage(HANDLER_LOGIN_TIMEOUT);
                     }
                 });
 
@@ -227,7 +238,7 @@ public class LoginActivity extends BaseActivity implements
                     mDialog.show();
                 }
 
-                messageid = SocketClient.getInstance().sendVerifyRequst(userName, "1", passWord, new ResponseHandler(Looper.getMainLooper()) {
+                messageid = SocketClient.getInstance().sendVerifyRequst(userName, "1", passWord, new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
                         try {
@@ -286,10 +297,16 @@ public class LoginActivity extends BaseActivity implements
         switch (msg.what) {
             case HANDLER_REGISTER_SUCCESS:
                 if (mDialog != null) mDialog.dismiss();
+                threadStopFlag = true;
                 mPassWordEt.requestFocus();
                 break;
             case HANDLER_REGISTER_FAILURE:
+                threadStopFlag = true;
                 WinToast.toast(LoginActivity.this, "获取验证码失败");
+                break;
+            case HANDLER_LOGIN_TIMEOUT:
+                if(mDialog != null) mDialog.dismiss();
+                WinToast.toast(LoginActivity.this, "登陆连接服务器超时");
                 break;
             case HANDLER_CHECK_CODE_SUCCESS:
                 //验证码提交正确，获得token进行自动登录
@@ -315,6 +332,7 @@ public class LoginActivity extends BaseActivity implements
                 break;
             case HANDLER_TIMER_TIMEOUT:
                 mRegcodeBt.setText("获取验证码");
+                threadStopFlag = false;
                 mRegcodeBt.setEnabled(true);
                 break;
             case HANDLER_LOGIN_HAS_FOCUS:
@@ -337,13 +355,15 @@ public class LoginActivity extends BaseActivity implements
 
             final AlertDialog.Builder alterDialog = new AlertDialog.Builder(this);
             alterDialog.setMessage("确定退出应用？");
+            Log.e("daddy", "showdialog");
             alterDialog.setCancelable(true);
 
             alterDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-
-                    Process.killProcess(Process.myPid());
+                    Log.e("daddy", "exit");
+                    stopService(new Intent(getApplicationContext(), DuduService.class));
+                    AppExitUtil.getInstance().exit();
                 }
             });
             alterDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {

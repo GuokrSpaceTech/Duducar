@@ -23,7 +23,6 @@ import com.google.gson.Gson;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.adapter.RecordListAdapter;
 import com.guokrspace.dududriver.common.Constants;
-import com.guokrspace.dududriver.model.BaseInfo;
 import com.guokrspace.dududriver.model.HistoryOrder;
 import com.guokrspace.dududriver.model.HistoryOrderResponseModel;
 import com.guokrspace.dududriver.model.OrderRecordListItem;
@@ -81,7 +80,6 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
 //    @Bind(R.id.over_btn)
 //    Button btnOver;
     private Context context;
-    private BaseInfo baseInfo;
     private LinearLayoutManager mLayoutManager;
 
     public static final int LOAD_BASEINFO = 0x100;
@@ -229,6 +227,8 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
             }
         }, 2000);
 
+        //更新司机个人信息
+        updateDriverInfo();
     }
 
     private void loadMoreData() {
@@ -304,19 +304,8 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
     public boolean handleMessage(Message msg) {
         switch (msg.what){
             case LOAD_BASEINFO:
-                String name = (String)SharedPreferencesUtils.getParam(getActivity(), "name", "李迪师傅");
-                int stars = (int)Float.parseFloat((String) SharedPreferencesUtils.getParam(getActivity(), "rating", "5"));
-                int total_order = Integer.parseInt((String) SharedPreferencesUtils.getParam(getActivity(), "total_order", "0"));
-                float favorable_rate = Float.parseFloat((String) SharedPreferencesUtils.getParam(getActivity(), "favorable_rate", "0.0"));
-                String balance = (String) SharedPreferencesUtils.getParam(getActivity(), "balance", "0.00");
+                updateDriverInfo();
 
-                tvName.setText(name);
-                mRatingbar.setMax(5);
-                mRatingbar.setNumStars(stars);
-                tvRating.setText(stars +  " 星");
-                tvOderNum.setText(String.format(getResources().getString(R.string.my_order_num), total_order));
-                tvPraiseRate.setText("好评率 " + favorable_rate + "%");
-                tvBanlance.setText(" " + balance);
             break;
             case HANDLE_REFRESH_OVER:
                 refreshLayout.setRefreshing(false);
@@ -363,5 +352,20 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
                 e.printStackTrace();
             }
         }
+    }
+
+    private void updateDriverInfo(){
+        String name = (String) SharedPreferencesUtils.getParam(getActivity(), "name", "李迪师傅");
+        float stars = Float.parseFloat((String) SharedPreferencesUtils.getParam(getActivity(), "rating", "5"));
+        int total_order = Integer.parseInt((String) SharedPreferencesUtils.getParam(getActivity(), "total_order", "0"));
+        float favorable_rate = Float.parseFloat((String) SharedPreferencesUtils.getParam(getActivity(), "favorable_rate", "0.0"));
+        String balance = (String) SharedPreferencesUtils.getParam(getActivity(), "balance", "0.00");
+
+        tvName.setText(name);
+        mRatingbar.setRating(stars);
+        tvRating.setText(stars +  " 星");
+        tvOderNum.setText(String.format(getResources().getString(R.string.my_order_num), total_order));
+        tvPraiseRate.setText("好评率 " + favorable_rate + "%");
+        tvBanlance.setText(" " + balance);
     }
 }

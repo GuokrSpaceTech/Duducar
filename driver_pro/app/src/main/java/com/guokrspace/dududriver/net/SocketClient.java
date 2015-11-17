@@ -68,7 +68,7 @@ public class SocketClient {
      */
     public int sendMessage(final JSONObject message, final ResponseHandler handler, final int timeout){
         int ret = -1; //Default is error
-
+        Log.e("daddy   ", "eeee"+ out.toString());
         //Send the message
         try {
             message.put("message_id", messageid);
@@ -78,6 +78,7 @@ public class SocketClient {
                 out.println(message.toString());
                 out.flush();
 
+                Log.e("DADDY " , mRun + "d");
                 //Start a timer
                 final Runnable timerRunnable = new Runnable() {
                     int counter=0;
@@ -99,7 +100,7 @@ public class SocketClient {
                 MessageDispatcher messageDispatcher = new MessageDispatcher(messageid, message, timerRunnable, handler);
                 messageDispatchQueue.put(messageid, messageDispatcher);
             }
-
+            Log.e("daddy", "out" + (out == null ) + (out.checkError()));
             ret = messageid;
 
             messageid++;
@@ -150,7 +151,6 @@ public class SocketClient {
 //                        serverMessage = convertStandardJSONString(serverMessage);
                         JSONObject jsonObject = new JSONObject(serverMessage);
                         if (jsonObject.has("message_id")) {
-
                             int messageid = (int) jsonObject.get("message_id");
                             MessageDispatcher dispatcher = messageDispatchQueue.get(messageid);
 

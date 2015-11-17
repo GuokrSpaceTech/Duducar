@@ -2,6 +2,7 @@ package com.guokrspace.dududriver.net;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
@@ -25,6 +26,8 @@ import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 public class DuduService extends Service {
 
     private volatile int discard = 1; //Volatile修饰的成员变量在每次被线程访问时，都强迫从共享内存中重读该成员变量的值。
+    private volatile SocketClient mTcpClient = null;
+    private volatile connectTask conctTask = null;
 
     public DuduService() {
     }
@@ -37,6 +40,14 @@ public class DuduService extends Service {
         //开始请求定位,发送心跳包
         mLocClient.start();
         mLocClient.requestLocation();
+
+         /*
+         * Init the SocketClient
+         */
+        mTcpClient = null;
+        conctTask = new connectTask(); //Connect to server
+        conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
         LogUtil.i("DuduService location&heartbeat thread start", "Thread ID is  " + Thread.currentThread().getId());
     }
 
@@ -62,6 +73,14 @@ public class DuduService extends Service {
         super.onDestroy();
         if(null != mLocClient){
             mLocClient.stop();
+        }
+        Log.e("daddy", "service done" );
+        try {
+            mTcpClient.stopClient();
+            conctTask.cancel(true);
+            conctTask = null;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -160,6 +179,25 @@ public class DuduService extends Service {
         Intent intent = new Intent();
         intent.setAction(action);
         sendBroadcast(intent);
+    }
+
+    /**
+     * @author Prashant Adesara
+     *         receive the message from server with asyncTask
+     */
+    public class connectTask extends AsyncTask<String, String, SocketClient> {
+        @Override
+        protected SocketClient doInBackground(String... message) {
+            //we create a TCPClient object and
+            mTcpClient = new SocketClient();
+            mTcpClient.run();
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+        }
     }
 }
 
