@@ -27,8 +27,8 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
-            proguardFiles 'proguard-project.txt'
+//            minifyEnabled true
+//            proguardFiles 'proguard-project.txt'
             signingConfig signingConfigs.release
         }
 
