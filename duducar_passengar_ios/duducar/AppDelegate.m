@@ -11,6 +11,7 @@
 #import "LoginViewController.h"
 #import "UIColor+RCColor.h"
 
+
 BMKMapManager* _mapManager;
 
 @interface AppDelegate ()
@@ -25,6 +26,7 @@ BMKMapManager* _mapManager;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
+        
     // 要使用百度地图，请先启动BaiduMapManager
     _mapManager = [[BMKMapManager alloc]init];
     BOOL ret = [_mapManager start:@"pAqrNjjrWSzPHrAlfd3DQHSx" generalDelegate:self];
@@ -85,5 +87,8 @@ BMKMapManager* _mapManager;
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+
+
+
 
 @end

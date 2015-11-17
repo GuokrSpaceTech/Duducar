@@ -8,6 +8,24 @@
 
 #import "LoginViewController.h"
 
+#import "DDLog.h"
+#import "DDTTYLogger.h"
+#import "DDDispatchQueueLogFormatter.h"
+
+
+// Log levels: off, error, warn, info, verbose
+static const int ddLogLevel = LOG_LEVEL_VERBOSE;
+
+#define  SERVER_PORT 8282  // 0 => automatic
+#define  SERVER_HOST @"120.24.237.15"
+
+#define USE_SECURE_CONNECTION    0
+#define USE_CFSTREAM_FOR_TLS     0 // Use old-school CFStream style technique
+#define MANUALLY_EVALUATE_TRUST  0
+
+#define READ_HEADER_LINE_BY_LINE 1
+
+
 @interface LoginViewController ()<UITextFieldDelegate>
 @property (retain, nonatomic) IBOutlet RCAnimatedImagesView* animatedImagesView;
 @property (nonatomic, strong) UIView* headBackground;
@@ -15,8 +33,6 @@
 @property (nonatomic, strong) UIView* inputBackground;
 @property (nonatomic, strong) UILabel* errorMsgLb;
 @property (nonatomic, strong) UITextField *passwordTextField;
-
-
 @end
 
 @implementation LoginViewController
@@ -87,9 +103,17 @@
     userNameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     userNameTextField.adjustsFontSizeToFitWidth = YES;
     [userNameTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-    
-    
     [_inputBackground addSubview:userNameTextField];
+    
+    UIButton* verifyCodeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [verifyCodeButton addTarget:self action:@selector(registerMobile:) forControlEvents:UIControlEventTouchUpInside];
+    //    [loginButton setBackgroundImage:[UIImage imageNamed:@"login_button"] forState:UIControlStateNormal];
+    verifyCodeButton.backgroundColor = [UIColor colorWithHexString:@"0195ff" alpha:1.0f];
+    verifyCodeButton.imageView.contentMode = UIViewContentModeCenter;
+    [verifyCodeButton setTitle:@"获取验证码" forState:UIControlStateNormal];
+    [verifyCodeButton.titleLabel setFont:[UIFont systemFontOfSize:10]];
+    verifyCodeButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [_inputBackground addSubview:verifyCodeButton];
     
     //密码
     RCUnderlineTextField* passwordTextField = [[RCUnderlineTextField alloc] initWithFrame:CGRectZero];
@@ -109,29 +133,33 @@
     
     UIButton* loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [loginButton addTarget:self action:@selector(actionLogin:) forControlEvents:UIControlEventTouchUpInside];
-    [loginButton setBackgroundImage:[UIImage imageNamed:@"login_button"] forState:UIControlStateNormal];
+//    [loginButton setBackgroundImage:[UIImage imageNamed:@"login_button"] forState:UIControlStateNormal];
+    loginButton.backgroundColor = [UIColor colorWithHexString:@"0195ff" alpha:1.0f];
     loginButton.imageView.contentMode = UIViewContentModeCenter;
+    [loginButton setTitle:@"确定" forState:UIControlStateNormal];
     loginButton.translatesAutoresizingMaskIntoConstraints = NO;
     [_inputBackground addSubview:loginButton];
-    UIButton* userProtocolButton = [[UIButton alloc] initWithFrame:CGRectZero];
     
     //底部按钮区
     UIView* bottomBackground = [[UIView alloc] initWithFrame:CGRectZero];
     [self.view addSubview:bottomBackground];
+    
+    bottomBackground.translatesAutoresizingMaskIntoConstraints = NO;
+    passwordTextField.translatesAutoresizingMaskIntoConstraints = NO;
+    userNameTextField.translatesAutoresizingMaskIntoConstraints = NO;
+    
     
     //添加约束
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:bottomBackground attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:20]];
     
     NSDictionary* views = NSDictionaryOfVariableBindings(_errorMsgLb, _duduLogo, _inputBackground, bottomBackground);
     
-    NSArray* viewConstraints = [[[[[
-                                    [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-41-[_inputBackground]-41-|" options:0 metrics:nil views:views]
-                                    arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-14-[_duduLogo]-60-|" options:0 metrics:nil views:views]
-                                    ]
-                                   arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-80-[_duduLogo(==60)]-10-[_errorMsgLb(==10)]-20-[_inputBackground(180)]" options:0 metrics:nil views:views]]
-                                  arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[bottomBackground(==50)]" options:0 metrics:nil views:views]]
-                                 arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[bottomBackground]-10-|" options:0 metrics:nil views:views]]
-                                arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-40-[_errorMsgLb]-10-|" options:0 metrics:nil views:views]];
+    NSArray* viewConstraints = [[[[[[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-41-[_inputBackground]-41-|" options:0 metrics:nil views:views]
+      arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-14-[_duduLogo]-60-|" options:0 metrics:nil views:views]]
+      arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-80-[_duduLogo(==60)]-10-[_errorMsgLb(==10)]-20-[_inputBackground(180)]" options:0 metrics:nil views:views]]
+      arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[bottomBackground(==50)]" options:0 metrics:nil views:views]]
+      arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[bottomBackground]-10-|" options:0 metrics:nil views:views]]
+      arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-40-[_errorMsgLb]-10-|" options:0 metrics:nil views:views]];
     
     [self.view addConstraints:viewConstraints];
     
@@ -139,12 +167,58 @@
 //                                                                                  multiplier:1.f
 //                                                                                    constant:0];
 //    [self.view addConstraint:userProtocolLabelConstraint];
-    NSDictionary* inputViews = NSDictionaryOfVariableBindings(userNameTextField, passwordTextField, loginButton);
+    NSDictionary* inputViews = NSDictionaryOfVariableBindings(userNameTextField, verifyCodeButton, passwordTextField, loginButton);
     
-    NSArray* inputViewConstraints = [[[[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[userNameTextField]|" options:0 metrics:nil views:inputViews]
-                                       arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[passwordTextField]|" options:0 metrics:nil views:inputViews]] arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[userNameTextField(60)]-[passwordTextField(60)]-[loginButton(50)]" options:0 metrics:nil views:inputViews]] arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[loginButton]|" options:0 metrics:nil views:inputViews]];
+    NSArray* inputViewConstraints=[[[[[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[userNameTextField]-20-[verifyCodeButton]|" options:0 metrics:nil views:inputViews]
+        arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[verifyCodeButton(==40)]" options:0 metrics:nil views:inputViews]]
+        arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[passwordTextField]|" options:0 metrics:nil views:inputViews]]
+        arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[userNameTextField(60)]-[passwordTextField(60)]-[loginButton(50)]" options:0 metrics:nil views:inputViews]]
+        arrayByAddingObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[loginButton]|" options:0 metrics:nil views:inputViews]];
     
     [_inputBackground addConstraints:inputViewConstraints];
+    
+    
+    // AsyncSocket optionally uses the Lumberjack logging framework.
+    //
+    // Lumberjack is a professional logging framework. It's extremely fast and flexible.
+    // It also uses GCD, making it a great fit for GCDAsyncSocket.
+    //
+    // As mentioned earlier, enabling logging in GCDAsyncSocket is entirely optional.
+    // Doing so simply helps give you a deeper understanding of the inner workings of the library (if you care).
+    // You can do so at the top of GCDAsyncSocket.m,
+    // where you can also control things such as the log level,
+    // and whether or not logging should be asynchronous (helps to improve speed, and
+    // perfect for reducing interference with those pesky timing bugs in your code).
+    //
+    // There is a massive amount of documentation on the Lumberjack project page:
+    // http://code.google.com/p/cocoalumberjack/
+    //
+    // But this one line is all you need to instruct Lumberjack to spit out log statements to the Xcode console.
+    
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+    
+    // We're going to take advantage of some of Lumberjack's advanced features.
+    //
+    // Format log statements such that it outputs the queue/thread name.
+    // As opposed to the not-so-helpful mach thread id.
+    //
+    // Old : 2011-12-05 19:54:08:161 [17894:f803] Connecting...
+    //       2011-12-05 19:54:08:161 [17894:11f03] GCDAsyncSocket: Dispatching DNS lookup...
+    //       2011-12-05 19:54:08:161 [17894:13303] GCDAsyncSocket: Creating IPv4 socket
+    //
+    // New : 2011-12-05 19:54:08:161 [main] Connecting...
+    //       2011-12-05 19:54:08:161 [socket] GCDAsyncSocket: Dispatching DNS lookup...
+    //       2011-12-05 19:54:08:161 [socket] GCDAsyncSocket: Creating IPv4 socket
+    
+    DDDispatchQueueLogFormatter *formatter = [[DDDispatchQueueLogFormatter alloc] init];
+    [formatter setReplacementString:@"socket" forQueueLabel:GCDAsyncSocketQueueName];
+    [formatter setReplacementString:@"socket-cf" forQueueLabel:GCDAsyncSocketThreadName];
+    
+    [[DDTTYLogger sharedInstance] setLogFormatter:formatter];
+    
+    [self startSocket];
+    
+
     
 }
 
@@ -206,4 +280,273 @@
     NSString* defaultUserPwd = [[NSUserDefaults standardUserDefaults] objectForKey:@"userPwd"];
     return defaultUserPwd;
 }
+
+- (IBAction)actionLogin:(id)sender
+{
+    NSString* userName = [(UITextField*)[self.view viewWithTag:UserTextFieldTag] text];
+    NSString* userPwd = [(UITextField*)[self.view viewWithTag:PassWordFieldTag] text];
+//    [self login:userName password:userPwd];
+}
+
+- (IBAction)register:(id)sender
+{
+    NSString* mobileNumber = [(UITextField*)[self.view viewWithTag:UserTextFieldTag] text];
+    
+    [self registerMobile:mobileNumber];
+}
+
+#pragma mark send messages
+- (void)registerMobile:(NSString *) mobileNumber
+{
+    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"register", @"13700000002", @"2",    nil]
+                                                                forKeys:[NSArray arrayWithObjects:@"cmd",      @"mobile",      @"role", nil]];
+    
+    NSError * error = nil;
+    NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSUTF8StringEncoding error:&error];
+    
+    NSMutableString *jsonString = [[NSMutableString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    [jsonString appendString:@"\n"];
+    NSData *outStr = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    
+    [asyncSocket writeData:outStr withTimeout:-1.0 tag:0];
+    
+    DDLogVerbose(@"Sending Request:\n%@", jsonString);
+    
+    NSData *responseData = [[NSData alloc] init];
+    
+    [asyncSocket readDataToData:responseData withTimeout:-1.0 tag:0];
+}
+
+#pragma mark - Socket
+- (void)startSocket
+{
+    // Create our GCDAsyncSocket instance.
+    //
+    // Notice that we give it the normal delegate AND a delegate queue.
+    // The socket will do all of its operations in a background queue,
+    // and you can tell it which thread/queue to invoke your delegate on.
+    // In this case, we're just saying invoke us on the main thread.
+    // But you can see how trivial it would be to create your own queue,
+    // and parallelize your networking processing code by having your
+    // delegate methods invoked and run on background queues.
+    
+    asyncSocket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
+    
+    // Now we tell the ASYNCHRONOUS socket to connect.
+    //
+    // Recall that GCDAsyncSocket is ... asynchronous.
+    // This means when you tell the socket to connect, it will do so ... asynchronously.
+    // After all, do you want your main thread to block on a slow network connection?
+    //
+    // So what's with the BOOL return value, and error pointer?
+    // These are for early detection of obvious problems, such as:
+    //
+    // - The socket is already connected.
+    // - You passed in an invalid parameter.
+    // - The socket isn't configured properly.
+    //
+    // The error message might be something like "Attempting to connect without a delegate. Set a delegate first."
+    //
+    // When the asynchronous sockets connects, it will invoke the socket:didConnectToHost:port: delegate method.
+    
+    NSError *error = nil;
+    
+    uint16_t port = SERVER_PORT;
+    if (port == 0)
+    {
+#if USE_SECURE_CONNECTION
+        port = 443; // HTTPS
+#else
+        port = 80;  // HTTP
+#endif
+    }
+    
+    if (![asyncSocket connectToHost:SERVER_HOST onPort:port error:&error])
+    {
+        DDLogError(@"Unable to connect to due to invalid configuration: %@", error);
+    }
+    else
+    {
+        DDLogVerbose(@"Connecting to \"%@\" on port %hu...", SERVER_HOST, port);
+    }
+    
+#if USE_SECURE_CONNECTION
+    
+    // The connect method above is asynchronous.
+    // At this point, the connection has been initiated, but hasn't completed.
+    // When the connection is established, our socket:didConnectToHost:port: delegate method will be invoked.
+    //
+    // Now, for a secure connection we have to connect to the HTTPS server running on port 443.
+    // The SSL/TLS protocol runs atop TCP, so after the connection is established we want to start the TLS handshake.
+    //
+    // We already know this is what we want to do.
+    // Wouldn't it be convenient if we could tell the socket to queue the security upgrade now instead of waiting?
+    // Well in fact you can! This is part of the queued architecture of AsyncSocket.
+    //
+    // After the connection has been established, AsyncSocket will look in its queue for the next task.
+    // There it will find, dequeue and execute our request to start the TLS security protocol.
+    //
+    // The options passed to the startTLS method are fully documented in the GCDAsyncSocket header file.
+    
+#if USE_CFSTREAM_FOR_TLS
+    {
+        // Use old-school CFStream style technique
+        
+        NSDictionary *options = @{
+                                  GCDAsyncSocketUseCFStreamForTLS : @(YES),
+                                  GCDAsyncSocketSSLPeerName : CERT_HOST
+                                  };
+        
+        DDLogVerbose(@"Requesting StartTLS with options:\n%@", options);
+        [asyncSocket startTLS:options];
+    }
+#elif MANUALLY_EVALUATE_TRUST
+    {
+        // Use socket:didReceiveTrust:completionHandler: delegate method for manual trust evaluation
+        
+        NSDictionary *options = @{
+                                  GCDAsyncSocketManuallyEvaluateTrust : @(YES),
+                                  GCDAsyncSocketSSLPeerName : CERT_HOST
+                                  };
+        
+        DDLogVerbose(@"Requesting StartTLS with options:\n%@", options);
+        [asyncSocket startTLS:options];
+    }
+#else
+    {
+        // Use default trust evaluation, and provide basic security parameters
+        
+        NSDictionary *options = @{
+                                  GCDAsyncSocketSSLPeerName : CERT_HOST
+                                  };
+        
+        DDLogVerbose(@"Requesting StartTLS with options:\n%@", options);
+        [asyncSocket startTLS:options];
+    }
+#endif
+    
+#endif
+}
+
+
+- (void)socket:(GCDAsyncSocket *)sock didConnectToHost:(NSString *)host port:(UInt16)port
+{
+    DDLogVerbose(@"socket:didConnectToHost:%@ port:%hu", host, port);
+    
+    NSString *requestStrFrmt = @"Hello\n";
+    
+    NSString *requestStr = [NSString stringWithFormat:requestStrFrmt, SERVER_HOST];
+    NSData *requestData = [requestStr dataUsingEncoding:NSUTF8StringEncoding];
+    
+    [asyncSocket writeData:requestData withTimeout:-1.0 tag:0];
+    
+    DDLogVerbose(@"Sending Request:\n%@", requestStr);
+    
+    // Side Note:
+    //
+    // The AsyncSocket family supports queued reads and writes.
+    //
+    // This means that you don't have to wait for the socket to connect before issuing your read or write commands.
+    // If you do so before the socket is connected, it will simply queue the requests,
+    // and process them after the socket is connected.
+    // Also, you can issue multiple write commands (or read commands) at a time.
+    // You don't have to wait for one write operation to complete before sending another write command.
+    //
+    // The whole point is to make YOUR code easier to write, easier to read, and easier to maintain.
+    // Do networking stuff when it is easiest for you, or when it makes the most sense for you.
+    // AsyncSocket adapts to your schedule, not the other way around.
+    
+#if READ_HEADER_LINE_BY_LINE
+    
+    // Now we tell the socket to read the first line of the http response header.
+    // As per the http protocol, we know each header line is terminated with a CRLF (carriage return, line feed).
+    
+    [asyncSocket readDataToData:[GCDAsyncSocket CRLFData] withTimeout:-1.0 tag:0];
+    
+#else
+    
+    // Now we tell the socket to read the full header for the http response.
+    // As per the http protocol, we know the header is terminated with two CRLF's (carriage return, line feed).
+    
+    NSData *responseTerminatorData = [@"\r\n\r\n" dataUsingEncoding:NSASCIIStringEncoding];
+    
+    [asyncSocket readDataToData:responseTerminatorData withTimeout:-1.0 tag:0];
+    
+#endif
+}
+
+- (void)socket:(GCDAsyncSocket *)sock didReceiveTrust:(SecTrustRef)trust
+completionHandler:(void (^)(BOOL shouldTrustPeer))completionHandler
+{
+    DDLogVerbose(@"socket:shouldTrustPeer:");
+    
+    dispatch_queue_t bgQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(bgQueue, ^{
+        
+        // This is where you would (eventually) invoke SecTrustEvaluate.
+        // Presumably, if you're using manual trust evaluation, you're likely doing extra stuff here.
+        // For example, allowing a specific self-signed certificate that is known to the app.
+        
+        SecTrustResultType result = kSecTrustResultDeny;
+        OSStatus status = SecTrustEvaluate(trust, &result);
+        
+        if (status == noErr && (result == kSecTrustResultProceed || result == kSecTrustResultUnspecified)) {
+            completionHandler(YES);
+        }
+        else {
+            completionHandler(NO);
+        }
+    });
+}
+
+- (void)socketDidSecure:(GCDAsyncSocket *)sock
+{
+    // This method will be called if USE_SECURE_CONNECTION is set
+    
+    DDLogVerbose(@"socketDidSecure:");
+}
+
+- (void)socket:(GCDAsyncSocket *)sock didWriteDataWithTag:(long)tag
+{
+    DDLogVerbose(@"socket:didWriteDataWithTag:");
+}
+
+- (void)socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag
+{
+    DDLogVerbose(@"socket:didReadData:withTag:");
+    
+    NSString *response = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    
+#if READ_HEADER_LINE_BY_LINE
+    
+    DDLogInfo(@"Line response: %@",response);
+    
+    // As per the http protocol, we know the header is terminated with two CRLF's.
+    // In other words, an empty line.
+    
+    if ([data length] == 2) // 2 bytes = CRLF
+    {
+        DDLogInfo(@"<done>");
+    }
+    else
+    {
+        // Read the next line of the header
+        [asyncSocket readDataToData:[GCDAsyncSocket CRLFData] withTimeout:-1.0 tag:0];
+    }
+    
+#else
+    
+    DDLogInfo(@"Response:\n%@", response);
+    
+#endif
+    
+}
+
+- (void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)err
+{
+    //
+    
+    DDLogVerbose(@"socketDidDisconnect:withError: \"%@\"", err);
+}
+
 @end
