@@ -11,18 +11,18 @@ public class BaseInfo {
     public Map<String, Object> getBaseInfo(){
         Map<String, Object> info = new HashMap<String, Object>();
 
-        info.put("name", driver.getName());
-        info.put("avatar", driver.getAvatar());
-        info.put("plate", driver.getPlate());
-        info.put("rating", driver.getRating());
-        info.put("total_order", driver.getTotal_order());
-        info.put("balance", driver.getBalance());
-        info.put("favorable_rate", driver.getFavorable_rate());
+        info.put("name", driver.getName() == null ? "" : driver.getName());
+        info.put("avatar", driver.getAvatar() == null ? "" : driver.getAvatar() );
+        info.put("plate", driver.getPlate() == null ? "0000" : driver.getPlate());
+        info.put("rating", driver.getRating() == null ? "0.0" : driver.getRating());
+        info.put("total_order", driver.getTotal_order() == null ? "0" : driver.getTotal_order());
+        info.put("balance", driver.getBalance() == null ? "0.0" : driver.getBalance());
+        info.put("favorable_rate", driver.getFavorable_rate() == null ? "0.0" : driver.getFavorable_rate());
 
-        info.put("km_price", charge_rule.getKm_price());
-        info.put("low_speed_price", charge_rule.getLow_speed_price());
-        info.put("starting_distance", charge_rule.getStarting_distance());
-        info.put("starting_price", charge_rule.getStarting_price());
+        info.put("km_price", charge_rule.getKm_price() == null ? "5" : charge_rule.getKm_price());
+        info.put("low_speed_price", charge_rule.getLow_speed_price() == null ? "0.5" : charge_rule.getLow_speed_price());
+        info.put("starting_distance", charge_rule.getStarting_distance() == null ? "10" : charge_rule.getStarting_distance());
+        info.put("starting_price", charge_rule.getStarting_price() == null ? "8" : charge_rule.getStarting_price());
 
         return info;
     }

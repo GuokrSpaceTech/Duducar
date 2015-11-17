@@ -6,6 +6,7 @@ package com.guokrspace.duducar.communication;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
@@ -16,6 +17,7 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.MyLocationData;
+import com.guokrspace.duducar.DuduApplication;
 import com.guokrspace.duducar.database.CommonUtil;
 
 /*
@@ -23,6 +25,10 @@ import com.guokrspace.duducar.database.CommonUtil;
 * send heartbeat
 * */
 public class DuduService extends Service {
+
+    private SocketClient mTcpClient = null;
+    private connectTask conctTask = null;
+    private DuduApplication mApplication;
 
     public DuduService() {
     }
@@ -34,6 +40,38 @@ public class DuduService extends Service {
         Log.e("daddy," , "oncreate service");
         mLocClient.start();
         mLocClient.requestLocation();
+
+        mApplication = (DuduApplication) getApplicationContext();
+
+         /*
+         * Init the SocketClient
+         */
+        mTcpClient = null;
+        conctTask = new connectTask(); //Connect to server
+        conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+//        /*
+//         * Login if socket connected
+//         */
+//
+//        Thread thead = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                while(true)
+//                {
+//                    if(mTcpClient==null) continue;
+//
+//                    if(mTcpClient.isSocketConnected()==false)
+//                        continue;
+//                    else {
+//                        sendLoginRequest(mTcpClient);
+//                        break;
+//                    }
+//                }
+//            }
+//        });
+//        thead.start();
+
     }
 
     @Override
@@ -59,6 +97,15 @@ public class DuduService extends Service {
         if(null != mLocClient){
             mLocClient.stop();
         }
+
+        try {
+            mTcpClient.stopClient();
+            conctTask.cancel(true);
+            conctTask = null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     //后台实时获取地址
@@ -179,6 +226,25 @@ public class DuduService extends Service {
 
         public void setLng(String lng) {
             this.lng = lng;
+        }
+    }
+
+    /**
+     * @author Prashant Adesara
+     *         receive the message from server with asyncTask
+     */
+    public class connectTask extends AsyncTask<String, String, SocketClient> {
+        @Override
+        protected SocketClient doInBackground(String... message) {
+            //we create a TCPClient object and
+            mTcpClient = new SocketClient();
+            mTcpClient.run();
+            return null;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
         }
     }
 }

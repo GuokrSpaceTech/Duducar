@@ -46,7 +46,6 @@ public abstract class ResponseHandler implements ResponseHandleInterface {
     public ResponseHandler(Looper looper) {
         this.looper = looper == null ? Looper.myLooper() : looper;
         handler = new ResponderHandler(this, looper);
-
     }
 
     private void preParseResponse(String responseString)

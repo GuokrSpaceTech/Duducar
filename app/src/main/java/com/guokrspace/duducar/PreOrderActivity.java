@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
@@ -76,8 +75,7 @@ public class PreOrderActivity extends AppCompatActivity
     MapView mMapView = null;
     BaiduMap mBaiduMap = null;
 
-    private SocketClient mTcpClient = null;
-    private connectTask conctTask = null;
+
 
     // 定位相关
     LocationClient mLocClient;
@@ -203,42 +201,24 @@ public class PreOrderActivity extends AppCompatActivity
         mGeoCoder = GeoCoder.newInstance();
         mGeoCoder.setOnGetGeoCodeResultListener(this);
 
-        /*
-         * Init the SocketClient
-         */
-        mTcpClient = null;
-        conctTask = new connectTask(); //Connect to server
-        conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-        /*
-         * Login if socket connected
-         */
-
-        Thread thead = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while(true)
-                {
-                    if(mTcpClient==null) continue;
-
-                    if(mTcpClient.isSocketConnected()==false)
-                        continue;
-                    else {
-                        sendLoginRequest(mTcpClient);
-                        break;
-                    }
-                }
-            }
-        });
-        thead.start();
 
         /*
          * Init the data
          */
         start = new SearchLocation();
+
+        startService(new Intent(getApplicationContext(), DuduService.class));
     }
 
     private void initListener() {
+
+        List persons = mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().limit(1).list();
+        if(persons.size()==1) {
+            PersonalInformation person = (PersonalInformation) persons.get(0);
+            doLogin(person);
+        }
+
         callCabButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -307,6 +287,34 @@ public class PreOrderActivity extends AppCompatActivity
                 startActivityForResult(intent, ACTIVITY_SEARCH_DEST_REQUEST);
             }
         });
+    }
+
+    private void doLogin(final PersonalInformation person){
+
+        SocketClient.getInstance().sendLoginReguest(person.getMobile(), "2", person.getToken(), new ResponseHandler(Looper.getMainLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                Log.e("daddy login ", "success");
+                WinToast.toast(PreOrderActivity.this, "登陆成功");
+                //TODO: init userinfo;
+            }
+
+            @Override
+            public void onFailure(String error) {
+                Log.e("daddy login ", "failure");
+                WinToast.toast(PreOrderActivity.this, "用户信息异常, 请重新登陆!");
+                startActivity(new Intent(PreOrderActivity.this, LoginActivity.class));
+                finish();
+            }
+
+            @Override
+            public void onTimeout() {
+                Log.e("daddy login", "timeout ");
+                WinToast.toast(PreOrderActivity.this, "登陆超时,请检查网络连接情况");
+                doLogin(person);
+            }
+        });
+
     }
 
     private void initLocation() {
@@ -409,13 +417,6 @@ public class PreOrderActivity extends AppCompatActivity
         }
         if (mCurrentMarker != null) mCurrentMarker.recycle();
         mLocClient.stop();
-        try {
-            mTcpClient.stopClient();
-            conctTask.cancel(true);
-            conctTask = null;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         super.onDestroy();
     }
@@ -614,24 +615,7 @@ public class PreOrderActivity extends AppCompatActivity
         }
     }
 
-    /**
-     * @author Prashant Adesara
-     *         receive the message from server with asyncTask
-     */
-    public class connectTask extends AsyncTask<String, String, SocketClient> {
-        @Override
-        protected SocketClient doInBackground(String... message) {
-            //we create a TCPClient object and
-            mTcpClient = new SocketClient();
-            mTcpClient.run();
-            return null;
-        }
 
-        @Override
-        protected void onProgressUpdate(String... values) {
-            super.onProgressUpdate(values);
-        }
-    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -651,6 +635,7 @@ public class PreOrderActivity extends AppCompatActivity
             alterDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    stopService(new Intent(getApplicationContext(), DuduService.class));
                     AppExitUtil.getInstance().exit();
                 }
             });
@@ -749,33 +734,7 @@ public class PreOrderActivity extends AppCompatActivity
     }
 
 
-    public void sendLoginRequest(SocketClient socketClient)
-    {
-        List persons = mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().limit(1).list();
-        if(persons.size()==1) {
-            PersonalInformation person = (PersonalInformation) persons.get(0);
-            socketClient.sendLoginReguest(person.getMobile(), "2", person.getToken(), new ResponseHandler(Looper.getMainLooper()) {
-                @Override
-                public void onSuccess(String messageBody) {
-                    //登陆成功,发送心跳包
-                    Log.e("daddy   ", "start service");
-                    duduService = new Intent(getApplicationContext(), DuduService.class);
-                    startService(duduService);
-                    Log.i("","");
-                }
 
-                @Override
-                public void onFailure(String error) {
-                    Log.i("","");
-                }
-
-                @Override
-                public void onTimeout() {
-                    Log.i("","");
-                }
-            });
-        }
-    }
 
 
     private class MyTimerTask extends TimerTask {
