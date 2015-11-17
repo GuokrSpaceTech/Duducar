@@ -285,7 +285,20 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 {
     NSString* userName = [(UITextField*)[self.view viewWithTag:UserTextFieldTag] text];
     NSString* userPwd = [(UITextField*)[self.view viewWithTag:PassWordFieldTag] text];
-//    [self login:userName password:userPwd];
+    
+    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"verify", userName, @"2", userPwd ,  nil]
+                                                                forKeys:[NSArray arrayWithObjects:@"cmd",      @"mobile",      @"role", @"verifycode", nil]];
+    NSError * error = nil;
+    NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSUTF8StringEncoding error:&error];
+    
+    NSMutableString *jsonString = [[NSMutableString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    [jsonString appendString:@"\n"];
+    NSData *outStr = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+
+    [asyncSocket writeData:outStr withTimeout:-1.0 tag:0];
+    
+    DDLogVerbose(@"Sending Request:\n%@", jsonString);
+
 }
 
 - (IBAction)register:(id)sender
@@ -295,7 +308,6 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
     [self registerMobile:mobileNumber];
 }
 
-#pragma mark send messages
 - (void)registerMobile:(NSString *) mobileNumber
 {
     NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"register", @"13700000002", @"2",    nil]
@@ -311,10 +323,6 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
     [asyncSocket writeData:outStr withTimeout:-1.0 tag:0];
     
     DDLogVerbose(@"Sending Request:\n%@", jsonString);
-    
-    NSData *responseData = [[NSData alloc] init];
-    
-    [asyncSocket readDataToData:responseData withTimeout:-1.0 tag:0];
 }
 
 #pragma mark - Socket
@@ -433,15 +441,6 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 {
     DDLogVerbose(@"socket:didConnectToHost:%@ port:%hu", host, port);
     
-    NSString *requestStrFrmt = @"Hello\n";
-    
-    NSString *requestStr = [NSString stringWithFormat:requestStrFrmt, SERVER_HOST];
-    NSData *requestData = [requestStr dataUsingEncoding:NSUTF8StringEncoding];
-    
-    [asyncSocket writeData:requestData withTimeout:-1.0 tag:0];
-    
-    DDLogVerbose(@"Sending Request:\n%@", requestStr);
-    
     // Side Note:
     //
     // The AsyncSocket family supports queued reads and writes.
@@ -456,23 +455,10 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
     // Do networking stuff when it is easiest for you, or when it makes the most sense for you.
     // AsyncSocket adapts to your schedule, not the other way around.
     
-#if READ_HEADER_LINE_BY_LINE
+    // Now we tell the socket to read the first line.
     
-    // Now we tell the socket to read the first line of the http response header.
-    // As per the http protocol, we know each header line is terminated with a CRLF (carriage return, line feed).
+    [asyncSocket readDataToData:[GCDAsyncSocket LFData] withTimeout:-1.0 tag:0];
     
-    [asyncSocket readDataToData:[GCDAsyncSocket CRLFData] withTimeout:-1.0 tag:0];
-    
-#else
-    
-    // Now we tell the socket to read the full header for the http response.
-    // As per the http protocol, we know the header is terminated with two CRLF's (carriage return, line feed).
-    
-    NSData *responseTerminatorData = [@"\r\n\r\n" dataUsingEncoding:NSASCIIStringEncoding];
-    
-    [asyncSocket readDataToData:responseTerminatorData withTimeout:-1.0 tag:0];
-    
-#endif
 }
 
 - (void)socket:(GCDAsyncSocket *)sock didReceiveTrust:(SecTrustRef)trust
@@ -517,28 +503,32 @@ completionHandler:(void (^)(BOOL shouldTrustPeer))completionHandler
     
     NSString *response = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     
-#if READ_HEADER_LINE_BY_LINE
+    [asyncSocket readDataWithTimeout:-1 tag:0];
     
-    DDLogInfo(@"Line response: %@",response);
-    
-    // As per the http protocol, we know the header is terminated with two CRLF's.
-    // In other words, an empty line.
-    
-    if ([data length] == 2) // 2 bytes = CRLF
+    //Deserialastion a Json String into Dictionary
+    NSError *jsonError;
+    NSData  *objectData = [response dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:objectData
+                                                                 options:NSJSONReadingMutableContainers
+                                                                   error:&jsonError];
+    NSString *token = [responseDict objectForKey:@"token"];
+
+    if(token!=NULL)
     {
-        DDLogInfo(@"<done>");
-    }
-    else
-    {
-        // Read the next line of the header
-        [asyncSocket readDataToData:[GCDAsyncSocket CRLFData] withTimeout:-1.0 tag:0];
+        NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"login", @"13700000002", @"2",    token,    nil]
+                                                                    forKeys:[NSArray arrayWithObjects:@"cmd",   @"mobile",      @"role", @"token", nil]];
+        NSError * error = nil;
+        NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSUTF8StringEncoding error:&error];
+        
+        NSMutableString *jsonString = [[NSMutableString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        [jsonString appendString:@"\n"];
+        NSData *outStr = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+        
+        [asyncSocket writeData:outStr withTimeout:-1.0 tag:0];
     }
     
-#else
     
     DDLogInfo(@"Response:\n%@", response);
-    
-#endif
     
 }
 
