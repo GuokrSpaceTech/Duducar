@@ -1,0 +1,6 @@
+framework module Pods_duducar {
+  umbrella header "Pods-duducar-umbrella.h"
+
+  export *
+  module * { export * }
+}
