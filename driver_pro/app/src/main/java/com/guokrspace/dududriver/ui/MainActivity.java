@@ -98,6 +98,8 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     private OrderItem orderItem = null;
     private BaseInfo baseInfo;
 
+    //所有登录判断以及操作都将在Service中进行执行
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -112,19 +114,25 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         mHandler = new Handler(this);
 
         /*
-         * Check if use has logined
-         */
-        if (!DuduDriverApplication.getInstance().initPersonalInformation()) {
-            Log.e("daddy", "oncreate second");
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
-        }
-
-        /*
          * Start Location & Send Heartbeat  Service
          */
         duduService = new Intent(getBaseContext(), DuduService.class);
         startService(duduService);
+
+        List localUsers = DuduDriverApplication.getInstance().
+                mDaoSession.getPersonalInformationDao().
+                queryBuilder().list();
+        if (localUsers != null && localUsers.size() > 0) {
+            userInfo = (PersonalInformation) localUsers.get(0);
+            if(!CommonUtil.isServiceOn()){
+                startService(duduService);
+            }
+//            doLogin(userInfo);
+        } else {
+            //用户信息不存在,重新注册页面
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        }
     }
 
     @Override
@@ -140,14 +148,10 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             if (!isNetworkAvailable()) {
                 showToast("网络不可用，现在是离线状态");
             }
-            List localUsers = DuduDriverApplication.getInstance().
-                    mDaoSession.getPersonalInformationDao().
-                    queryBuilder().list();
-            if (localUsers != null && localUsers.size() > 0) {
-                userInfo = (PersonalInformation) localUsers.get(0);
-                doLogin(userInfo);
+        }
 
-            }
+        if(!CommonUtil.isServiceOn()){
+            startService(duduService);
         }
 
         registerBroadcastReceiver();
@@ -484,8 +488,6 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         super.onDestroy();
         SharedPreferencesUtils.setParam(this, SharedPreferencesUtils.LOGIN_STATE, false);
         isOnline = false;
-
-
     }
 
     public class ServiceReceiver extends BroadcastReceiver {
