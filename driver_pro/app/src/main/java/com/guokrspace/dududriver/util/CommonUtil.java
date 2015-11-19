@@ -165,4 +165,15 @@ public class CommonUtil {
     private static void initTodayCash(){
         SharedPreferencesUtils.setParam(DuduDriverApplication.getInstance(), "todaycash", new Double(0));
     }
+
+    public static boolean isServiceOn() {
+        return isServiceOn;
+    }
+
+    public static void setIsServiceOn(boolean isServiceOn) {
+        CommonUtil.isServiceOn = isServiceOn;
+    }
+
+    private static boolean isServiceOn;
+
 }

@@ -16,7 +16,6 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.net.message.HeartBeatMessage;
 import com.guokrspace.dududriver.util.CommonUtil;
-import com.guokrspace.dududriver.util.LogUtil;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 
 /*
@@ -40,16 +39,11 @@ public class DuduService extends Service {
         //开始请求定位,发送心跳包
         mLocClient.start();
         mLocClient.requestLocation();
-
-         /*
-         * Init the SocketClient
-         */
-        mTcpClient = null;
-        conctTask = new connectTask(); //Connect to server
-        conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-
-        LogUtil.i("DuduService location&heartbeat thread start", "Thread ID is  " + Thread.currentThread().getId());
+        Log.e("daddy", "service create");
+        CommonUtil.setIsServiceOn(true);
     }
+
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -58,6 +52,15 @@ public class DuduService extends Service {
         // For each start request, send a message to start a job and deliver the
         // start ID so we know which request we're stopping when we finish the job
         // If we get killed, after returning from here, restart
+         /*
+         * Init the SocketClient
+         */
+        Log.e("daady", "start command");
+        if(mTcpClient == null){
+            mTcpClient = null;
+            conctTask = new connectTask(); //Connect to server
+            conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
         return START_STICKY;
     }
 
@@ -69,7 +72,7 @@ public class DuduService extends Service {
 
     @Override
     public void onDestroy() {
-        Toast.makeText(this, "service done", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "service done", Toast.LENGTH_SHORT).show();
         super.onDestroy();
         if(null != mLocClient){
             mLocClient.stop();
@@ -82,6 +85,8 @@ public class DuduService extends Service {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        CommonUtil.setIsServiceOn(false);
     }
 
 
