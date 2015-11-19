@@ -32,7 +32,7 @@
             android:layout_marginLeft="80dip"
             android:layout_marginRight="85dip"
             android:layout_marginTop="91dip"
-            android:src="@drawable/de_btn_login_logo" />
+            android:src="@mipmap/dudu_login_logo" />
 
 
         <LinearLayout
