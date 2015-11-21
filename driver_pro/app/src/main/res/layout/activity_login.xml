@@ -65,6 +65,7 @@
                         android:background="@drawable/rc_ed_public_service_search_selector"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
+                        android:phoneNumber="true"
                         android:hint="@string/app_login_show"
                         android:singleLine="true"
                         android:textColor="@color/main_regist"
@@ -115,8 +116,9 @@
                     android:background="@drawable/rc_ed_public_service_search_selector"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
+                    android:digits="1234567890"
                     android:hint="@string/app_login_password"
-                    android:inputType="textPassword"
+                    android:inputType="numberPassword"
                     android:singleLine="true"
                     android:textColor="@color/main_regist"
                     android:textColorHint="@color/main_regist" />

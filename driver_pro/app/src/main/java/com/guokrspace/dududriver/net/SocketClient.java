@@ -339,6 +339,24 @@ public class SocketClient {
         return ret;
     }
 
+    public int endOrderSelfPay(String price, String mileage, ResponseHandler handler){
+        int ret = -1;
+        JSONObject edOrder = new JSONObject();
+        try {
+            edOrder.put("cmd", "order_end_self_pay");
+            edOrder.put("price", price);
+            edOrder.put("mileage", mileage);
+            edOrder.put("lat", CommonUtil.getCurLat());
+            edOrder.put("lng", CommonUtil.getCurLng());
+            edOrder.put("role", "1");
+            ret = sendMessage(edOrder, handler, 5);
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        return ret;
+    }
+
     public int pullBaseInfo(ResponseHandler handler){
         int ret = -1;
         JSONObject baseInfo = new JSONObject();
@@ -360,69 +378,11 @@ public class SocketClient {
         try {
             heartbeat.put("cmd", heartBeatMessage.getCmd());
             heartbeat.put("role", "1");
-            heartbeat.put("status", CommonUtil.getCurrentStatus());
+            heartbeat.put("status", CommonUtil.getCurrentStatus() == null ? "0" : CommonUtil.getCurrentStatus());
             heartbeat.put("lat",heartBeatMessage.getLat());
             heartbeat.put("lng", heartBeatMessage.getLng());
             heartbeat.put("speed",heartBeatMessage.getSpeed());
             ret = sendMessage(heartbeat, handler, 5);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return ret;
-    }
-
-    public int sendCarRequest(String role, String start, String dest, Double start_lat,
-                              Double start_lng, Double dest_lat, Double dest_lng,
-                              String distance, String price, String car,ResponseHandler handler)
-    {
-        int ret = -1;
-        JSONObject carmsg = new JSONObject();
-        try {
-            carmsg.put("cmd", "create_order");
-            carmsg.put("role",role);
-            carmsg.put("start",start);
-            carmsg.put("destination",dest);
-            carmsg.put("start_lat", start_lat);
-            carmsg.put("start_lng",start_lng);
-            carmsg.put("destination_lat",dest_lat);
-            carmsg.put("destination_lng",dest_lng);
-            carmsg.put("pre_mileage",distance);
-            carmsg.put("pre_price",price);
-            carmsg.put("car_type",car);
-            ret = sendMessage(carmsg, handler, 5);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return ret;
-    }
-
-    public int cancelCarRequest(String role, ResponseHandler handler) {
-        int ret = -1;
-        JSONObject carmsg = new JSONObject();
-        try {
-            carmsg.put("cmd", "cancel_order");
-            ret = sendMessage(carmsg, handler, 5);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return ret;
-    }
-
-
-    public int sendNearByCarRequestTest(Double lat, Double lng, String cartype, ResponseHandler handler)
-    {
-        int ret = -1;
-        JSONObject carmsg = new JSONObject();
-        try {
-            carmsg.put("cmd", MessageTag.getInstance().Command(MessageTag.GET_NEAR_CAR_REQ));
-            carmsg.put("role","2");
-            carmsg.put("lat",lat);
-            carmsg.put("lng",lng);
-            carmsg.put("car_type",cartype);
-            ret = sendMessage(carmsg, handler, 5);
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -11,7 +11,6 @@ import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -191,9 +190,10 @@ public class LoginActivity extends AppCompatActivity implements
                 }
 
                 mRegcodeBt.setEnabled(false);
+
+                threadStopFlag = false;
                 TimerTick(60);
-                Log.e("daddy login", Thread.currentThread().getId() + "d");
-                Log.e("daddy login", Looper.myLooper().getThread().getId()+"d");
+
                 messageid = SocketClient.getInstance().sendRegcodeRequst(userName, "2", new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
@@ -223,8 +223,7 @@ public class LoginActivity extends AppCompatActivity implements
                 if (mDialog != null && !mDialog.isShowing()) {
                     mDialog.show();
                 }
-                Log.e("daddy very", Thread.currentThread().getId() + "v");
-                Log.e("daddy very", Looper.myLooper().getThread().getId()+"v");
+
                 messageid = SocketClient.getInstance().sendVerifyRequst(userName, "2", passWord, new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
@@ -234,6 +233,9 @@ public class LoginActivity extends AppCompatActivity implements
                             PersonalInformation person = new PersonalInformation();
                             person.setMobile(userName);
                             person.setToken(token);
+                            //TODO: 注册后直接作为默认用户,直到用户手动切换账号
+                            mApplication.mDaoSession.getPersonalInformationDao().deleteAll();
+                            //作为默认用户添加进去
                             mApplication.mDaoSession.getPersonalInformationDao().insert(person);
                             mHandler.sendEmptyMessage(HANDLER_VERIFY_SUCCESS);
                         } catch (JSONException e) {
@@ -282,10 +284,12 @@ public class LoginActivity extends AppCompatActivity implements
         switch (msg.what) {
             case HANDLER_REGISTER_SUCCESS:
                 if (mDialog != null) mDialog.dismiss();
+                threadStopFlag = true;
                 mPassWordEt.requestFocus();
                 break;
             case HANDLER_REGISTER_FAILURE:
                 WinToast.toast(LoginActivity.this, "获取验证码失败");
+                threadStopFlag = true;
                 break;
             case HANDLER_VERIFY_SUCCESS:
                 if (mDialog != null) mDialog.dismiss();
@@ -330,6 +334,7 @@ public class LoginActivity extends AppCompatActivity implements
             case HANDLER_TIMER_TIMEOUT:
                 mRegcodeBt.setText("获取验证码");
                 mRegcodeBt.setEnabled(true);
+                threadStopFlag = true;
                 break;
             case HANDLER_LOGIN_HAS_FOCUS:
                 mLoginImg.setVisibility(View.GONE);

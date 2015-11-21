@@ -204,7 +204,6 @@ public class LoginActivity extends BaseActivity implements
                 mRegcodeBt.setEnabled(false);
                 TimerTick(60);
 
-                Log.e("daddy", "ddddd");
                 messageid = SocketClient.getInstance().sendRegcodeRequst(userName, "1", new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
@@ -248,6 +247,9 @@ public class LoginActivity extends BaseActivity implements
                             PersonalInformation person = new PersonalInformation();
                             person.setMobile(userName);
                             person.setToken(token); //Server didn't response Token yet
+                            //TODO: 每次成功注册之后,都自动切换当前的用户.直到下次用户手动切换用户
+                            mApplication.mDaoSession.getPersonalInformationDao().deleteAll();
+                            //添加新的当前用户信息
                             mApplication.mDaoSession.getPersonalInformationDao().insert(person);
                             mHandler.sendEmptyMessage(HANDLER_LOGIN_SUCCESS);
                         } catch (JSONException e) {

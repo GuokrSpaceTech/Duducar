@@ -36,11 +36,12 @@
     <string name="my_order_num">订单数%1$1d</string>
     <string name="height_praise_rate">好评率%1$.2f%</string>
     <!-- 确认账单界面 -->
-    <string name="start_price" >%1$.1f元</string>
-    <string name="mileage_text">里程%1$.1f公里</string>
-    <string name="mileage_cost" >%1$.1f元</string>
+    <string name="start_price" >%1$.2f元</string>
+    <string name="mileage_text">里程%1$.2f公里</string>
+    <string name="mileage_cost" >%1$.2f元</string>
     <string name="low_speed_text">低速%1$d分钟</string>
-    <string name="low_speed_cost">%1$.1f元</string>
+    <string name="low_speed_cost">%1$.2f元</string>
     <string name="confirm_dialog_content">请您确认费用无误，并提示乘客先付款后下车</string>
     <string name="wealth_add_notice">乘客尾号%1$s支付%2$.2f元，您此单收入请到“我的余额”查看详情</string>
+    <string name="title_activity_alipay">AlipayActivity</string>
 </resources>

@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 
 import com.guokrspace.dududriver.DuduDriverApplication;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -155,7 +156,7 @@ public class CommonUtil {
     }
 
     public static float getTodayCash(){
-        return (float)SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), "todaycash", new Float(0.0));
+        return new BigDecimal((float)SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), "todaycash", new Float(0.0))).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
     }
 
     public static void addTodayCash(float cash){

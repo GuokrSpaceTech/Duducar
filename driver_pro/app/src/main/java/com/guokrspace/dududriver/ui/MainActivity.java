@@ -131,7 +131,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         } else {
             //用户信息不存在,重新注册页面
             startActivity(new Intent(this, LoginActivity.class));
-            finish();
+//            finish();
         }
     }
 
@@ -165,28 +165,6 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         * */
 //        CommonUtil.updateToday();
 
-        //注册派单监听
-        SocketClient.getInstance().registerServerMessageHandler(MessageTag.PATCH_ORDER, new ResponseHandler(Looper.myLooper()) {
-            @Override
-            public void onSuccess(String messageBody) {
-                Log.e("Mainactivity", "confirm order handler");
-                orderItem = FastJsonTools.getObject(messageBody, OrderItem.class);
-                Log.e("Daddy ", messageBody + "  " + orderItem.getCMD() + " " + orderItem.getOrder().getDestination_lat() + "::" + orderItem.getOrder().getDestination_lng());
-                mHandler.sendEmptyMessage(NEW_ORDER_ARRIVE);
-            }
-
-            @Override
-            public void onFailure(String error) {
-                Log.e("Mainactivity", "register order handler error");
-            }
-
-            @Override
-            public void onTimeout() {
-                Log.e("Mainactivity", "register order handler time out");
-            }
-        });
-
-
     }
 
     @Override
@@ -218,6 +196,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 Log.e("login in success!", "messageBody" + messageBody);
                 SharedPreferencesUtils.setParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, true);
                 pullBaseInfo();
+                pullOrder();
                 isOnline = true;
             }
 
@@ -227,7 +206,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 Log.e("login in failure!", "errorbody " + error);
                 isOnline = false;
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                finish();
+//                finish();
             }
 
             @Override
@@ -237,6 +216,30 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_LOGIN_FAILURE), 10000);
             }
         });
+    }
+
+    private void pullOrder(){
+        //注册派单监听
+        SocketClient.getInstance().registerServerMessageHandler(MessageTag.PATCH_ORDER, new ResponseHandler(Looper.myLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                Log.e("Mainactivity", "confirm order handler");
+                orderItem = FastJsonTools.getObject(messageBody, OrderItem.class);
+                Log.e("Daddy ", messageBody + "  " + orderItem.getCMD() + " " + orderItem.getOrder().getDestination_lat() + "::" + orderItem.getOrder().getDestination_lng());
+                mHandler.sendEmptyMessage(NEW_ORDER_ARRIVE);
+            }
+
+            @Override
+            public void onFailure(String error) {
+                Log.e("Mainactivity", "register order handler error");
+            }
+
+            @Override
+            public void onTimeout() {
+                Log.e("Mainactivity", "register order handler time out");
+            }
+        });
+
     }
 
     private void pullBaseInfo(){
@@ -311,7 +314,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 } else {
                     VoiceUtil.startSpeaking(VoiceCommand.FINISH_LISTENERING);
                     CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
-                    initStopAnim();
+//                    initStopAnim();
                 }
                 if (listenProgressView.isCircling() != isListeneing) {
                     listenProgressView.changeViewStatus();
@@ -501,7 +504,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                        doLogin(userInfo);
                     } else {
                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                        finish();
+//                        finish();
                     }
                     break;
                 default:

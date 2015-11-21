@@ -43,7 +43,8 @@
             android:value="yWIyrGPVMWZt9Y7gYA9SVeHx" />
 
         <activity
-            android:name=".PreOrderActivity" >
+            android:name=".PreOrderActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -73,6 +74,9 @@
         <activity
             android:name=".RatingActivity" >
         </activity>
+        <service android:name=".communication.DuduService"
+            android:exported="false">
+        </service>
 
         <!-- alipay sdk begin -->
         <activity

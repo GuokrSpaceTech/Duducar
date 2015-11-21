@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ public class CostEstimateActivity extends AppCompatActivity {
     private TextView costEstTextView;
     private TextView startTextView;
     private TextView endTextView;
+    private Button confirmButton;
     private Context context;
 
     @Override
@@ -35,6 +37,7 @@ public class CostEstimateActivity extends AppCompatActivity {
         costEstTextView = (TextView)findViewById(R.id.textViewCostEst);
         startTextView = (TextView)findViewById(R.id.startPointTextView);
         endTextView = (TextView)findViewById(R.id.destPointTextView);
+        confirmButton = (Button) findViewById(R.id.confirmButton);
 
         context = this;
 
@@ -51,6 +54,14 @@ public class CostEstimateActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent inent = new Intent(context, SearchActivity.class);
                 startActivityForResult(inent, PreOrderActivity.ACTIVITY_SEARCH_DEST_REQUEST);
+            }
+        });
+
+        confirmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setResult(RESULT_OK);
+                finish();
             }
         });
 
@@ -84,7 +95,7 @@ public class CostEstimateActivity extends AppCompatActivity {
         switch(item.getItemId())
         {
             case android.R.id.home:
-                setResult(RESULT_OK);
+                setResult(RESULT_CANCELED);
                 finish();
                 break;
         }
