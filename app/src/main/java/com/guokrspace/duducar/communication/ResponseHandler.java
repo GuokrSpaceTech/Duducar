@@ -45,9 +45,6 @@ public abstract class ResponseHandler implements ResponseHandleInterface {
     public ResponseHandler(Looper looper) {
         this.looper = looper == null ? Looper.myLooper() : looper;
         handler = new ResponderHandler(this, looper);
-        Log.e("daddy new ", Thread.currentThread().getId()+"lopp");
-        Log.e("daddy new ", looper.getThread().getId()+"lopp");
-        Log.e("daddy new", handler.getLooper().getThread().getId()+"lopp");
     }
 
     private void preParseResponse(String responseString)
@@ -87,9 +84,6 @@ public abstract class ResponseHandler implements ResponseHandleInterface {
     }
 
     protected void sendMessage(Message msg) {
-        Log.e("daddy sendmsg", Thread.currentThread().getId()+"e");
-        Log.e("daddy msg", msg.toString());
-        Log.e("daddy sendmsg", handler.getLooper().getThread().getId()+"ee");
         if (handler == null) {
             handleMessage(msg);
         } else if (

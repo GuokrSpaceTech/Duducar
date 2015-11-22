@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -17,6 +16,7 @@ import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -64,7 +64,7 @@ public class PostOrderActivity extends AppCompatActivity {
     String orderStatusString = "正在预约车辆";
     TextView mDestTextView;
     TextView mStartTextView;
-    FloatingActionButton mFab;
+    TextView mFab;
     DriverInformationView driverView;
     boolean isFirstLoc = true;// 是否首次定位
     ProgressBar mProgressBar;
@@ -196,6 +196,8 @@ public class PostOrderActivity extends AppCompatActivity {
         if (bundle != null) {
             start = (SearchLocation) bundle.get("start");
             dest = (SearchLocation) bundle.get("dest");
+
+            Log.e("daddy", "request car");
             requestCar();
         }
 
@@ -237,7 +239,7 @@ public class PostOrderActivity extends AppCompatActivity {
 
         //UI
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
-        mFab = (FloatingActionButton) findViewById(R.id.fab);
+        mFab = (Button) findViewById(R.id.fab);
         mFab.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -572,6 +574,7 @@ public class PostOrderActivity extends AppCompatActivity {
                 new ResponseHandler(Looper.getMainLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
+                        Log.e("daddy", "request success");
                     }
 
                     @Override

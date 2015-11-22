@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.guokrspace.dududriver">
+    package="com.guokrspace.dududriver" >
 
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -35,7 +35,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppBaseTheme">
+        android:theme="@style/AppBaseTheme" >
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="qGx8XpcPAkQ0nGbyml3IlNOt" />
@@ -45,9 +45,10 @@
             android:label="" />
         <activity
             android:name=".ui.MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -57,7 +58,6 @@
         <activity
             android:name=".ui.SettingActivity"
             android:label="设置" />
-
         <activity
             android:name=".ui.PostOrderActivity"
             android:label="订单" />
@@ -65,7 +65,7 @@
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
-            android:process=":remote"/>
+            android:process=":remote" />
 
         <activity
             android:name=".ui.PickUpPassengerActivity"
@@ -79,10 +79,12 @@
         <activity
             android:name=".ui.OrderMapActivity"
             android:label="订单地图" />
-        <service android:name=".net.DuduService"
-            android:enabled="true"
-            android:exported="true"/>
-    </application>
 
+        <service
+            android:name=".net.DuduService"
+            android:enabled="true"
+            android:exported="false" />
+
+    </application>
 
 </manifest>

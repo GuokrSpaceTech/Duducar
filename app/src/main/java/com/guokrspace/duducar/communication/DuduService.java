@@ -18,6 +18,7 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.MyLocationData;
 import com.guokrspace.duducar.DuduApplication;
+import com.guokrspace.duducar.common.Constants;
 import com.guokrspace.duducar.database.CommonUtil;
 
 /*
@@ -38,17 +39,13 @@ public class DuduService extends Service {
         super.onCreate();
         //初始化百度定位
         Log.e("daddy," , "oncreate service");
+        initLocation();
         mLocClient.start();
         mLocClient.requestLocation();
 
         mApplication = (DuduApplication) getApplicationContext();
 
-         /*
-         * Init the SocketClient
-         */
-        mTcpClient = null;
-        conctTask = new connectTask(); //Connect to server
-        conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
 
 //        /*
 //         * Login if socket connected
@@ -74,13 +71,25 @@ public class DuduService extends Service {
 
     }
 
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
 
         // For each start request, send a message to start a job and deliver the
         // start ID so we know which request we're stopping when we finish the job
         // If we get killed, after returning from here, restart
+
+        /*
+         * Init the SocketClient
+         */
+        Log.e("daddy","service start");
+        if(mTcpClient == null){
+            mTcpClient = null;
+            conctTask = new connectTask(); //Connect to server
+            conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+
         return START_STICKY;
     }
 
@@ -138,19 +147,16 @@ public class DuduService extends Service {
         @Override
         public void onReceiveLocation(BDLocation location) {
 
-            Log.e("daddy", "get location and send heartbeat");
             // map view 销毁后不在处理新接收的位置
             if (location == null){
                 return;
             }
-            Log.e("daddy", "get location and send heartbeat");
             MyLocationData curLocaData = new MyLocationData.Builder()
                     .accuracy(location.getRadius())
                     .direction(location.getDirection()).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
 
             //修改现在状态
-            Log.e("daddy", "location s" + curLocaData.latitude);
             CommonUtil.setCurLng(curLocaData.longitude);
             CommonUtil.setCurLat(curLocaData.latitude);
             CommonUtil.setLocationSuccess(true);
@@ -171,7 +177,11 @@ public class DuduService extends Service {
             @Override
             public void onSuccess(String messageBody) {
                 Log.i("HeartBeat Response", messageBody);
-
+                if(messageBody.contains("login")){//登陆出现问题
+                    //将登陆状态置为false
+                    Log.e("daddy", "login eror in success");
+                    sendBroadCast(Constants.SERVICE_ACTION_RELOGIN);
+                }
             }
 
             @Override
@@ -179,7 +189,8 @@ public class DuduService extends Service {
                 Log.i("HeartBeat Response", error);
                 if(error.contains("login")){//登陆出现问题
                     //将登陆状态置为false
-//                    sendBroadCast(SERVICE_ACTION_RELOGIN);
+                    Log.e("daddy", "login eror in error");
+                    sendBroadCast(Constants.SERVICE_ACTION_RELOGIN);
                 }
             }
 

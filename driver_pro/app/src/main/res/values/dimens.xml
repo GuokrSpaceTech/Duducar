@@ -11,4 +11,5 @@
     <dimen name="text_size_indicator">18dp</dimen>
     <dimen name="grid_item_margin">5dp</dimen>
     <dimen name="bill_item_padding">36dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>

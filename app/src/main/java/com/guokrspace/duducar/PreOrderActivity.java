@@ -2,9 +2,11 @@ package com.guokrspace.duducar;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
@@ -50,6 +52,7 @@ import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
+import com.guokrspace.duducar.common.Constants;
 import com.guokrspace.duducar.communication.DuduService;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
@@ -128,6 +131,8 @@ public class PreOrderActivity extends AppCompatActivity
 
     private Intent duduService;
 
+    private PersonalInformation person;
+    private ServiceReceiver receiver;
 
 
     @Override
@@ -138,11 +143,14 @@ public class PreOrderActivity extends AppCompatActivity
 
         AppExitUtil.getInstance().addActivity(this);
 
+        duduService = new Intent(this, DuduService.class);
+        startService(duduService);
+        Log.e("daddy","oncreate");
         List persons = mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().list();
         if (persons.size() <= 0) { //Not Logged in
             Intent intent = new Intent(mContext, LoginActivity.class);
             startActivityForResult(intent, ACTVITY_LOGIN_REQUEST);
-            finish();
+//            finish();
         }
 
         /*
@@ -186,6 +194,7 @@ public class PreOrderActivity extends AppCompatActivity
         //Setup the Drawer
         mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
+        mNavigationDrawerFragment.onHiddenChanged(true);
         mTitle = getTitle();
 
         // 开启定位图层
@@ -207,15 +216,13 @@ public class PreOrderActivity extends AppCompatActivity
          * Init the data
          */
         start = new SearchLocation();
-
-        startService(new Intent(getApplicationContext(), DuduService.class));
     }
 
     private void initListener() {
 
         List persons = mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().limit(1).list();
         if(persons.size()==1) {
-            PersonalInformation person = (PersonalInformation) persons.get(0);
+            person = (PersonalInformation) persons.get(0);
             doLogin(person);
         }
 
@@ -228,7 +235,7 @@ public class PreOrderActivity extends AppCompatActivity
                     Intent intent = new Intent(mContext, LoginActivity.class);
                     startActivityForResult(intent, ACTVITY_LOGIN_REQUEST);
                     finish();
-                } else if(dest==null) {
+                } else if(dest == null || destLocButton.getText().length() < 1) {
                     WinToast.toast(PreOrderActivity.this, "请先输入目的地");
                 }else{
                     mApplication.mPersonalInformation = (PersonalInformation) persons.get(0);
@@ -287,6 +294,26 @@ public class PreOrderActivity extends AppCompatActivity
                 startActivityForResult(intent, ACTIVITY_SEARCH_DEST_REQUEST);
             }
         });
+    }
+
+    public class ServiceReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            switch (action){
+                case Constants.SERVICE_ACTION_RELOGIN:
+                    if(person != null) { // 用户登陆出错
+                        doLogin(person);
+                    } else {
+                        Intent loginIntent = new Intent(mContext, LoginActivity.class);
+                        startActivityForResult(loginIntent, ACTVITY_LOGIN_REQUEST);
+                    }
+                    break;
+                default:
+                    return;
+            }
+        }
     }
 
     private void doLogin(final PersonalInformation person){
@@ -412,9 +439,7 @@ public class PreOrderActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         mMapView.onDestroy();
-        if(duduService != null) {
-            stopService(duduService);
-        }
+
         if (mCurrentMarker != null) mCurrentMarker.recycle();
         mLocClient.stop();
 
@@ -426,6 +451,7 @@ public class PreOrderActivity extends AppCompatActivity
         mMapView.onPause();
         timer.cancel();
         timer.purge();
+        unregisterReceiver(receiver);
         super.onPause();
     }
 
@@ -437,15 +463,25 @@ public class PreOrderActivity extends AppCompatActivity
          */
         timer = new Timer();
         timer.scheduleAtFixedRate(new MyTimerTask(), 2000, 3 * 1000);
+
+        registerBroadcastReceiver();
+
         super.onResume();
     }
 
+    //监听service传来的消息
+    private void registerBroadcastReceiver(){
+        receiver = new ServiceReceiver();
+        IntentFilter filter = new IntentFilter(Constants.SERVICE_BROADCAST);
+        filter.addAction(Constants.SERVICE_ACTION_RELOGIN);
+        registerReceiver(receiver, filter);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
+        switch(resultCode) {
+            case RESULT_OK:
             if (requestCode == ACTVITY_LOGIN_REQUEST) {
-
             } else if (requestCode == ACTIVITY_SEARCH_START_REQUEST) {
 
                 Bundle bundle = data.getExtras();
@@ -477,7 +513,27 @@ public class PreOrderActivity extends AppCompatActivity
                     startActivityForResult(intent, ACTVITY_COST_ESTIMATE_REQUEST);
                 }
             } else if (requestCode == ACTVITY_COST_ESTIMATE_REQUEST) {
+                List persons = mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().list();
+                if (persons.size() <= 0) { //Not Logged in
+                    Intent intent = new Intent(mContext, LoginActivity.class);
+                    startActivityForResult(intent, ACTVITY_LOGIN_REQUEST);
+                    finish();
+                } else if(dest==null) {
+                    WinToast.toast(PreOrderActivity.this, "请先输入目的地");
+                }else{
+                    mApplication.mPersonalInformation = (PersonalInformation) persons.get(0);
+                    Intent intent = new Intent(mContext,PostOrderActivity.class);
+                    intent.putExtra("start", start);
+                    intent.putExtra("dest", dest);
+                    startActivityForResult(intent, 0x6002);
+                }
             }
+                break;
+            case RESULT_CANCELED:
+                destLocButton.setText("");
+                break;
+            default:
+                break;
         }
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -635,7 +691,9 @@ public class PreOrderActivity extends AppCompatActivity
             alterDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    stopService(new Intent(getApplicationContext(), DuduService.class));
+                    if(duduService != null) {
+                        stopService(duduService);
+                    }
                     AppExitUtil.getInstance().exit();
                 }
             });

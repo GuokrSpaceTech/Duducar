@@ -1,6 +1,7 @@
 package com.guokrspace.dududriver.ui;
 
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
@@ -33,6 +34,8 @@ import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 import com.guokrspace.dududriver.util.VoiceUtil;
 import com.guokrspace.dududriver.view.CircleImageView;
+
+import java.math.BigDecimal;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -93,6 +96,7 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
     private double price;
     private float lowcost;
     private float milecost;
+    private double curDistance;
 
     private final int PAY_OVER = 0X001;
 
@@ -137,13 +141,14 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
 
         Bundle bundle = getIntent().getExtras();
         orderItem = (OrderItem) bundle.get("orderItem");
-        final double curDistance = bundle.getDouble("mileage");
+        curDistance = bundle.getDouble("mileage");
         final int lowSpeedTime= bundle.getInt("lowspeed");
         final float lowSpeedPrice = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), "low_speed_price", "0.55"));
         final float startPrice = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), "starting_price", "6.5"));
 
 
         price = countPrice(curDistance, lowSpeedTime);
+        price = new BigDecimal(price).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
         lowcost = lowSpeedTime * lowSpeedPrice;
         if(price - lowcost > startPrice){
             milecost = (float)price - lowcost;
@@ -229,22 +234,56 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
             return starting_price + low_speed_price * lowtime;
         }
         mileage = mileage - starting_distance;
-        return starting_price + mileage * km_price + lowtime * low_speed_price ;
+
+        return starting_price + mileage * km_price + lowtime * low_speed_price;
 
     }
 
     private void initDialog() {
         dialog = new Dialog(context, getString(R.string.confirm_dialog_content));
         dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
         dialog.setOnCancelButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // TODO: 进入付款详情界面，乘客未付款则需要司机代付
-                VoiceUtil.startSpeaking(VoiceCommand.DRIVER_PAY);
-                Intent intent = new Intent(context, OrderDetailActivity.class);
-                intent.putExtra("price", price);
-                startActivity(intent);
-                finish();
+                final AlertDialog.Builder alterDialog = new AlertDialog.Builder(ConfirmBillActivity.this);
+                alterDialog.setMessage("确定要司机代付？");
+                alterDialog.setCancelable(true);
+
+                alterDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        VoiceUtil.startSpeaking(VoiceCommand.DRIVER_PAY);
+                        //向服务器发起代付请求,无论成功失败都跳转到代付页面.
+                        SocketClient.getInstance().endOrderSelfPay(price + "", curDistance + "", new ResponseHandler(Looper.myLooper()) {
+                            @Override
+                            public void onSuccess(String messageBody) {
+                            }
+
+                            @Override
+                            public void onFailure(String error) {
+                            }
+
+                            @Override
+                            public void onTimeout() {
+                            }
+                        });
+                        Intent intent = new Intent(context, OrderDetailActivity.class);
+                        intent.putExtra("price", price);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+                alterDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        initDialog();
+                    }
+                });
+                alterDialog.show();
+
             }
         });
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -292,7 +331,7 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
                     VoiceUtil.startSpeaking(VoiceCommand.PAY_OVER);
 
                     CommonUtil.addTodayDoneWork();
-                    CommonUtil.addTodayCash((float)price);
+                    CommonUtil.addTodayCash(Float.parseFloat(String.valueOf(price)));
 
                     dialog.getButtonAccept().setButtonText("继续听单");
                     dialog.getButtonCancel().setButtonText("收车");
@@ -311,6 +350,17 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
                             dialog.dismiss();
                         }
                     });
+
+                    btnConfirm.setButtonText("继续听单");
+                    btnConfirm.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+                            VoiceUtil.startSpeaking(VoiceCommand.WAIT_FOR_ORDER);
+                            startActivity(new Intent(context, MainActivity.class));
+                            finish();
+                        }
+                    });
                 }
                 break;
             default:
@@ -326,5 +376,9 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
             return false;
         }
         return true;
+    }
+
+    private void askforSelfPay(){
+
     }
 }
