@@ -145,12 +145,13 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
         final int lowSpeedTime= bundle.getInt("lowspeed");
         final float lowSpeedPrice = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), "low_speed_price", "0.55"));
         final float startPrice = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), "starting_price", "6.5"));
+        final float startDistance = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), "starting_distance", "6.0"));
 
-
-        price = countPrice(curDistance, lowSpeedTime);
+        price = CommonUtil.countPrice(curDistance, lowSpeedTime);
         price = new BigDecimal(price).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+
         lowcost = lowSpeedTime * lowSpeedPrice;
-        if(price - lowcost > startPrice){
+        if(curDistance > startDistance && price - lowcost > startPrice){
             milecost = (float)price - lowcost;
         } else {
             milecost = 0;
@@ -223,21 +224,7 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
         });
     }
 
-    private double countPrice(double mileage, int lowtime) {
 
-        float starting_price = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), "starting_price", "5.5"));
-        float starting_distance = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), "starting_distance", "6.0"));
-        float km_price = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), "km_price", "2.0"));
-        float low_speed_price = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), "low_speed_price", "2.0"));
-        mileage = mileage/1000.0d;
-        if(mileage <= starting_distance + 1){
-            return starting_price + low_speed_price * lowtime;
-        }
-        mileage = mileage - starting_distance;
-
-        return starting_price + mileage * km_price + lowtime * low_speed_price;
-
-    }
 
     private void initDialog() {
         dialog = new Dialog(context, getString(R.string.confirm_dialog_content));
@@ -297,7 +284,7 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
             public void onClick(View v) {
                 CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
                 VoiceUtil.startSpeaking(VoiceCommand.CONTINUE_WAIT);
-                startActivity(new Intent(context, MainActivity.class));
+//                startActivity(new Intent(context, MainActivity.class));
                 finish();
                 dialog.dismiss();
             }
@@ -345,7 +332,7 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
                         public void onClick(View v) {
                             CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
                             VoiceUtil.startSpeaking(VoiceCommand.HOLD_CAR);
-                            startActivity(new Intent(context, MainActivity.class));
+//                            startActivity(new Intent(context, MainActivity.class));
                             finish();
                             dialog.dismiss();
                         }
@@ -357,7 +344,7 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
                         public void onClick(View v) {
                             CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
                             VoiceUtil.startSpeaking(VoiceCommand.WAIT_FOR_ORDER);
-                            startActivity(new Intent(context, MainActivity.class));
+//                            startActivity(new Intent(context, MainActivity.class));
                             finish();
                         }
                     });

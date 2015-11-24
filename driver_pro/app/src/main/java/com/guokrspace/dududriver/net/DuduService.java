@@ -137,6 +137,8 @@ public class DuduService extends Service {
             //修改现在状态
             CommonUtil.setCurLng(curLocaData.longitude);
             CommonUtil.setCurLat(curLocaData.latitude);
+            CommonUtil.setCurAddress(location.getAddrStr());
+            CommonUtil.setCurAddressDescription(location.getLocationDescribe());
             CommonUtil.setCurTime(System.currentTimeMillis());
 
             sendHeartBeat(curLocaData);

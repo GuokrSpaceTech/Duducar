@@ -24,4 +24,9 @@ public class VoiceCommand {
     public static final String WAIT_FOR_PAY = "账单已发送,等待乘客支付或您代付";
     public static final String PAY_OVER = "收款成功, 请选择继续听单或收车";
     public static final String DRIVER_PAY = "请您尽快完成代付";
+    public static final String START_NAVIGATION = "正在启动导航";
+    public static final String END_NAVIGATION = "停止导航";
+    public static final String NAVIGATION_OVER = "导航完成";
+    public static final String LAUNCH_NAVIGATION_ERROR = "地图导航失败";
+    public static final String ROUTE_ERROR_NO_NAVIGATION = "失败路径";
 }

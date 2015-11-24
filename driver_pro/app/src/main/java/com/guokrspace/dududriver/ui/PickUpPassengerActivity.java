@@ -8,13 +8,18 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ZoomControls;
@@ -26,9 +31,7 @@ import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MyLocationConfiguration;
-import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.overlayutil.DrivingRouteOverlay;
 import com.baidu.mapapi.search.core.SearchResult;
@@ -40,16 +43,17 @@ import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.baidu.mapapi.utils.DistanceUtil;
-import com.gc.materialdesign.views.ButtonRectangle;
+import com.baidu.navisdk.adapter.BNOuterTTSPlayerCallback;
+import com.baidu.navisdk.adapter.BNRouteGuideManager;
+import com.baidu.navisdk.adapter.BNRoutePlanNode;
+import com.baidu.navisdk.adapter.BaiduNaviManager;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.common.VoiceCommand;
 import com.guokrspace.dududriver.model.OrderItem;
-import com.guokrspace.dududriver.net.DuduService;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
 import com.guokrspace.dududriver.net.message.MessageTag;
-import com.guokrspace.dududriver.util.AppExitUtil;
 import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.VoiceUtil;
 import com.guokrspace.dududriver.view.CircleImageView;
@@ -57,6 +61,10 @@ import com.guokrspace.dududriver.view.CircleImageView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -67,7 +75,7 @@ import butterknife.OnClick;
 /**
  * Created by hyman on 15/11/2.
  */
-public class PickUpPassengerActivity extends BaseActivity {
+public class PickUpPassengerActivity extends BaseActivity implements Handler.Callback {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -90,8 +98,14 @@ public class PickUpPassengerActivity extends BaseActivity {
             Log.e("PickUpPassengerActivity", "乘客手机号码问题" + mobile);
         }
     }
+    @Bind(R.id.navi_button)
+    Button btnNavi;
+    @Bind(R.id.pickup_naviview)
+    FrameLayout mNaviFrame;
     @Bind(R.id.pickup_mapview)
     MapView mMapview;
+    @Bind(R.id.pickup_btnll)
+    LinearLayout pickupLl;
     @Bind(R.id.confirm_button)
     Button btnConfirm;
     @OnClick(R.id.confirm_button) public void enterConfirmPage() {
@@ -132,12 +146,19 @@ public class PickUpPassengerActivity extends BaseActivity {
 
     }
     private Context context;
+    private Handler mHandler;
+
+    private double curCharge = 0;
+    private final int UPDATE_CHARGE = 0x101;
 
     private OrderItem orderItem;
     private BDLocation mLoaction;
 
+    private String mSDCardPath = null;
+    private static final String APP_FOLDER_NAME = "com.guokrspace.dududriver";
     private BaiduMap mBaiduMap;
     private BitmapDescriptor mCurrentMarker = null;
+    private View naviView = null;
 
     private LatLng passengerLatLng = new LatLng(28.169544, 112.957194);
 
@@ -146,6 +167,8 @@ public class PickUpPassengerActivity extends BaseActivity {
     private boolean customDefaultIcon = true;
     private PlanNode st = null;
     private PlanNode ed = null;
+    private BNRoutePlanNode mBNRoutePlanNode = null;
+
     private OnGetRoutePlanResultListener routePlanResultListener = new OnGetRoutePlanResultListener() {
         @Override
         public void onGetWalkingRouteResult(WalkingRouteResult walkingRouteResult) {
@@ -180,6 +203,25 @@ public class PickUpPassengerActivity extends BaseActivity {
             }
         }
     };
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        switch (msg.what){
+
+            case UPDATE_CHARGE:
+                Log.e("daddy", "current charge");
+                double price = (double)msg.getData().get("charge");
+                if(curCharge <= price) {
+                    curCharge = new BigDecimal(price).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+                    btnConfirm.setText(curCharge + "元   到达目的地");
+                }
+                Log.e("daddy", "current charge");
+                break;
+            default:
+                break;
+        }
+        return false;
+    }
 
     private class MyDrivingRouteOverlay extends DrivingRouteOverlay {
 
@@ -216,6 +258,8 @@ public class PickUpPassengerActivity extends BaseActivity {
     private double tmpDistance;
     private double LOWSPEEDDISTANACE = 333.3; // m/min
     private double STRANGEDISTANCE = 33.3; // m/s
+    private Message msg;
+    private Bundle bundle;
     private Timer calTimer;
     private TimerTask calTimerTask;
 
@@ -240,6 +284,8 @@ public class PickUpPassengerActivity extends BaseActivity {
         preLat = CommonUtil.getCurLat();
         preLng = CommonUtil.getCurLng();
 
+
+
         times = 0;
         preDis = 0;
         secDistance=0d;
@@ -260,7 +306,7 @@ public class PickUpPassengerActivity extends BaseActivity {
                 }
 
                 if (CommonUtil.getCurrentStatus() == Constants.STATUS_RUN) {//开车中
-                    if (++times == 6) {//1 min
+                    if (++times == 12) {//1 min
                         minutes++;
                         if (tmpDistance <= LOWSPEEDDISTANACE) {//这一分钟内是低速行驶
                             lowSpeedTime++;
@@ -273,12 +319,24 @@ public class PickUpPassengerActivity extends BaseActivity {
 
                     preLat = CommonUtil.getCurLat();
                     preLng = CommonUtil.getCurLng();
+                    //TODO:通知界面更新,发送到乘客端
+                    double price = CommonUtil.countPrice(curDistance, lowSpeedTime);
+//                    if(price > curCharge){
+                        Bundle bundle = new Bundle();
+                        bundle.putDouble("charge", price);
+                        Message msg = new Message();
+                        msg.what = UPDATE_CHARGE;
+                        msg.setData(bundle);
+                        Log.e("daddy", "send message update");
+                        mHandler.sendMessage(msg);
+//                    }
                 } else { //非法状态下停止
+                    Log.e("daddy", "stop charge");
                     stopCharging();
                 }
             }
         };
-        calTimer.schedule(calTimerTask, 1000, 10000);
+        calTimer.schedule(calTimerTask, 1000, 5000);
     }
 
     private void stopCharging(){
@@ -291,6 +349,10 @@ public class PickUpPassengerActivity extends BaseActivity {
             calTimerTask.cancel();
             calTimerTask = null;
         }
+        if(isNavigationNow){
+            BNRouteGuideManager.getInstance().forceQuitNaviWithoutDialog();
+            isNavigationNow = false;
+        }
     }
 
     @Override
@@ -298,7 +360,10 @@ public class PickUpPassengerActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pickuppassenger);
         context = PickUpPassengerActivity.this;
+        mHandler = new Handler(this);
         ButterKnife.bind(this);
+        initDirs();
+        initNavi();
 
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null) {
@@ -367,9 +432,35 @@ public class PickUpPassengerActivity extends BaseActivity {
         mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(mCurrentMode, true, mCurrentMarker));
 
         st = PlanNode.withLocation(new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng()));
+
         routePlanSearch = RoutePlanSearch.newInstance();
         routePlanSearch.drivingSearch(new DrivingRoutePlanOption().from(st).to(ed));
         routePlanSearch.setOnGetRoutePlanResultListener(routePlanResultListener);
+
+
+        btnNavi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!isNavigationOk){
+                    Toast.makeText(PickUpPassengerActivity.this, "地图导航加载失败", Toast.LENGTH_SHORT);
+                }
+                if(!isNavigationNow){
+                    //启动导航
+                    BDLocation stLocation = CommonUtil.getMCLocation(CommonUtil.getCurLat(),CommonUtil.getCurLng());
+                    BDLocation edLocation = CommonUtil.getMCLocation(Double.valueOf(orderItem.getOrder().getStart_lat()), Double.valueOf(orderItem.getOrder().getStart_lng()));
+                    routeplanToNavi(new BNRoutePlanNode(stLocation.getLongitude(), stLocation.getLatitude(), CommonUtil.getCurAddress(), CommonUtil.getCurAddressDescription(), BNRoutePlanNode.CoordinateType.BD09_MC),
+                            new BNRoutePlanNode(edLocation.getLongitude(), edLocation.getLatitude(), orderItem.getOrder().getStart(), "乘客所在地", BNRoutePlanNode.CoordinateType.BD09_MC));
+
+                } else {
+                    //结束导航
+                    BNRouteGuideManager.getInstance().forceQuitNaviWithoutDialog();
+                    mMapview.setVisibility(View.VISIBLE);
+                    mNaviFrame.removeView(naviView);
+                    isNavigationNow = false;
+                    btnNavi.setText("开启导航");
+                }
+            }
+        });
     }
 
     private void initGoDestView(){
@@ -379,15 +470,12 @@ public class PickUpPassengerActivity extends BaseActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        CommonUtil.changeCurStatus(Constants.STATUS_RUN);
-
-        btnConfirm.setText("确认完成订单");
+        btnConfirm.setText(CommonUtil.getStartPrice() + "元      到达目的地");
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO:无论如何都要结束订单
                 stopCharging();
-                VoiceUtil.startSpeaking(VoiceCommand.ORDER_FINISHED);
                 Intent intent = new Intent(PickUpPassengerActivity.this, ConfirmBillActivity.class);
                 intent.putExtra("orderItem", orderItem);
                 intent.putExtra("mileage", curDistance);
@@ -410,8 +498,37 @@ public class PickUpPassengerActivity extends BaseActivity {
         // 定位再次初始化
         st = PlanNode.withLocation(new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng()));
         routePlanSearch.drivingSearch(new DrivingRoutePlanOption().from(st).to(ed));
+
+        btnNavi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isNavigationOk) {
+                    Toast.makeText(PickUpPassengerActivity.this, "地图导航加载失败", Toast.LENGTH_SHORT);
+                }
+                if (!isNavigationNow) {
+                    //启动导航
+                    BDLocation stLocation = CommonUtil.getMCLocation(CommonUtil.getCurLat(), CommonUtil.getCurLng());
+                    BDLocation edLocation = CommonUtil.getMCLocation(Double.valueOf(orderItem.getOrder().getDestination_lat()), Double.valueOf(orderItem.getOrder().getDestination_lng()));
+                    routeplanToNavi(new BNRoutePlanNode(stLocation.getLongitude(), stLocation.getLatitude(), CommonUtil.getCurAddress(), CommonUtil.getCurAddressDescription(), BNRoutePlanNode.CoordinateType.BD09_MC),
+                            new BNRoutePlanNode(edLocation.getLongitude(), edLocation.getLatitude(), orderItem.getOrder().getStart(), "乘客所在地", BNRoutePlanNode.CoordinateType.BD09_MC));
+
+                } else {
+                    //结束导航
+                    BNRouteGuideManager.getInstance().forceQuitNaviWithoutDialog();
+                    mMapview.setVisibility(View.VISIBLE);
+                    mNaviFrame.removeView(naviView);
+                    isNavigationNow = false;
+                    btnNavi.setText("开启导航");
+                }
+            }
+        });
     }
 
+    @Override
+    public void onConfigurationChanged(android.content.res.Configuration newConfig) {
+        BNRouteGuideManager.getInstance().onConfigurationChanged(newConfig);
+        super.onConfigurationChanged(newConfig);
+    };
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -426,13 +543,18 @@ public class PickUpPassengerActivity extends BaseActivity {
     protected void onPause() {
         super.onPause();
         mMapview.onPause();
+        if(isNavigationNow){
+            BNRouteGuideManager.getInstance().onPause();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         mMapview.onResume();
-
+        if (isNavigationNow) {
+            BNRouteGuideManager.getInstance().onResume();
+        }
         //监听派单取消的通知
         SocketClient.getInstance().registerServerMessageHandler(MessageTag.ORDER_CANCEL, new ResponseHandler(Looper.myLooper()) {
             @Override
@@ -443,7 +565,7 @@ public class PickUpPassengerActivity extends BaseActivity {
                         //订单已经取消或者已经接到乘客  无法取消订单
                         return;
                     }
-                    if(CommonUtil.getCurrentStatus() == Constants.STATUS_DEAL || CommonUtil.getCurrentStatus() == Constants.STATUS_GET){
+                    if (CommonUtil.getCurrentStatus() == Constants.STATUS_DEAL || CommonUtil.getCurrentStatus() == Constants.STATUS_GET) {
                         //选择接单阶段或者乘客还未上车阶段可以取消
                         VoiceUtil.startSpeaking(VoiceCommand.ORDER_CANCEL);
                         orderItem = null;
@@ -476,6 +598,14 @@ public class PickUpPassengerActivity extends BaseActivity {
             mMapview.onDestroy();
             mMapview = null;
         }
+        if(isNavigationNow){
+            BNRouteGuideManager.getInstance().onDestroy();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        BNRouteGuideManager.getInstance().onBackPressed(false);
     }
 
     @Override
@@ -485,6 +615,192 @@ public class PickUpPassengerActivity extends BaseActivity {
             return false;
         }
         return true;
+    }
+
+
+    private boolean isNavigationOk = false;
+    private boolean isNavigationNow = false;
+
+    private void initNavi() {
+//        BaiduNaviManager.getInstance().setNativeLibraryPath(mSDCardPath + "/BaiduNaviSDK_SO");
+        BaiduNaviManager.getInstance().init(this, mSDCardPath, APP_FOLDER_NAME,
+                new BaiduNaviManager.NaviInitListener() {
+                    @Override
+                    public void onAuthResult(int status, String msg) {
+                        if (0 == status) {
+                            Log.e("daddy", "auth right ");
+                        } else {
+                            isNavigationOk = false;
+                            Log.e("daddy", "auth fail , key is wrong");
+                        }
+                    }
+
+                    @Override
+                    public void initStart() {
+                        Log.e("daddy", "init navigation start");
+                    }
+
+                    @Override
+                    public void initSuccess() {
+                        Log.e("daddy", "init succes");
+                        isNavigationOk = true;
+                    }
+
+                    @Override
+                    public void initFailed() {
+                        Log.e("daddy", "init succes");
+                        isNavigationOk = false;
+                    }
+
+                }, null /*mTTSCallback*/);
+    }
+    //导航语音回调
+    private BNOuterTTSPlayerCallback mTTSCallback = new BNOuterTTSPlayerCallback() {
+
+        @Override
+        public void stopTTS() {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public void resumeTTS() {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public void releaseTTSPlayer() {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public int playTTSText(String speech, int bPreempt) {
+            // TODO Auto-generated method stub
+            return 0;
+        }
+
+        @Override
+        public void phoneHangUp() {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public void phoneCalling() {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public void pauseTTS() {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public void initTTSPlayer() {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public int getTTSState() {
+            // TODO Auto-generated method stub
+            return 0;
+        }
+    };
+
+    private boolean initDirs() {
+        mSDCardPath = getSdcardDir();
+        if ( mSDCardPath == null ) {
+            return false;
+        }
+        File f = new File(mSDCardPath, APP_FOLDER_NAME);
+        if ( !f.exists() ) {
+            try {
+                f.mkdir();
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private String getSdcardDir() {
+        if (Environment.getExternalStorageState().equalsIgnoreCase(
+                Environment.MEDIA_MOUNTED)) {
+            return Environment.getExternalStorageDirectory().toString();
+        }
+        return null;
+    }
+
+    private void routeplanToNavi(BNRoutePlanNode sNode, BNRoutePlanNode eNode) {
+
+        if (sNode != null && eNode != null) {
+            List<BNRoutePlanNode> list = new ArrayList<BNRoutePlanNode>();
+            list.add(sNode);
+            list.add(eNode);
+
+            boolean launch = BaiduNaviManager.getInstance().launchNavigator(this, list, 1, true, new DemoRoutePlanListener(sNode));
+            if(launch){
+
+            } else {
+                VoiceUtil.startSpeaking(VoiceCommand.LAUNCH_NAVIGATION_ERROR);
+                isNavigationNow = false;
+            }
+        }
+    }
+
+    public class DemoRoutePlanListener implements BaiduNaviManager.RoutePlanListener {
+
+        private BNRoutePlanNode mBNRoutePlanNode = null;
+        public DemoRoutePlanListener(BNRoutePlanNode node) {
+            mBNRoutePlanNode = node;
+        }
+
+        @Override
+        public void onJumpToNavigator() {
+            //TODO 进入导航模式需要调整地图
+            isNavigationNow = true;
+            btnNavi.setText("停止导航");
+            Log.e("daddy navi", "jump to navigation");
+            naviView = BNRouteGuideManager.getInstance().onCreate(PickUpPassengerActivity.this, new BNRouteGuideManager.OnNavigationListener() {
+                @Override
+                public void onNaviGuideEnd() {
+                    //TODO 导航结束
+//                    VoiceUtil.startSpeaking(VoiceCommand.NAVIGATION_OVER);
+                    isNavigationNow = false;
+                }
+
+                @Override
+                public void notifyOtherAction(int i, int i1, int i2, Object o) {
+                    Log.e("daddy navi guide", "notify" + i + " " + i1 + " " + i2);
+
+                }
+            });
+            Log.e("daddy navigation", "view " + naviView.getWidth() + " " + naviView.getAlpha());
+            mNaviFrame.addView(naviView);
+            Log.e("daddy navigation", "add view success");
+            mMapview.setVisibility(View.GONE);
+            Log.e("daddy navigation", "mapview gone");
+        }
+        @Override
+        public void onRoutePlanFailed() {
+            // TODO 路径规划失败,不能启动导航
+            isNavigationNow = false;
+            btnNavi.setText("启动导航");
+            VoiceUtil.startSpeaking(VoiceCommand.ROUTE_ERROR_NO_NAVIGATION);
+            Log.e("daddy navi route", "routePlanFailed");
+        }
+    }
+
+    private void addCustomizedLayerItems() {
+        List<BNRouteGuideManager.CustomizedLayerItem> items = new ArrayList<BNRouteGuideManager.CustomizedLayerItem>();
+        BNRouteGuideManager.CustomizedLayerItem item1 = null;
+        if (mBNRoutePlanNode != null) {
+            item1 = new BNRouteGuideManager.CustomizedLayerItem(mBNRoutePlanNode.getLongitude(), mBNRoutePlanNode.getLatitude(),
+                    mBNRoutePlanNode.getCoordinateType(), getResources().getDrawable(R.drawable.accept_btn_bg_pressed), BNRouteGuideManager.CustomizedLayerItem.ALIGN_CENTER);
+            items.add(item1);
+
+            BNRouteGuideManager.getInstance().setCustomizedLayerItems(items);
+        }
+        BNRouteGuideManager.getInstance().showCustomizedLayer(true);
     }
 
 }
