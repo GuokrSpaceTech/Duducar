@@ -183,6 +183,7 @@
                     android:src="@mipmap/search_black" />
 
                 <TextView
+                    android:id="@+id/charge_detail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="查看收费明细"
@@ -224,7 +225,7 @@
             android:layout_height="fill_parent"
             android:layout_weight="1"
             android:background="@color/sky_blue"
-            android:text="完成，继续听单"
+            android:text="继续听单"
             android:textSize="6sp" />
     </LinearLayout>
 </LinearLayout>

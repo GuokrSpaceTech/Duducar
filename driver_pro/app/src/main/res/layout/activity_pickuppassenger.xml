@@ -19,8 +19,8 @@
 
         <com.guokrspace.dududriver.view.CircleImageView
             android:id="@+id/passenger_avatar"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:scaleType="centerCrop"
@@ -30,7 +30,7 @@
             android:id="@+id/myposition_ll"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_toRightOf="@id/passenger_avatar"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -51,7 +51,7 @@
                 android:maxLines="2"
                 android:text="长沙轮渡"
                 android:textColor="@color/white"
-                android:textSize="22sp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/myposition_ll"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:layout_toRightOf="@id/passenger_avatar"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -81,7 +81,7 @@
                 android:maxLines="2"
                 android:text="友阿百货"
                 android:textColor="@color/white"
-                android:textSize="22sp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <Button
@@ -94,7 +94,21 @@
             android:background="@mipmap/call_passenger" />
     </RelativeLayout>
 
+    <Button
+        android:id="@+id/navi_button"
+        android:layout_width="fill_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="0dp"
+        android:background="@color/app_main_theme"
+        android:gravity="center"
+        android:text="开启导航"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
     <FrameLayout
+        android:id="@+id/pickup_naviview"
         android:layout_width="fill_parent"
         android:layout_height="0dip"
         android:layout_weight="1">
@@ -106,6 +120,7 @@
         <!--<com.gc.materialdesign.views.ButtonRectangle-->
 
         <LinearLayout
+            android:id="@+id/pickup_btnll"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"

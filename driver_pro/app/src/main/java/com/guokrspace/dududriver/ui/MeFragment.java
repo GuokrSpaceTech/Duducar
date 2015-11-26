@@ -25,7 +25,6 @@ import com.guokrspace.dududriver.adapter.RecordListAdapter;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.model.HistoryOrder;
 import com.guokrspace.dududriver.model.HistoryOrderResponseModel;
-import com.guokrspace.dududriver.model.OrderRecordListItem;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
@@ -73,12 +72,7 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
     RecyclerView mRecyclerView;
     @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout refreshLayout;
-//    @Bind(R.id.pattern_btn)
-//    Button btnPattern;
-//    @Bind(R.id.listenprogressview)
-//    ListenProgressView mListenProgressView;
-//    @Bind(R.id.over_btn)
-//    Button btnOver;
+
     private Context context;
     private LinearLayoutManager mLayoutManager;
 
@@ -184,6 +178,18 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        //进入页面自动刷新
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setRefreshing(refreshLayout, true, true);
+            }
+        }, 2000);
+    }
+
     private void initView() {
         //初始化历史订单列表
         mAdapter = new RecordListAdapter(getActivity(), listItems);
@@ -218,14 +224,6 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
                 resources.getColor(R.color.materialGreen));
         //下拉刷新
         refreshLayout.setOnRefreshListener(refreshListener);
-
-        //进入页面自动刷新
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                setRefreshing(refreshLayout, true, true);
-            }
-        }, 2000);
 
         //更新司机个人信息
         updateDriverInfo();
@@ -286,14 +284,6 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
         });
     }
 
-    private List<OrderRecordListItem> initData() {
-        List<OrderRecordListItem> data = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            data.add(new OrderRecordListItem("1", "9月27日 17:30", "长沙轮渡 湘江中路东", "友阿百货 雨花区人民中路", "已支付"));
-        }
-        return data;
-    }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -305,7 +295,6 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
         switch (msg.what){
             case LOAD_BASEINFO:
                 updateDriverInfo();
-
             break;
             case HANDLE_REFRESH_OVER:
                 refreshLayout.setRefreshing(false);

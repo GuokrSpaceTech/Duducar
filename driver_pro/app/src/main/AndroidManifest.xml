@@ -29,6 +29,16 @@
     <uses-permission android:name="android.permission.READ_LOGS" />
     <!-- 打电话权限 -->
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.BAIDU_LOCATION_SERVICE" />
+    <uses-permission android:name="android.permission.ACCES_MOCK_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_GPS" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+    <!-- 来电消音 -->
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- 摄影机 -->
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".DuduDriverApplication"
@@ -39,6 +49,15 @@
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="qGx8XpcPAkQ0nGbyml3IlNOt" />
+        <meta-data
+            android:name="BaiduMobAd_CELL_LOCATION"
+            android:value="true" />
+        <meta-data
+            android:name="BaiduMobAd_GPS_LOCATION"
+            android:value="true" />
+        <meta-data
+            android:name="BaiduMobAd_WIFI_LOCATION"
+            android:value="true" />
 
         <activity
             android:name=".ui.LoginActivity"
@@ -79,11 +98,16 @@
         <activity
             android:name=".ui.OrderMapActivity"
             android:label="订单地图" />
+        <activity android:name=".ui.AlipayActivity"
+            android:label="账单支付" />
 
         <service
             android:name=".net.DuduService"
             android:enabled="true"
             android:exported="false" />
+
+
+
 
     </application>
 

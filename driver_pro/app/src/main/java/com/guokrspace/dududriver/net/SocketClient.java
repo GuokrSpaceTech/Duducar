@@ -15,6 +15,7 @@ import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.HashMap;
@@ -339,11 +340,12 @@ public class SocketClient {
         return ret;
     }
 
-    public int endOrderSelfPay(String price, String mileage, ResponseHandler handler){
+    public int endOrderSelfPay(int orderid, String price, String mileage, ResponseHandler handler){
         int ret = -1;
         JSONObject edOrder = new JSONObject();
         try {
-            edOrder.put("cmd", "order_end_self_pay");
+            edOrder.put("cmd", "driver_pay");
+            edOrder.put("order_id", orderid);
             edOrder.put("price", price);
             edOrder.put("mileage", mileage);
             edOrder.put("lat", CommonUtil.getCurLat());
@@ -364,6 +366,25 @@ public class SocketClient {
             baseInfo.put("cmd", "baseinfo");
             baseInfo.put("role", "1");
             ret = sendMessage(baseInfo, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return ret;
+    }
+
+    public int sendCurrentChargeDetail(double curCharge, double curmile, int lowspeed, ResponseHandler handler){
+        int ret = -1;
+        JSONObject chargeDetail = new JSONObject();
+        try {
+            curmile = new BigDecimal(curmile).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+            curCharge = new BigDecimal(curCharge).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+            chargeDetail.put("cmd", "current_charge");
+            chargeDetail.put("role", "1");
+            chargeDetail.put("current_mile", curmile+"");
+            chargeDetail.put("current_charge", curCharge+"");
+            chargeDetail.put("low_speed_time", lowspeed + "");
+            ret = sendMessage(chargeDetail, handler, 5);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -406,14 +427,29 @@ public class SocketClient {
         return ret;
     }
 
+    //
+    //    order_id
+    //    * 		pay_price 实际支付金额
+    //    * 		pay_time  支付时间
+    //    * 		pay_type  支付方式 1-支付宝 2-微信 3-银联
+    public int sendPayOverRequest( int orderid ,Long timestamp, String price, int type, ResponseHandler handler)
+    {
+        int ret = -1;
+        JSONObject carmsg = new JSONObject();
+        try {
+            carmsg.put("cmd", MessageTag.getInstance().Command(MessageTag.PAY_OVER));
+            carmsg.put("role","1");
+            carmsg.put("pay_price",price);
+            carmsg.put("pay_time",timestamp);
+            carmsg.put("pay_type",type);
+            carmsg.put("order_id", orderid);
+            ret = sendMessage(carmsg, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-    private String convertStandardJSONString(String data_json) {
-        data_json = data_json.replaceAll("\\\\r\\\\n", "");
-        data_json = data_json.replaceAll("\\\\", "");
-        data_json = data_json.replace("\"{", "{");
-        data_json = data_json.replace("}\",", "},");
-        data_json = data_json.replace("}\"", "}");
-        return data_json;
+        return ret;
     }
+
 
 }

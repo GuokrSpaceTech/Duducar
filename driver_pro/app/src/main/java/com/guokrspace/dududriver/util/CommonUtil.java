@@ -5,6 +5,9 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.LocationClient;
+import com.baidu.mapapi.model.LatLng;
 import com.guokrspace.dududriver.DuduDriverApplication;
 
 import java.math.BigDecimal;
@@ -106,9 +109,45 @@ public class CommonUtil {
         CommonUtil.curTime = curTime;
     }
 
-    public static double curLat;
-    public static double curLng;
-    public static long curTime;
+    private static double curLat;
+    private static double curLng;
+    private static LatLng curLatLng;
+
+    public static LatLng getCurLatLng() {
+        return curLatLng;
+    }
+
+    public static void setCurLatLng(LatLng curLatLng) {
+        CommonUtil.curLatLng = curLatLng;
+    }
+
+    public static BDLocation getMCLocation(double lat, double lng){
+        BDLocation location = new BDLocation();
+        location.setLatitude(lat);
+        location.setLongitude(lng);
+        location.setCoorType("bd09ll");
+        return LocationClient.getBDLocationInCoorType(LocationClient.getBDLocationInCoorType(location, BDLocation.BDLOCATION_BD09LL_TO_GCJ02), BDLocation.BDLOCATION_GCJ02_TO_BD09);
+    }
+
+    public static String getCurAddress() {
+        return curAddress;
+    }
+
+    public static void setCurAddress(String curAddress) {
+        CommonUtil.curAddress = curAddress;
+    }
+
+    public static String getCurAddressDescription() {
+        return curAddressDescription;
+    }
+
+    public static void setCurAddressDescription(String curAddressDescription) {
+        CommonUtil.curAddressDescription = curAddressDescription;
+    }
+
+    private static String curAddress;
+    private static String curAddressDescription;
+    private static long curTime;
 
     public static void updateToday(){
         TimeZone.setDefault(TimeZone.getTimeZone("GTM-8"));
@@ -176,5 +215,24 @@ public class CommonUtil {
     }
 
     private static boolean isServiceOn;
+
+    public static double countPrice(double mileage, int lowtime) {
+
+        float starting_price = Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), "starting_price", "5.5"));
+        float starting_distance = Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), "starting_distance", "6.0"));
+        float km_price = Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), "km_price", "2.0"));
+        float low_speed_price = Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), "low_speed_price", "2.0"));
+        mileage = mileage/1000.0d;
+        if(mileage <= starting_distance + 0.5){
+            return starting_price + low_speed_price * lowtime;
+        }
+        mileage = mileage - starting_distance;
+
+        return  new BigDecimal(starting_price + mileage * km_price + lowtime * low_speed_price).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+    }
+
+    public static float getStartPrice(){
+        return Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), "starting_price", "5.5"));
+    }
 
 }

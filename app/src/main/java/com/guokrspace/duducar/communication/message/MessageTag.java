@@ -33,6 +33,8 @@ public class MessageTag {
     public static final int MESSAGE_ORDER_CANCEL_CONFIRMED = 0x9003;
     public static final int MESSAGE_ORDER_CANCEL_TIMEOUT = 0x9004;
     public static final int MESSAGE_ORDER_COMPLETED = 0x900b;
+    public static final int MESSAGE_UPDATE_CHARGE = 0x900c;
+    public static final int MESSAGE_UPDATE_TRACK = 0x900d;
 
     public static final int MESSAGE_PASSENGER_IN_CAR = 0x9005;
 
@@ -53,10 +55,12 @@ public class MessageTag {
     public static final int CANCEL_ORDER_REQ = 0x1005;
     public static final int CANCEL_ORDER_RESP = 0x1006;
     public static final int TRIP_START = 0x1007;
+    public static final int CURRENT_TRIP_FEE = 0x1012;
     public static final int TRIP_OVER = 0x1008;
     public static final int ORDER_ACCEPT = 0x100E;
     public static final int RATING_SERVICE = 0x100F;
     public static final int PAY_OVER = 0x1010;
+    public static final int DRIVER_PAY = 0x1011;
 
     public static MessageTag getInstance(){
         if(s_instance == null) new MessageTag();
@@ -85,6 +89,8 @@ public class MessageTag {
         MessageTag.put("order_accept", ORDER_ACCEPT);
         MessageTag.put("comment", RATING_SERVICE);
         MessageTag.put("pay_over", PAY_OVER);
+        MessageTag.put("driver_pay", DRIVER_PAY);
+        MessageTag.put("current_charge", CURRENT_TRIP_FEE);
     }
 
     public int Tag(String command)
