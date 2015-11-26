@@ -13,6 +13,7 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.model.LatLng;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.net.message.HeartBeatMessage;
 import com.guokrspace.dududriver.util.CommonUtil;
@@ -137,6 +138,7 @@ public class DuduService extends Service {
             //修改现在状态
             CommonUtil.setCurLng(curLocaData.longitude);
             CommonUtil.setCurLat(curLocaData.latitude);
+            CommonUtil.setCurLatLng(new LatLng(curLocaData.latitude, curLocaData.longitude));
             CommonUtil.setCurAddress(location.getAddrStr());
             CommonUtil.setCurAddressDescription(location.getLocationDescribe());
             CommonUtil.setCurTime(System.currentTimeMillis());

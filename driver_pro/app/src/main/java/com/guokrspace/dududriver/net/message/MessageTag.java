@@ -1,7 +1,5 @@
 package com.guokrspace.dududriver.net.message;
 
-import android.os.Message;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,6 +41,7 @@ public class MessageTag {
 
     public static final int MESSAGE_PAYMENT_CONFIRM_TIMEOUT = 0x9008;
     public static final int MESSAGE_PAYMENT_COMPLETED = 0x9008;
+    public static final int MESSAGE_UPDATE_TRACK = 0x9009;
 
     public static final int REGISTER_REQ = 0x100A;
     public static final int REGISTER_RESP = 0x100B;

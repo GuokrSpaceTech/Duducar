@@ -21,7 +21,8 @@ public class VoiceCommand {
     public static final String ORDER_CANCEL = "乘客取消订单, 等待重新派单";
     public static final String CALL_PASSENEGER = "正在联系乘客";
     public static final String ORDER_FINISHED = "订单结束,停止计费,请确认账单";
-    public static final String WAIT_FOR_PAY = "账单已发送,等待乘客支付或您代付";
+    public static final String CONFIRM_CHARGE = "请确认账单,提醒用户付款";
+    public static final String WAIT_FOR_PAY = "账单已发送,等待支付";
     public static final String PAY_OVER = "收款成功, 请选择继续听单或收车";
     public static final String DRIVER_PAY = "请您尽快完成代付";
     public static final String START_NAVIGATION = "正在启动导航";

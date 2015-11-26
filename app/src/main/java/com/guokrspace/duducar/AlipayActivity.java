@@ -23,7 +23,11 @@ import com.guokrspace.duducar.alipay.PayResult;
 import com.guokrspace.duducar.alipay.SignUtils;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
+import com.guokrspace.duducar.communication.message.MessageTag;
 import com.guokrspace.duducar.communication.message.OrderDetail;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -63,6 +67,7 @@ public class AlipayActivity extends ActionBarActivity {
     private OrderDetail tripOverOrderDetail;
     private Button payButton;
     private TextView feeTextView;
+    private android.support.v7.app.AlertDialog.Builder alterDialog;
     private static final int SDK_PAY_FLAG = 1;
     private static final int SDK_CHECK_FLAG = 2;
 
@@ -109,6 +114,14 @@ public class AlipayActivity extends ActionBarActivity {
                             if (TextUtils.equals(resultStatus, "8000")) {
                                 Toast.makeText(AlipayActivity.this, "支付结果确认中",
                                         Toast.LENGTH_SHORT).show();
+                            } else if(TextUtils.equals(resultStatus, "6001")) {
+                                // 中途停止支付
+                                Toast.makeText(AlipayActivity.this, "请尽快完成支付", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(mContext, RatingActivity.class);
+                                intent.putExtra("order", tripOverOrderDetail);
+                                startActivity(intent);
+
+                                finish();
                             } else {
                                 // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
                                 Toast.makeText(AlipayActivity.this, "支付失败", Toast.LENGTH_SHORT).show();
@@ -154,6 +167,41 @@ public class AlipayActivity extends ActionBarActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        //注册监听司机代付信息
+        SocketClient.getInstance().registerServerMessageHandler(MessageTag.DRIVER_PAY, new ResponseHandler(Looper.myLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                /*
+                * orderId
+                * */
+                try {
+                    JSONObject mDriverPay = new JSONObject(messageBody);
+                    if(tripOverOrderDetail == null){
+                        finish();
+                    }
+                    if (Integer.parseInt((String)mDriverPay.get("order_id")) != tripOverOrderDetail.getId()) {
+                        //异常情况,不是目前处理订单的消息
+                        return;
+                    }
+                    tripOverOrderDetail = null;
+                    Toast.makeText(getApplicationContext(), "司机已代付!", Toast.LENGTH_LONG).show();
+                    finish();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            @Override
+            public void onFailure(String error) {
+            }
+            @Override
+            public void onTimeout() {
+            }
+        });
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_alipay, menu);
@@ -169,7 +217,19 @@ public class AlipayActivity extends ActionBarActivity {
 
         if (id == android.R.id.home)
         {
-            finish();
+            alterDialog = new android.support.v7.app.AlertDialog.Builder(AlipayActivity.this);
+            alterDialog.setMessage("选择稍后支付或司机代付").setPositiveButton(
+                    "确认", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                }
+            }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            }).show();
         }
 
         return super.onOptionsItemSelected(item);
@@ -201,9 +261,7 @@ public class AlipayActivity extends ActionBarActivity {
         String sign = sign(orderInfo);
         try {
             // 仅需对sign 做URL编码
-            Log.e("daddy pay", sign);
             sign = URLEncoder.encode(sign, "UTF-8");
-            Log.e("daddy pay", sign);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -240,11 +298,7 @@ public class AlipayActivity extends ActionBarActivity {
      */
     public String getOrderInfo(OrderDetail tripOverOrderDetail){
         String notifyUrl = "http://120.24.237.15:81/api/Pay/getAlipayResult";
-//        try {
-//            notifyUrl = "http://120.24.237.15:81/index.php?s=api/Pay/getAlipayResult";
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//        }
+
         // 签约合作者身份ID
         String orderInfo = "partner=" + "\"" + PARTNER + "\"";
 

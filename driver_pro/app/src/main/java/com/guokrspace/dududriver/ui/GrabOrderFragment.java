@@ -2,6 +2,8 @@ package com.guokrspace.dududriver.ui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -33,7 +35,7 @@ import butterknife.ButterKnife;
 /**
  * Created by hyman on 15/10/22.
  */
-public class GrabOrderFragment extends BaseFragment {
+public class GrabOrderFragment extends BaseFragment implements Handler.Callback{
 
     @Bind(R.id.date_tv)
     TextView tvDate;
@@ -48,6 +50,7 @@ public class GrabOrderFragment extends BaseFragment {
     @Bind(R.id.graborder_rv)
     RecyclerView mRecyclerView;
     private Context context;
+    private Handler mHandler;
 
     private NoticeAdapter mAdapter;
 
@@ -96,6 +99,10 @@ public class GrabOrderFragment extends BaseFragment {
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
+        updateTodayInfo();
+    }
+
+    private void updateTodayInfo(){
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM月dd日 EEEE");
         String today = dateFormat.format(date);
@@ -104,8 +111,7 @@ public class GrabOrderFragment extends BaseFragment {
         tvOrderNum.setText("已完成 " + CommonUtil.getTodayDoneWork() + " 单");
         tvOnlineTime.setText("");
         tvIncome.setText(CommonUtil.getTodayCash() + "");
-        tvTurnoverRate.setText( CommonUtil.getTodayWorkRate() + " %");
-
+        tvTurnoverRate.setText(CommonUtil.getTodayWorkRate() + " %");
     }
 
     private List<BaseNoticeItem> initData() {
@@ -127,5 +133,22 @@ public class GrabOrderFragment extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    public Handler getHanlder(){
+        mHandler = new Handler(this);
+        return mHandler;
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        switch (msg.what){
+            case 0://update
+                updateTodayInfo();
+                break;
+            default:
+                break;
+        }
+        return false;
     }
 }

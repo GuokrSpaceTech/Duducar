@@ -63,7 +63,7 @@ public class SocketClient {
      */
     public int sendMessage(final JSONObject message, final ResponseHandler handler, final int timeout){
         int ret = -1; //Default is error
-        Log.e("sendmessage" + (out == null), "daddy");
+//        Log.e("sendmessage" + (out == null), "daddy " + out.checkError());//
         //Send the message
         try {
             message.put("message_id", messageid);

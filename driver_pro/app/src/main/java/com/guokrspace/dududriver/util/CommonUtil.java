@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
+import com.baidu.mapapi.model.LatLng;
 import com.guokrspace.dududriver.DuduDriverApplication;
 
 import java.math.BigDecimal;
@@ -110,6 +111,15 @@ public class CommonUtil {
 
     private static double curLat;
     private static double curLng;
+    private static LatLng curLatLng;
+
+    public static LatLng getCurLatLng() {
+        return curLatLng;
+    }
+
+    public static void setCurLatLng(LatLng curLatLng) {
+        CommonUtil.curLatLng = curLatLng;
+    }
 
     public static BDLocation getMCLocation(double lat, double lng){
         BDLocation location = new BDLocation();

@@ -91,6 +91,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     private static final int HANDLE_BASEINFO = 103;
     private static final int ORDER_CANCELED = 104;
     private static final int ADJUST_STATUS = 105;
+    private static final int UPDATE_GRABORDER = 106;
     //TODO:OTHER thing
 
     private PersonalInformation userInfo;
@@ -164,7 +165,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         * 更新每天的记录
         * */
 //        CommonUtil.updateToday();
-
+        mHandler.sendEmptyMessage(UPDATE_GRABORDER);
     }
 
     @Override
@@ -446,6 +447,9 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 SharedPreferencesUtils.setParams(getApplicationContext(), baseInfo.getBaseInfo());
                 updateMeFragmentBaseinfo(baseInfo);
                 break;
+            case UPDATE_GRABORDER:
+                updateGrabOrderFragment();
+                break;
             case ADJUST_STATUS:
                 if(CommonUtil.getCurrentStatus() == Constants.STATUS_WAIT) {
                     isListeneing = true;
@@ -481,6 +485,18 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 msg.obj = info;
                 msg.what = MeFragment.LOAD_BASEINFO;
                 ((MeFragment) fragment).getHanlder().sendMessage(msg);
+            }
+        }
+    }
+
+    private void updateGrabOrderFragment(){
+        List<Fragment> list = MainActivity.this.getSupportFragmentManager().getFragments();
+        if(list == null){
+            return;
+        }
+        for(Fragment fragment : list){
+            if(fragment instanceof GrabOrderFragment){//
+                ((GrabOrderFragment) fragment).getHanlder().sendEmptyMessage(0);
             }
         }
     }

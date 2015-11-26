@@ -27,7 +27,6 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.baidu.location.Poi;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
@@ -37,10 +36,13 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
+import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
 import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
+import com.guokrspace.duducar.communication.message.ChargeDetail;
 import com.guokrspace.duducar.communication.message.DriverInfo;
 import com.guokrspace.duducar.communication.message.MessageTag;
 import com.guokrspace.duducar.communication.message.NearByCars;
@@ -52,6 +54,7 @@ import com.guokrspace.duducar.ui.DriverInformationView;
 import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
@@ -65,8 +68,10 @@ public class PostOrderActivity extends AppCompatActivity {
     TextView mDestTextView;
     TextView mStartTextView;
     TextView mFab;
+    TextView mCurrentChargeView;
     DriverInformationView driverView;
     boolean isFirstLoc = true;// 是否首次定位
+    boolean isStartFollow = false;
     ProgressBar mProgressBar;
 
     int state;
@@ -77,14 +82,20 @@ public class PostOrderActivity extends AppCompatActivity {
     BitmapDescriptor mCurrentMarker;
     LocationClient mLocClient;
     public MyLocationListener myListener = new MyLocationListener();
+    private LatLng mPrevLatLng;//上一次的经纬度地址
+    private LatLng mCurrLatLng;//当前的经纬度地址
+    private boolean mIsFirstDraw = true;
+
 
     //Data
     SearchLocation start;
     SearchLocation dest;
     DriverInfo driver;
     TripStart order_start;
+    ChargeDetail charge_detail;
     TripOver order_finish;
     LatLng currentLocation;
+    LatLng prevLocation;
     DuduApplication mApplication;
 
     //Activity Start RequestCode
@@ -162,9 +173,22 @@ public class PostOrderActivity extends AppCompatActivity {
 //                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_current_position_pin)));
 //                        mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLng(ll));
                     }
+                    mCurrentChargeView.setVisibility(View.VISIBLE);
+                    mCurrentMarker = BitmapDescriptorFactory.fromResource(R.drawable.caricon);
+                    mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(MyLocationConfiguration.LocationMode.FOLLOWING, true, mCurrentMarker));
 
+                    isStartFollow = true;
                     break;
-
+                case MessageTag.MESSAGE_UPDATE_CHARGE:
+                    //TODO : 更新费用信息
+                    if(charge_detail != null) {
+                        mCurrentChargeView.setText(
+                                "当前车费: " + charge_detail.getCurrent_charge() + "元\n" +
+                                "行驶里程: " + charge_detail.getCurrent_mile() + "公里\n" +
+                                "低速行驶: " + charge_detail.getLow_speed_time() + "分钟\n"
+                        );
+                    }
+                    break;
                 case MessageTag.MESSAGE_ORDER_COMPLETED:
                     if (order_finish != null) {
                         orderStatusString = String.format("到达%s", order_finish.getOrder().getDestination());
@@ -173,9 +197,27 @@ public class PostOrderActivity extends AppCompatActivity {
                         Intent intent = new Intent(mContext, AlipayActivity.class);
                         intent.putExtra("order",order_finish.getOrder());
                         startActivity(intent);
-
+                        isStartFollow = false;
                         finish();
                     }
+                    break;
+                case MessageTag.MESSAGE_UPDATE_TRACK:
+                    Log.e("daddy", "update track");
+                    if(currentLocation == null)
+                        return;
+                    if(mIsFirstDraw){
+                        prevLocation = currentLocation;
+                        mIsFirstDraw = false;
+                    }
+
+                    if(Math.abs(prevLocation.latitude- currentLocation.latitude)>0.005
+                            ||Math.abs(prevLocation.longitude- currentLocation.longitude)>0.005 )
+                        //异常定位
+                        return;
+                    drawLine(mBaiduMap, prevLocation, currentLocation);
+                    prevLocation = currentLocation;
+                    break;
+                default:
                     break;
             }
         }
@@ -209,8 +251,8 @@ public class PostOrderActivity extends AppCompatActivity {
         mBaiduMap.setMyLocationEnabled(true);
         mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true, mCurrentMarker));
 
-        mBaiduMap.getUiSettings().setRotateGesturesEnabled(false);
-        mBaiduMap.getUiSettings().setScrollGesturesEnabled(false);
+//        mBaiduMap.getUiSettings().setRotateGesturesEnabled(false);
+//        mBaiduMap.getUiSettings().setScrollGesturesEnabled(false);
         mBaiduMap.getUiSettings().setZoomGesturesEnabled(false);
 
         LatLng initLoc = new LatLng(28.173,112.9584);
@@ -234,7 +276,7 @@ public class PostOrderActivity extends AppCompatActivity {
         zoom.setVisibility(View.GONE);
 
         mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
-        MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(18.0f);
+        MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(20.0f);
         mBaiduMap.setMapStatus(msu);
 
         //UI
@@ -268,89 +310,8 @@ public class PostOrderActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-        // Debug
-//        mFab.setOnClickListener(new View.OnClickListener() {
-////            @Override
-////            public void onClick(View view) {
-////                mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_COMPLETED);
-////            }
-//
-//            @Override
-//            public void onClick(View view) {
-//                order_start = new TripStart();
-//
-//                OrderDetail order = new OrderDetail();
-//
-//                order.setStart("麓山南路36号");
-//                order.setStart_lat("28.18539");
-//                order.setStart_lng("112.949728");
-//                order.setDestination("火车南站");
-//                order.setCar_type("1");
-//
-//                order_start.setOrder(order);
-//
-//                driver = new DriverInfo();
-//                DriverDetail detail = new DriverDetail();
-//                detail.setName("王师傅");
-//                detail.setAvatar("http://img4.imgtn.bdimg.com/it/u=1519979105,1747027397&fm=21&gp=0.jpg");
-//                detail.setMobile("13522577115");
-//                detail.setDescription("黑色起亚");
-//                detail.setPlate("湘A-12445345");
-//                detail.setPicture("http://img4.imgtn.bdimg.com/it/u=1519979105,1747027397&fm=21&gp=0.jpg");
-//                detail.setRating(4);
-//                driver.setDriver(detail);
-//                mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_DISPATCHED);
-//            }
-//        });
-
-            //        mFab.setOnClickListener(new View.OnClickListener() {
-////            @Override
-////            public void onClick(View view) {
-////                mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_COMPLETED);
-////            }
-////
-//            @Override
-//            public void onClick(View view) {
-//                order_finish = new TripOver();
-//
-//                String messageBody = "{\"id\":29,\"orderNum\":\"12345678889\",\"driver_id\":3,\"passenger_id\":3,\"passenger_mobile\":\"13900000002\"," +
-//                        "\"start\":\"\\u6e56\\u5357\\u7701\\u957f\\u6c99\\u5e02\\u5cb3\\u9e93\\u533a\\u767b\\u9ad8\\u8def4-2\"," +
-//                        "\"destination\":\"\\u83ab\\u4fea\\u82b1\\u56ed\",\"start_lat\":28.185693,\"start_lng\":112.949612," +
-//                        "\"destination_lat\":28.185693,\"destination_lng\":112.949612,\"start_time\":1447162569," +
-//                        "\"end_time\":1447162579,\"pre_mileage\":\"0.00\",\"pre_price\":\"0.00\",\"car_type\":1,\"rent_type\":0,\"additional_price\":\"\"," +
-//                        "\"org_price\":\"0.01\",\"isCancel\":\"\"," +
-//                        "\"mileage\":\"0.0\",\"sumprice\":\"\",\"create_time\":1447162560,\"isCityline\":0,\"cityline_id\":\"\",\"pay_time\":\"\",\"pay_type\":\"\",\"status\":4,\"rating\":0}";
-//
-//                OrderDetail detail = FastJsonTools.getObject(messageBody, OrderDetail.class);
-
-
-
-//                order.setDestination("麓山南路36号");
-//                order.setStart_lat("28.18539");
-//                order.setStart_lng("112.949728");
-//                order.setDestination_lat("28.18539");
-//                order.setDestination_lng("112.949728");
-//                order.setCar_type("1");
-//
-//                order_finish.setOrder(null);
-//
-//                driver = new DriverInfo();
-//                DriverDetail detail = new DriverDetail();
-//                detail.setName("王师傅");
-//                detail.setAvatar("http://img4.imgtn.bdimg.com/it/u=1519979105,1747027397&fm=21&gp=0.jpg");
-//                detail.setMobile("13522577115");
-//                detail.setDescription("黑色起亚");
-//                detail.setPlate("湘A-12445345");
-//                detail.setPicture("http://img4.imgtn.bdimg.com/it/u=1519979105,1747027397&fm=21&gp=0.jpg");
-//                detail.setRating(4);
-//                driver.setDriver(detail);
-
-//                mApplication.mDriverDetail = driver.getDriver();
-//
-//                mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_COMPLETED);
-//            }
-//        });
+        mCurrentChargeView = (TextView) findViewById(R.id.currentChargeView);
+        mCurrentChargeView.setVisibility(View.GONE);
 
         mStartTextView = (TextView) findViewById(R.id.textViewStart);
         mDestTextView = (TextView) findViewById(R.id.textViewDestination);
@@ -447,6 +408,24 @@ public class PostOrderActivity extends AppCompatActivity {
             public void onSuccess(String messageBody) {
                 order_start = FastJsonTools.getObject(messageBody, TripStart.class);
                 mHandler.sendEmptyMessage(MessageTag.MESSAGE_CAR_ARRIVED);
+            }
+
+            @Override
+            public void onFailure(String error) {
+
+            }
+
+            @Override
+            public void onTimeout() {
+
+            }
+        });
+
+        SocketClient.getInstance().registerServerMessageHandler(MessageTag.CURRENT_TRIP_FEE, new ResponseHandler(Looper.myLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                charge_detail = FastJsonTools.getObject(messageBody, ChargeDetail.class);
+                mHandler.sendEmptyMessage(MessageTag.MESSAGE_UPDATE_CHARGE);
             }
 
             @Override
@@ -645,6 +624,8 @@ public class PostOrderActivity extends AppCompatActivity {
         option.setIsNeedAddress(true);//可选，设置是否需要地址信息，默认不需要
         option.setOpenGps(true);//可选，默认false,设置是否使用gps
         option.setLocationNotify(true);//可选，默认false，设置是否当gps有效时按照1S1次频率输出GPS结果
+        option.setNeedDeviceDirect(true);
+        option.setIsNeedAddress(true);
         option.setIgnoreKillProcess(false);//可选，默认false，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认杀死
         option.SetIgnoreCacheException(false);//可选，默认false，设置是否收集CRASH信息，默认收集
         option.setEnableSimulateGps(false);//可选，默认false，设置是否需要过滤gps仿真结果，默认需要
@@ -659,64 +640,6 @@ public class PostOrderActivity extends AppCompatActivity {
 
         @Override
         public void onReceiveLocation(BDLocation location) {
-            //Receive Location
-            StringBuffer sb = new StringBuffer(256);
-            sb.append("time : ");
-            sb.append(location.getTime());
-            sb.append("\nerror code : ");
-            sb.append(location.getLocType());
-            sb.append("\nlatitude : ");
-            sb.append(location.getLatitude());
-            sb.append("\nlontitude : ");
-            sb.append(location.getLongitude());
-            sb.append("\nradius : ");
-            sb.append(location.getRadius());
-            if (location.getLocType() == BDLocation.TypeGpsLocation) {// GPS定位结果
-                sb.append("\nspeed : ");
-                sb.append(location.getSpeed());// 单位：公里每小时
-                sb.append("\nsatellite : ");
-                sb.append(location.getSatelliteNumber());
-                sb.append("\nheight : ");
-                sb.append(location.getAltitude());// 单位：米
-                sb.append("\ndirection : ");
-                sb.append(location.getDirection());// 单位度
-                sb.append("\naddr : ");
-                sb.append(location.getAddrStr());
-                sb.append("\ndescribe : ");
-                sb.append("gps定位成功");
-
-            } else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {// 网络定位结果
-                sb.append("\naddr : ");
-                sb.append(location.getAddrStr());
-                //运营商信息
-                sb.append("\noperationers : ");
-                sb.append(location.getOperators());
-                sb.append("\ndescribe : ");
-                sb.append("网络定位成功");
-            } else if (location.getLocType() == BDLocation.TypeOffLineLocation) {// 离线定位结果
-                sb.append("\ndescribe : ");
-                sb.append("离线定位成功，离线定位结果也是有效的");
-            } else if (location.getLocType() == BDLocation.TypeServerError) {
-                sb.append("\ndescribe : ");
-                sb.append("服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因");
-            } else if (location.getLocType() == BDLocation.TypeNetWorkException) {
-                sb.append("\ndescribe : ");
-                sb.append("网络不同导致定位失败，请检查网络是否通畅");
-            } else if (location.getLocType() == BDLocation.TypeCriteriaException) {
-                sb.append("\ndescribe : ");
-                sb.append("无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机");
-            }
-            sb.append("\nlocationdescribe : ");
-            sb.append(location.getLocationDescribe());// 位置语义化信息
-            List<Poi> list = location.getPoiList();// POI数据
-            if (list != null) {
-                sb.append("\npoilist size = : ");
-                sb.append(list.size());
-                for (Poi p : list) {
-                    sb.append("\npoi= : ");
-                    sb.append(p.getId() + " " + p.getName() + " " + p.getRank());
-                }
-            }
 
             // map view 销毁后不在处理新接收的位置
             if (location == null || mMapView == null)
@@ -730,9 +653,7 @@ public class PostOrderActivity extends AppCompatActivity {
 
             if (locData != null) {
                 mBaiduMap.setMyLocationData(locData);
-
                 currentLocation = new LatLng(locData.latitude, locData.longitude);
-
             }
 
 //            Log.i("BaiduLocationApiDem", sb.toString());
@@ -742,8 +663,8 @@ public class PostOrderActivity extends AppCompatActivity {
     private class MyTimerTask extends TimerTask {
         @Override
         public void run() {
-            if (start != null) {
-                SocketClient.getInstance().sendNearByCarRequestTest(28.173D, 112.9584D, "1", new ResponseHandler(Looper.getMainLooper()) {
+            if (start != null && currentLocation != null && !isStartFollow) {
+                SocketClient.getInstance().sendNearByCarRequestTest(currentLocation.latitude, currentLocation.longitude, "1", new ResponseHandler(Looper.getMainLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
 
@@ -761,19 +682,34 @@ public class PostOrderActivity extends AppCompatActivity {
                             mBaiduMap.animateMapStatus(u);
                         }
                     }
-
                     @Override
                     public void onFailure(String error) {
-
                     }
-
                     @Override
                     public void onTimeout() {
-
                     }
                 });
-
+            } else if (isStartFollow && currentLocation != null){
+                //更新界面
+                mHandler.sendEmptyMessage(MessageTag.MESSAGE_UPDATE_TRACK);
             }
+
         }
+    }
+
+
+
+    /**
+     * 绘制实际轨迹连线
+     * */
+    private void drawLine(BaiduMap baiduMap,LatLng first, LatLng second){
+        // 添加折线
+        Log.e("daddy", "drawline " + first.latitude +"::"+second.latitude);
+        List<LatLng> lineList = new ArrayList<LatLng>();
+        lineList.clear();
+        lineList.add(first);
+        lineList.add(second);
+        OverlayOptions ooPolyline = new PolylineOptions().width(10).color(0xAAFF0000).points(lineList);
+        baiduMap.addOverlay(ooPolyline);
     }
 }

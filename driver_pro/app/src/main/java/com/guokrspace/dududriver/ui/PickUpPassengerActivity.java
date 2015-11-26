@@ -31,7 +31,10 @@ import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
+import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.overlayutil.DrivingRouteOverlay;
 import com.baidu.mapapi.search.core.SearchResult;
@@ -214,8 +217,24 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                 if(curCharge <= price) {
                     curCharge = new BigDecimal(price).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
                     btnConfirm.setText(curCharge + "元   到达目的地");
+                    SocketClient.getInstance().sendCurrentChargeDetail(curCharge, curDistance/1000, lowSpeedTime, new ResponseHandler(Looper.myLooper()) {
+                        @Override
+                        public void onSuccess(String messageBody) {
+                        }
+                        @Override
+                        public void onFailure(String error) {
+                        }
+                        @Override
+                        public void onTimeout() {
+                        }
+                    });
                 }
                 Log.e("daddy", "current charge");
+                break;
+            case MessageTag.MESSAGE_UPDATE_TRACK:
+                if(isFirstTrack){
+//                    prevLatLng =
+                }
                 break;
             default:
                 break;
@@ -764,7 +783,6 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                 @Override
                 public void onNaviGuideEnd() {
                     //TODO 导航结束
-//                    VoiceUtil.startSpeaking(VoiceCommand.NAVIGATION_OVER);
                     isNavigationNow = false;
                 }
 
@@ -801,6 +819,38 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
             BNRouteGuideManager.getInstance().setCustomizedLayerItems(items);
         }
         BNRouteGuideManager.getInstance().showCustomizedLayer(true);
+    }
+
+    private LatLng currentLatLng = null;
+    private LatLng prevLatLng = null;
+    private boolean isFirstTrack = true;
+
+    private class DrawLineTimerTask extends TimerTask {
+        @Override
+        public void run() {
+            if (CommonUtil.getCurrentStatus() != Constants.STATUS_RUN || CommonUtil.getCurrentStatus() != Constants.STATUS_GET) {
+                //状态异常
+                return;
+            } else if (CommonUtil.getCurLatLng() != null){
+                //更新界面
+                mHandler.sendEmptyMessage(MessageTag.MESSAGE_UPDATE_TRACK);
+            }
+
+        }
+    }
+
+    /**
+     * 绘制实际轨迹连线
+     * */
+    private void drawLine(BaiduMap baiduMap,LatLng first, LatLng second){
+        // 添加折线
+        Log.e("daddy", "drawline " + first.latitude +"::"+second.latitude);
+        List<LatLng> lineList = new ArrayList<LatLng>();
+        lineList.clear();
+        lineList.add(first);
+        lineList.add(second);
+        OverlayOptions ooPolyline = new PolylineOptions().width(10).color(0xAAFF0000).points(lineList);
+        baiduMap.addOverlay(ooPolyline);
     }
 
 }

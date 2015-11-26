@@ -1,7 +1,6 @@
 package com.guokrspace.dududriver.ui;
 
 import android.annotation.TargetApi;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
@@ -172,14 +171,54 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
             @Override
             public void onClick(View v) {
 
+                VoiceUtil.startSpeaking(VoiceCommand.CONFIRM_CHARGE);
+
                 dialog.show();
-                dialog.getButtonAccept().setButtonText("等待乘客付款");
-                dialog.getButtonCancel().setButtonText("司机代付");
-                dialog.getButtonAccept().setClickable(false);
-                dialog.getButtonAccept().setEnabled(false);
-                dialog.getButtonCancel().setClickable(false);
-                dialog.getButtonCancel().setEnabled(false);
-                dialog.setCancelable(false);
+                dialog.getButtonAccept().setButtonText("确认");
+                dialog.getButtonCancel().setButtonText("取消");
+                //选择乘客支付
+                dialog.setOnAcceptButtonClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+//                        CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+//                        VoiceUtil.startSpeaking(VoiceCommand.CONTINUE_WAIT);
+
+                        SocketClient.getInstance().endOrder(price + "", curDistance + "", new ResponseHandler(Looper.myLooper()) {
+                            @Override
+                            public void onSuccess(String messageBody) {
+                                Log.e("PickUpPassengerAct", "success " + messageBody);
+                                VoiceUtil.startSpeaking(VoiceCommand.WAIT_FOR_PAY);
+                            }
+
+                            @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
+                            @Override
+                            public void onFailure(String error) {
+                                Log.e("PickUpPassengerAct", "end order failure" + error);
+                                Toast.makeText(context, "正在发送账单...", Toast.LENGTH_SHORT);
+                                btnConfirm.callOnClick();
+                            }
+
+                            @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
+                            @Override
+                            public void onTimeout() {
+                                Log.e("PickUpPassengerAct", "end order time out");
+                                Toast.makeText(context, "网络状况较差!", Toast.LENGTH_SHORT);
+                                VoiceUtil.startSpeaking(VoiceCommand.TIME_OUT_ALERT);
+                                btnConfirm.callOnClick();
+                            }
+                        });
+
+                        Intent intent = new Intent(context, OrderDetailActivity.class);
+                        intent.putExtra("orderItem", orderItem);
+                        intent.putExtra("mileage", curDistance);
+                        intent.putExtra("lowspeed", lowSpeedTime);
+                        intent.putExtra("price", price);
+                        intent.putExtra("lowcost", lowcost);
+                        startActivity(intent);
+                        finish();
+                        dialog.dismiss();
+                    }
+                });
 
                 OnKeyListener keylistener = new OnKeyListener() {
                     public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
@@ -191,35 +230,6 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
                     }
                 };
                 dialog.setOnKeyListener(keylistener);
-
-                SocketClient.getInstance().endOrder(price + "", curDistance + "", new ResponseHandler(Looper.myLooper()) {
-                    @Override
-                    public void onSuccess(String messageBody) {
-                        Log.e("PickUpPassengerAct", "success " + messageBody);
-                        dialog.getButtonCancel().setEnabled(true);
-                        dialog.getButtonCancel().setClickable(true);
-                        VoiceUtil.startSpeaking(VoiceCommand.WAIT_FOR_PAY);
-                    }
-
-                    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
-                    @Override
-                    public void onFailure(String error) {
-                        Log.e("PickUpPassengerAct", "end order failure" + error);
-                        Toast.makeText(context, "正在发送账单...", Toast.LENGTH_SHORT);
-                        btnConfirm.callOnClick();
-                    }
-
-                    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
-                    @Override
-                    public void onTimeout() {
-                        Log.e("PickUpPassengerAct", "end order time out");
-                        Toast.makeText(context, "网络状况较差!", Toast.LENGTH_SHORT);
-                        VoiceUtil.startSpeaking(VoiceCommand.TIME_OUT_ALERT);
-                        btnConfirm.callOnClick();
-                    }
-                });
-
-
             }
         });
     }
@@ -233,44 +243,7 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
         dialog.setOnCancelButtonClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: 进入付款详情界面，乘客未付款则需要司机代付
-                final AlertDialog.Builder alterDialog = new AlertDialog.Builder(ConfirmBillActivity.this);
-                alterDialog.setMessage("确定要司机代付？");
-                alterDialog.setCancelable(true);
-
-                alterDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        VoiceUtil.startSpeaking(VoiceCommand.DRIVER_PAY);
-                        //向服务器发起代付请求,无论成功失败都跳转到代付页面.
-                        SocketClient.getInstance().endOrderSelfPay(price + "", curDistance + "", new ResponseHandler(Looper.myLooper()) {
-                            @Override
-                            public void onSuccess(String messageBody) {
-                            }
-
-                            @Override
-                            public void onFailure(String error) {
-                            }
-
-                            @Override
-                            public void onTimeout() {
-                            }
-                        });
-                        Intent intent = new Intent(context, OrderDetailActivity.class);
-                        intent.putExtra("price", price);
-                        startActivity(intent);
-                        finish();
-                    }
-                });
-                alterDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                        initDialog();
-                    }
-                });
-                alterDialog.show();
-
+                 dialog.dismiss();
             }
         });
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
@@ -279,16 +252,7 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
                 return;
             }
         });
-        dialog.setOnAcceptButtonClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
-                VoiceUtil.startSpeaking(VoiceCommand.CONTINUE_WAIT);
-//                startActivity(new Intent(context, MainActivity.class));
-                finish();
-                dialog.dismiss();
-            }
-        });
+
     }
 
     @Override
