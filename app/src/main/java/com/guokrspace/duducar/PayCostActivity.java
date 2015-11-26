@@ -15,6 +15,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,18 +25,44 @@ import com.guokrspace.duducar.alipay.PayResult;
 import com.guokrspace.duducar.alipay.SignUtils;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
+import com.guokrspace.duducar.communication.http.DuDuResultCallBack;
+import com.guokrspace.duducar.communication.http.HttpUrls;
+import com.guokrspace.duducar.communication.http.model.UnifiedorderResp;
 import com.guokrspace.duducar.communication.message.OrderDetail;
+import com.guokrspace.duducar.database.PersonalInformation;
+import com.guokrspace.duducar.wxapi.WePayUtil;
+import com.squareup.okhttp.Request;
+import com.tencent.mm.sdk.modelpay.PayReq;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.zhy.http.okhttp.request.OkHttpRequest;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 
-public class AlipayActivity extends ActionBarActivity {
+public class PayCostActivity extends ActionBarActivity implements View.OnClickListener{
+
+    public static final String TAG = PayCostActivity.class.getSimpleName();
 
     Context mContext;
+    /*  微信支付相关  */
+    PayReq req;
+    final IWXAPI msgApi = WXAPIFactory.createWXAPI(this, null);
+
+    String body;
+    String tradeNo;
+    String totalFee;
+
+    PersonalInformation person;
+
+    /*  支付宝支付相关  */
     // 商户PID
     public static final String PARTNER = "2088121002293318";
     // 商户收款账号
@@ -63,6 +91,11 @@ public class AlipayActivity extends ActionBarActivity {
     private OrderDetail tripOverOrderDetail;
     private Button payButton;
     private TextView feeTextView;
+    private RelativeLayout alipayLayout;
+    private RelativeLayout wxpayLayout;
+    private RadioButton aliRadioButton;
+    private RadioButton wxRadioButton;
+    private RadioButton checkedRadioButton;
     private static final int SDK_PAY_FLAG = 1;
     private static final int SDK_CHECK_FLAG = 2;
 
@@ -79,7 +112,7 @@ public class AlipayActivity extends ActionBarActivity {
 
                         // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                         if (TextUtils.equals(resultStatus, "9000")) {
-                            Toast.makeText(AlipayActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PayCostActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
 
                             Long timestamp = System.currentTimeMillis();
                             SocketClient.getInstance().sendPayOverRequest(tripOverOrderDetail.getId(), timestamp, tripOverOrderDetail.getOrg_price(), 1 ,new ResponseHandler(Looper.getMainLooper()) {
@@ -107,18 +140,18 @@ public class AlipayActivity extends ActionBarActivity {
 //                             判断resultStatus 为非“9000”则代表可能支付失败
                             // “8000”代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
                             if (TextUtils.equals(resultStatus, "8000")) {
-                                Toast.makeText(AlipayActivity.this, "支付结果确认中",
+                                Toast.makeText(PayCostActivity.this, "支付结果确认中",
                                         Toast.LENGTH_SHORT).show();
                             } else {
                                 // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
-                                Toast.makeText(AlipayActivity.this, "支付失败", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PayCostActivity.this, "支付失败", Toast.LENGTH_SHORT).show();
 
                             }
                         }
                         break;
                     }
                     case SDK_CHECK_FLAG: {
-                        Toast.makeText(AlipayActivity.this, "检查结果为：" + msg.obj, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(PayCostActivity.this, "检查结果为：" + msg.obj, Toast.LENGTH_SHORT).show();
                         break;
                     }
                     default:
@@ -134,9 +167,26 @@ public class AlipayActivity extends ActionBarActivity {
 
         mContext = this;
 
+        req = new PayReq();
+        //注册应用
+        msgApi.registerApp(WePayUtil.APP_ID);
+
         //UI
         payButton = (Button)findViewById(R.id.buttonPayConfirm);
         feeTextView = (TextView)findViewById(R.id.textViewFee);
+        aliRadioButton = (RadioButton) findViewById(R.id.radioButtonAlipay);
+        wxRadioButton = (RadioButton) findViewById(R.id.radioButtonWechat);
+        alipayLayout = (RelativeLayout) findViewById(R.id.alipay_layout);
+        wxpayLayout = (RelativeLayout) findViewById(R.id.wxpay_layout);
+        alipayLayout.setOnClickListener(this);
+        wxpayLayout.setOnClickListener(this);
+
+        if (aliRadioButton.isChecked()) {
+            checkedRadioButton = aliRadioButton;
+        } else if (wxRadioButton.isChecked()) {
+            checkedRadioButton = wxRadioButton;
+        }
+
 
         //Get Arguments
         Bundle bundle = getIntent().getExtras();
@@ -179,6 +229,80 @@ public class AlipayActivity extends ActionBarActivity {
      * call alipay sdk pay. 调用SDK支付
      */
     public void pay(View v) {
+        if (aliRadioButton.isChecked()) {
+            aliPay();
+        } else if (wxRadioButton.isChecked()) {
+            weixinPay();
+        }
+    }
+
+    private void weixinPay() {
+        //1、 通过socket获取到订单号，cmd: order_end
+        if (tripOverOrderDetail != null) {
+            body = tripOverOrderDetail.getStart() + "到" + tripOverOrderDetail.getDestination() + "，共" + tripOverOrderDetail.getMileage() + "公里";
+            tradeNo = tripOverOrderDetail.getOrderNum();
+            // TODO:这里应为sumprice
+            totalFee = tripOverOrderDetail.getOrg_price();
+        }
+        //2、 发起http请求，获得预支付id和签名， 请求参数body、tradeno、total_fee
+        Map<String, String> params = new HashMap<>();
+        params.put("orderNum", tradeNo);
+        params.put("body", body);
+        params.put("total_fee", totalFee);
+        List persons = ((DuduApplication)getApplicationContext()).mDaoSession.getPersonalInformationDao().queryBuilder().limit(1).list();
+        if(persons.size()==1) {
+            person = (PersonalInformation) persons.get(0);
+        }
+        params.put("token", person.getToken());
+        params.put("mobile", person.getMobile());
+        params.put("role", "2");
+        Log.e("weixinpay", tradeNo + " " + body + " " + totalFee + " " + person.getToken() + " " + person.getMobile());
+        /*body = "长沙到北京，共1000公里";
+        tradeNo = WePayUtil.genOutTradeNo();
+        totalFee = "0.01";
+        params.put("orderNum", tradeNo);
+        params.put("body", body);
+        params.put("total_fee", totalFee);
+        params.put("token", "d4f4ded9ef733ba5e19b5bc767e72a190c8");
+        params.put("mobile", "13700000003");
+        params.put("role", "2");*/
+        new OkHttpRequest.Builder().url(HttpUrls.getUrl(HttpUrls.WX_PAY_WXUNIFIEDORDER)).params(params).post(new DuDuResultCallBack<UnifiedorderResp>(mContext) {
+            @Override
+            public void onError(Request request, Exception e) {
+                Log.e(TAG, "onError, e = " + e.getLocalizedMessage());
+            }
+
+            @Override
+            public void onResponse(UnifiedorderResp unifiedorderResp) {
+                //3、 发起支付请求
+                Log.e(TAG, "onResponse");
+                if (unifiedorderResp == null) {
+                    Toast.makeText(mContext, "数据位空", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (unifiedorderResp.status == -1) {
+                    Toast.makeText(mContext, "用户信息验证失败或者微信请求失败；", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Log.e("TAG", unifiedorderResp.toString());
+                req.appId = WePayUtil.APP_ID;
+                req.partnerId = WePayUtil.MCH_ID;
+                req.prepayId = unifiedorderResp.prepayid;
+                req.packageValue = "Sign=WXPay";//固定值
+                req.nonceStr = unifiedorderResp.noncestr;
+                req.timeStamp = unifiedorderResp.timestamp;
+                req.sign = unifiedorderResp.sign;
+                msgApi.registerApp(WePayUtil.APP_ID);
+                msgApi.sendReq(req);
+                Log.e("hyman123", "req=" + req.checkArgs());
+            }
+        });
+
+
+
+    }
+
+    private void aliPay() {
         if (TextUtils.isEmpty(PARTNER) || TextUtils.isEmpty(RSA_PRIVATE)
                 || TextUtils.isEmpty(SELLER)) {
             new AlertDialog.Builder(this)
@@ -217,7 +341,7 @@ public class AlipayActivity extends ActionBarActivity {
             @Override
             public void run() {
                 // 构造PayTask 对象
-                PayTask alipay = new PayTask(AlipayActivity.this);
+                PayTask alipay = new PayTask(PayCostActivity.this);
 
                 // 调用支付接口，获取支付结果
                 String result = alipay.pay(payInfo);
@@ -323,5 +447,23 @@ public class AlipayActivity extends ActionBarActivity {
      */
     public String getSignType() {
         return "sign_type=\"RSA\"";
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.alipay_layout:
+                checkedRadioButton.setChecked(false);
+                aliRadioButton.setChecked(true);
+                checkedRadioButton = aliRadioButton;
+                break;
+            case R.id.wxpay_layout:
+                checkedRadioButton.setChecked(false);
+                wxRadioButton.setChecked(true);
+                checkedRadioButton = wxRadioButton;
+                break;
+            default:
+                break;
+        }
     }
 }

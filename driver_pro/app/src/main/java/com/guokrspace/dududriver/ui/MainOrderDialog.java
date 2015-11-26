@@ -236,7 +236,7 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
                     tvOrderSecond.setText(msg.obj + "");
                     int sec = (Integer)msg.obj;
                     if(sec <= 5 && sec > 0 &&!VoiceUtil.isSpeaking()){
-                        VoiceUtil.startSpeaking("嘀");
+                        VoiceUtil.startSpeaking("方方best");
                     }
                 }
                 break;

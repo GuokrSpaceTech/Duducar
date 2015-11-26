@@ -23,4 +23,6 @@
     <color name="de_action_color">#3498DB</color>
     <color name="de_action_white">@android:color/white</color>
     <color name="accent_material_light">#003df5</color>
+
+    <color name="navpage">#FFE1E8EB</color>
 </resources>
