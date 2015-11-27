@@ -42,6 +42,7 @@ public class MessageTag {
     public static final int MESSAGE_PAYMENT_CONFIRM_TIMEOUT = 0x9008;
     public static final int MESSAGE_PAYMENT_COMPLETED = 0x9008;
     public static final int MESSAGE_UPDATE_TRACK = 0x9009;
+    public static final int MESSAGE_UPDATE_MESSAGE = 0x9010;
 
     public static final int REGISTER_REQ = 0x100A;
     public static final int REGISTER_RESP = 0x100B;

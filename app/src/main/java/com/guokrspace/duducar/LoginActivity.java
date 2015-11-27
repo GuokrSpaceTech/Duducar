@@ -409,7 +409,7 @@ public class LoginActivity extends AppCompatActivity implements
             @Override
             public void run() {
                 int seconds_left = max_seconds;
-                while (seconds_left > 0 && !threadStopFlag) {
+                while (seconds_left > 0) {
                     seconds_left--;
                     mHandler.sendMessage(mHandler.obtainMessage(HANDLER_TIMERTICK, seconds_left + "秒"));
                     try {

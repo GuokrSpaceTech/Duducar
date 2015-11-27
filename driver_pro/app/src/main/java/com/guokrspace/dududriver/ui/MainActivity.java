@@ -198,6 +198,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 SharedPreferencesUtils.setParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, true);
                 pullBaseInfo();
                 pullOrder();
+                pullNews();
                 isOnline = true;
             }
 
@@ -219,7 +220,28 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         });
     }
 
-    private void pullOrder(){
+    private void pullNews() {
+        //每次登陆都去拉取最新的消息
+        SocketClient.getInstance().pullMessages("new", Constants.ORDER_PAGE_NUM, 1, new ResponseHandler(Looper.myLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                //TODO: 解析返回的消息结构
+                mHandler.sendEmptyMessage(MessageTag.MESSAGE_UPDATE_MESSAGE);
+            }
+
+            @Override
+            public void onFailure(String error) {
+
+            }
+
+            @Override
+            public void onTimeout() {
+
+            }
+        });
+    }
+
+    private void pullOrder() {
         //注册派单监听
         SocketClient.getInstance().registerServerMessageHandler(MessageTag.PATCH_ORDER, new ResponseHandler(Looper.myLooper()) {
             @Override
@@ -449,6 +471,10 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 break;
             case UPDATE_GRABORDER:
                 updateGrabOrderFragment();
+                break;
+            case MessageTag.MESSAGE_UPDATE_MESSAGE:
+                //TODO:刷新消息列表
+//                update
                 break;
             case ADJUST_STATUS:
                 if(CommonUtil.getCurrentStatus() == Constants.STATUS_WAIT) {

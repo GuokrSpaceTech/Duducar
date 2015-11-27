@@ -171,6 +171,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
     private PlanNode st = null;
     private PlanNode ed = null;
     private BNRoutePlanNode mBNRoutePlanNode = null;
+    private Timer timer = null;
 
     private OnGetRoutePlanResultListener routePlanResultListener = new OnGetRoutePlanResultListener() {
         @Override
@@ -232,9 +233,23 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                 Log.e("daddy", "current charge");
                 break;
             case MessageTag.MESSAGE_UPDATE_TRACK:
-                if(isFirstTrack){
-//                    prevLatLng =
+                Log.e("daddy", "start track");
+                if(CommonUtil.getCurLatLng() == null){
+                    break;
                 }
+                Log.e("daddy", "start track latlng not null");
+                if(isFirstTrack){
+                    currentLatLng = CommonUtil.getCurLatLng();
+                    isFirstTrack = false;
+                }
+
+                if(Math.abs(currentLatLng.latitude- CommonUtil.getCurLatLng().latitude) > 0.005
+                        ||Math.abs(currentLatLng.longitude - CommonUtil.getCurLatLng().longitude) > 0.005 )
+                    //异常定位
+                    break;
+                Log.e("daddy", "start track no exception");
+                drawLine(mBaiduMap, currentLatLng, CommonUtil.getCurLatLng());
+                currentLatLng = CommonUtil.getCurLatLng();
                 break;
             default:
                 break;
@@ -395,6 +410,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
     }
 
     private void initGetPassView() {
+
         toolbar.setTitle("去接乘客");
         toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.return_icon));
         setSupportActionBar(toolbar);
@@ -446,8 +462,8 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
 
         // 开启定位图层
         mBaiduMap.setMyLocationEnabled(true);
-        mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
-        mCurrentMarker = BitmapDescriptorFactory.fromResource(R.mipmap.myposition);
+        mCurrentMode = MyLocationConfiguration.LocationMode.FOLLOWING;
+        mCurrentMarker = BitmapDescriptorFactory.fromResource(R.drawable.caricon);
         mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(mCurrentMode, true, mCurrentMarker));
 
         st = PlanNode.withLocation(new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng()));
@@ -456,6 +472,9 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         routePlanSearch.drivingSearch(new DrivingRoutePlanOption().from(st).to(ed));
         routePlanSearch.setOnGetRoutePlanResultListener(routePlanResultListener);
 
+        //3秒一次  更新界面
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new DrawLineTimerTask(), 2000, 3 * 1000);
 
         btnNavi.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -489,6 +508,13 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        timer.cancel();
+        timer = null;
+
+        //3秒一次  更新界面
+        timer = new Timer();
+        timer.scheduleAtFixedRate(new DrawLineTimerTask(), 7000, 3 * 1000);
+
         btnConfirm.setText(CommonUtil.getStartPrice() + "元      到达目的地");
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -511,8 +537,9 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                 Double.valueOf(orderItem.getOrder().getDestination_lat()), Double.valueOf(orderItem.getOrder().getDestination_lng()));
         ed = PlanNode.withLocation(passengerLatLng);
 
-        MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(16.0f);
+        MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(18.0f);
         mBaiduMap.setMapStatus(msu);
+        isFirstTrack = true;
 
         // 定位再次初始化
         st = PlanNode.withLocation(new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng()));
@@ -828,7 +855,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
     private class DrawLineTimerTask extends TimerTask {
         @Override
         public void run() {
-            if (CommonUtil.getCurrentStatus() != Constants.STATUS_RUN || CommonUtil.getCurrentStatus() != Constants.STATUS_GET) {
+            if (CommonUtil.getCurrentStatus() != Constants.STATUS_RUN && CommonUtil.getCurrentStatus() != Constants.STATUS_GET) {
                 //状态异常
                 return;
             } else if (CommonUtil.getCurLatLng() != null){

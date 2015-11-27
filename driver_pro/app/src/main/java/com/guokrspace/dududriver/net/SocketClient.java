@@ -2,7 +2,9 @@ package com.guokrspace.dududriver.net;
 
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.net.message.HeartBeatMessage;
 import com.guokrspace.dududriver.net.message.MessageTag;
 import com.guokrspace.dududriver.util.CommonUtil;
@@ -101,6 +103,11 @@ public class SocketClient {
                 //Enqueue
                 MessageDispatcher messageDispatcher = new MessageDispatcher(messageid, message, timerRunnable, handler);
                 messageDispatchQueue.put(messageid, messageDispatcher);
+            } else {
+                //发送链路失效
+                Toast.makeText(DuduDriverApplication.getInstance(), "请检查网络连接..", Toast.LENGTH_SHORT).show();
+                SocketClient.getInstance().stopClient();
+                SocketClient.getInstance().run();
             }
             ret = messageid;
 
@@ -408,6 +415,22 @@ public class SocketClient {
             e.printStackTrace();
         }
 
+        return ret;
+    }
+
+    public int pullMessages(String type, int num, int messageId, ResponseHandler handler){
+        int ret = -1;
+        JSONObject params = new JSONObject();
+        try {
+            params.put("cmd", "get_message");
+            params.put("role", "1");
+            params.put("type", type);
+            params.put("number", num);
+            params.put("message_id", messageId);
+            ret = sendMessage(params, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();;
+        }
         return ret;
     }
 

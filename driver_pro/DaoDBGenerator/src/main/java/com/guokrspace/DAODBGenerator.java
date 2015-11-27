@@ -20,8 +20,9 @@ public class DAODBGenerator {
 
         addConfig(schema);
         addOrder(schema);
+        addBaseNotice(schema);
 
-        new DaoGenerator().generateAll(schema, "/Users/hyman/Duducar/driver_pro/app/src/main/java");
+        new DaoGenerator().generateAll(schema, "/Users/daddyfang/Duducar/driver_pro/app/src/main/java");
     }
 
     private static void addConfig(Schema schema) {
@@ -45,5 +46,15 @@ public class DAODBGenerator {
         order.addStringProperty("price");
         order.addStringProperty("carType");
         order.addStringProperty("orderTime");
+    }
+
+    private static void addBaseNotice(Schema schema){
+        Entity notice = schema.addEntity("BaseNotice");
+        notice.addIdProperty().autoincrement();
+        notice.addStringProperty("date");
+        notice.addStringProperty("type");
+        notice.addStringProperty("messageBody");
+        notice.addBooleanProperty("outOfTime");
+        notice.addStringProperty("noticeId");
     }
 }

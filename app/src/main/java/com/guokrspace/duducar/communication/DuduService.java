@@ -44,31 +44,6 @@ public class DuduService extends Service {
         mLocClient.requestLocation();
 
         mApplication = (DuduApplication) getApplicationContext();
-
-
-
-//        /*
-//         * Login if socket connected
-//         */
-//
-//        Thread thead = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                while(true)
-//                {
-//                    if(mTcpClient==null) continue;
-//
-//                    if(mTcpClient.isSocketConnected()==false)
-//                        continue;
-//                    else {
-//                        sendLoginRequest(mTcpClient);
-//                        break;
-//                    }
-//                }
-//            }
-//        });
-//        thead.start();
-
     }
 
 
