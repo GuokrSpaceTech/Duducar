@@ -18,6 +18,7 @@ import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -39,6 +40,7 @@ public class DriverInformationView extends RelativeLayout {
     //UI
     private RelativeLayout root;
     public ImageView mDriverImageView;
+    public Button mCancelButton;
     public ImageView mCarImageView;
     public ImageView mPhoneIconImageView;
     public TextView mDriverNameTextView;
@@ -124,6 +126,7 @@ public class DriverInformationView extends RelativeLayout {
     private void init(Context context) {
         root = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.driver_information_view, this, true);
         mDriverImageView = (ImageView) findViewById(R.id.imageViewDriver);
+        mCancelButton = (Button) findViewById(R.id.cancel_btn);
         mCarImageView = (ImageView) findViewById(R.id.imageViewCar);
         mPhoneIconImageView = (ImageView) findViewById(R.id.imageViewPhoneIcon);
         mDriverNameTextView = (TextView) findViewById(R.id.textViewDriverName);

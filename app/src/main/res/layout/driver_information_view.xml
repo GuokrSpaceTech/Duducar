@@ -85,6 +85,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_blow="@+id/cancel_layout"
         android:id="@+id/headFrameLayout"
         android:background="@android:color/transparent">
 
@@ -105,5 +106,25 @@
             android:src="@drawable/ic_drawer"
             app:border_color="#FF000000"
             app:border_width="1dp" />
+    </FrameLayout>
+
+    <FrameLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cancel_layout"
+        android:visibility="gone"
+        android:background="@android:color/transparent">
+
+        <Button android:id="@+id/cancel_btn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="5dp"
+            android:visibility="gone"
+            android:background="@drawable/button_blue_background"
+            android:text="长按取消订单"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
     </FrameLayout>
 </RelativeLayout>

@@ -182,6 +182,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         receiver = new ServiceReceiver();
         IntentFilter filter = new IntentFilter(Constants.SERVICE_BROADCAST);
         filter.addAction(Constants.SERVICE_ACTION_RELOGIN);
+        filter.addAction(Constants.SERVICE_ACTION_MESAGE);
         registerReceiver(receiver, filter);
     }
     //进行自动登陆
@@ -198,7 +199,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 SharedPreferencesUtils.setParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, true);
                 pullBaseInfo();
                 pullOrder();
-                pullNews();
+                mHandler.sendEmptyMessage(MessageTag.MESSAGE_UPDATE_MESSAGE);
                 isOnline = true;
             }
 
@@ -220,26 +221,8 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         });
     }
 
-    private void pullNews() {
-        //每次登陆都去拉取最新的消息
-        SocketClient.getInstance().pullMessages("new", Constants.ORDER_PAGE_NUM, 1, new ResponseHandler(Looper.myLooper()) {
-            @Override
-            public void onSuccess(String messageBody) {
-                //TODO: 解析返回的消息结构
-                mHandler.sendEmptyMessage(MessageTag.MESSAGE_UPDATE_MESSAGE);
-            }
 
-            @Override
-            public void onFailure(String error) {
 
-            }
-
-            @Override
-            public void onTimeout() {
-
-            }
-        });
-    }
 
     private void pullOrder() {
         //注册派单监听
@@ -297,7 +280,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 
         pager = (ViewPager) findViewById(R.id.pager);
         mAdapter = new TabPagerAdapter(getSupportFragmentManager());
-        pager.setOffscreenPageLimit(2);//设置预加载页数
+        pager.setOffscreenPageLimit(3);//设置预加载页数
         //要求每次的加载都需要保证列表是最新的，当然就缓存一页
         pager.setAdapter(mAdapter);
         mIndicator.setViewPager(pager);
@@ -470,11 +453,11 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 updateMeFragmentBaseinfo(baseInfo);
                 break;
             case UPDATE_GRABORDER:
-                updateGrabOrderFragment();
+                updateGrabOrderFragment(MessageTag.MESSAGE_UPDATE_GRABORDER);
                 break;
             case MessageTag.MESSAGE_UPDATE_MESSAGE:
                 //TODO:刷新消息列表
-//                update
+                updateGrabOrderFragment(MessageTag.MESSAGE_UPDATE_MESSAGE);
                 break;
             case ADJUST_STATUS:
                 if(CommonUtil.getCurrentStatus() == Constants.STATUS_WAIT) {
@@ -515,14 +498,14 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         }
     }
 
-    private void updateGrabOrderFragment(){
+    private void updateGrabOrderFragment(int what){
         List<Fragment> list = MainActivity.this.getSupportFragmentManager().getFragments();
         if(list == null){
             return;
         }
         for(Fragment fragment : list){
             if(fragment instanceof GrabOrderFragment){//
-                ((GrabOrderFragment) fragment).getHanlder().sendEmptyMessage(0);
+                ((GrabOrderFragment) fragment).getHanlder().sendEmptyMessage(what);
             }
         }
     }
@@ -546,8 +529,11 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                        doLogin(userInfo);
                     } else {
                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
-//                        finish();
                     }
+                    break;
+                case Constants.SERVICE_ACTION_MESAGE:
+                    // 服务器有通知推送,
+                    updateGrabOrderFragment(MessageTag.MESSAGE_UPDATE_MESSAGE);
                     break;
                 default:
                     return;

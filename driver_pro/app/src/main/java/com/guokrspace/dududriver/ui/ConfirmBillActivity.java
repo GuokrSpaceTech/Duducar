@@ -28,7 +28,6 @@ import com.guokrspace.dududriver.common.VoiceCommand;
 import com.guokrspace.dududriver.model.OrderItem;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
-import com.guokrspace.dududriver.net.message.MessageTag;
 import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 import com.guokrspace.dududriver.util.VoiceUtil;
@@ -107,25 +106,6 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
         ButterKnife.bind(this);
         initView();
         mHandler = new Handler(this);
-
-        SocketClient.getInstance().registerServerMessageHandler(MessageTag.PAY_OVER, new ResponseHandler(Looper.myLooper()) {
-            @Override
-            public void onSuccess(String messageBody) {
-                Log.e(ConfirmBillActivity.class + "", "pay over success!");
-                mHandler.sendEmptyMessage(PAY_OVER);
-            }
-
-            @Override
-            public void onFailure(String error) {
-                Log.e(ConfirmBillActivity.class + "", "pay over failure!");
-                Toast.makeText(context, "对方支付失败!", Toast.LENGTH_SHORT);
-            }
-
-            @Override
-            public void onTimeout() {
-                Log.e(ConfirmBillActivity.class + "", "pay over time out!");
-            }
-        });
     }
 
     private void initView() {

@@ -1,8 +1,10 @@
 package com.guokrspace.dududriver.ui;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gc.materialdesign.views.ButtonFlat;
 import com.gc.materialdesign.views.ButtonRectangle;
@@ -48,12 +51,20 @@ public class OrderDetailActivity extends BaseActivity {
     TextView tvPassengerPosition;
     @Bind(R.id.passenger_info)
     ImageButton ibPassengerInfo;
-    @OnClick(R.id.passenger_info) public void callPassenger() {
+
+    @OnClick(R.id.passenger_info)
+    public void callPassenger() {
         String mobile = orderItem.getOrder().getPassenger_mobile();
-        if(mobile != null && mobile.length() == 11){
+        if (mobile != null && mobile.length() == 11) {
             VoiceUtil.startSpeaking(VoiceCommand.CALL_PASSENEGER);
             Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mobile));
-            startActivity(callIntent);
+            if (checkSelfPermission(Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                Toast.makeText(OrderDetailActivity.this, "未授权拨打电话,请在权限设置下进行修改", Toast.LENGTH_SHORT).show();
+                return;
+            } else {
+                startActivity(callIntent);
+            }
         } else {
             Log.e("PickUpPassengerActivity", "乘客手机号码问题" + mobile);
         }
@@ -94,11 +105,12 @@ public class OrderDetailActivity extends BaseActivity {
                     }
                 });
 
-                Intent intent = new Intent(context, AlipayActivity.class);
+                Intent intent = new Intent(context, PayCostActivity.class);
                 intent.putExtra("orderItem", orderItem);
                 intent.putExtra("price", cash);
-                Log.e("daddy", "test");
+                intent.putExtra("mileage", curDistance);
                 startActivity(intent);
+
             }
         }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override

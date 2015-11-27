@@ -426,7 +426,7 @@ public class SocketClient {
             params.put("role", "1");
             params.put("type", type);
             params.put("number", num);
-            params.put("message_id", messageId);
+            params.put("base_message_id", messageId);
             ret = sendMessage(params, handler, 5);
         } catch (JSONException e) {
             e.printStackTrace();;

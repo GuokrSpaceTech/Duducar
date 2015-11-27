@@ -210,8 +210,8 @@ public class PostOrderActivity extends AppCompatActivity {
                         mIsFirstDraw = false;
                     }
 
-                    if(Math.abs(prevLocation.latitude- currentLocation.latitude) > 0.005
-                            ||Math.abs(prevLocation.longitude- currentLocation.longitude) > 0.005 )
+                    if(Math.abs(prevLocation.latitude- currentLocation.latitude) > 0.001
+                            ||Math.abs(prevLocation.longitude- currentLocation.longitude) > 0.001 )
                         //异常定位
                         return;
                     drawLine(mBaiduMap, prevLocation, currentLocation);

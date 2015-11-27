@@ -16,6 +16,7 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.net.message.HeartBeatMessage;
+import com.guokrspace.dududriver.net.message.MessageTag;
 import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 
@@ -25,7 +26,7 @@ import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 * */
 public class DuduService extends Service {
 
-    private volatile int discard = 1; //Volatile修饰的成员变量在每次被线程访问时，都强迫从共享内存中重读该成员变量的值。
+    private volatile boolean discard = false; //Volatile修饰的成员变量在每次被线程访问时，都强迫从共享内存中重读该成员变量的值。
     private volatile SocketClient mTcpClient = null;
     private volatile connectTask conctTask = null;
 
@@ -58,7 +59,6 @@ public class DuduService extends Service {
          */
         Log.e("daady", "start command");
         if(mTcpClient == null){
-            mTcpClient = null;
             conctTask = new connectTask(); //Connect to server
             conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
@@ -162,6 +162,10 @@ public class DuduService extends Service {
                 Log.i("HeartBeat Response", messageBody);
                 //将登陆状态置为true
                 SharedPreferencesUtils.setParam(DuduService.this, SharedPreferencesUtils.LOGIN_STATE, true);
+                if(!discard){
+                    registerDuduMessageListener();
+                    discard = true;
+                }
             }
 
             @Override
@@ -200,6 +204,7 @@ public class DuduService extends Service {
             //we create a TCPClient object and
             mTcpClient = new SocketClient();
             mTcpClient.run();
+
             return null;
         }
 
@@ -207,6 +212,28 @@ public class DuduService extends Service {
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
         }
+    }
+
+    private void registerDuduMessageListener(){
+
+        //TODO: 监听服务器新消息的通知
+        mTcpClient.registerServerMessageHandler(MessageTag.NEW_MESSAGE, new ResponseHandler(Looper.myLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                // 广播通知
+                sendBroadCast(Constants.SERVICE_ACTION_RELOGIN);
+            }
+
+            @Override
+            public void onFailure(String error) {
+
+            }
+
+            @Override
+            public void onTimeout() {
+
+            }
+        });
     }
 }
 

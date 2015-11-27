@@ -3,6 +3,7 @@ package com.guokrspace.dududriver.adapter;
 import android.app.Activity;
 
 import com.guokrspace.dududriver.adapter.adapterdelegates.DenseOrderAdapterDelegate;
+import com.guokrspace.dududriver.adapter.adapterdelegates.DuduNoticeAdapterDelegate;
 import com.guokrspace.dududriver.adapter.adapterdelegates.NoticeFallbackDelegate;
 import com.guokrspace.dududriver.adapter.adapterdelegates.WealthAdapterDelegate;
 import com.guokrspace.dududriver.model.BaseNoticeItem;
@@ -20,6 +21,7 @@ public class NoticeAdapter extends ListDelegationAdapter<List<BaseNoticeItem>> {
         //Delegates
         this.delegatesManager.addDelegate(new DenseOrderAdapterDelegate(this, activity, 0));
         this.delegatesManager.addDelegate(new WealthAdapterDelegate(this, activity, 1));
+        this.delegatesManager.addDelegate(new DuduNoticeAdapterDelegate(this, activity, 2));
         this.delegatesManager.setFallbackDelegate(new NoticeFallbackDelegate(activity));
 
         setItems(items);
