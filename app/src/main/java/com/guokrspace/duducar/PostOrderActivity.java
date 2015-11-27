@@ -194,7 +194,7 @@ public class PostOrderActivity extends AppCompatActivity {
                         orderStatusString = String.format("到达%s", order_finish.getOrder().getDestination());
                         getSupportActionBar().setTitle(orderStatusString);
 
-                        Intent intent = new Intent(mContext, AlipayActivity.class);
+                        Intent intent = new Intent(mContext, PayCostActivity.class);
                         intent.putExtra("order",order_finish.getOrder());
                         startActivity(intent);
                         isStartFollow = false;

@@ -13,8 +13,11 @@ import com.guokrspace.duducar.database.DaoMaster;
 import com.guokrspace.duducar.database.DaoSession;
 import com.guokrspace.duducar.database.PersonalInformation;
 import com.guokrspace.duducar.database.PersonalInformationDao;
+import com.squareup.okhttp.OkHttpClient;
+import com.zhy.http.okhttp.OkHttpClientManager;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by macbook on 15/10/13.
@@ -33,6 +36,9 @@ public class DuduApplication extends Application{
     @Override
     public void onCreate() {
         super.onCreate();
+        // 初始化对OkHttpClientManager中的OkHttpClient对象的一些设置
+        initOkHttpClient();
+
         // 在使用 SDK 各组间之前初始化 context 信息，传入 ApplicationContext
         SDKInitializer.initialize(this);
 
@@ -47,6 +53,13 @@ public class DuduApplication extends Application{
         initDB();
 
         InitPersonalInformation();
+    }
+
+    private void initOkHttpClient() {
+        OkHttpClient client = OkHttpClientManager.getInstance().getOkHttpClient();
+        client.setConnectTimeout(10, TimeUnit.SECONDS);
+        client.setWriteTimeout(10, TimeUnit.SECONDS);
+        client.setReadTimeout(30, TimeUnit.SECONDS);
     }
 
     /**

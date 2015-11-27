@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/DaoDBGenerator/DaoDBGenerator.iml" filepath="$PROJECT_DIR$/DaoDBGenerator/DaoDBGenerator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MaterialDesign/MaterialDesign.iml" filepath="$PROJECT_DIR$/MaterialDesign/MaterialDesign.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/driver_pro.iml" filepath="$PROJECT_DIR$/driver_pro.iml" />
+      <module fileurl="file://$PROJECT_DIR$/indicator_library/indicator_library.iml" filepath="$PROJECT_DIR$/indicator_library/indicator_library.iml" />
     </modules>
   </component>
 </project>
