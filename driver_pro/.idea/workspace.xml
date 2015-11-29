@@ -11,67 +11,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d7e7038b-5395-4a19-b059-ad2307aa981b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/enter_icon.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi/return_black.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../app/src/main/java/com/guokrspace/duducar/communication/http/model/BaseModel.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/HistoryOrderDetailActivity.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../app/src/main/java/com/guokrspace/duducar/util/SharedPreferencesUtils.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ToggleButtonLib/ToggleButtonLib.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../app/src/main/java/com/guokrspace/duducar/communication/http/model/TradeResult.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_historyorderdetail.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_setting.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/setting_item_bg_selector.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/model/OrderRecordListItem.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gradle/2.4/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/../.gradle/2.4/taskArtifacts/cache.properties.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/cache.properties.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/bundles/release/classes.jar" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/bundles/release/classes.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gradle/2.4/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/../.gradle/2.4/taskArtifacts/fileHashes.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileHashes.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gradle/2.4/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/../.gradle/2.4/taskArtifacts/fileSnapshots.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileSnapshots.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../build/intermediates/gradle_project_sync_data.bin" afterPath="$PROJECT_DIR$/../build/intermediates/gradle_project_sync_data.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/gradle_project_sync_data.bin" afterPath="$PROJECT_DIR$/build/intermediates/gradle_project_sync_data.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/outputs/aar/indicator_library-release.aar" afterPath="$PROJECT_DIR$/indicator_library/build/outputs/aar/indicator_library-release.aar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/outputFileStates.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/outputFileStates.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gradle/2.4/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/../.gradle/2.4/taskArtifacts/taskArtifacts.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/taskArtifacts.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../app/src/main/java/com/guokrspace/duducar/AppExitUtil.java" afterPath="$PROJECT_DIR$/../app/src/main/java/com/guokrspace/duducar/AppExitUtil.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/BaseActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/BaseActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MaterialDesign/src/main/java/com/gc/materialdesign/views/ButtonRectangle.java" afterPath="$PROJECT_DIR$/MaterialDesign/src/main/java/com/gc/materialdesign/views/ButtonRectangle.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DaoDBGenerator/src/main/java/com/guokrspace/DAODBGenerator.java" afterPath="$PROJECT_DIR$/DaoDBGenerator/src/main/java/com/guokrspace/DAODBGenerator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DaoDBGenerator/DaoDBGenerator.iml" afterPath="$PROJECT_DIR$/DaoDBGenerator/DaoDBGenerator.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/database/DaoMaster.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/database/DaoMaster.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/model/HistoryOrder.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/model/HistoryOrder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/model/HistoryOrderResponseModel.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/model/HistoryOrderResponseModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/LoginActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/LoginActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/MeFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/MeFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/adapter/OptionGridAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/adapter/OptionGridAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/OrderMapActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/OrderMapActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/database/OrderRecord.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/database/OrderRecord.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/database/OrderRecordDao.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/database/OrderRecordDao.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../app/src/main/java/com/guokrspace/duducar/PayCostActivity.java" afterPath="$PROJECT_DIR$/../app/src/main/java/com/guokrspace/duducar/PayCostActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/adapter/RecordListAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/adapter/RecordListAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/SettingActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/SettingActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/net/SocketClient.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/net/SocketClient.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../app/src/main/java/com/guokrspace/duducar/communication/http/model/UnifiedorderResp.java" afterPath="$PROJECT_DIR$/../app/src/main/java/com/guokrspace/duducar/communication/http/model/UnifiedorderResp.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../app/src/main/java/com/guokrspace/duducar/wxapi/WXPayEntryActivity.java" afterPath="$PROJECT_DIR$/../app/src/main/java/com/guokrspace/duducar/wxapi/WXPayEntryActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_orderdetail.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_orderdetail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml" afterPath="$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/gradle.xml" afterPath="$PROJECT_DIR$/.idea/gradle.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/drawable/gray_frame_shape.xml" afterPath="$PROJECT_DIR$/app/src/main/res/drawable/gray_frame_shape.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../local.properties" afterPath="$PROJECT_DIR$/../local.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/local.properties" afterPath="$PROJECT_DIR$/local.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/record_list_item.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/record_list_item.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/settings.gradle" afterPath="$PROJECT_DIR$/settings.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.idea/workspace.xml" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="d7e7038b-5395-4a19-b059-ad2307aa981b" name="Default" comment="" />
     <ignored path="driver_pro.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
