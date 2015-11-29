@@ -1,7 +1,12 @@
 package com.guokrspace.dududriver.net;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.os.Looper;
@@ -16,6 +21,7 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.net.message.HeartBeatMessage;
+import com.guokrspace.dududriver.net.message.MessageTag;
 import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 
@@ -25,9 +31,10 @@ import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 * */
 public class DuduService extends Service {
 
-    private volatile int discard = 1; //Volatile修饰的成员变量在每次被线程访问时，都强迫从共享内存中重读该成员变量的值。
+    private volatile boolean discard = false; //Volatile修饰的成员变量在每次被线程访问时，都强迫从共享内存中重读该成员变量的值。
     private volatile SocketClient mTcpClient = null;
     private volatile connectTask conctTask = null;
+    private volatile int connectDelay = 1;
 
     public DuduService() {
     }
@@ -40,6 +47,12 @@ public class DuduService extends Service {
         //开始请求定位,发送心跳包
         mLocClient.start();
         mLocClient.requestLocation();
+
+        //注册网络状态监听
+        IntentFilter mFilter = new IntentFilter();
+        mFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(mReceiver, mFilter);
+
         Log.e("daddy", "service create");
         CommonUtil.setIsServiceOn(true);
     }
@@ -58,7 +71,6 @@ public class DuduService extends Service {
          */
         Log.e("daady", "start command");
         if(mTcpClient == null){
-            mTcpClient = null;
             conctTask = new connectTask(); //Connect to server
             conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
@@ -75,6 +87,9 @@ public class DuduService extends Service {
     public void onDestroy() {
         Toast.makeText(getApplicationContext(), "service done", Toast.LENGTH_SHORT).show();
         super.onDestroy();
+
+        unregisterReceiver(mReceiver);
+
         if(null != mLocClient){
             mLocClient.stop();
         }
@@ -89,8 +104,6 @@ public class DuduService extends Service {
 
         CommonUtil.setIsServiceOn(false);
     }
-
-
 
     /////////////
     //后台实时获取地址
@@ -162,6 +175,10 @@ public class DuduService extends Service {
                 Log.i("HeartBeat Response", messageBody);
                 //将登陆状态置为true
                 SharedPreferencesUtils.setParam(DuduService.this, SharedPreferencesUtils.LOGIN_STATE, true);
+                if(!discard){
+                    registerDuduMessageListener();
+                    discard = true;
+                }
             }
 
             @Override
@@ -177,12 +194,68 @@ public class DuduService extends Service {
             @Override
             public void onTimeout() {
                 Log.i("HeartBeat", "Response Timeout");
-                Toast.makeText(DuduService.this, "网络异常...", Toast.LENGTH_SHORT).show();
+
                 //将登陆状态置为false
                 SharedPreferencesUtils.setParam(DuduService.this, SharedPreferencesUtils.LOGIN_STATE, false);
             }
         });
     }
+
+    private void reConnectServer(){
+        if(mTcpClient == null || mTcpClient.getSocket() == null){//初次连接
+
+            conctTask = new connectTask(); //Connect to server
+            conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        } else if(mTcpClient.getSocket().isClosed()
+                || !mTcpClient.getSocket().isConnected()) {
+            try {
+                mTcpClient.stopClient();
+                conctTask.cancel(true);
+                conctTask = null;
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                conctTask = new connectTask(); //Connect to server
+                conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
+        }
+    }
+
+    //注册监听网络状态改变的广播
+    private ConnectivityManager mConnectivityManager;
+    private NetworkInfo netInfo;
+
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            String action = intent.getAction();
+            if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+
+                mConnectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+                netInfo = mConnectivityManager.getActiveNetworkInfo();
+                if(netInfo != null && netInfo.isAvailable()) {
+                    /////////////网络连接
+                    String name = netInfo.getTypeName();
+                    //网络连接切换, 一般重新连接
+                    if(netInfo.getType()==ConnectivityManager.TYPE_WIFI){
+                        /////WiFi网络
+                    }else if(netInfo.getType()==ConnectivityManager.TYPE_ETHERNET){
+
+                    }else if(netInfo.getType()==ConnectivityManager.TYPE_MOBILE){
+                        /////////3g网络
+                    }
+                    reConnectServer();
+                } else {
+                    ////////网络断开
+                    Toast.makeText(DuduService.this, "网络连接断开...", Toast.LENGTH_SHORT).show();
+                    //TODO 网络断开
+                }
+            }
+        }
+    };
 
     private void sendBroadCast(String action){
         Intent intent = new Intent();
@@ -200,6 +273,7 @@ public class DuduService extends Service {
             //we create a TCPClient object and
             mTcpClient = new SocketClient();
             mTcpClient.run();
+
             return null;
         }
 
@@ -207,6 +281,30 @@ public class DuduService extends Service {
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
         }
+    }
+
+    private void registerDuduMessageListener(){
+
+        //TODO: 监听服务器新消息的通知
+        Log.e("daddy message", "register new message");
+        mTcpClient.registerServerMessageHandler(MessageTag.NEW_MESSAGE, new ResponseHandler(Looper.myLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                // 广播通知
+                Log.e("daddy message", "got a new message notice");
+                sendBroadCast(Constants.SERVICE_ACTION_MESAGE);
+            }
+
+            @Override
+            public void onFailure(String error) {
+
+            }
+
+            @Override
+            public void onTimeout() {
+
+            }
+        });
     }
 }
 

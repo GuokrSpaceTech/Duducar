@@ -5,7 +5,12 @@ package com.guokrspace.duducar.communication;
  */
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.os.Looper;
@@ -43,32 +48,12 @@ public class DuduService extends Service {
         mLocClient.start();
         mLocClient.requestLocation();
 
+        //注册网络状态监听
+        IntentFilter mFilter = new IntentFilter();
+        mFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(mReceiver, mFilter);
+
         mApplication = (DuduApplication) getApplicationContext();
-
-
-
-//        /*
-//         * Login if socket connected
-//         */
-//
-//        Thread thead = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                while(true)
-//                {
-//                    if(mTcpClient==null) continue;
-//
-//                    if(mTcpClient.isSocketConnected()==false)
-//                        continue;
-//                    else {
-//                        sendLoginRequest(mTcpClient);
-//                        break;
-//                    }
-//                }
-//            }
-//        });
-//        thead.start();
-
     }
 
 
@@ -83,7 +68,7 @@ public class DuduService extends Service {
         /*
          * Init the SocketClient
          */
-        Log.e("daddy","service start");
+        Log.e("daddy", "service start");
         if(mTcpClient == null){
             mTcpClient = null;
             conctTask = new connectTask(); //Connect to server
@@ -92,6 +77,63 @@ public class DuduService extends Service {
 
         return START_STICKY;
     }
+
+    private void reConnectServer(){
+        if(mTcpClient == null || mTcpClient.getSocket() == null){//初次连接
+
+            conctTask = new connectTask(); //Connect to server
+            conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+
+        } else if(mTcpClient.getSocket().isClosed()
+                || !mTcpClient.getSocket().isConnected()) {
+            try {
+                mTcpClient.stopClient();
+                conctTask.cancel(true);
+                conctTask = null;
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                conctTask = new connectTask(); //Connect to server
+                conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            }
+        }
+    }
+
+    //注册监听网络状态改变的广播
+    private ConnectivityManager mConnectivityManager;
+    private NetworkInfo netInfo;
+
+    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            String action = intent.getAction();
+            if (action.equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+
+                mConnectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+                netInfo = mConnectivityManager.getActiveNetworkInfo();
+                if(netInfo != null && netInfo.isAvailable()) {
+                    /////////////网络连接
+                    String name = netInfo.getTypeName();
+                    //网络连接切换, 一般重新连接
+                    if(netInfo.getType()==ConnectivityManager.TYPE_WIFI){
+                        /////WiFi网络
+                    }else if(netInfo.getType()==ConnectivityManager.TYPE_ETHERNET){
+
+                    }else if(netInfo.getType()==ConnectivityManager.TYPE_MOBILE){
+                        /////////3g网络
+                    }
+                    reConnectServer();
+                } else {
+                    ////////网络断开
+                    Toast.makeText(DuduService.this, "网络连接断开...", Toast.LENGTH_SHORT).show();
+                    //TODO 网络断开
+                }
+            }
+        }
+    };
+
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -106,6 +148,8 @@ public class DuduService extends Service {
         if(null != mLocClient){
             mLocClient.stop();
         }
+
+        unregisterReceiver(mReceiver);
 
         try {
             mTcpClient.stopClient();
@@ -197,7 +241,7 @@ public class DuduService extends Service {
             @Override
             public void onTimeout() {
                 Log.i("HeartBeat", "Response Timeout");
-                Toast.makeText(DuduService.this, "网络异常...", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(DuduService.this, "网络异常...", Toast.LENGTH_SHORT).show();
                 //将登陆状态置为false
 //                SharedPreferencesUtils.setParam(DuduService.this, SharedPreferencesUtils.LOGIN_STATE, false);
             }

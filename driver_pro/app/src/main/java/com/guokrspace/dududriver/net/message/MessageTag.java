@@ -17,8 +17,7 @@ public class MessageTag {
 
     public static final int MSG_TOGGLE_CONFIRMVIEW = 0x1001;
 
-    public static final int MESSAGE_GET_NEARBY_CAR_FAILURE = 0x7004;
-    public static final int MESSAGE_GET_NEARBY_CAR_SUCCESS = 0x7005;
+    public static final int MESSAGE_UPDATE_GRABORDER = 0x7004;
 
     public static final int MESSAGE_CREATE_ORDER_SUCCESS = 0x8001;
     public static final int MESSAGE_CREATE_ORDER_FAILURE = 0x8002;
@@ -42,6 +41,7 @@ public class MessageTag {
     public static final int MESSAGE_PAYMENT_CONFIRM_TIMEOUT = 0x9008;
     public static final int MESSAGE_PAYMENT_COMPLETED = 0x9008;
     public static final int MESSAGE_UPDATE_TRACK = 0x9009;
+    public static final int MESSAGE_UPDATE_MESSAGE = 0x9010;
 
     public static final int REGISTER_REQ = 0x100A;
     public static final int REGISTER_RESP = 0x100B;
@@ -60,6 +60,7 @@ public class MessageTag {
     public static final int PATCH_ORDER = 0x1009;
     public static final int ORDER_CANCEL = 0x1012;
     public static final int PAY_OVER = 0x1011;
+    public static final int NEW_MESSAGE = 0x1014;
 
     //hyman
     public static final int HISTORY_ORDERS = 0x1013;
@@ -93,6 +94,7 @@ public class MessageTag {
         MessageTag.put("order", PATCH_ORDER);
         MessageTag.put("user_cancel_order", ORDER_CANCEL);
         MessageTag.put("pay_over", PAY_OVER);
+        MessageTag.put("new_message", NEW_MESSAGE);
 
         //hyman
         MessageTag.put("history_orders", HISTORY_ORDERS);

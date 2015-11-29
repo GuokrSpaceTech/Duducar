@@ -12,6 +12,7 @@ import com.guokrspace.dududriver.database.DaoMaster;
 import com.guokrspace.dududriver.database.DaoSession;
 import com.guokrspace.dududriver.database.PersonalInformation;
 import com.guokrspace.dududriver.database.PersonalInformationDao;
+import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.DisplayUtil;
 import com.guokrspace.dududriver.util.VoiceUtil;
 
@@ -57,6 +58,11 @@ public class DuduDriverApplication extends Application{
         registerReceiver(mReceiver, iFilter);
 
         initDB();
+
+        if(!CommonUtil.isGpsOpen(getApplicationContext())){
+             //TODO GPS未打开
+
+        }
 
         initPersonalInformation();
     }

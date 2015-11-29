@@ -5,12 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.FloatMath;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -58,8 +56,9 @@ public class WealthAdapterDelegate extends AbsAdapterDelegate<List<BaseNoticeIte
         WealthViewHolder holder = (WealthViewHolder) viewHolder;
         WealthNotice notice = (WealthNotice) items.get(position);
 
-        holder.tvTime.setText(notice.date);
-        holder.tvContent.setText(String.format(context.getResources().getString(R.string.wealth_add_notice), notice.cardNum, Float.parseFloat(notice.sum)));
+        holder.tvTime.setText(notice.time);
+        Log.e("daddy message" , notice.time + " " + notice.mobile + "  " + notice.sumprice);
+        holder.tvContent.setText(String.format(context.getResources().getString(R.string.wealth_add_notice), notice.mobile.substring(7), Float.parseFloat(notice.sumprice)));
 
         holder.ibDelete.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -148,6 +148,7 @@ public class PreOrderActivity extends AppCompatActivity
         Log.e("daddy","oncreate");
         List persons = mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().list();
         if (persons.size() <= 0) { //Not Logged in
+            Log.e("daddy", "person size < 0");
             Intent intent = new Intent(mContext, LoginActivity.class);
             startActivityForResult(intent, ACTVITY_LOGIN_REQUEST);
 //            finish();
@@ -178,7 +179,8 @@ public class PreOrderActivity extends AppCompatActivity
             }
         }
         zoom.setVisibility(View.GONE);
-
+        //
+        Log.e("daddy", "init baidu map");
         LatLng initLoc = new LatLng(28.173,112.9584);
         MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(initLoc);
         mBaiduMap.animateMapStatus(u);
@@ -190,6 +192,7 @@ public class PreOrderActivity extends AppCompatActivity
          * Init various listener
          */
         initListener();
+        Log.e("DADDY", "initListener");
 
         //Setup the Drawer
         mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -205,7 +208,7 @@ public class PreOrderActivity extends AppCompatActivity
         // 定位初始化
         initLocation();
         mLocClient.start();
-
+        Log.e("daddy", "start initlocatioin");
         // GeoCoder init
         mGeoCoder = GeoCoder.newInstance();
         mGeoCoder.setOnGetGeoCodeResultListener(this);

@@ -117,7 +117,6 @@
             android:label="账单支付"
             android:configChanges="keyboardHidden|orientation"/>
 
-
         <service
             android:name=".net.DuduService"
             android:enabled="true"

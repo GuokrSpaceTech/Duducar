@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ZoomControls;
 
 import com.baidu.location.BDLocation;
@@ -185,7 +186,7 @@ public class PostOrderActivity extends AppCompatActivity {
                         mCurrentChargeView.setText(
                                 "当前车费: " + charge_detail.getCurrent_charge() + "元\n" +
                                 "行驶里程: " + charge_detail.getCurrent_mile() + "公里\n" +
-                                "低速行驶: " + charge_detail.getLow_speed_time() + "分钟\n"
+                                "低速行驶: " + charge_detail.getLow_speed_time() + "分钟"
                         );
                     }
                     break;
@@ -210,8 +211,8 @@ public class PostOrderActivity extends AppCompatActivity {
                         mIsFirstDraw = false;
                     }
 
-                    if(Math.abs(prevLocation.latitude- currentLocation.latitude)>0.005
-                            ||Math.abs(prevLocation.longitude- currentLocation.longitude)>0.005 )
+                    if(Math.abs(prevLocation.latitude- currentLocation.latitude) > 0.001
+                            ||Math.abs(prevLocation.longitude- currentLocation.longitude) > 0.001 )
                         //异常定位
                         return;
                     drawLine(mBaiduMap, prevLocation, currentLocation);
@@ -253,7 +254,7 @@ public class PostOrderActivity extends AppCompatActivity {
 
 //        mBaiduMap.getUiSettings().setRotateGesturesEnabled(false);
 //        mBaiduMap.getUiSettings().setScrollGesturesEnabled(false);
-        mBaiduMap.getUiSettings().setZoomGesturesEnabled(false);
+//        mBaiduMap.getUiSettings().setZoomGesturesEnabled(false);
 
         LatLng initLoc = new LatLng(28.173,112.9584);
         MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(initLoc);
@@ -368,7 +369,7 @@ public class PostOrderActivity extends AppCompatActivity {
 
                             @Override
                             public void onTimeout() {
-
+                                Toast.makeText(PostOrderActivity.this, "连接超时, 请检查网络..", Toast.LENGTH_SHORT).show();
                             }
                         });
             }
