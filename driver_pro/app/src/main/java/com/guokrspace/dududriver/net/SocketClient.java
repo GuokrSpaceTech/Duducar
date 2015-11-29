@@ -2,9 +2,7 @@ package com.guokrspace.dududriver.net;
 
 import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.net.message.HeartBeatMessage;
 import com.guokrspace.dududriver.net.message.MessageTag;
 import com.guokrspace.dududriver.util.CommonUtil;
@@ -39,6 +37,7 @@ public class SocketClient {
     public static final int SERVERPORT = 8282;
     private boolean mRun = false;
 
+    private Socket socket;
     private PrintWriter out = null;
     private BufferedReader in = null;
 
@@ -103,11 +102,6 @@ public class SocketClient {
                 //Enqueue
                 MessageDispatcher messageDispatcher = new MessageDispatcher(messageid, message, timerRunnable, handler);
                 messageDispatchQueue.put(messageid, messageDispatcher);
-            } else {
-                //发送链路失效
-                Toast.makeText(DuduDriverApplication.getInstance(), "请检查网络连接..", Toast.LENGTH_SHORT).show();
-                SocketClient.getInstance().stopClient();
-                SocketClient.getInstance().run();
             }
             ret = messageid;
 
@@ -125,6 +119,10 @@ public class SocketClient {
         mRun = false;
     }
 
+    public Socket getSocket(){
+        return socket;
+    }
+
     public void run() {
 
         mRun = true;
@@ -136,7 +134,7 @@ public class SocketClient {
             Log.e("TCP SI Client", "SI: Connecting...");
 
             //create a socket to make the connection with the server
-            Socket socket = new Socket(serverAddr, SERVERPORT);
+            socket = new Socket(serverAddr, SERVERPORT);
 //            socket.setSoTimeout(30000);
             try {
 
@@ -148,7 +146,7 @@ public class SocketClient {
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
                 //in this while the client listens for the messages sent by the server
-                while (mRun) {
+                while (mRun && !socket.isClosed() && socket.isConnected()) {
                     serverMessage = in.readLine();
 
                     if (serverMessage != null) {
@@ -187,7 +185,6 @@ public class SocketClient {
                                 Log.i("DuduCar", errorMsg);
                             }
                         }
-
                         Log.e("RESPONSE FROM SERVER", "S: Received Message: '" + serverMessage + "'");
                     }
                     serverMessage = null;
@@ -410,7 +407,7 @@ public class SocketClient {
             heartbeat.put("lat",heartBeatMessage.getLat());
             heartbeat.put("lng", heartBeatMessage.getLng());
             heartbeat.put("speed",heartBeatMessage.getSpeed());
-            ret = sendMessage(heartbeat, handler, 5);
+            ret = sendMessage(heartbeat, handler, 10);
         } catch (JSONException e) {
             e.printStackTrace();
         }

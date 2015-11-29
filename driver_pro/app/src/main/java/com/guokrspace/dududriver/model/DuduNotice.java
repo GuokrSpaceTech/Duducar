@@ -15,11 +15,14 @@ public class DuduNotice implements BaseNoticeItem {
     public String notice_id;
 
     public DuduNotice(String message){
+        if(message == null || message.length() == 0){
+           return;
+        }
         try{
             JSONObject object = new JSONObject(message);
-            title = (String)object.get("title");
-            url = (String)object.get("url");
-            content = (String)object.get("content");
+            title = object.get("title") == null ? "嘟嘟播报" : (String) object.get("title");
+            url = object.get("url") == null ? "" :  (String)object.get("url");
+            content = object.get("content") == null ? "嘟嘟欢迎您" : (String)object.get("content");
             time = (String)object.get("time");
             notice_id = (String)object.get("notice_id");
         } catch (JSONException e){

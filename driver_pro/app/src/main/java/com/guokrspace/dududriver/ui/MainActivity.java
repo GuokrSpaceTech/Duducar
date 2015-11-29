@@ -85,6 +85,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     private Handler mHandler;
     private Intent duduService;
     private ServiceReceiver receiver;
+    private ServiceReceiver messageReceiver;
 
     private static final int HANDLE_LOGIN_FAILURE = 100;
     private static final int NEW_ORDER_ARRIVE = 101;
@@ -180,10 +181,17 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     //监听service传来的消息
     private void registerBroadcastReceiver(){
         receiver = new ServiceReceiver();
+
         IntentFilter filter = new IntentFilter(Constants.SERVICE_BROADCAST);
         filter.addAction(Constants.SERVICE_ACTION_RELOGIN);
-        filter.addAction(Constants.SERVICE_ACTION_MESAGE);
+        filter.setPriority(1000);
         registerReceiver(receiver, filter);
+
+        messageReceiver = new ServiceReceiver();
+        IntentFilter mFilter = new IntentFilter(Constants.SERVICE_BROADCAST);
+        mFilter.addAction(Constants.SERVICE_ACTION_MESAGE);
+        mFilter.setPriority(1000);
+        registerReceiver(messageReceiver, mFilter);
     }
     //进行自动登陆
     private void doLogin(PersonalInformation user) {
@@ -501,10 +509,13 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     private void updateGrabOrderFragment(int what){
         List<Fragment> list = MainActivity.this.getSupportFragmentManager().getFragments();
         if(list == null){
+            Log.e("daddy message", "no fragment");
             return;
         }
+
         for(Fragment fragment : list){
             if(fragment instanceof GrabOrderFragment){//
+                Log.e("daddy message", "graborder start");
                 ((GrabOrderFragment) fragment).getHanlder().sendEmptyMessage(what);
             }
         }
@@ -514,6 +525,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unregisterReceiver(messageReceiver);
         SharedPreferencesUtils.setParam(this, SharedPreferencesUtils.LOGIN_STATE, false);
         isOnline = false;
     }
@@ -533,7 +545,9 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                     break;
                 case Constants.SERVICE_ACTION_MESAGE:
                     // 服务器有通知推送,
+                    Log.e("daddy mesage", "handle new message");
                     updateGrabOrderFragment(MessageTag.MESSAGE_UPDATE_MESSAGE);
+                    abortBroadcast();
                     break;
                 default:
                     return;

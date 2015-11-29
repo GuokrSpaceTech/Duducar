@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ZoomControls;
 
 import com.baidu.location.BDLocation;
@@ -368,7 +369,7 @@ public class PostOrderActivity extends AppCompatActivity {
 
                             @Override
                             public void onTimeout() {
-
+                                Toast.makeText(PostOrderActivity.this, "连接超时, 请检查网络..", Toast.LENGTH_SHORT).show();
                             }
                         });
             }

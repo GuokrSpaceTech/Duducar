@@ -28,7 +28,6 @@ import com.guokrspace.dududriver.model.DenseOrderNotice;
 import com.guokrspace.dududriver.model.DuduMessage;
 import com.guokrspace.dududriver.model.DuduNotice;
 import com.guokrspace.dududriver.model.MessageResponseModel;
-import com.guokrspace.dududriver.model.UnKnowNotice;
 import com.guokrspace.dududriver.model.WealthNotice;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
@@ -137,14 +136,16 @@ public class GrabOrderFragment extends BaseFragment implements Handler.Callback{
     private List<BaseNoticeItem> initData() {
         List<BaseNoticeItem> notices = new ArrayList<>();
         List<BaseNotice> data = DuduDriverApplication.getInstance().mDaoSession.getBaseNoticeDao().queryBuilder().orderDesc(BaseNoticeDao.Properties.NoticeId).limit(20).list();
+        Log.e("daddy message", " " + data.size() + " ");
+
         for (BaseNotice notice : data) {
             String type = notice.getType();
             String body = notice.getMessageBody();
-            if(type.equals("1")){//支付通知
+            if(type.equals("PayOver")){//支付通知
                 notices.add(new WealthNotice(body));
-            } else if(type.equals("2")){//系统通知
+            } else if(type.equals("Notice")){//系统通知
                 notices.add(new DuduNotice(body));
-            } else if(type.equals("3")){//热力地图
+            } else if(type.equals("HotMap")){//热力地图
                 notices.add(new DenseOrderNotice(body));
             }
         }
@@ -173,6 +174,7 @@ public class GrabOrderFragment extends BaseFragment implements Handler.Callback{
                 break;
             case MessageTag.MESSAGE_UPDATE_MESSAGE:
                 //TODO 更新通知
+                Log.e("daddy message", "pull new message");
                 pullMessage();
                 break;
             default:
@@ -193,7 +195,7 @@ public class GrabOrderFragment extends BaseFragment implements Handler.Callback{
         SocketClient.getInstance().pullMessages("new", Constants.ORDER_PAGE_NUM, Integer.parseInt(currentId), new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
-                Log.e("daddy message", messageBody +"recive");
+                Log.e("daddy message", messageBody + "recive");
                 //TODO: 解析返回的消息结构
                 MessageResponseModel responseModel = null;
                 if (!TextUtils.isEmpty(messageBody)) {
@@ -201,21 +203,26 @@ public class GrabOrderFragment extends BaseFragment implements Handler.Callback{
                 } else {
                     return;
                 }
-                List<DuduMessage> messageList = responseModel.getDuduMessage_list();
+                Log.e("daddy message", responseModel.getMessage_list().size() + "list size" + responseModel.getMessage_list().get(0).getMessage_type());
+                List<DuduMessage> messageList = responseModel.getMessage_list();
                 if (messageList.size() > 0) {
                     boolean isUpdate = false;
                     Query query = DuduDriverApplication.getInstance().mDaoSession.getBaseNoticeDao().queryBuilder().where(BaseNoticeDao.Properties.NoticeId.eq("0")).build();
                     for (DuduMessage duduMessage : messageList) {
                         query.setParameter(0, duduMessage.getMessage_id());
-                        if(query.list().size() < 1){
-                            DuduDriverApplication.getInstance().mDaoSession.getBaseNoticeDao().insert(getBaseNotice(duduMessage));
+                        Log.e("daddy message", query.list().size() + "dudu" + duduMessage.getMessage_id() + "messa" + duduMessage.getMessage_body());
+                        if (query.list().size() < 1) {
+                            Log.e("daddy message", "size + 1");
+                            long a = DuduDriverApplication.getInstance().mDaoSession.getBaseNoticeDao().insert(getBaseNotice(duduMessage));
+                            Log.e("daddy message", "id " + a);
                             isUpdate = true;
                         }
                     }
-                    if(isUpdate){
+                    if (isUpdate) {
                         baseNoticeItems.clear();
                         baseNoticeItems = initData();
-                        if(baseNoticeItems.size() < 1){//没有任何消息
+                        Log.e("daddy message", baseNoticeItems.size() + "");
+                        if (baseNoticeItems.size() < 1) {//没有任何消息
                             baseNoticeItems.add(new DuduNotice());
                         }
                         mAdapter.notifyDataSetChanged();
@@ -225,7 +232,7 @@ public class GrabOrderFragment extends BaseFragment implements Handler.Callback{
 
             @Override
             public void onFailure(String error) {
-                Log.e("daddy", error +"message error");
+                Log.e("daddy", error + "message error");
             }
 
             @Override
@@ -241,19 +248,8 @@ public class GrabOrderFragment extends BaseFragment implements Handler.Callback{
         notice.setMessageBody(message.getMessage_body());
         notice.setOutOfTime(false);
         notice.setType(message.getMessage_type());
+        Log.e("daddy notice", notice.getMessageBody() + "dddd");
         return notice;
     }
 
-    private BaseNoticeItem getBaseNoticeItem(DuduMessage message){
-        String type = message.getMessage_type();
-        String body = message.getMessage_body();
-        if(type.equals("1")){
-            return new WealthNotice(body);
-        } else if(type.equals("2")){
-            return new DuduNotice(body);
-        } else if(type.equals("3")){
-            return new DenseOrderNotice(body);
-        }
-        return new UnKnowNotice();
-    }
 }

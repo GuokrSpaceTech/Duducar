@@ -26,15 +26,15 @@ public class MessageResponseModel implements Serializable {
         this.status = status;
     }
 
-    public List<DuduMessage> getDuduMessage_list() {
-        return duduMessage_list;
+    public List<DuduMessage> getMessage_list() {
+        return message_list;
     }
 
-    public void setDuduMessage_list(List<DuduMessage> duduMessage_list) {
-        this.duduMessage_list = duduMessage_list;
+    public void setDuduMessage_list(List<DuduMessage> message_list) {
+        this.message_list = message_list;
     }
 
     private String status;
 
-    private List<DuduMessage> duduMessage_list;
+    private List<DuduMessage> message_list;
 }

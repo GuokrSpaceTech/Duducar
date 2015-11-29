@@ -37,6 +37,7 @@ public class SocketClient {
 
     private PrintWriter out = null;
     private BufferedReader in = null;
+    private Socket socket = null;
 
     public ResponseHandler messageParsor;
 
@@ -54,6 +55,10 @@ public class SocketClient {
 //        mMessageListener = listener;
         s_socketClient = this;
         messageid = 0;
+    }
+
+    public Socket getSocket(){
+        return socket;
     }
 
 
@@ -129,7 +134,7 @@ public class SocketClient {
             Log.e("TCP SI Client", "SI: Connecting...");
 
             //create a socket to make the connection with the server
-            Socket socket = new Socket(serverAddr, SERVERPORT);
+            socket = new Socket(serverAddr, SERVERPORT);
 //            socket.setSoTimeout(30000);
             try {
 

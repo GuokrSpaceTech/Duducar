@@ -126,7 +126,7 @@ public class DriverInformationView extends RelativeLayout {
     private void init(Context context) {
         root = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.driver_information_view, this, true);
         mDriverImageView = (ImageView) findViewById(R.id.imageViewDriver);
-        mCancelButton = (Button) findViewById(R.id.cancel_btn);
+//        mCancelButton = (Button) findViewById(R.id.cancel_btn);
         mCarImageView = (ImageView) findViewById(R.id.imageViewCar);
         mPhoneIconImageView = (ImageView) findViewById(R.id.imageViewPhoneIcon);
         mDriverNameTextView = (TextView) findViewById(R.id.textViewDriverName);

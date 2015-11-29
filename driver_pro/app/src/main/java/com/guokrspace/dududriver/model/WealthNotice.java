@@ -25,14 +25,14 @@ public class WealthNotice implements BaseNoticeItem {
     public WealthNotice(String message){
         try{
             JSONObject object = new JSONObject(message);
-            order_id = (String) object.get("order_id");
-            time = (String) object.get("time");
-            payer = (String ) object.get("payer");
+            order_id = String.valueOf((Integer) object.get("id"));
+            time = (String) object.get("ordernum");
+            payer = object.get("payer") == null ? "2" :  (String ) object.get("payer");
             price = (String) object.get("price");
             start = (String) object.get("start");
             destination = (String) object.get("destination");
-            mobile = (String) object.get("mobile");
-            sumprice = (String) object.get("sumprice");
+            mobile = object.get("passenger_mobile") == null ? "13900000002" : (String) object.get("passenger_mobile");
+            sumprice = object.get("sumprice") == null ? "0.01" : (String) object.get("sumprice");
             start_time = (String) object.get("start_time");
             end_time = (String) object.get("end_time");
             low_speed_time = (String) object.get("low_speed_time");

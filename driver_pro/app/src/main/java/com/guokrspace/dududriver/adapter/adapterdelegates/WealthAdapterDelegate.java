@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +57,8 @@ public class WealthAdapterDelegate extends AbsAdapterDelegate<List<BaseNoticeIte
         WealthNotice notice = (WealthNotice) items.get(position);
 
         holder.tvTime.setText(notice.time);
-        holder.tvContent.setText(String.format(context.getResources().getString(R.string.wealth_add_notice), notice.mobile.substring(-4), Float.parseFloat(notice.sumprice)));
+        Log.e("daddy message" , notice.time + " " + notice.mobile + "  " + notice.sumprice);
+        holder.tvContent.setText(String.format(context.getResources().getString(R.string.wealth_add_notice), notice.mobile.substring(7), Float.parseFloat(notice.sumprice)));
 
         holder.ibDelete.setOnClickListener(new View.OnClickListener() {
             @Override

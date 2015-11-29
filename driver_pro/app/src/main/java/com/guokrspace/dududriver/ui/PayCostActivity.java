@@ -440,11 +440,13 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
             case R.id.alipay_layout:
                 checkedRadioButton.setChecked(false);
                 aliRadioButton.setChecked(true);
+                Log.e("daddy", "alipay layout clicked");
                 checkedRadioButton = aliRadioButton;
                 break;
             case R.id.wxpay_layout:
                 checkedRadioButton.setChecked(false);
                 wxRadioButton.setChecked(true);
+                Log.e("daddy", "wxpay layout clicked");
                 checkedRadioButton = wxRadioButton;
                 break;
             default:
