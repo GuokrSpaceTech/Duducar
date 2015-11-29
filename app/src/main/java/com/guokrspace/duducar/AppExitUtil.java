@@ -36,4 +36,8 @@ public class AppExitUtil {
         }
         System.exit(0);
     }
+
+    public List<Activity> getActivityList() {
+        return activityList;
+    }
 }

@@ -411,7 +411,7 @@ public class SocketClient {
         return ret;
     }
 
-    public int getHistoryOrders (String type, int num, int orderId, ResponseHandler handler) {
+    public int getHistoryOrders (String type, int num, Long orderId, ResponseHandler handler) {
         int ret = -1;
         JSONObject params = new JSONObject();
         try {

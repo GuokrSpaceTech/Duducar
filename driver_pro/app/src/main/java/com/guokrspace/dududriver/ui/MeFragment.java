@@ -20,13 +20,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.adapter.RecordListAdapter;
 import com.guokrspace.dududriver.common.Constants;
+import com.guokrspace.dududriver.database.OrderRecord;
 import com.guokrspace.dududriver.model.HistoryOrder;
 import com.guokrspace.dududriver.model.HistoryOrderResponseModel;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
+import com.guokrspace.dududriver.net.message.OrderDetail;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 import com.guokrspace.dududriver.view.CircleImageView;
 import com.guokrspace.dududriver.view.DividerItemDecoration;
@@ -74,19 +77,21 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
     SwipeRefreshLayout refreshLayout;
 
     private Context context;
+    private DuduDriverApplication mApplication;
     private LinearLayoutManager mLayoutManager;
 
     public static final int LOAD_BASEINFO = 0x100;
     private static final int HANDLE_REFRESH_OVER = 0x111;
 
     private RecordListAdapter mAdapter;
-    private List<HistoryOrder> listItems = new ArrayList<>();
+    private List<OrderRecord> listItems = new ArrayList<>();
 
-    private int currentOrderId = Integer.MAX_VALUE;
+    private Long currentOrderId = Long.MAX_VALUE;
 
     private boolean isRefreshing = false;
     private boolean isLoading = false;
     private boolean hasMore = true;
+    private boolean hasLoadLocalRecord = false;
 
     private Handler mHandler = new Handler(Looper.getMainLooper(), this);
 
@@ -95,9 +100,12 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
 
         @Override
         public void onRefresh() {
-
-            if (isNetworkAvailable() && !isRefreshing) {
-                currentOrderId = Integer.MAX_VALUE;
+            if (isRefreshing) {
+                showToast("正在刷新，请稍后...");
+                return;
+            }
+            if (isNetworkAvailable()) {
+                currentOrderId = Long.MAX_VALUE;
                 // TODO 刷新、获取历史订单数据
                 SocketClient.getInstance().getHistoryOrders("old", Constants.ORDER_PAGE_NUM, currentOrderId, new ResponseHandler(Looper.myLooper()) {
                     @Override
@@ -110,28 +118,13 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
 //                                responseModel = FastJsonTools.getObject(messageBody, HistoryOrderResponseModel.class);
                             responseModel = new Gson().fromJson(messageBody, HistoryOrderResponseModel.class);
                         }
-                        List<HistoryOrder> orders = null;
+                        List<OrderRecord> orders = null;
                         if (responseModel != null) {
                             Log.e("hyman_log", "hahaha");
                             orders = responseModel.getOrder_list();
-                            Collections.sort(orders, new Comparator<HistoryOrder>() {
-                                @Override
-                                public int compare(HistoryOrder lhs, HistoryOrder rhs) {
-                                    int lhsId = Integer.parseInt(lhs.getId());
-                                    int rhsId = Integer.parseInt(rhs.getId());
-                                    if (lhsId < rhsId) return 1;
-                                    return -1;
-                                }
-                            });
-                            if (orders.size() != 0) {
-                                listItems.clear();
-                                for (HistoryOrder order : orders) {
-                                    order.setEnd_time(dateFormat(order.getEnd_time()));
-                                    listItems.add(order);
-                                }
-                                mAdapter.notifyDataSetChanged();
-                            }
-                            currentOrderId = Integer.parseInt(orders.get(orders.size() - 1).getId());
+                            loadRefreshRecord(orders);
+                            mApplication.mDaoSession.getOrderRecordDao().deleteAll();
+                            mApplication.mDaoSession.getOrderRecordDao().insertInTx(orders);
                         }
                     }
 
@@ -139,6 +132,12 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
                     public void onFailure(String error) {
                         refreshLayout.setRefreshing(false);
                         isRefreshing = false;
+                        //失败加载本地数据
+                        if (!hasLoadLocalRecord) {
+                            List<OrderRecord> localRecords = mApplication.mDaoSession.getOrderRecordDao().loadAll();
+                            loadRefreshRecord(localRecords);
+                            hasLoadLocalRecord = true;
+                        }
                         showToast("刷新失败...");
                     }
 
@@ -146,14 +145,47 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
                     public void onTimeout() {
                         refreshLayout.setRefreshing(false);
                         isRefreshing = false;
+                        if (!hasLoadLocalRecord) {
+                            List<OrderRecord> localRecords = mApplication.mDaoSession.getOrderRecordDao().loadAll();
+                            loadRefreshRecord(localRecords);
+                            hasLoadLocalRecord = true;
+                        }
                         showToast("请求超时...");
                     }
                 });
 //                    mHandler.sendMessageDelayed(mHandler.obtainMessage(HANDLE_REFRESH_OVER), 1000);
+            } else {
+                //无网络加载本地数据
+                refreshLayout.setRefreshing(false);
+                isRefreshing = false;
+                if (!hasLoadLocalRecord) {
+                    List<OrderRecord> localRecords = mApplication.mDaoSession.getOrderRecordDao().loadAll();
+                    loadRefreshRecord(localRecords);
+                    hasLoadLocalRecord = true;
+                }
             }
         }
 
     };
+
+    private void loadRefreshRecord(List<OrderRecord> orders) {
+
+        Collections.sort(orders, new Comparator<OrderRecord>() {
+            @Override
+            public int compare(OrderRecord lhs, OrderRecord rhs) {
+                Long lhsId = lhs.getId();
+                Long rhsId = rhs.getId();
+                if (lhsId < rhsId) return 1;
+                return -1;
+            }
+        });
+        if (orders.size() != 0) {
+            listItems.clear();
+            listItems.addAll(orders);
+            mAdapter.notifyDataSetChanged();
+        }
+        currentOrderId = orders.get(orders.size() - 1).getId();
+    }
 
     public static MeFragment newInstance() {
         final MeFragment meFragment = new MeFragment();
@@ -168,6 +200,7 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mApplication = DuduDriverApplication.getInstance();
     }
 
     @Override
@@ -241,28 +274,25 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
 //                    responseModel = FastJsonTools.getObject(messageBody, HistoryOrderResponseModel.class);
                     responseModel = new Gson().fromJson(messageBody, HistoryOrderResponseModel.class);
                 }
-                List<HistoryOrder> orders = null;
+                List<OrderRecord> orders = null;
                 if (responseModel != null) {
                     orders = responseModel.getOrder_list();
-                    Collections.sort(orders, new Comparator<HistoryOrder>() {
+                    Collections.sort(orders, new Comparator<OrderRecord>() {
                         @Override
-                        public int compare(HistoryOrder lhs, HistoryOrder rhs) {
-                            int lhsId = Integer.parseInt(lhs.getId());
-                            int rhsId = Integer.parseInt(rhs.getId());
+                        public int compare(OrderRecord lhs, OrderRecord rhs) {
+                            Long lhsId = lhs.getId();
+                            Long rhsId = rhs.getId();
                             if (lhsId < rhsId) return 1;
                             return -1;
                         }
                     });
                     if (orders.size() != 0) {
-                        List<HistoryOrder> orderRecords = new ArrayList<HistoryOrder>();
-                        for (HistoryOrder order : orders) {
-                            order.setEnd_time(dateFormat(order.getEnd_time()));
-                            orderRecords.add(order);
-                        }
+                        List<OrderRecord> orderRecords = new ArrayList<OrderRecord>();
+                        orderRecords.addAll(orders);
                         listItems.addAll(orderRecords);
                         mAdapter.notifyDataSetChanged();
                     }
-                    currentOrderId = Integer.parseInt(orders.get(orders.size() - 1).getId());
+                    currentOrderId = orders.get(orders.size() - 1).getId();
                     if (orders.size() < Constants.ORDER_PAGE_NUM) {
                         hasMore = false;
                     }
@@ -307,16 +337,6 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
         return false;
     }
 
-    //将时间转换成 MM月dd日 HH:mm 格式
-    private String dateFormat(String date) {
-        if (TextUtils.isEmpty(date)) {
-            return "一万年前";
-        }
-        Date orderDate = new Date(Long.parseLong(date));
-        SimpleDateFormat format = new SimpleDateFormat("MM月dd日 HH:mm");
-        return format.format(orderDate);
-    }
-
     /**
      * 著作权归作者所有。
      * 商业转载请联系作者获得授权，非商业转载请注明出处。
@@ -344,7 +364,7 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
     }
 
     private void updateDriverInfo(){
-        String name = (String) SharedPreferencesUtils.getParam(getActivity(), "name", "李迪师傅");
+        String name = (String) SharedPreferencesUtils.getParam(getActivity(), "name", "阿方师傅");
         float stars = Float.parseFloat((String) SharedPreferencesUtils.getParam(getActivity(), "rating", "5"));
         int total_order = Integer.parseInt((String) SharedPreferencesUtils.getParam(getActivity(), "total_order", "0"));
         float favorable_rate = Float.parseFloat((String) SharedPreferencesUtils.getParam(getActivity(), "favorable_rate", "0.0"));

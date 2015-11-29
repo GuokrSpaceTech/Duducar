@@ -41,6 +41,7 @@ public class BaseActivity extends AppCompatActivity {
         if (loadingDialog != null) {
             loadingDialog.dismiss();
         }
+
         super.onDestroy();
     }
 

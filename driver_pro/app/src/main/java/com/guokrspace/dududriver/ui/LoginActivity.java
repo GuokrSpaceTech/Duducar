@@ -128,6 +128,7 @@ public class LoginActivity extends BaseActivity implements
         setContentView(R.layout.activity_login);
 
         initView();
+        initView();
 
         AppExitUtil.getInstance().addActivity(this);
     }
@@ -299,11 +300,11 @@ public class LoginActivity extends BaseActivity implements
         switch (msg.what) {
             case HANDLER_REGISTER_SUCCESS:
                 if (mDialog != null) mDialog.dismiss();
-                threadStopFlag = true;
+//                threadStopFlag = true;
                 mPassWordEt.requestFocus();
                 break;
             case HANDLER_REGISTER_FAILURE:
-                threadStopFlag = true;
+//                threadStopFlag = true;
                 WinToast.toast(LoginActivity.this, "获取验证码失败");
                 break;
             case HANDLER_LOGIN_TIMEOUT:
@@ -336,6 +337,9 @@ public class LoginActivity extends BaseActivity implements
                 mRegcodeBt.setText("获取验证码");
                 threadStopFlag = false;
                 mRegcodeBt.setEnabled(true);
+                if(mDialog != null && mDialog.isShowing()) {
+                    mDialog.dismiss();
+                }
                 break;
             case HANDLER_LOGIN_HAS_FOCUS:
                 mLoginImg.setVisibility(View.GONE);
@@ -349,6 +353,11 @@ public class LoginActivity extends BaseActivity implements
         return false;
     }
 
+    @Override
+    protected void onDestroy() {
+        threadStopFlag = true;
+        super.onDestroy();
+    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

@@ -16,7 +16,7 @@ public class DAODBGenerator {
      */
 
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(1001, "com.guokrspace.dududriver.database");
+        Schema schema = new Schema(1002, "com.guokrspace.dududriver.database");
 
         addConfig(schema);
         addOrder(schema);
@@ -34,16 +34,29 @@ public class DAODBGenerator {
     private static void addOrder(Schema schema){
         Entity order = schema.addEntity("OrderRecord");
         order.addIdProperty().autoincrement();
-        order.addStringProperty("phoneNum");
-        order.addStringProperty("startAddr");
-        order.addStringProperty("destAddr");
-        order.addStringProperty("startLat");
-        order.addStringProperty("startLng");
-        order.addStringProperty("destLat");
-        order.addStringProperty("destLng");
+
+        order.addStringProperty("orderNum");
+        order.addStringProperty("driver_id");
+        order.addStringProperty("passenger_id");
+        order.addStringProperty("passenger_mobile");
+        order.addStringProperty("start");
+        order.addStringProperty("destination");
+        order.addStringProperty("start_lat");
+        order.addStringProperty("start_lng");
+        order.addStringProperty("destination_lat");
+        order.addStringProperty("destination_lng");
+        order.addStringProperty("start_time");
+        order.addStringProperty("end_time");
+        order.addStringProperty("car_type");
+        order.addStringProperty("rent_type");
+        order.addStringProperty("additional_price");
         order.addStringProperty("mileage");
-        order.addStringProperty("price");
-        order.addStringProperty("carType");
-        order.addStringProperty("orderTime");
+        order.addStringProperty("sumprice");
+        order.addStringProperty("org_price");
+        order.addStringProperty("create_time");
+        order.addStringProperty("pay_time");
+        order.addStringProperty("pay_role");
+        order.addStringProperty("status");
+        order.addStringProperty("rating");
     }
 }

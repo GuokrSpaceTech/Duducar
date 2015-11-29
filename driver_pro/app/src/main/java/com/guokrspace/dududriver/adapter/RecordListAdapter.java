@@ -1,17 +1,23 @@
 package com.guokrspace.dududriver.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.guokrspace.dududriver.R;
+import com.guokrspace.dududriver.database.OrderRecord;
 import com.guokrspace.dududriver.model.HistoryOrder;
-import com.guokrspace.dududriver.model.OrderRecordListItem;
+import com.guokrspace.dududriver.ui.HistoryOrderDetailActivity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,10 +25,10 @@ import java.util.List;
  */
 public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.RecordViewHolder> {
 
-    private List<HistoryOrder> mItems = null;
+    private List<OrderRecord> mItems = null;
     private Context context;
 
-    public RecordListAdapter(Context context, List<HistoryOrder> data) {
+    public RecordListAdapter(Context context, List<OrderRecord> data) {
         this.context = context;
         this.mItems = data;
     }
@@ -35,12 +41,23 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
     }
 
     @Override
-    public void onBindViewHolder(RecordViewHolder holder, int position) {
+    public void onBindViewHolder(RecordViewHolder holder, final int position) {
         if (mItems != null) {
-            holder.tvDate.setText(mItems.get(position).getEnd_time());
+
+            holder.tvDate.setText(dateFormat(mItems.get(position).getEnd_time()));
             holder.tvOrigin.setText(mItems.get(position).getStart());
             holder.tvDest.setText(mItems.get(position).getDestination());
+
             holder.tvStatus.setText("已完成");
+            holder.orderItemLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent detailIntent = new Intent();
+                    detailIntent.setClass(context, HistoryOrderDetailActivity.class);
+                    detailIntent.putExtra("orderDetail", mItems.get(position));
+                    context.startActivity(detailIntent);
+                }
+            });
         }
     }
 
@@ -49,7 +66,19 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
         return mItems == null ? 0 : mItems.size();
     }
 
+    //将时间转换成 MM月dd日 HH:mm 格式
+    private String dateFormat(String date) {
+        if (TextUtils.isEmpty(date)) {
+            return "一万年前";
+        }
+        Date orderDate = new Date(Long.parseLong(date));
+        SimpleDateFormat format = new SimpleDateFormat("MM月dd日 HH:mm");
+        return format.format(orderDate);
+    }
+
     public class RecordViewHolder extends RecyclerView.ViewHolder {
+
+        public LinearLayout orderItemLayout;
 
         public TextView tvDate;
 
@@ -65,6 +94,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
 
         public RecordViewHolder(View itemView) {
             super(itemView);
+            orderItemLayout = (LinearLayout) itemView.findViewById(R.id.history_order_item);
             tvDate = (TextView) itemView.findViewById(R.id.record_date);
             ivOrigin = (ImageView) itemView.findViewById(R.id.origin_icon);
             tvOrigin = (TextView) itemView.findViewById(R.id.record_origin);

@@ -18,6 +18,7 @@ import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.MoreOptionType;
 import com.guokrspace.dududriver.ui.LoginActivity;
 import com.guokrspace.dududriver.ui.OrderMapActivity;
+import com.guokrspace.dududriver.ui.SettingActivity;
 import com.guokrspace.dududriver.util.DisplayUtil;
 
 import java.util.ArrayList;
@@ -119,7 +120,7 @@ public class OptionGridAdapter extends RecyclerView.Adapter<OptionGridAdapter.It
 
                 break;
             case SETTING:
-                context.startActivity(new Intent(context, LoginActivity.class));
+                context.startActivity(new Intent(context, SettingActivity.class));
                 break;
             default:
                 break;

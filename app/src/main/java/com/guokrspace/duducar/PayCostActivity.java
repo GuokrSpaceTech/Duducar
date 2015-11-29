@@ -31,6 +31,7 @@ import com.guokrspace.duducar.communication.http.model.UnifiedorderResp;
 import com.guokrspace.duducar.communication.message.MessageTag;
 import com.guokrspace.duducar.communication.message.OrderDetail;
 import com.guokrspace.duducar.database.PersonalInformation;
+import com.guokrspace.duducar.util.SharedPreferencesUtils;
 import com.guokrspace.duducar.wxapi.WePayUtil;
 import com.squareup.okhttp.Request;
 import com.tencent.mm.sdk.modelpay.PayReq;
@@ -150,7 +151,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
                                         Toast.LENGTH_SHORT).show();
                             } else if(TextUtils.equals(resultStatus, "6001")) {
                                 // 中途停止支付
-                                Toast.makeText(AlipayActivity.this, "请尽快完成支付", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PayCostActivity.this, "请尽快完成支付", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(mContext, RatingActivity.class);
                                 intent.putExtra("order", tripOverOrderDetail);
                                 startActivity(intent);
@@ -268,7 +269,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
 
         if (id == android.R.id.home)
         {
-            alterDialog = new android.support.v7.app.AlertDialog.Builder(AlipayActivity.this);
+            alterDialog = new android.support.v7.app.AlertDialog.Builder(PayCostActivity.this);
             alterDialog.setMessage("选择稍后支付或司机代付").setPositiveButton(
                     "确认", new DialogInterface.OnClickListener() {
                 @Override
@@ -302,8 +303,9 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
         if (tripOverOrderDetail != null) {
             body = tripOverOrderDetail.getStart() + "到" + tripOverOrderDetail.getDestination() + "，共" + tripOverOrderDetail.getMileage() + "公里";
             tradeNo = tripOverOrderDetail.getOrderNum();
+            SharedPreferencesUtils.setParam(mContext, SharedPreferencesUtils.OUT_TRADE_NO, tradeNo);
             // TODO:这里应为sumprice
-            totalFee = tripOverOrderDetail.getOrg_price();
+            totalFee = tripOverOrderDetail.getSumprice();
         }
         //2、 发起http请求，获得预支付id和签名， 请求参数body、tradeno、total_fee
         Map<String, String> params = new HashMap<>();
@@ -345,6 +347,10 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
                     Toast.makeText(mContext, "用户信息验证失败或者微信请求失败；", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                Log.e("hyman_sid", unifiedorderResp.sid);
+                //将sid保存
+                SharedPreferencesUtils.setParam(mContext, SharedPreferencesUtils.COMFIRM_TRADE_RESULT_SID, unifiedorderResp.sid);
+
                 Log.e("TAG", unifiedorderResp.toString());
                 req.appId = WePayUtil.APP_ID;
                 req.partnerId = WePayUtil.MCH_ID;
@@ -437,10 +443,10 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
         orderInfo += "&subject=" + "\"" + tripOverOrderDetail.getDestination() + "\"";
 
         // 商品详情
-        orderInfo += "&body=" + "\"" +  tripOverOrderDetail.getOrderNum() + "\"";
+        orderInfo += "&body=" + "\"" +  tripOverOrderDetail.getOrderNum() + "_2" + "\"";
 
         // 商品金额
-        orderInfo += "&total_fee=" + "\"" + tripOverOrderDetail.getOrg_price() + "\"";
+        orderInfo += "&total_fee=" + "\"" + tripOverOrderDetail.getSumprice() + "\"";
 
         // 服务器异步通知页面路径
         orderInfo += "&notify_url=" + "\"" + notifyUrl + "\"";
