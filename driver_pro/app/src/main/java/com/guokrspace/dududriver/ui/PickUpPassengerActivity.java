@@ -333,7 +333,9 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                 secDistance = DistanceUtil.getDistance(new LatLng(preLat, preLng), new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng()));
                 if ((secDistance * 1000 / (System.currentTimeMillis() - CommonUtil.getCurTime())) >= STRANGEDISTANCE) { //这一次的距离跳转异常
                     //drop it
-                    tmpDistance += preDis;
+//                    tmpDistance += preDis;
+                    tmpDistance += secDistance;
+                    preDis = secDistance;
                 } else {
                     tmpDistance += secDistance;
                     preDis = secDistance;
@@ -537,7 +539,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                 Double.valueOf(orderItem.getOrder().getDestination_lat()), Double.valueOf(orderItem.getOrder().getDestination_lng()));
         ed = PlanNode.withLocation(passengerLatLng);
 
-        MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(18.0f);
+        MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(16.0f);
         mBaiduMap.setMapStatus(msu);
         isFirstTrack = true;
 

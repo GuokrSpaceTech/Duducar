@@ -35,6 +35,7 @@ public class MessageTag {
     public static final int MESSAGE_ORDER_COMPLETED = 0x900b;
     public static final int MESSAGE_UPDATE_CHARGE = 0x900c;
     public static final int MESSAGE_UPDATE_TRACK = 0x900d;
+    public static final int MESSAGE_DRIVER_POSITION = 0x900e;
 
     public static final int MESSAGE_PASSENGER_IN_CAR = 0x9005;
 
@@ -61,6 +62,8 @@ public class MessageTag {
     public static final int RATING_SERVICE = 0x100F;
     public static final int PAY_OVER = 0x1010;
     public static final int DRIVER_PAY = 0x1011;
+    public static final int NEW_MESSAGE = 0x1013;
+    public static final int DRIVER_POSITION = 0x1014;
 
     public static MessageTag getInstance(){
         if(s_instance == null) new MessageTag();
@@ -91,6 +94,8 @@ public class MessageTag {
         MessageTag.put("pay_over", PAY_OVER);
         MessageTag.put("driver_pay", DRIVER_PAY);
         MessageTag.put("current_charge", CURRENT_TRIP_FEE);
+        MessageTag.put("new_message", NEW_MESSAGE);
+        MessageTag.put("driver_position", DRIVER_POSITION);
     }
 
     public int Tag(String command)

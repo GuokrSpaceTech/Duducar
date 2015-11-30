@@ -217,7 +217,7 @@ public class DuduService extends Service {
         msg.setLat(String.valueOf(locData.latitude));
         msg.setLng(String.valueOf(locData.longitude));
 
-        SocketClient.getInstance().sendHeartBeat(msg, new ResponseHandler(Looper.myLooper()) {
+        SocketClient.getInstance().sendHeartBeat(msg, Constants.PASSENGER_ROLE, new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
                 Log.i("HeartBeat Response", messageBody);

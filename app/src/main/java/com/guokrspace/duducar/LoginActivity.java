@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.guokrspace.duducar.common.Constants;
 import com.guokrspace.duducar.communication.DuduService;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
@@ -194,7 +195,7 @@ public class LoginActivity extends AppCompatActivity implements
                 threadStopFlag = false;
                 TimerTick(60);
 
-                messageid = SocketClient.getInstance().sendRegcodeRequst(userName, "2", new ResponseHandler(Looper.myLooper()) {
+                messageid = SocketClient.getInstance().sendRegcodeRequst(userName, Constants.PASSENGER_ROLE, new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
                         mHandler.sendEmptyMessage(HANDLER_REGISTER_SUCCESS);
@@ -224,7 +225,7 @@ public class LoginActivity extends AppCompatActivity implements
                     mDialog.show();
                 }
 
-                messageid = SocketClient.getInstance().sendVerifyRequst(userName, "2", passWord, new ResponseHandler(Looper.myLooper()) {
+                messageid = SocketClient.getInstance().sendVerifyRequst(userName, Constants.PASSENGER_ROLE, passWord, new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
                         try {
@@ -293,7 +294,7 @@ public class LoginActivity extends AppCompatActivity implements
                 break;
             case HANDLER_VERIFY_SUCCESS:
                 if (mDialog != null) mDialog.dismiss();
-                SocketClient.getInstance().sendLoginReguest(userName, "2", token, new ResponseHandler(Looper.myLooper()) {
+                SocketClient.getInstance().sendLoginReguest(userName, Constants.PASSENGER_ROLE, token, new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
                         mHandler.sendEmptyMessage(HANDLER_LOGIN_SUCCESS);

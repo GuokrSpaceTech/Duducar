@@ -135,12 +135,15 @@ public class GrabOrderFragment extends BaseFragment implements Handler.Callback{
 
     private List<BaseNoticeItem> initData() {
         List<BaseNoticeItem> notices = new ArrayList<>();
-        List<BaseNotice> data = DuduDriverApplication.getInstance().mDaoSession.getBaseNoticeDao().queryBuilder().orderDesc(BaseNoticeDao.Properties.NoticeId).limit(20).list();
+        List<BaseNotice> data = DuduDriverApplication.getInstance().mDaoSession.getBaseNoticeDao().queryBuilder().orderDesc(BaseNoticeDao.Properties.NoticeId).list();
         Log.e("daddy message", " " + data.size() + " ");
 
         for (BaseNotice notice : data) {
             String type = notice.getType();
             String body = notice.getMessageBody();
+            if(type == null){
+                continue;
+            }
             if(type.equals("PayOver")){//支付通知
                 notices.add(new WealthNotice(body));
             } else if(type.equals("Notice")){//系统通知
@@ -152,7 +155,10 @@ public class GrabOrderFragment extends BaseFragment implements Handler.Callback{
         return notices;
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
     @Override
     public void onDestroyView() {
@@ -191,8 +197,9 @@ public class GrabOrderFragment extends BaseFragment implements Handler.Callback{
             currentId = ((BaseNotice)messageList.get(0)).getNoticeId();
             //TODO 要做失效通知的清除操作
         }
+        Log.e("daddy messaeg" ,"currentId  " + currentId);
         //每次登陆都去拉取最新的消息
-        SocketClient.getInstance().pullMessages("new", Constants.ORDER_PAGE_NUM, Integer.parseInt(currentId), new ResponseHandler(Looper.myLooper()) {
+        SocketClient.getInstance().pullMessages("new", Constants.MESSAGE_PER_PAGE, Integer.parseInt(currentId), new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
                 Log.e("daddy message", messageBody + "recive");

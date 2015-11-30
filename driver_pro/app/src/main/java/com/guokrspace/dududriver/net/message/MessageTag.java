@@ -1,5 +1,7 @@
 package com.guokrspace.dududriver.net.message;
 
+import android.util.Log;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,6 +63,7 @@ public class MessageTag {
     public static final int ORDER_CANCEL = 0x1012;
     public static final int PAY_OVER = 0x1011;
     public static final int NEW_MESSAGE = 0x1014;
+    public static final int PASSENGER_POSITION = 0x1015;
 
     //hyman
     public static final int HISTORY_ORDERS = 0x1013;
@@ -95,6 +98,7 @@ public class MessageTag {
         MessageTag.put("user_cancel_order", ORDER_CANCEL);
         MessageTag.put("pay_over", PAY_OVER);
         MessageTag.put("new_message", NEW_MESSAGE);
+        MessageTag.put("passenger_position", PASSENGER_POSITION);
 
         //hyman
         MessageTag.put("history_orders", HISTORY_ORDERS);
@@ -102,6 +106,7 @@ public class MessageTag {
 
     public int Tag(String command)
     {
+        Log.e("daddy " , "command" + command);
         return MessageTag.get(command);
     }
 

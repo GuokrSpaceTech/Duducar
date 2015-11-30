@@ -90,6 +90,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
     private OrderItem tripOverOrderDetail;
     private double price;
     private double mileage;
+    private String orderNum;
     private Button payButton;
     private TextView feeTextView;
     private RelativeLayout alipayLayout;
@@ -179,6 +180,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
             tripOverOrderDetail = (OrderItem) bundle.get("orderItem");
             price = bundle.getDouble("price");
             mileage = bundle.getDouble("mileage");
+            orderNum = bundle.getString("orderNum");
             feeTextView.setText(price+"");
         }
 
@@ -231,13 +233,14 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
         //1、 通过socket获取到订单号，cmd: order_end
         if (tripOverOrderDetail != null) {
             body = tripOverOrderDetail.getOrder().getStart() + "到" + tripOverOrderDetail.getOrder().getDestination() + "，共" + mileage + "公里";
-            tradeNo = tripOverOrderDetail.getOrder().getId();
+//            tradeNo = tripOverOrderDetail.getOrder().getId();
             // TODO:这里应为sumprice
             totalFee = price+"";
         }
         //2、 发起http请求，获得预支付id和签名， 请求参数body、tradeno、total_fee
         Map<String, String> params = new HashMap<>();
-        params.put("orderNum", tradeNo);
+//        Log.e("daddy trade", orderNum);
+        params.put("orderNum", orderNum);
         params.put("body", body);
         params.put("total_fee", totalFee);
         List persons = ((DuduDriverApplication)getApplicationContext()).mDaoSession.getPersonalInformationDao().queryBuilder().limit(1).list();
@@ -247,7 +250,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
         params.put("token", person.getToken());
         params.put("mobile", person.getMobile());
         params.put("role", "1");
-        Log.e("weixinpay", tradeNo + " " + body + " " + totalFee + " " + person.getToken() + " " + person.getMobile());
+        Log.e("weixinpay", orderNum + " " + body + " " + totalFee + " " + person.getToken() + " " + person.getMobile());
         /*body = "长沙到北京，共1000公里";
         tradeNo = WePayUtil.genOutTradeNo();
         totalFee = "0.01";
@@ -361,7 +364,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
         orderInfo += "&seller_id=" + "\"" + SELLER + "\"";
 
         // 商户网站唯一订单号
-        orderInfo += "&out_trade_no=" + "\"" + getOutTradeNo() + "\"";
+        orderInfo += "&out_trade_no=" + "\"" + orderNum + "\"";
 
         // 商品名称
         orderInfo += "&subject=" + "\"" + tripOverOrderDetail.getOrder().getDestination() + "\"";
@@ -379,7 +382,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
         orderInfo += "&service=\"mobile.securitypay.pay\"";
 
         // 支付类型， 固定值
-        orderInfo += "&payment_type=\"1\"";
+        orderInfo += "&payment_type=\"2\"";
 
         // 参数编码， 固定值
         orderInfo += "&_input_charset=\"utf-8\"";

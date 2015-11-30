@@ -212,12 +212,12 @@ public class SocketClient {
         }
     }
 
-    public int sendHeartBeat(DuduService.HeartBeatMessage heartBeatMessage, ResponseHandler handler){
+    public int sendHeartBeat(DuduService.HeartBeatMessage heartBeatMessage, String role, ResponseHandler handler){
         int ret = -1;
         JSONObject heartbeat = new JSONObject();
         try {
             heartbeat.put("cmd", heartBeatMessage.getCmd());
-            heartbeat.put("role", "1");
+            heartbeat.put("role", role);
             heartbeat.put("lat",heartBeatMessage.getLat());
             heartbeat.put("lng", heartBeatMessage.getLng());
             ret = sendMessage(heartbeat, handler, 5);
