@@ -2,7 +2,6 @@ package com.guokrspace.dududriver.adapter.adapterdelegates;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,7 +15,7 @@ import android.widget.TextView;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.model.BaseNoticeItem;
 import com.guokrspace.dududriver.model.WealthNotice;
-import com.guokrspace.dududriver.ui.PostOrderActivity;
+import com.guokrspace.dududriver.util.DateUtil;
 import com.hannesdorfmann.adapterdelegates.AbsAdapterDelegate;
 
 import java.util.List;
@@ -56,9 +55,9 @@ public class WealthAdapterDelegate extends AbsAdapterDelegate<List<BaseNoticeIte
         WealthViewHolder holder = (WealthViewHolder) viewHolder;
         WealthNotice notice = (WealthNotice) items.get(position);
 
-        holder.tvTime.setText(notice.time);
-        Log.e("daddy message" , notice.time + " " + notice.mobile + "  " + notice.sumprice);
-        holder.tvContent.setText(String.format(context.getResources().getString(R.string.wealth_add_notice), notice.mobile.substring(7), Float.parseFloat(notice.sumprice)));
+        holder.tvTime.setText(DateUtil.dateFormat(notice.pay_time + ""));
+        Log.e("daddy message", notice.order_id + " " + notice.passenger_mobile + "  " + notice.sumprice);
+        holder.tvContent.setText(String.format(context.getResources().getString(R.string.wealth_add_notice), notice.passenger_mobile == null ? "未知号码" : notice.passenger_mobile.substring(7), Float.parseFloat(notice.sumprice)));
 
         holder.ibDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +70,7 @@ public class WealthAdapterDelegate extends AbsAdapterDelegate<List<BaseNoticeIte
         holder.llItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                context.startActivity(new Intent(context, PostOrderActivity.class));
+//                context.startActivity(new Intent(context, PostOrderActivity.class));
             }
         });
 

@@ -173,6 +173,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     protected void onPause() {
         super.onPause();
         isVisiable = false;
+        CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
         unregisterReceiver(receiver);
         mHandler.removeMessages(HANDLE_LOGIN_FAILURE);
     }

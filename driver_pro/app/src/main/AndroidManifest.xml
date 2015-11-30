@@ -98,6 +98,10 @@
         <activity
             android:name=".ui.OrderMapActivity"
             android:label="订单地图" />
+        <activity
+            android:name=".ui.PayCostActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            android:label="账单支付"/>
 
         <service
             android:name=".net.DuduService"

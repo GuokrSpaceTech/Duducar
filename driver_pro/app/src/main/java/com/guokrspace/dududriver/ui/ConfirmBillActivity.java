@@ -33,6 +33,9 @@ import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 import com.guokrspace.dududriver.util.VoiceUtil;
 import com.guokrspace.dududriver.view.CircleImageView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.math.BigDecimal;
 
 import butterknife.Bind;
@@ -167,6 +170,23 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
                             @Override
                             public void onSuccess(String messageBody) {
                                 Log.e("PickUpPassengerAct", "success " + messageBody);
+                                try {
+                                    JSONObject object = new JSONObject(messageBody);
+                                    String orderNum = object.getString("orderNum");
+                                    Intent intent = new Intent(context, OrderDetailActivity.class);
+                                    intent.putExtra("orderItem", orderItem);
+                                    intent.putExtra("mileage", curDistance);
+                                    intent.putExtra("lowspeed", lowSpeedTime);
+                                    intent.putExtra("price", price);
+                                    intent.putExtra("orderNum", orderNum);
+                                    intent.putExtra("lowcost", lowcost);
+                                    startActivity(intent);
+                                    finish();
+                                    dialog.dismiss();
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                                 VoiceUtil.startSpeaking(VoiceCommand.WAIT_FOR_PAY);
                             }
 
@@ -188,15 +208,7 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
                             }
                         });
 
-                        Intent intent = new Intent(context, OrderDetailActivity.class);
-                        intent.putExtra("orderItem", orderItem);
-                        intent.putExtra("mileage", curDistance);
-                        intent.putExtra("lowspeed", lowSpeedTime);
-                        intent.putExtra("price", price);
-                        intent.putExtra("lowcost", lowcost);
-                        startActivity(intent);
-                        finish();
-                        dialog.dismiss();
+
                     }
                 });
 

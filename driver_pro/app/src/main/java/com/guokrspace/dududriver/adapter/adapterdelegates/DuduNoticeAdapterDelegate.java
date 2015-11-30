@@ -58,10 +58,12 @@ public class DuduNoticeAdapterDelegate extends AbsAdapterDelegate<List<BaseNotic
 
         holder.tvTime.setText(DateUtil.dateFormat(System.currentTimeMillis() + ""));
         holder.tvContent.setText(notice.title);
+        holder.tvDetail.setText(notice.content);
 
         holder.ibDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((DuduNotice) items.get(position)).cancel = true;
                 items.remove(position);
                 mAdapter.notifyItemRemoved(position);
                 mAdapter.notifyDataSetChanged();

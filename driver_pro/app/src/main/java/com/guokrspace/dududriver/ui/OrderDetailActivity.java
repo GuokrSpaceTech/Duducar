@@ -108,6 +108,7 @@ public class OrderDetailActivity extends BaseActivity {
                 Intent intent = new Intent(context, PayCostActivity.class);
                 intent.putExtra("orderItem", orderItem);
                 intent.putExtra("price", cash);
+                intent.putExtra("orderNum", orderNum);
                 intent.putExtra("mileage", curDistance);
                 startActivity(intent);
 
@@ -128,6 +129,7 @@ public class OrderDetailActivity extends BaseActivity {
     private double cash;
     private OrderItem orderItem;
     private double curDistance;
+    private String orderNum;
     private int lowSpeedTime;
 
     @Override
@@ -142,6 +144,7 @@ public class OrderDetailActivity extends BaseActivity {
         curDistance = bundle.getDouble("mileage");
         lowSpeedTime= bundle.getInt("lowspeed");
         cash = bundle.getDouble("price");
+        orderNum = bundle.getString("orderNum");
 
         initView();
     }

@@ -26,6 +26,7 @@ public class Constants {
     public static final String SERVICE_ACTION_MESAGE = "GOT_A_NEW_MESSAGE";
 
     public static final int ORDER_PAGE_NUM = 10;
+    public static final int MESSAGE_PER_PAGE = 40;
 
 
 }

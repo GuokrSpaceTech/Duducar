@@ -229,16 +229,20 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
                 * */
                 try {
                     JSONObject mDriverPay = new JSONObject(messageBody);
+                    Log.e("daddy detail", tripOverOrderDetail.toString());
                     if(tripOverOrderDetail == null){
                         finish();
                     }
+                    Intent intent = new Intent(mContext, RatingActivity.class);
+                    intent.putExtra("order", tripOverOrderDetail);
+                    startActivity(intent);
+                    Toast.makeText(mContext, "司机已代付!", Toast.LENGTH_LONG).show();
+                    finish();
                     if (Integer.parseInt((String)mDriverPay.get("order_id")) != tripOverOrderDetail.getId()) {
                         //异常情况,不是目前处理订单的消息
                         return;
                     }
-                    tripOverOrderDetail = null;
-                    Toast.makeText(getApplicationContext(), "司机已代付!", Toast.LENGTH_LONG).show();
-                    finish();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

@@ -321,7 +321,7 @@ public class PreOrderActivity extends AppCompatActivity
 
     private void doLogin(final PersonalInformation person){
 
-        SocketClient.getInstance().sendLoginReguest(person.getMobile(), "2", person.getToken(), new ResponseHandler(Looper.getMainLooper()) {
+        SocketClient.getInstance().sendLoginReguest(person.getMobile(), Constants.PASSENGER_ROLE, person.getToken(), new ResponseHandler(Looper.getMainLooper()) {
             @Override
             public void onSuccess(String messageBody) {
                 Log.e("daddy login ", "success");
@@ -341,7 +341,6 @@ public class PreOrderActivity extends AppCompatActivity
             public void onTimeout() {
                 Log.e("daddy login", "timeout ");
                 WinToast.toast(PreOrderActivity.this, "登陆超时,请检查网络连接情况");
-                doLogin(person);
             }
         });
 

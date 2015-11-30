@@ -34,12 +34,14 @@ import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.guokrspace.duducar.common.Constants;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
 import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
@@ -53,6 +55,9 @@ import com.guokrspace.duducar.communication.message.TripStart;
 import com.guokrspace.duducar.database.OrderRecord;
 import com.guokrspace.duducar.ui.DriverInformationView;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -81,6 +86,10 @@ public class PostOrderActivity extends AppCompatActivity {
     MapView mMapView = null;
     BaiduMap mBaiduMap = null;
     BitmapDescriptor mCurrentMarker;
+
+    MarkerOptions markerOptions;
+    Marker marker;
+
     LocationClient mLocClient;
     public MyLocationListener myListener = new MyLocationListener();
     private LatLng mPrevLatLng;//上一次的经纬度地址
@@ -152,6 +161,7 @@ public class PostOrderActivity extends AppCompatActivity {
                             cancelPrompt.setVisibility(View.GONE);
                             mProgressBar.setVisibility(View.GONE);
                             mFab.setVisibility(View.GONE);
+
                         }
                     }
 
@@ -277,7 +287,7 @@ public class PostOrderActivity extends AppCompatActivity {
         zoom.setVisibility(View.GONE);
 
         mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
-        MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(20.0f);
+        MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(18.0f);
         mBaiduMap.setMapStatus(msu);
 
         //UI
@@ -290,7 +300,7 @@ public class PostOrderActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
                 state = ORDER_CANCELLING;
 
-                SocketClient.getInstance().sendOrderCancel("2",
+                SocketClient.getInstance().sendOrderCancel(Constants.PASSENGER_ROLE,
                         new ResponseHandler(Looper.myLooper()) {
                             @Override
                             public void onSuccess(String messageBody) {
@@ -354,7 +364,7 @@ public class PostOrderActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 state = ORDER_CANCELLING;
-                SocketClient.getInstance().sendOrderCancel("2",
+                SocketClient.getInstance().sendOrderCancel(Constants.PASSENGER_ROLE,
                         new ResponseHandler(Looper.myLooper()) {
                             @Override
                             public void onSuccess(String messageBody) {
@@ -384,6 +394,8 @@ public class PostOrderActivity extends AppCompatActivity {
         return false;
     }
 
+    private boolean isWaitForCar = false;
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -392,6 +404,7 @@ public class PostOrderActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String messageBody) {
                 driver = FastJsonTools.getObject(messageBody, DriverInfo.class);
+                isWaitForCar = true;
                 mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_DISPATCHED);
             }
 
@@ -404,9 +417,44 @@ public class PostOrderActivity extends AppCompatActivity {
             }
         });
 
+
+        mCurrentMarker = BitmapDescriptorFactory.fromResource(R.drawable.caricon);
+        //监听司机的未知
+        SocketClient.getInstance().registerServerMessageHandler(MessageTag.DRIVER_POSITION, new ResponseHandler(Looper.myLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                if(!isWaitForCar){
+                    return;
+                }
+                try {
+                    JSONObject position = new JSONObject(messageBody);
+                    double lat = Double.parseDouble(position.getString("lat"));
+                    double lng = Double.parseDouble(position.getString("lng"));
+                    if(marker != null){
+                        marker.remove();
+                    }
+                    markerOptions = new MarkerOptions().icon(mCurrentMarker).position(new LatLng(lat, lng));
+                    marker = (Marker) mBaiduMap.addOverlay(markerOptions);
+                } catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(String error) {
+
+            }
+
+            @Override
+            public void onTimeout() {
+
+            }
+        });
+
         SocketClient.getInstance().registerServerMessageHandler(MessageTag.TRIP_START, new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
+                isWaitForCar = false;
                 order_start = FastJsonTools.getObject(messageBody, TripStart.class);
                 mHandler.sendEmptyMessage(MessageTag.MESSAGE_CAR_ARRIVED);
             }
