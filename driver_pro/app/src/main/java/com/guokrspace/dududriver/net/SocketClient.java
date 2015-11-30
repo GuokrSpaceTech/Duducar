@@ -415,6 +415,22 @@ public class SocketClient {
         return ret;
     }
 
+    public int getHistoryOrders (String type, int num, Long orderId, ResponseHandler handler) {
+        int ret = -1;
+        JSONObject params = new JSONObject();
+        try {
+            params.put("cmd", MessageTag.getInstance().Command(MessageTag.HISTORY_ORDERS));
+            params.put("role", "1");
+            params.put("type", type);
+            params.put("number", num);
+            params.put("order_id", orderId);
+            ret = sendMessage(params, handler, 5);
+        } catch(JSONException e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+    
     public int pullMessages(String type, int num, int messageId, ResponseHandler handler){
         int ret = -1;
         JSONObject params = new JSONObject();
@@ -430,22 +446,7 @@ public class SocketClient {
         }
         return ret;
     }
-
-    public int getHistoryOrders (String type, int num, int orderId, ResponseHandler handler) {
-        int ret = -1;
-        JSONObject params = new JSONObject();
-        try {
-            params.put("cmd", MessageTag.getInstance().Command(MessageTag.HISTORY_ORDERS));
-            params.put("role", "1");
-            params.put("type", type);
-            params.put("number", num);
-            params.put("order_id", orderId);
-            ret = sendMessage(params, handler, 5);
-        } catch(JSONException e) {
-            e.printStackTrace();
-        }
-        return ret;
-    }
+     
 
     //
     //    order_id

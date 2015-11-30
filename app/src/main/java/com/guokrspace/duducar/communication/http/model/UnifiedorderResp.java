@@ -3,7 +3,7 @@ package com.guokrspace.duducar.communication.http.model;
 /**
  * Created by hyman on 15/11/23.
  */
-public class UnifiedorderResp {
+public class UnifiedorderResp extends BaseModel{
 
     public int status;//1，成功；-1失败
 
@@ -17,12 +17,6 @@ public class UnifiedorderResp {
 
     public String timestamp;
 
-    @Override
-    public String toString() {
-        return "status: " + status
-                + "msg: " + msg
-                + "sign: " + sign
-                + "nonceStr: " + noncestr
-                + "timestamp: " + timestamp;
-    }
+    public String sid;
+
 }

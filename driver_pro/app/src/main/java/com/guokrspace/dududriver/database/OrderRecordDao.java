@@ -24,17 +24,29 @@ public class OrderRecordDao extends AbstractDao<OrderRecord, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property PhoneNum = new Property(1, String.class, "phoneNum", false, "PHONE_NUM");
-        public final static Property StartAddr = new Property(2, String.class, "startAddr", false, "START_ADDR");
-        public final static Property DestAddr = new Property(3, String.class, "destAddr", false, "DEST_ADDR");
-        public final static Property StartLat = new Property(4, String.class, "startLat", false, "START_LAT");
-        public final static Property StartLng = new Property(5, String.class, "startLng", false, "START_LNG");
-        public final static Property DestLat = new Property(6, String.class, "destLat", false, "DEST_LAT");
-        public final static Property DestLng = new Property(7, String.class, "destLng", false, "DEST_LNG");
-        public final static Property Mileage = new Property(8, String.class, "mileage", false, "MILEAGE");
-        public final static Property Price = new Property(9, String.class, "price", false, "PRICE");
-        public final static Property CarType = new Property(10, String.class, "carType", false, "CAR_TYPE");
-        public final static Property OrderTime = new Property(11, String.class, "orderTime", false, "ORDER_TIME");
+        public final static Property OrderNum = new Property(1, String.class, "orderNum", false, "ORDER_NUM");
+        public final static Property Driver_id = new Property(2, String.class, "driver_id", false, "DRIVER_ID");
+        public final static Property Passenger_id = new Property(3, String.class, "passenger_id", false, "PASSENGER_ID");
+        public final static Property Passenger_mobile = new Property(4, String.class, "passenger_mobile", false, "PASSENGER_MOBILE");
+        public final static Property Start = new Property(5, String.class, "start", false, "START");
+        public final static Property Destination = new Property(6, String.class, "destination", false, "DESTINATION");
+        public final static Property Start_lat = new Property(7, String.class, "start_lat", false, "START_LAT");
+        public final static Property Start_lng = new Property(8, String.class, "start_lng", false, "START_LNG");
+        public final static Property Destination_lat = new Property(9, String.class, "destination_lat", false, "DESTINATION_LAT");
+        public final static Property Destination_lng = new Property(10, String.class, "destination_lng", false, "DESTINATION_LNG");
+        public final static Property Start_time = new Property(11, String.class, "start_time", false, "START_TIME");
+        public final static Property End_time = new Property(12, String.class, "end_time", false, "END_TIME");
+        public final static Property Car_type = new Property(13, String.class, "car_type", false, "CAR_TYPE");
+        public final static Property Rent_type = new Property(14, String.class, "rent_type", false, "RENT_TYPE");
+        public final static Property Additional_price = new Property(15, String.class, "additional_price", false, "ADDITIONAL_PRICE");
+        public final static Property Mileage = new Property(16, String.class, "mileage", false, "MILEAGE");
+        public final static Property Sumprice = new Property(17, String.class, "sumprice", false, "SUMPRICE");
+        public final static Property Org_price = new Property(18, String.class, "org_price", false, "ORG_PRICE");
+        public final static Property Create_time = new Property(19, String.class, "create_time", false, "CREATE_TIME");
+        public final static Property Pay_time = new Property(20, String.class, "pay_time", false, "PAY_TIME");
+        public final static Property Pay_role = new Property(21, String.class, "pay_role", false, "PAY_ROLE");
+        public final static Property Status = new Property(22, String.class, "status", false, "STATUS");
+        public final static Property Rating = new Property(23, String.class, "rating", false, "RATING");
     };
 
 
@@ -51,17 +63,29 @@ public class OrderRecordDao extends AbstractDao<OrderRecord, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'ORDER_RECORD' (" + //
                 "'_id' INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
-                "'PHONE_NUM' TEXT," + // 1: phoneNum
-                "'START_ADDR' TEXT," + // 2: startAddr
-                "'DEST_ADDR' TEXT," + // 3: destAddr
-                "'START_LAT' TEXT," + // 4: startLat
-                "'START_LNG' TEXT," + // 5: startLng
-                "'DEST_LAT' TEXT," + // 6: destLat
-                "'DEST_LNG' TEXT," + // 7: destLng
-                "'MILEAGE' TEXT," + // 8: mileage
-                "'PRICE' TEXT," + // 9: price
-                "'CAR_TYPE' TEXT," + // 10: carType
-                "'ORDER_TIME' TEXT);"); // 11: orderTime
+                "'ORDER_NUM' TEXT," + // 1: orderNum
+                "'DRIVER_ID' TEXT," + // 2: driver_id
+                "'PASSENGER_ID' TEXT," + // 3: passenger_id
+                "'PASSENGER_MOBILE' TEXT," + // 4: passenger_mobile
+                "'START' TEXT," + // 5: start
+                "'DESTINATION' TEXT," + // 6: destination
+                "'START_LAT' TEXT," + // 7: start_lat
+                "'START_LNG' TEXT," + // 8: start_lng
+                "'DESTINATION_LAT' TEXT," + // 9: destination_lat
+                "'DESTINATION_LNG' TEXT," + // 10: destination_lng
+                "'START_TIME' TEXT," + // 11: start_time
+                "'END_TIME' TEXT," + // 12: end_time
+                "'CAR_TYPE' TEXT," + // 13: car_type
+                "'RENT_TYPE' TEXT," + // 14: rent_type
+                "'ADDITIONAL_PRICE' TEXT," + // 15: additional_price
+                "'MILEAGE' TEXT," + // 16: mileage
+                "'SUMPRICE' TEXT," + // 17: sumprice
+                "'ORG_PRICE' TEXT," + // 18: org_price
+                "'CREATE_TIME' TEXT," + // 19: create_time
+                "'PAY_TIME' TEXT," + // 20: pay_time
+                "'PAY_ROLE' TEXT," + // 21: pay_role
+                "'STATUS' TEXT," + // 22: status
+                "'RATING' TEXT);"); // 23: rating
     }
 
     /** Drops the underlying database table. */
@@ -80,59 +104,119 @@ public class OrderRecordDao extends AbstractDao<OrderRecord, Long> {
             stmt.bindLong(1, id);
         }
  
-        String phoneNum = entity.getPhoneNum();
-        if (phoneNum != null) {
-            stmt.bindString(2, phoneNum);
+        String orderNum = entity.getOrderNum();
+        if (orderNum != null) {
+            stmt.bindString(2, orderNum);
         }
  
-        String startAddr = entity.getStartAddr();
-        if (startAddr != null) {
-            stmt.bindString(3, startAddr);
+        String driver_id = entity.getDriver_id();
+        if (driver_id != null) {
+            stmt.bindString(3, driver_id);
         }
  
-        String destAddr = entity.getDestAddr();
-        if (destAddr != null) {
-            stmt.bindString(4, destAddr);
+        String passenger_id = entity.getPassenger_id();
+        if (passenger_id != null) {
+            stmt.bindString(4, passenger_id);
         }
  
-        String startLat = entity.getStartLat();
-        if (startLat != null) {
-            stmt.bindString(5, startLat);
+        String passenger_mobile = entity.getPassenger_mobile();
+        if (passenger_mobile != null) {
+            stmt.bindString(5, passenger_mobile);
         }
  
-        String startLng = entity.getStartLng();
-        if (startLng != null) {
-            stmt.bindString(6, startLng);
+        String start = entity.getStart();
+        if (start != null) {
+            stmt.bindString(6, start);
         }
  
-        String destLat = entity.getDestLat();
-        if (destLat != null) {
-            stmt.bindString(7, destLat);
+        String destination = entity.getDestination();
+        if (destination != null) {
+            stmt.bindString(7, destination);
         }
  
-        String destLng = entity.getDestLng();
-        if (destLng != null) {
-            stmt.bindString(8, destLng);
+        String start_lat = entity.getStart_lat();
+        if (start_lat != null) {
+            stmt.bindString(8, start_lat);
+        }
+ 
+        String start_lng = entity.getStart_lng();
+        if (start_lng != null) {
+            stmt.bindString(9, start_lng);
+        }
+ 
+        String destination_lat = entity.getDestination_lat();
+        if (destination_lat != null) {
+            stmt.bindString(10, destination_lat);
+        }
+ 
+        String destination_lng = entity.getDestination_lng();
+        if (destination_lng != null) {
+            stmt.bindString(11, destination_lng);
+        }
+ 
+        String start_time = entity.getStart_time();
+        if (start_time != null) {
+            stmt.bindString(12, start_time);
+        }
+ 
+        String end_time = entity.getEnd_time();
+        if (end_time != null) {
+            stmt.bindString(13, end_time);
+        }
+ 
+        String car_type = entity.getCar_type();
+        if (car_type != null) {
+            stmt.bindString(14, car_type);
+        }
+ 
+        String rent_type = entity.getRent_type();
+        if (rent_type != null) {
+            stmt.bindString(15, rent_type);
+        }
+ 
+        String additional_price = entity.getAdditional_price();
+        if (additional_price != null) {
+            stmt.bindString(16, additional_price);
         }
  
         String mileage = entity.getMileage();
         if (mileage != null) {
-            stmt.bindString(9, mileage);
+            stmt.bindString(17, mileage);
         }
  
-        String price = entity.getPrice();
-        if (price != null) {
-            stmt.bindString(10, price);
+        String sumprice = entity.getSumprice();
+        if (sumprice != null) {
+            stmt.bindString(18, sumprice);
         }
  
-        String carType = entity.getCarType();
-        if (carType != null) {
-            stmt.bindString(11, carType);
+        String org_price = entity.getOrg_price();
+        if (org_price != null) {
+            stmt.bindString(19, org_price);
         }
  
-        String orderTime = entity.getOrderTime();
-        if (orderTime != null) {
-            stmt.bindString(12, orderTime);
+        String create_time = entity.getCreate_time();
+        if (create_time != null) {
+            stmt.bindString(20, create_time);
+        }
+ 
+        String pay_time = entity.getPay_time();
+        if (pay_time != null) {
+            stmt.bindString(21, pay_time);
+        }
+ 
+        String pay_role = entity.getPay_role();
+        if (pay_role != null) {
+            stmt.bindString(22, pay_role);
+        }
+ 
+        String status = entity.getStatus();
+        if (status != null) {
+            stmt.bindString(23, status);
+        }
+ 
+        String rating = entity.getRating();
+        if (rating != null) {
+            stmt.bindString(24, rating);
         }
     }
 
@@ -147,17 +231,29 @@ public class OrderRecordDao extends AbstractDao<OrderRecord, Long> {
     public OrderRecord readEntity(Cursor cursor, int offset) {
         OrderRecord entity = new OrderRecord( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // phoneNum
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // startAddr
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // destAddr
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // startLat
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // startLng
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // destLat
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // destLng
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // mileage
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // price
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // carType
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11) // orderTime
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // orderNum
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // driver_id
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // passenger_id
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // passenger_mobile
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // start
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // destination
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // start_lat
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // start_lng
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // destination_lat
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // destination_lng
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // start_time
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // end_time
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // car_type
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14), // rent_type
+            cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15), // additional_price
+            cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16), // mileage
+            cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17), // sumprice
+            cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18), // org_price
+            cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19), // create_time
+            cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20), // pay_time
+            cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21), // pay_role
+            cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22), // status
+            cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23) // rating
         );
         return entity;
     }
@@ -166,17 +262,29 @@ public class OrderRecordDao extends AbstractDao<OrderRecord, Long> {
     @Override
     public void readEntity(Cursor cursor, OrderRecord entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setPhoneNum(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
-        entity.setStartAddr(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setDestAddr(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setStartLat(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setStartLng(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
-        entity.setDestLat(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setDestLng(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setMileage(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
-        entity.setPrice(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setCarType(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setOrderTime(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setOrderNum(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setDriver_id(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setPassenger_id(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setPassenger_mobile(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setStart(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setDestination(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setStart_lat(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setStart_lng(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setDestination_lat(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setDestination_lng(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setStart_time(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setEnd_time(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setCar_type(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setRent_type(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
+        entity.setAdditional_price(cursor.isNull(offset + 15) ? null : cursor.getString(offset + 15));
+        entity.setMileage(cursor.isNull(offset + 16) ? null : cursor.getString(offset + 16));
+        entity.setSumprice(cursor.isNull(offset + 17) ? null : cursor.getString(offset + 17));
+        entity.setOrg_price(cursor.isNull(offset + 18) ? null : cursor.getString(offset + 18));
+        entity.setCreate_time(cursor.isNull(offset + 19) ? null : cursor.getString(offset + 19));
+        entity.setPay_time(cursor.isNull(offset + 20) ? null : cursor.getString(offset + 20));
+        entity.setPay_role(cursor.isNull(offset + 21) ? null : cursor.getString(offset + 21));
+        entity.setStatus(cursor.isNull(offset + 22) ? null : cursor.getString(offset + 22));
+        entity.setRating(cursor.isNull(offset + 23) ? null : cursor.getString(offset + 23));
      }
     
     /** @inheritdoc */

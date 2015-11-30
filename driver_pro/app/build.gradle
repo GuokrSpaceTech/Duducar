@@ -72,6 +72,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':indicator_library')
     compile project(':MaterialDesign')
+    compile project(':ToggleButtonLib')
     compile 'com.android.support:appcompat-v7:23.1.0'
     compile 'com.android.support:recyclerview-v7:23.1.0'
     compile 'com.github.dexafree:materiallist:3.0.1'

@@ -89,7 +89,7 @@ public class OrderMapActivity extends BaseActivity implements View.OnClickListen
 
             if (isFirstLoc) {
                 isFirstLoc = false;
-                MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(ll, 16);//设置中心及缩放级别
+                MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(ll, 20.0f);//设置中心及缩放级别
                 mBaiduMap.animateMapStatus(u);
             }
         }
@@ -160,6 +160,8 @@ public class OrderMapActivity extends BaseActivity implements View.OnClickListen
 
         //禁止转动地图
         mBaiduMap.getUiSettings().setRotateGesturesEnabled(false);
+
+        mBaiduMap.animateMapStatus(MapStatusUpdateFactory.zoomTo(19.0f));
 
         // 开启定位图层
         mBaiduMap.setMyLocationEnabled(true);

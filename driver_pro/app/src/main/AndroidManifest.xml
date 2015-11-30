@@ -61,10 +61,14 @@
 
         <activity
             android:name=".ui.LoginActivity"
-            android:label="" />
+            android:label=""
+            android:configChanges="keyboardHidden|orientation"/>
         <activity
             android:name=".ui.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -73,13 +77,16 @@
         </activity>
         <activity
             android:name=".ui.SearchActivity"
-            android:label="@string/title_activity_search" />
+            android:label="@string/title_activity_search"
+            android:configChanges="keyboardHidden|orientation"/>
         <activity
             android:name=".ui.SettingActivity"
-            android:label="设置" />
+            android:label="设置"
+            android:configChanges="keyboardHidden|orientation"/>
         <activity
             android:name=".ui.PostOrderActivity"
-            android:label="订单" />
+            android:label="订单"
+            android:configChanges="keyboardHidden|orientation"/>
 
         <service
             android:name="com.baidu.location.f"
@@ -88,20 +95,35 @@
 
         <activity
             android:name=".ui.PickUpPassengerActivity"
-            android:label="去接乘客" />
+            android:label="去接乘客"
+            android:configChanges="keyboardHidden|orientation"/>
         <activity
             android:name=".ui.ConfirmBillActivity"
-            android:label="确认账单" />
+            android:label="确认账单"
+            android:configChanges="keyboardHidden|orientation"/>
         <activity
             android:name=".ui.OrderDetailActivity"
-            android:label="订单详情" />
+            android:label="订单详情"
+            android:configChanges="keyboardHidden|orientation"/>
         <activity
             android:name=".ui.OrderMapActivity"
+<<<<<<< HEAD
             android:label="订单地图" />
         <activity
             android:name=".ui.PayCostActivity"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             android:label="账单支付"/>
+=======
+            android:label="订单地图"
+            android:configChanges="keyboardHidden|orientation"/>
+        <activity android:name=".ui.AlipayActivity"
+            android:label="账单支付"
+            android:configChanges="keyboardHidden|orientation"/>
+
+        <activity android:name=".ui.HistoryOrderDetailActivity"
+            android:label="账单支付"
+            android:configChanges="keyboardHidden|orientation"/>
+>>>>>>> aa61c808aa254c1008847f4c504c1496a2521fdd
 
         <service
             android:name=".net.DuduService"

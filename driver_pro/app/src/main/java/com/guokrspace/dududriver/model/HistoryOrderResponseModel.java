@@ -1,5 +1,7 @@
 package com.guokrspace.dududriver.model;
 
+import com.guokrspace.dududriver.database.OrderRecord;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -14,7 +16,7 @@ public class HistoryOrderResponseModel implements Serializable{
 
     private String status;
 
-    private List<HistoryOrder> order_list;
+    private List<OrderRecord> order_list;
 
     public String getCmd() {
         return cmd;
@@ -40,11 +42,11 @@ public class HistoryOrderResponseModel implements Serializable{
         this.status = status;
     }
 
-    public List<HistoryOrder> getOrder_list() {
+    public List<OrderRecord> getOrder_list() {
         return order_list;
     }
 
-    public void setOrder_list(List<HistoryOrder> order_list) {
+    public void setOrder_list(List<OrderRecord> order_list) {
         this.order_list = order_list;
     }
 }

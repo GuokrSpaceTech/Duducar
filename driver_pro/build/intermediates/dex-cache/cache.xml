@@ -2,60 +2,11 @@
 <items version="2" >
 
     <item
-        jar="/Users/daddyfang/Duducar/driver_pro/app/libs/alipaySdk-20151103.jar"
+        jar="/Users/hyman/Duducar/driver_pro/app/build/intermediates/exploded-aar/driver_pro/MaterialDesign/unspecified/jars/classes.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="532e123a000537dcc0fc5bcbac1aeb4562be98af">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/alipaySdk-20151103-ac497b21c71c708d62b838e89997c4f04cea151e.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/Duducar/driver_pro/app/libs/Msc.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="6490d46678cc51ecd56be6bf2ab741ea940c61b8">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/Msc-93f926780a03307b41892a6ecf0bc78aed572797.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/Duducar/driver_pro/app/libs/Sunflower.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="f8496c158133b25df48b19455d0907340cea5d4e">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/Sunflower-939e8c251c929174b70e28a4198630db2c233094.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/Duducar/driver_pro/app/libs/libammsdk.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="d7c2f29c05b35e8c8713be2b81c41cf18f98b64a">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/libammsdk-84ccb498378cb2006845b6dbeeb9aced6ce47d34.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/Duducar/driver_pro/app/libs/httpmime-4.1.2.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="ed8b5ee0167cb27dea55851259eb34b609f31df0">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/httpmime-4.1.2-84b4985b08c501d2e40d9b1f294cce69c82b7e50.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/Duducar/driver_pro/app/libs/BaiduLBS_Android.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="878b9c2f2bab7b98178746afd77dd0bf7fba34b1">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/BaiduLBS_Android-b1d0e8185383bd509957bc380c1f13c1b55d49ce.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/Duducar/driver_pro/app/libs/BaiduNaviSDK_2.0.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="d468a65d0d88945b6c7527d146e9493b3e77c5fd">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/BaiduNaviSDK_2.0-6e4f204d0007692f10943d9e81445a04c7362048.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/Duducar/driver_pro/app/libs/httpcore-4.3.2.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="31fbbff1ddbf98f3aa7377c94d33b0447c646b6e">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/httpcore-4.3.2-248927843b2153bbc824a6f2eb7286fa8b3f2291.jar" />
+        sha1="effb29fe034cd98609077c3c195a43979fb914e3">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/classes-e09067977e2ca7a6772ff5aa6a98551e7569e81f.jar" />
     </item>
 
 </items>

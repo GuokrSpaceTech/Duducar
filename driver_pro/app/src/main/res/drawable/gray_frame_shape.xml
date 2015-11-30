@@ -3,9 +3,9 @@
     <item>
         <shape android:shape="rectangle">
             <stroke android:width="1px" android:color="@color/group_list_gray"/>
-        </shape>
+        </shape>x
     </item>
-    <item android:top="1px" android:bottom="1px">
+    <item android:bottom="1px">
         <shape android:shape="rectangle">
             <solid android:color="@color/app_main_theme" />
         </shape>

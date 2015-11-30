@@ -10,12 +10,13 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class ButtonRectangle extends Button {
 	
-	TextView textButton;
+//	TextView textButton;
 	
 	int paddingTop,paddingBottom, paddingLeft, paddingRight;
 	
