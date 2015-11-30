@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.guokrspace.dududriver" >
+    package="com.guokrspace.dududriver">
 
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -109,12 +109,15 @@
             android:name=".ui.OrderMapActivity"
             android:label="订单地图"
             android:configChanges="keyboardHidden|orientation"/>
-        <activity android:name=".ui.AlipayActivity"
+        <activity android:name=".ui.PayCostActivity"
             android:label="账单支付"
             android:configChanges="keyboardHidden|orientation"/>
 
         <activity android:name=".ui.HistoryOrderDetailActivity"
             android:label="账单支付"
+            android:configChanges="keyboardHidden|orientation"/>
+        <activity android:name=".ui.ComplainActivity"
+            android:label="投诉"
             android:configChanges="keyboardHidden|orientation"/>
 
         <service
@@ -122,7 +125,28 @@
             android:enabled="true"
             android:exported="false" />
 
+        <!-- Update Activitys Start -->
+        <activity
+            android:name="com.umeng.update.UpdateDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
 
+        <!-- Update Activitys End -->
+
+        <!-- Caution! Do not change this app key. It is only for demo usage. -->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="565be9f267e58e7d9f003d0f" >
+        </meta-data>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="Umeng" >
+        </meta-data>
+
+        <service
+            android:name="com.umeng.update.net.DownloadingService"
+            android:process=":DownloadingService" >
+        </service>
 
 
     </application>

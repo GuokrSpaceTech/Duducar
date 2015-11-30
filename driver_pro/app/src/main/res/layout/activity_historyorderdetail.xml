@@ -2,19 +2,43 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/app_main_theme"
-    android:gravity="center">
+    android:gravity="center"
+    android:orientation="vertical">
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/history_detail_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary" />
+        android:background="@color/black_de">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:text="订单详情"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/send_complain_btn"
+            android:layout_width="60dp"
+            android:layout_height="36dp"
+            android:layout_gravity="end"
+            android:background="@drawable/complain_button_bg_selector"
+            android:gravity="center"
+            android:text="投诉"
+            android:textColor="@color/dark_red"
+            android:textSize="18sp" />
+    </android.support.v7.widget.Toolbar>
 
     <com.gc.materialdesign.views.ScrollView
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="@color/light_gray">
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -23,8 +47,7 @@
 
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/gray_frame_shape">
+                android:layout_height="wrap_content">
 
                 <com.guokrspace.dududriver.view.CircleImageView
                     android:id="@+id/passenger_avatar"
@@ -39,8 +62,8 @@
                     android:id="@+id/start_position_ll"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:layout_marginRight="56dp"
+                    android:layout_marginTop="20dp"
                     android:layout_toRightOf="@id/passenger_avatar"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
@@ -60,7 +83,7 @@
                         android:ellipsize="end"
                         android:maxLines="2"
                         android:text="长沙轮渡"
-                        android:textColor="@android:color/white"
+                        android:textColor="@android:color/black"
                         android:textSize="22sp" />
                 </LinearLayout>
 
@@ -70,8 +93,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/start_position_ll"
                     android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
                     android:layout_marginRight="56dp"
+                    android:layout_marginTop="10dp"
                     android:layout_toRightOf="@id/passenger_avatar"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
@@ -91,7 +114,7 @@
                         android:ellipsize="end"
                         android:maxLines="2"
                         android:text="友阿百货"
-                        android:textColor="@android:color/white"
+                        android:textColor="@android:color/black"
                         android:textSize="22sp" />
                 </LinearLayout>
 
@@ -108,46 +131,23 @@
                     android:src="@mipmap/call_passenger" />
             </RelativeLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/order_status"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="70dp"
-                android:orientation="horizontal"
-                android:padding="10dp">
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1px"
-                    android:layout_gravity="center"
-                    android:layout_weight="35"
-                    android:background="@android:color/darker_gray" />
-
-                <TextView
-                    android:id="@+id/order_status"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="30"
-                    android:gravity="center"
-                    android:text="未支付"
-                    android:textColor="@color/light_gray"
-                    android:textSize="20sp" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1px"
-                    android:layout_gravity="center"
-                    android:layout_weight="35"
-                    android:background="@android:color/darker_gray" />
-            </LinearLayout>
+                android:layout_marginTop="30dp"
+                android:layout_weight="30"
+                android:text="未支付"
+                android:textColor="@color/sky_blue"
+                android:textSize="20sp" />
 
 
             <RelativeLayout
                 android:id="@+id/total_bill"
                 android:layout_width="fill_parent"
                 android:layout_height="60dp"
+                android:layout_marginTop="16dp"
                 android:gravity="center_horizontal">
 
                 <TextView
@@ -156,7 +156,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:text="34.4"
-                    android:textColor="@android:color/white"
+                    android:textColor="#212B36"
                     android:textSize="40sp"
                     android:textStyle="bold" />
 
@@ -167,7 +167,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_toRightOf="@id/bill_sum"
                     android:text="元"
-                    android:textColor="@android:color/white"
+                    android:textColor="#212B36"
                     android:textStyle="normal" />
             </RelativeLayout>
 
@@ -190,7 +190,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="查看收费明细"
-                    android:textColor="@color/white"
+                    android:textColor="#808080"
                     android:textSize="20sp" />
             </LinearLayout>
 
@@ -202,6 +202,40 @@
                 android:layout_marginTop="10dp"
                 android:text="代充值"
                 android:textSize="6sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="26dp"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1px"
+                    android:layout_gravity="center"
+                    android:layout_weight="35"
+                    android:background="@android:color/darker_gray" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50"
+                    android:gravity="center"
+                    android:text="匿名评价乘客"
+                    android:textColor="#808080"
+                    android:textSize="18sp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1px"
+                    android:layout_gravity="center"
+                    android:layout_weight="35"
+                    android:background="@android:color/darker_gray" />
+            </LinearLayout>
 
         </LinearLayout>
     </com.gc.materialdesign.views.ScrollView>

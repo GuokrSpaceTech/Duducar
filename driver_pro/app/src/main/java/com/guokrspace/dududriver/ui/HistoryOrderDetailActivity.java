@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -47,6 +48,12 @@ public class HistoryOrderDetailActivity extends BaseActivity {
     LinearLayout checkDetailLayout;
     @Bind(R.id.substitute_pay)
     ButtonFlat substitutePayButton;
+    @Bind(R.id.send_complain_btn)
+    Button complainButton;
+    @OnClick(R.id.send_complain_btn)
+    public void enterComplainPage() {
+        startActivity(new Intent(context, ComplainActivity.class));
+    }
     @OnClick(R.id.call_passenger_btn)
     public void callPassenger() {
         String mobile = orderDetail.getPassenger_mobile();
@@ -75,8 +82,8 @@ public class HistoryOrderDetailActivity extends BaseActivity {
     }
 
     private void initView() {
-        mToolbar.setTitle("历史订单详情");
-        mToolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.return_icon));
+        mToolbar.setTitle("");
+        mToolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.return_white));
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

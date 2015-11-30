@@ -7,10 +7,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.R;
+import com.umeng.update.UmengUpdateAgent;
+import com.umeng.update.UmengUpdateListener;
+import com.umeng.update.UpdateResponse;
+import com.umeng.update.UpdateStatus;
 import com.zcw.togglebutton.ToggleButton;
 
 import butterknife.Bind;
@@ -31,6 +36,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     TextView newestVersionTextView;
     @Bind(R.id.apk_update_layout)
     RelativeLayout apkUpdateLayout;
+    @Bind(R.id.legal_items_layout)
+    RelativeLayout legalItemsLayout;
+    @Bind(R.id.about_us_layout)
+    RelativeLayout aboutUsLayout;
     @Bind(R.id.feedback_layout)
     RelativeLayout feedbackLayout;
     @Bind(R.id.cantact_us_layout)
@@ -76,6 +85,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         feedbackLayout.setOnClickListener(this);
         cantactUsLayout.setOnClickListener(this);
         logoutButton.setOnClickListener(this);
+        legalItemsLayout.setOnClickListener(this);
+        aboutUsLayout.setOnClickListener(this);
 
         //一开始设置为音效开启
         mToggleButton.setToggleOn();
@@ -104,7 +115,30 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 mToggleButton.toggle();
                 break;
             case R.id.apk_update_layout:
-
+//                UmengUpdateAgent.setDefault();
+                //请在调用update,forceUpdate,silentUpdate函数之前设置推广id
+//                UmengUpdateAgent.setSlotId("54357");
+                UmengUpdateAgent.setUpdateAutoPopup(false);
+                UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
+                    @Override
+                    public void onUpdateReturned(int updateStatus,UpdateResponse updateInfo) {
+                        switch (updateStatus) {
+                            case UpdateStatus.Yes: // has update
+                                UmengUpdateAgent.showUpdateDialog(context, updateInfo);
+                                break;
+                            case UpdateStatus.No: // has no update
+                                showToast("没有更新");
+                                break;
+                            case UpdateStatus.NoneWifi: // none wifi
+                                showToast("没有wifi连接， 只在wifi下更新");
+                                break;
+                            case UpdateStatus.Timeout: // time out
+                                showToast("超时");
+                                break;
+                        }
+                    }
+                });
+                UmengUpdateAgent.forceUpdate(context);
                 break;
             case R.id.feedback_layout:
                 showToast("意见反馈");

@@ -30,6 +30,7 @@ import com.guokrspace.duducar.communication.http.HttpUrls;
 import com.guokrspace.duducar.communication.http.model.UnifiedorderResp;
 import com.guokrspace.duducar.communication.message.MessageTag;
 import com.guokrspace.duducar.communication.message.OrderDetail;
+import com.guokrspace.duducar.database.CommonUtil;
 import com.guokrspace.duducar.database.PersonalInformation;
 import com.guokrspace.duducar.util.SharedPreferencesUtils;
 import com.guokrspace.duducar.wxapi.WePayUtil;
@@ -208,6 +209,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
         if(bundle!=null)
         {
             tripOverOrderDetail = (OrderDetail) bundle.get("order");
+            CommonUtil.tripOverOrderDetail = tripOverOrderDetail;
             feeTextView.setText(tripOverOrderDetail.getOrg_price());
         }
 
@@ -437,7 +439,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
         orderInfo += "&seller_id=" + "\"" + SELLER + "\"";
 
         // 商户网站唯一订单号
-        orderInfo += "&out_trade_no=" + "\"" + getOutTradeNo() + "\"";
+        orderInfo += "&out_trade_no=" + "\"" + tripOverOrderDetail.getOrderNum() + "\"";
 
         // 商品名称
         orderInfo += "&subject=" + "\"" + tripOverOrderDetail.getDestination() + "\"";

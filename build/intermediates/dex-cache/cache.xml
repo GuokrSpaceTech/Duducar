@@ -2,11 +2,18 @@
 <items version="2" >
 
     <item
-        jar="/Users/hyman/Duducar/app/build/intermediates/exploded-aar/com.zhy/okhttputils/1.0.2/jars/classes.jar"
+        jar="/Users/hyman/Duducar/app/libs/umeng-update-v2.6.0.1.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="9bd1bb5ea9ee043fb215b54551f9fa86e56c415e">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/pre-dexed/debug/classes-b4d4bb4d5481a4aebad1cc645872ca063a180c0d.jar" />
+        sha1="e76510af0986842b672c59d29502f3d29866320a">
+        <dex dex="/Users/hyman/Duducar/app/build/intermediates/pre-dexed/debug/umeng-update-v2.6.0.1-d9d1d75917432f880dd46f945eca05ff12539a8a.jar" />
+    </item>
+    <item
+        jar="/Users/hyman/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.6.0/98476622f10715998eacf9240d6b479f12c66143/okio-1.6.0.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="98476622f10715998eacf9240d6b479f12c66143">
+        <dex dex="/Users/hyman/Duducar/app/build/intermediates/pre-dexed/debug/okio-1.6.0-44cee392933c3cf1eed2ee865b3bd0799fa499f6.jar" />
     </item>
     <item
         jar="/Users/hyman/Duducar/app/libs/httpcore-4.3.2.jar"
@@ -23,18 +30,11 @@
         <dex dex="/Users/hyman/Duducar/app/build/intermediates/pre-dexed/debug/gson-2.2.1-012a95b1df4865216d483cb2c124ed5803b2382b.jar" />
     </item>
     <item
-        jar="/Users/hyman/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.6.0/98476622f10715998eacf9240d6b479f12c66143/okio-1.6.0.jar"
+        jar="/Users/hyman/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp/okhttp/2.5.0/4de2b4ed3445c37ec1720a7d214712e845a24636/okhttp-2.5.0.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="98476622f10715998eacf9240d6b479f12c66143">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/pre-dexed/debug/okio-1.6.0-44cee392933c3cf1eed2ee865b3bd0799fa499f6.jar" />
-    </item>
-    <item
-        jar="/Users/hyman/Duducar/app/build/intermediates/exploded-aar/me.drakeet.materialdialog/library/1.2.8/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="0573d010bcb1ee874e1c258a31e98ab920e6805f">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/pre-dexed/debug/classes-1d6acc495e9cd66e27b11fdbc5986fd8c4eae6ee.jar" />
+        sha1="4de2b4ed3445c37ec1720a7d214712e845a24636">
+        <dex dex="/Users/hyman/Duducar/app/build/intermediates/pre-dexed/debug/okhttp-2.5.0-c619ab92c4fbdedda5ac6540d26e83fff84fea5b.jar" />
     </item>
     <item
         jar="/Users/hyman/Duducar/app/libs/libammsdk.jar"
@@ -44,11 +44,18 @@
         <dex dex="/Users/hyman/Duducar/app/build/intermediates/pre-dexed/debug/libammsdk-50b6c13f6fe34e6b0fb7c31fa04d70d792e39cc3.jar" />
     </item>
     <item
-        jar="/Users/hyman/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp/okhttp/2.5.0/4de2b4ed3445c37ec1720a7d214712e845a24636/okhttp-2.5.0.jar"
+        jar="/Users/hyman/Duducar/app/build/intermediates/exploded-aar/com.zhy/okhttputils/1.0.2/jars/classes.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="4de2b4ed3445c37ec1720a7d214712e845a24636">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/pre-dexed/debug/okhttp-2.5.0-c619ab92c4fbdedda5ac6540d26e83fff84fea5b.jar" />
+        sha1="9bd1bb5ea9ee043fb215b54551f9fa86e56c415e">
+        <dex dex="/Users/hyman/Duducar/app/build/intermediates/pre-dexed/debug/classes-b4d4bb4d5481a4aebad1cc645872ca063a180c0d.jar" />
+    </item>
+    <item
+        jar="/Users/hyman/Duducar/app/build/intermediates/exploded-aar/me.drakeet.materialdialog/library/1.2.8/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="0573d010bcb1ee874e1c258a31e98ab920e6805f">
+        <dex dex="/Users/hyman/Duducar/app/build/intermediates/pre-dexed/debug/classes-1d6acc495e9cd66e27b11fdbc5986fd8c4eae6ee.jar" />
     </item>
 
 </items>
