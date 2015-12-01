@@ -1,5 +1,7 @@
 package com.guokrspace.duducar.database;
 
+import com.guokrspace.duducar.communication.message.OrderDetail;
+
 /**
  * Created by daddyfang on 15/11/13.
  */
@@ -43,5 +45,7 @@ public class CommonUtil {
     }
 
     private static long curTime;
+
+    public static OrderDetail tripOverOrderDetail = null;
 
 }

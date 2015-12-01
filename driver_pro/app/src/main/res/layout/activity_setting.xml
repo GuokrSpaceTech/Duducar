@@ -195,6 +195,68 @@
                     android:src="@mipmap/enter_icon" />
             </RelativeLayout>
 
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/light_gray" />
+
+            <RelativeLayout
+                android:id="@+id/legal_items_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/setting_item_bg_selector"
+                android:clickable="true"
+                android:paddingLeft="@dimen/small_padding"
+                android:paddingRight="@dimen/small_padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="法律条款"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/enter_icon" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/light_gray" />
+
+            <RelativeLayout
+                android:id="@+id/about_us_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/setting_item_bg_selector"
+                android:clickable="true"
+                android:paddingLeft="@dimen/small_padding"
+                android:paddingRight="@dimen/small_padding">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="关于嘟嘟"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:scaleType="centerInside"
+                    android:src="@mipmap/enter_icon" />
+            </RelativeLayout>
+
             <com.gc.materialdesign.views.ButtonRectangle
                 android:id="@+id/confirm_button"
                 android:layout_width="fill_parent"

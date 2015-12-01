@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:materialdesign="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/black_de">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:text="投 诉"
+            android:textColor="@color/dark_red"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </android.support.v7.widget.Toolbar>
+    <com.gc.materialdesign.views.ProgressBarIndeterminate
+        android:id="@+id/progressBarIndeterminate"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#1E88E5"
+        android:visibility="invisible"/>
+
+    <com.gc.materialdesign.views.ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/activity_vertical_margin">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="您想要投诉的问题"
+                android:textColor="@color/sky_blue"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/bad_manner_btn"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/complain_item_height"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/complain_item_bg_selector"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:text="服务态度不好"
+                android:textColor="#808080"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/false_order_btn"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/complain_item_height"
+                android:background="@drawable/complain_item_bg_selector"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:text="没有坐车却产生了费用"
+                android:textColor="#808080"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/overchange_btn"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/complain_item_height"
+                android:background="@drawable/complain_item_bg_selector"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:text="额外收取了不合理的费用"
+                android:textColor="#808080"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/detour_btn"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/complain_item_height"
+                android:background="@drawable/complain_item_bg_selector"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:text="司机不熟悉路导致产生了额外费用"
+                android:textColor="#808080"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/charge_timeout_btn"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/complain_item_height"
+                android:background="@drawable/complain_item_bg_selector"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:text="提前计费或未及时结束计费"
+                android:textColor="#808080"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/break_order_btn"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/complain_item_height"
+                android:background="@drawable/complain_item_bg_selector"
+                android:gravity="left|center_vertical"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:text="司机爽约或拒载"
+                android:textColor="#808080"
+                android:textSize="16sp" />
+
+            <com.gc.materialdesign.views.ButtonRectangle
+                android:id="@+id/call_button"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:layout_marginBottom="6dp"
+                android:layout_marginTop="32dp"
+                android:background="@color/material_blue"
+                android:gravity="center"
+                android:text="拨打客服电话"
+                android:textSize="6sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </com.gc.materialdesign.views.ScrollView>
+
+
+</LinearLayout>

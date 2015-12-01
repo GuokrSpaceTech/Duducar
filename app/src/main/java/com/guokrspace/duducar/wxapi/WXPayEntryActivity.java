@@ -5,14 +5,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
 import com.guokrspace.duducar.AppExitUtil;
 import com.guokrspace.duducar.PayCostActivity;
 import com.guokrspace.duducar.R;
+import com.guokrspace.duducar.RatingActivity;
 import com.guokrspace.duducar.communication.http.HttpUrls;
 import com.guokrspace.duducar.communication.http.model.TradeResult;
+import com.guokrspace.duducar.database.CommonUtil;
 import com.guokrspace.duducar.util.SharedPreferencesUtils;
 import com.squareup.okhttp.Request;
 import com.tencent.mm.sdk.constants.ConstantsAPI;
@@ -81,7 +84,8 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 					msg = "支付成功！";
 					//去后台查询支付结果再展示用户实际支付结果
 					Map<String, String> params = new HashMap<>();
-					params.put("orderNum", (String) SharedPreferencesUtils.getParam(this, SharedPreferencesUtils.OUT_TRADE_NO, ""));
+					final String orderNum = (String) SharedPreferencesUtils.getParam(this, SharedPreferencesUtils.OUT_TRADE_NO, "");
+					params.put("orderNum", orderNum);
 					Log.e("hyman_sid12", (String) SharedPreferencesUtils.getParam(this, SharedPreferencesUtils.COMFIRM_TRADE_RESULT_SID, ""));
 					params.put("sid", (String) SharedPreferencesUtils.getParam(this, SharedPreferencesUtils.COMFIRM_TRADE_RESULT_SID, ""));
 					final String finalMsg = msg;
@@ -116,6 +120,12 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 											}
 										}
 									}
+									if (!TextUtils.isEmpty(orderNum) && orderNum.equals(CommonUtil.tripOverOrderDetail.getOrderNum())) {
+										Intent intent = new Intent(mContext, RatingActivity.class);
+										intent.putExtra("order", CommonUtil.tripOverOrderDetail);
+										startActivity(intent);
+									}
+
 									dialog.dismiss();
 									WXPayEntryActivity.this.finish();
 								}
@@ -137,4 +147,5 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
 		}
 	}
+
 }
