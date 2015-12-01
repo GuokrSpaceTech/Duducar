@@ -107,23 +107,16 @@
             android:configChanges="keyboardHidden|orientation"/>
         <activity
             android:name=".ui.OrderMapActivity"
-<<<<<<< HEAD
-            android:label="订单地图" />
-        <activity
-            android:name=".ui.PayCostActivity"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-            android:label="账单支付"/>
-=======
             android:label="订单地图"
             android:configChanges="keyboardHidden|orientation"/>
-        <activity android:name=".ui.AlipayActivity"
+        <activity android:name=".ui.PayCostActivity"
             android:label="账单支付"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             android:configChanges="keyboardHidden|orientation"/>
 
         <activity android:name=".ui.HistoryOrderDetailActivity"
             android:label="账单支付"
             android:configChanges="keyboardHidden|orientation"/>
->>>>>>> aa61c808aa254c1008847f4c504c1496a2521fdd
 
         <service
             android:name=".net.DuduService"
