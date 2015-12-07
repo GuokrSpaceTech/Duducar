@@ -8,15 +8,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
@@ -26,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ZoomControls;
@@ -61,8 +60,10 @@ import com.guokrspace.duducar.communication.message.NearByCars;
 import com.guokrspace.duducar.communication.message.SearchLocation;
 import com.guokrspace.duducar.database.CommonUtil;
 import com.guokrspace.duducar.database.PersonalInformation;
+import com.guokrspace.duducar.ui.DrawerView;
 import com.guokrspace.duducar.ui.OrderConfirmationView;
 import com.guokrspace.duducar.ui.WinToast;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import java.util.List;
 import java.util.Timer;
@@ -72,8 +73,7 @@ public class PreOrderActivity extends AppCompatActivity
         implements
         NavigationDrawerFragment.NavigationDrawerCallbacks,
         OnGetGeoCoderResultListener,
-        OrderHistoryFragment.OnFragmentInteractionListener,
-        PersonalInfoFragment.OnFragmentInteractionListener {
+        OrderHistoryActivity.OnFragmentInteractionListener {
     private Context mContext = this;
     MapView mMapView = null;
     BaiduMap mBaiduMap = null;
@@ -95,6 +95,12 @@ public class PreOrderActivity extends AppCompatActivity
     TextView nearByCarsTextView;
     TextView callCabButton;
     OrderConfirmationView orderConfirmationView;
+    protected SlidingMenu sidingMenu;
+    DrawerView drawerView;
+    Toolbar mToolbar;
+    ImageView tempImageView;
+
+    private Bitmap tempBitmap;
 
     //地址解析
     GeoCoder mGeoCoder = null;
@@ -163,6 +169,7 @@ public class PreOrderActivity extends AppCompatActivity
         destLocButton = (TextView) findViewById(R.id.destButton);
         nearByCarsTextView = (TextView)findViewById(R.id.nearByCarsTextView);
         callCabButton = (Button)findViewById(R.id.callaCabButton);
+        tempImageView = (ImageView) findViewById(R.id.mapview_temp);
 
         // 地图初始化
         mMapView = (MapView) findViewById(R.id.bmapView);
@@ -194,16 +201,72 @@ public class PreOrderActivity extends AppCompatActivity
         initListener();
         Log.e("DADDY", "initListener");
 
-        //Setup the Drawer
+        /*//Setup the Drawer
         mNavigationDrawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
         mNavigationDrawerFragment.setUp(R.id.navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout));
         mNavigationDrawerFragment.onHiddenChanged(true);
-        mTitle = getTitle();
+        mTitle = getTitle();*/
+        //init slidingmenu
+        initSlidingMenu();
+        //init toolbar
+        initToolBar();
+
 
         // 开启定位图层
         mBaiduMap.setMyLocationEnabled(true);
         mCurrentMode = MyLocationConfiguration.LocationMode.NORMAL;
         mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(mCurrentMode, true, mCurrentMarker));
+
+        //给slidingMenu添加打开时的响应事件
+        sidingMenu.setOnOpenListener(new SlidingMenu.OnOpenListener() {
+            @Override
+            public void onOpen() {
+                //打开的时候截图并隐藏map
+                mMapView.setVisibility(View.GONE);
+                tempImageView.setVisibility(View.VISIBLE);
+                /*mBaiduMap.snapshot(new BaiduMap.SnapshotReadyCallback() {
+                    @Override
+                    public void onSnapshotReady(Bitmap bitmap) {
+                        PreOrderActivity.this.tempBitmap = bitmap;
+                        tempImageView.setImageBitmap(tempBitmap);
+                        mMapView.setVisibility(View.GONE);
+                        tempImageView.setVisibility(View.VISIBLE);
+                    }
+                });*/
+            }
+        });
+        sidingMenu.setOnCloseListener(new SlidingMenu.OnCloseListener() {
+            @Override
+            public void onClose() {
+                //用临时图片替换百度地图
+                mMapView.setVisibility(View.GONE);
+                tempImageView.setVisibility(View.VISIBLE);
+            }
+        });
+
+        sidingMenu.setOnOpenedListener(new SlidingMenu.OnOpenedListener() {
+            @Override
+            public void onOpened() {
+                mMapView.setVisibility(View.VISIBLE);
+                tempImageView.setVisibility(View.GONE);
+
+            }
+        });
+        //关闭以后，截取地图，并还原回来
+        sidingMenu.setOnClosedListener(new SlidingMenu.OnClosedListener() {
+            @Override
+            public void onClosed() {
+                mMapView.setVisibility(View.VISIBLE);
+                tempImageView.setVisibility(View.GONE);
+                /*if (tempBitmap != null && !tempBitmap.isRecycled()) {
+                    tempBitmap.recycle();
+                    tempBitmap = null;
+                }
+                tempImageView.setVisibility(View.GONE);
+                mMapView.setVisibility(View.VISIBLE);*/
+            }
+        });
+
 
         // 定位初始化
         initLocation();
@@ -219,6 +282,30 @@ public class PreOrderActivity extends AppCompatActivity
          * Init the data
          */
         start = new SearchLocation();
+    }
+
+    private void initToolBar() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.setTitle(getString(R.string.app_name));
+        mToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_drawericon));
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(sidingMenu.isMenuShowing()){
+                    sidingMenu.showContent();
+                }else{
+                    sidingMenu.showMenu();
+                }
+            }
+        });
+    }
+
+    private void initSlidingMenu() {
+        drawerView = new DrawerView(this);
+        sidingMenu = drawerView.initSlidingMenu();
     }
 
     private void initListener() {
@@ -365,24 +452,24 @@ public class PreOrderActivity extends AppCompatActivity
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
-        // update the main content by replacing fragments
-        FragmentManager fragmentManager = getSupportFragmentManager();
-
-        if (position == 0) {
-            FragmentTransaction transaction;
-            transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.container, PersonalInfoFragment.newInstance());
-            transaction.addToBackStack("personalinfo");
-            transaction.commit();
-        }
-        //TripOverOrder Records
-        else if (position == 1) {
-            FragmentTransaction transaction;
-            transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.container, OrderHistoryFragment.newInstance());
-            transaction.addToBackStack("orderrecords");
-            transaction.commit();
-        }
+//        // update the main content by replacing fragments
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//
+//        if (position == 0) {
+//            FragmentTransaction transaction;
+//            transaction = fragmentManager.beginTransaction();
+//            transaction.replace(R.id.container, PersonalInfoFragment.newInstance());
+//            transaction.addToBackStack("personalinfo");
+//            transaction.commit();
+//        }
+//        //TripOverOrder Records
+//        else if (position == 1) {
+//            FragmentTransaction transaction;
+//            transaction = fragmentManager.beginTransaction();
+//            transaction.replace(R.id.container, OrderHistoryActivity.newInstance());
+//            transaction.addToBackStack("orderrecords");
+//            transaction.commit();
+//        }
     }
 
     public void onSectionAttached(int number) {
@@ -396,26 +483,27 @@ public class PreOrderActivity extends AppCompatActivity
         }
     }
 
-    public void restoreActionBar() {
+    /*public void restoreActionBar() {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_drawericon);
         actionBar.setTitle(mTitle);
-    }
+
+    }*/
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!mNavigationDrawerFragment.isDrawerOpen()) {
-            // Only show items in the action bar relevant to this screen
-            // if the drawer is not showing. Otherwise, let the drawer
-            // decide what to show in the action bar.
-//            getMenuInflater().inflate(R.menu.main, menu);
-            restoreActionBar();
-            return true;
-        }
+//        if (!mNavigationDrawerFragment.isDrawerOpen()) {
+//            // Only show items in the action bar relevant to this screen
+//            // if the drawer is not showing. Otherwise, let the drawer
+//            // decide what to show in the action bar.
+////            getMenuInflater().inflate(R.menu.main, menu);
+////            restoreActionBar();
+//            return true;
+//        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -428,10 +516,10 @@ public class PreOrderActivity extends AppCompatActivity
 
         if (id == android.R.id.home) {
             //If there are fragments showing
-            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            /*if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 getSupportFragmentManager().popBackStack();
                 return true; //Just return, do not toggle the drawer
-            }
+            }*/
         }
 
         //Let the super handle the rest, toggle the drawer
@@ -484,6 +572,7 @@ public class PreOrderActivity extends AppCompatActivity
         switch(resultCode) {
             case RESULT_OK:
             if (requestCode == ACTVITY_LOGIN_REQUEST) {
+                drawerView.refreshMenuView();
             } else if (requestCode == ACTIVITY_SEARCH_START_REQUEST) {
 
                 Bundle bundle = data.getExtras();
@@ -681,10 +770,10 @@ public class PreOrderActivity extends AppCompatActivity
         if (KeyEvent.KEYCODE_BACK == event.getKeyCode()) {
 
 
-            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            /*if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 getSupportFragmentManager().popBackStack();
                 return false;
-            }
+            }*/
 
             final AlertDialog.Builder alterDialog = new AlertDialog.Builder(this);
             alterDialog.setMessage("确定退出应用？");

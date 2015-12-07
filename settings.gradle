@@ -1,2 +1,2 @@
-include ':app', ':DaoDBGenerator'
+include ':app', ':DaoDBGenerator', ':library_slidingmenu'
 project(':DaoDBGenerator').projectDir = new File('dependancies/DaoDBGenerator')

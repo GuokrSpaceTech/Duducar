@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>EE9EF79F-994E-486E-B1CF-6129A1D6552E</string>
+	<key>IDESourceControlProjectName</key>
+	<string>duducar</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>94091FF6EBE35CC0670E001EE9BFAC0C22B0BB55</key>
+		<string>https://github.com/GuokrSpaceTech/Duducar.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>duducar_passengar_ios/duducar.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>94091FF6EBE35CC0670E001EE9BFAC0C22B0BB55</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/GuokrSpaceTech/Duducar.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>94091FF6EBE35CC0670E001EE9BFAC0C22B0BB55</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>94091FF6EBE35CC0670E001EE9BFAC0C22B0BB55</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Duducar</string>
+		</dict>
+	</array>
+</dict>
+</plist>

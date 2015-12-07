@@ -240,6 +240,7 @@ public class ToggleButton extends View{
 	@Override
 	public void draw(Canvas canvas) {
 		//
+		super.draw(canvas);
 		rect.set(0, 0, getWidth(), getHeight());
 		paint.setColor(borderColor);
 		canvas.drawRoundRect(rect, radius, radius, paint);
