@@ -109,10 +109,11 @@
             android:name=".ui.OrderMapActivity"
             android:label="订单地图"
             android:configChanges="keyboardHidden|orientation"/>
-        <activity
-            android:name=".ui.PayCostActivity"
+        <activity android:name=".ui.PayCostActivity"
+            android:label="账单支付"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-            android:label="账单支付"/>
+            android:configChanges="keyboardHidden|orientation"/>
+ 
         <activity android:name=".ui.HistoryOrderDetailActivity"
             android:label="历史订单详情"
             android:configChanges="keyboardHidden|orientation"/>
