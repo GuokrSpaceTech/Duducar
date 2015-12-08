@@ -27,7 +27,7 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 
 @interface LoginViewController ()<UITextFieldDelegate>
-@property (retain, nonatomic) IBOutlet RCAnimatedImagesView* animatedImagesView;
+@property (strong, nonatomic) RCAnimatedImagesView* animatedImagesView;
 @property (nonatomic, strong) UIView* headBackground;
 @property (nonatomic, strong) UIImageView* duduLogo;
 @property (nonatomic, strong) UIView* inputBackground;
