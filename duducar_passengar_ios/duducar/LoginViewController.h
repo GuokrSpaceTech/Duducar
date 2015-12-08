@@ -13,7 +13,5 @@
 @import CocoaAsyncSocket;
 
 @interface LoginViewController : UIViewController<RCAnimatedImagesViewDelegate>
-{
-    GCDAsyncSocket *asyncSocket;
-}
+
 @end

@@ -27,12 +27,22 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 
 @interface LoginViewController ()<UITextFieldDelegate>
+{
+    GCDAsyncSocket *asyncSocket;
+    RCUnderlineTextField* userNameTextField;
+    RCUnderlineTextField* passwordTextField;
+    UIButton* verifyCodeButton;
+}
 @property (retain, nonatomic) IBOutlet RCAnimatedImagesView* animatedImagesView;
 @property (nonatomic, strong) UIView* headBackground;
 @property (nonatomic, strong) UIImageView* duduLogo;
 @property (nonatomic, strong) UIView* inputBackground;
 @property (nonatomic, strong) UILabel* errorMsgLb;
-@property (nonatomic, strong) UITextField *passwordTextField;
+
+@property (weak) NSTimer *repeatingTimer;
+@property NSUInteger timerCount;
+
+- (void)countedTimerAction:(NSTimer*)theTimer;
 @end
 
 @implementation LoginViewController
@@ -88,7 +98,7 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
     [self.view addSubview:_errorMsgLb];
     
     //用户名
-    RCUnderlineTextField* userNameTextField = [[RCUnderlineTextField alloc] initWithFrame:CGRectZero];
+    userNameTextField = [[RCUnderlineTextField alloc] initWithFrame:CGRectZero];
     userNameTextField.backgroundColor = [UIColor clearColor];
     userNameTextField.tag = UserTextFieldTag;
     userNameTextField.delegate=self;
@@ -105,7 +115,7 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
     [userNameTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     [_inputBackground addSubview:userNameTextField];
     
-    UIButton* verifyCodeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    verifyCodeButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [verifyCodeButton addTarget:self action:@selector(registerMobile:) forControlEvents:UIControlEventTouchUpInside];
     //    [loginButton setBackgroundImage:[UIImage imageNamed:@"login_button"] forState:UIControlStateNormal];
     verifyCodeButton.backgroundColor = [UIColor colorWithHexString:@"0195ff" alpha:1.0f];
@@ -116,7 +126,7 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
     [_inputBackground addSubview:verifyCodeButton];
     
     //密码
-    RCUnderlineTextField* passwordTextField = [[RCUnderlineTextField alloc] initWithFrame:CGRectZero];
+    passwordTextField = [[RCUnderlineTextField alloc] initWithFrame:CGRectZero];
     passwordTextField.tag = PassWordFieldTag;
     passwordTextField.textColor = [UIColor whiteColor];
     passwordTextField.returnKeyType = UIReturnKeyDone;
@@ -129,7 +139,6 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
     //passwordTextField.text = [self getDefaultUserPwd];
     [_inputBackground addSubview:passwordTextField];
     passwordTextField.text = [self getDefaultUserPwd];
-    self.passwordTextField = passwordTextField;
     
     UIButton* loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [loginButton addTarget:self action:@selector(actionLogin:) forControlEvents:UIControlEventTouchUpInside];
@@ -310,19 +319,33 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 - (void)registerMobile:(NSString *) mobileNumber
 {
-    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"register", @"13700000002", @"2",    nil]
-                                                                forKeys:[NSArray arrayWithObjects:@"cmd",      @"mobile",      @"role", nil]];
+    NSString *mobile = userNameTextField.text;
     
-    NSError * error = nil;
-    NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSUTF8StringEncoding error:&error];
-    
-    NSMutableString *jsonString = [[NSMutableString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    [jsonString appendString:@"\n"];
-    NSData *outStr = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-    
-    [asyncSocket writeData:outStr withTimeout:-1.0 tag:0];
-    
-    DDLogVerbose(@"Sending Request:\n%@", jsonString);
+    if(![mobile isEqualToString:@""])
+    {
+        NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"register",  mobile,   @"2",    nil]
+                                                                 forKeys:[NSArray arrayWithObjects:@"cmd",      @"mobile", @"role", nil]];
+        
+        NSError * error = nil;
+        NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSUTF8StringEncoding error:&error];
+        
+        NSMutableString *jsonString = [[NSMutableString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        [jsonString appendString:@"\n"];
+        NSData *outStr = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+        
+        [asyncSocket writeData:outStr withTimeout:-1.0 tag:0];
+        
+        DDLogVerbose(@"Sending Request:\n%@", jsonString);
+    } else {
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@""
+                                                                       message:@"无效的手机号"
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleDefault
+                                                              handler:^(UIAlertAction * action) {}];
+        
+        [alert addAction:defaultAction];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
 }
 
 #pragma mark - Socket
@@ -499,9 +522,10 @@ completionHandler:(void (^)(BOOL shouldTrustPeer))completionHandler
 
 - (void)socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag
 {
-    DDLogVerbose(@"socket:didReadData:withTag:");
     
     NSString *response = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    DDLogVerbose(@"socket:didReadData:withResponse:%@",response);
+
     
     [asyncSocket readDataWithTimeout:-1 tag:0];
     
@@ -511,25 +535,84 @@ completionHandler:(void (^)(BOOL shouldTrustPeer))completionHandler
     NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:objectData
                                                                  options:NSJSONReadingMutableContainers
                                                                    error:&jsonError];
-    NSString *token = [responseDict objectForKey:@"token"];
-
-    if(token!=NULL)
+    NSString *command = [responseDict objectForKey:@"cmd"];
+    NSNumber *status =[responseDict objectForKey:@"status"];
+    if([command isEqualToString:@"register_resp"])
     {
-        NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"login", @"13700000002", @"2",    token,    nil]
-                                                                    forKeys:[NSArray arrayWithObjects:@"cmd",   @"mobile",      @"role", @"token", nil]];
-        NSError * error = nil;
-        NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSUTF8StringEncoding error:&error];
+        if([status intValue]==1)
+        {
+            //Kick off the timer
+            self.timerCount = 30;
+            self.repeatingTimer = [NSTimer scheduledTimerWithTimeInterval:1
+                                                                   target:self selector:@selector(countedTimerAction:) userInfo:nil repeats:YES];
+            [passwordTextField becomeFirstResponder];
+        }
+        else
+        {
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@""
+                                                                           message:@"手机未登记"
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleDefault
+                                                                  handler:^(UIAlertAction * action) {}];
+            
+            [alert addAction:defaultAction];
+            [self presentViewController:alert animated:YES completion:nil];
+        }
+    }
+    else if([command isEqualToString:@"verify_resp"])
+    {
+        if([status intValue]==1)
+        {
+            NSString *token = [responseDict objectForKey:@"token"];
+            NSString* mobile = [(UITextField*)[self.view viewWithTag:UserTextFieldTag] text];
+            
+            if(token!=NULL)
+            {
+                NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"login", mobile,  @"2",    token,    nil]
+                                                                            forKeys:[NSArray arrayWithObjects:@"cmd",   @"mobile",      @"role", @"token", nil]];
+                NSError * error = nil;
+                NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSUTF8StringEncoding error:&error];
+                
+                NSMutableString *jsonString = [[NSMutableString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+                [jsonString appendString:@"\n"];
+                NSData *outStr = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+                
+                [asyncSocket writeData:outStr withTimeout:-1.0 tag:0];
+            }
+        } else
+        {
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@""
+                                                                           message:@"验证码错误"
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleDefault
+                                                                  handler:^(UIAlertAction * action) {}];
+            
+            [alert addAction:defaultAction];
+            [self presentViewController:alert animated:YES completion:nil];
+        }
         
-        NSMutableString *jsonString = [[NSMutableString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        [jsonString appendString:@"\n"];
-        NSData *outStr = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-        
-        [asyncSocket writeData:outStr withTimeout:-1.0 tag:0];
+    }
+    else if([command isEqualToString:@"login_resp"])
+    {
+        if([status intValue]==1)
+        {
+            //TODO: 进入主界面
+        }
+        else
+        {
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@""
+                                                                           message:@"登陆失败"
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleDefault
+                                                                  handler:^(UIAlertAction * action) {}];
+            
+            [alert addAction:defaultAction];
+            [self presentViewController:alert animated:YES completion:nil];
+        }
     }
     
     
-    DDLogInfo(@"Response:\n%@", response);
-    
+
 }
 
 - (void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)err
@@ -537,6 +620,28 @@ completionHandler:(void (^)(BOOL shouldTrustPeer))completionHandler
     //
     
     DDLogVerbose(@"socketDidDisconnect:withError: \"%@\"", err);
+}
+
+
+#pragma mark - TIMER Handles
+
+-(void)countedTimerAction:(NSTimer *)timer
+{
+    self.timerCount --;
+    
+    if(self.timerCount<=0)
+    {
+        [verifyCodeButton setTitle:@"获取验证码" forState:UIControlStateNormal];
+        [verifyCodeButton setEnabled:true];
+        [timer invalidate];
+        self.repeatingTimer = nil;
+        return;
+    }
+    
+    NSString *timeLeftStr = [[NSString alloc] initWithFormat:@"      %02d秒      ",(int)_timerCount];
+    [verifyCodeButton setTitle:timeLeftStr forState:UIControlStateNormal];
+    [verifyCodeButton setEnabled:false];
+    
 }
 
 @end
