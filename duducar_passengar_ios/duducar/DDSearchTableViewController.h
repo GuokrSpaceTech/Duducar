@@ -10,4 +10,6 @@
 
 @interface DDSearchTableViewController : UITableViewController
 
+@property (nonatomic,assign) NSString *currCity;
+
 @end

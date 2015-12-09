@@ -7,10 +7,19 @@
 //
 
 #import "DDSearchTableViewController.h"
+#import "SearchResultTableViewCell.h"
+#import <BaiduMapAPI_Search/BMKSearchComponent.h>
 
-@interface DDSearchTableViewController ()
-
+@interface DDSearchTableViewController () <UISearchBarDelegate,UISearchControllerDelegate>
+{
+    NSMutableArray *searchResult;
+    BMKPoiSearch   *poisearch;
+    int curPage;
+}
+@property (nonatomic,strong) UISearchController *searchController;
 @end
+
+static NSString *cellidentify = @"resultItem";
 
 @implementation DDSearchTableViewController
 
@@ -22,6 +31,22 @@
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.searchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+    self.searchController.searchResultsUpdater = self;
+    self.searchController.dimsBackgroundDuringPresentation = NO;
+    self.searchController.searchBar.scopeButtonTitles = @[NSLocalizedString(@"ScopeButtonCountry",@"Country"),
+                                                          NSLocalizedString(@"ScopeButtonCapital",@"Capital")];
+    self.searchController.searchBar.delegate = self;
+    self.tableView.tableHeaderView = self.searchController.searchBar;
+    self.definesPresentationContext = YES;
+    
+    
+    //Tableview
+    [self.tableView registerClass:[SearchResultTableViewCell class] forCellReuseIdentifier:cellidentify];
+    self.tableView.separatorColor = UITableViewCellSeparatorStyleNone;
+    
+    searchResult = [[NSMutableArray alloc] init];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -32,24 +57,23 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
-    return 0;
+    return searchResult.count;
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    SearchResultTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellidentify forIndexPath:indexPath];
     
-    // Configure the cell...
+    BMKPoiInfo *poiInfo = searchResult[indexPath.row];
+    
+    [cell setCellContentAddrName:poiInfo.name withAddrDetail:poiInfo.address];
     
     return cell;
 }
-*/
 
 /*
 // Override to support conditional editing of the table view.
@@ -110,5 +134,56 @@
     // Pass the selected object to the new view controller.
 }
 */
+#pragma mark -
+#pragma mark implement SearchBarController Delegate
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController
+{
+    NSString *searchString = searchController.searchBar.text;
+    
+    //Start Search
+    curPage = 0;
+    BMKCitySearchOption *citySearchOption = [[BMKCitySearchOption alloc]init];
+    citySearchOption.pageIndex = curPage;
+    citySearchOption.pageCapacity = 10;
+    citySearchOption.city= _currCity;
+    citySearchOption.keyword = searchString;
+    BOOL flag = [poisearch poiSearchInCity:citySearchOption];
+    if(flag)
+    {
+        NSLog(@"城市内检索发送成功");
+    }
+    else
+    {
+        NSLog(@"城市内检索发送失败");
+    }
+}
+
+- (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope
+{
+    [self updateSearchResultsForSearchController:self.searchController];
+}
+
+#pragma mark -
+#pragma mark implement BMKSearchDelegate
+- (void)onGetPoiResult:(BMKPoiSearch *)searcher result:(BMKPoiResult*)result errorCode:(BMKSearchErrorCode)error
+{
+    if (error == BMK_SEARCH_NO_ERROR) {
+        for (int i = 0; i < result.poiInfoList.count; i++) {
+            BMKPoiInfo* poi = [result.poiInfoList objectAtIndex:i];
+        }
+        
+        [searchResult removeAllObjects];
+        [searchResult addObjectsFromArray:result.poiInfoList];
+        
+        [self.tableView reloadData];
+        
+    } else if (error == BMK_SEARCH_AMBIGUOUS_ROURE_ADDR){
+        NSLog(@"起始点有歧义");
+    } else {
+        // 各种情况的判断。。。
+    }
+    
+
+}
 
 @end

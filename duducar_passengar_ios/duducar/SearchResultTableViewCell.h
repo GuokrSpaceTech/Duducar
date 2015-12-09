@@ -10,4 +10,8 @@
 
 @interface SearchResultTableViewCell : UITableViewCell
 
+@property (nonatomic,strong) UILabel *addrNameLabel;
+@property (nonatomic,strong) UILabel *addrDetailLabel;
+
+-(void)setCellContentAddrName:(NSString *)addrName withAddrDetail:(NSString *)addrDetail;
 @end
