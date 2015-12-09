@@ -9,7 +9,11 @@
 #import "DDMainViewController.h"
 #import <BaiduMapAPI_Map/BMKMapComponent.h>
 #import <BaiduMapAPI_Location/BMKLocationComponent.h>
-@interface DDMainViewController ()<BMKMapViewDelegate,BMKLocationServiceDelegate>
+#import <BaiduMapAPI_Search/BMKSearchComponent.h>
+@interface DDMainViewController ()<BMKMapViewDelegate,BMKLocationServiceDelegate,BMKGeoCodeSearchDelegate>
+{
+    BMKGeoCodeSearch* _geocodesearch;;
+}
 @property (nonatomic,strong)BMKMapView* mapView ;
 @property (nonatomic,strong)BMKLocationService *locService;
 @end
@@ -19,24 +23,72 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    _geocodesearch = [[BMKGeoCodeSearch alloc]init];
+    _geocodesearch.delegate =self;
+    _locService = [[BMKLocationService alloc]init];
+    _locService.delegate = self;
+    [_locService startUserLocationService];
     
     _mapView = [[BMKMapView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width
             , self.view.frame.size.height)];
-    _mapView.showsUserLocation = YES;
+    _mapView.zoomLevel = 15;
     
+    _mapView.userTrackingMode = BMKUserTrackingModeNone;//设置定位的状态
+    _mapView.showsUserLocation = YES;//显示定位图层
     [self.view addSubview:_mapView];
     
+
+    // 叫车大头针
+    UIView * view1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 10, 10)];
+    view1.backgroundColor = [UIColor redColor];
+    view1.center = self.view.center;
+    [self.view addSubview:view1];
     
-    _locService = [[BMKLocationService alloc]init];
-    _locService.delegate = self;
-    //启动LocationService
-    [_locService startUserLocationService];
-                
+    
+
+}
+- (void)mapView:(BMKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
+{
+    CGPoint centerPosition = self.view.center;
+    CLLocationCoordinate2D  coord = [_mapView convertPoint:centerPosition toCoordinateFromView:self.view];
+    
+    BMKReverseGeoCodeOption *reverseGeocodeSearchOption = [[BMKReverseGeoCodeOption alloc]init];
+    reverseGeocodeSearchOption.reverseGeoPoint = coord;
+    BOOL flag = [_geocodesearch reverseGeoCode:reverseGeocodeSearchOption];
+    if(flag)
+    {
+        NSLog(@"反geo检索发送成功");
+    }
+    else
+    {
+        NSLog(@"反geo检索发送失败");
+    }
+
+    // 获得当前地理位置
+    // 获得最近的车辆
+    
+}
+- (void)onGetReverseGeoCodeResult:(BMKGeoCodeSearch *)searcher result:(BMKReverseGeoCodeResult *)result errorCode:(BMKSearchErrorCode)error
+{
+    if(error == BMK_SEARCH_NO_ERROR)
+    {
+        
+    }
+}
+- (void)mapViewDidFinishLoading:(BMKMapView *)mapView
+{
+    CLLocationCoordinate2D  coord =_locService.userLocation.location.coordinate;
+    _mapView.centerCoordinate = coord;
+
+}
+- (void)willStartLocatingUser
+{
+
 }
 - (void)didUpdateUserHeading:(BMKUserLocation *)userLocation
 {
     //NSLog(@"heading is %@",userLocation.heading);
-      [_mapView updateLocationData:userLocation];
+    [_mapView updateLocationData:userLocation];
 }
 //处理位置坐标更新
 - (void)didUpdateBMKUserLocation:(BMKUserLocation *)userLocation
