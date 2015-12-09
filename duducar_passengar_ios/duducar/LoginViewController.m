@@ -11,6 +11,8 @@
 #import "DDLog.h"
 #import "DDTTYLogger.h"
 #import "DDDispatchQueueLogFormatter.h"
+#import "DDSocket.h"
+#import "GCDAsyncSocket.h"
 
 
 // Log levels: off, error, warn, info, verbose
@@ -33,7 +35,7 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
     RCUnderlineTextField* passwordTextField;
     UIButton* verifyCodeButton;
 }
-@property (retain, nonatomic) IBOutlet RCAnimatedImagesView* animatedImagesView;
+@property (strong, nonatomic) RCAnimatedImagesView* animatedImagesView;
 @property (nonatomic, strong) UIView* headBackground;
 @property (nonatomic, strong) UIImageView* duduLogo;
 @property (nonatomic, strong) UIView* inputBackground;
@@ -219,15 +221,13 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
     //       2011-12-05 19:54:08:161 [socket] GCDAsyncSocket: Dispatching DNS lookup...
     //       2011-12-05 19:54:08:161 [socket] GCDAsyncSocket: Creating IPv4 socket
     
-    DDDispatchQueueLogFormatter *formatter = [[DDDispatchQueueLogFormatter alloc] init];
-    [formatter setReplacementString:@"socket" forQueueLabel:GCDAsyncSocketQueueName];
-    [formatter setReplacementString:@"socket-cf" forQueueLabel:GCDAsyncSocketThreadName];
+//    DDDispatchQueueLogFormatter *formatter = [[DDDispatchQueueLogFormatter alloc] init];
+//    [formatter setReplacementString:@"socket" forQueueLabel:GCDAsyncSocketQueueName];
+//    [formatter setReplacementString:@"socket-cf" forQueueLabel:GCDAsyncSocketThreadName];
     
-    [[DDTTYLogger sharedInstance] setLogFormatter:formatter];
+//    [[DDTTYLogger sharedInstance] setLogFormatter:formatter];
     
-    [self startSocket];
-    
-
+    [[DDSocket currentSocket] startSocket];
     
 }
 
@@ -336,7 +336,8 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
         [jsonString appendString:@"\n"];
         NSData *outStr = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
         
-        [asyncSocket writeData:outStr withTimeout:-1.0 tag:0];
+//        [asyncSocket writeData:outStr withTimeout:-1.0 tag:0];
+        [[DDSocket currentSocket]sendData:outStr timeOut:-1.0 tag:0];
         
         DDLogVerbose(@"Sending Request:\n%@", jsonString);
     } else {

@@ -10,7 +10,7 @@
 #import <BaiduMapAPI_Map/BMKMapComponent.h>
 #import "LoginViewController.h"
 #import "UIColor+RCColor.h"
-
+#import "DDMainViewController.h"
 
 BMKMapManager* _mapManager;
 
@@ -26,6 +26,8 @@ BMKMapManager* _mapManager;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
+    self.window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
+    self.window.backgroundColor = [UIColor whiteColor];
         
     // 要使用百度地图，请先启动BaiduMapManager
     _mapManager = [[BMKMapManager alloc]init];
@@ -40,17 +42,22 @@ BMKMapManager* _mapManager;
     NSString *password = [[NSUserDefaults standardUserDefaults] objectForKey:@"userPwd"];
     
     //User has logged in
-    if(token.length && userName.length && password.length)
-    {
-        
-        
-    } else { //User not logged in
-        LoginViewController *loginVC = [[LoginViewController alloc] init];
-        UINavigationController *_navi =
-        [[UINavigationController alloc] initWithRootViewController:loginVC];
-        self.window.rootViewController = _navi;
-    }
+//    if(token.length && userName.length && password.length)
+//    {
+//        DDMainViewController * mainVC = [[DDMainViewController alloc]init];
+//        UINavigationController * navigation = [[UINavigationController alloc] initWithRootViewController:mainVC];
+//        self.window.rootViewController = navigation;
+//        
+//    } else { //User not logged in
+//        LoginViewController *loginVC = [[LoginViewController alloc] init];
+//        UINavigationController *_navi =
+//        [[UINavigationController alloc] initWithRootViewController:loginVC];
+//        self.window.rootViewController = _navi;
+//    }
     
+    DDMainViewController * mainVC = [[DDMainViewController alloc]init];
+    UINavigationController * navigation = [[UINavigationController alloc] initWithRootViewController:mainVC];
+    self.window.rootViewController = navigation;
     //统一导航条样式
     UIFont *font = [UIFont systemFontOfSize:19.f];
     NSDictionary *textAttributes = @{
@@ -61,6 +68,7 @@ BMKMapManager* _mapManager;
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithHexString:@"0195ff" alpha:1.0f]];
     
+    [self.window makeKeyAndVisible];
     
     // Override point for customization after application launch.
     return YES;
