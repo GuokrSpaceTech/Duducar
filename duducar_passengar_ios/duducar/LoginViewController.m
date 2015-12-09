@@ -320,8 +320,11 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 - (void)registerMobile:(NSString *) mobileNumber
 {
     NSString *mobile = userNameTextField.text;
+    NSString *phoneRegex = @"^((\\+)|(00)|)[0-9]{11,13}$";
+    NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", phoneRegex];
     
-    if(![mobile isEqualToString:@""])
+    BOOL phoneValidates = [phoneTest evaluateWithObject:mobile];
+    if(phoneValidates)
     {
         NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"register",  mobile,   @"2",    nil]
                                                                  forKeys:[NSArray arrayWithObjects:@"cmd",      @"mobile", @"role", nil]];
