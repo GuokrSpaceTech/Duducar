@@ -6,7 +6,9 @@ use_frameworks!
 target 'duducar' do
 pod 'CocoaAsyncSocket'
 pod 'CocoaLumberjack'
-
+pod 'BaiduMapKit'
+pod 'FMDB'
+pod 'Masonry'
 end
 
 target 'duducarTests' do

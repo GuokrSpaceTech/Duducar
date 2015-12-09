@@ -13,5 +13,6 @@
     GCDAsyncSocket * asyncSocket;
 }
 +(DDSocket *)currentSocket;
+- (void)startSocket;
 -(void)sendData:(NSData *)data timeOut:(int)time tag:(int)tag;
 @end
