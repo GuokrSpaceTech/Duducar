@@ -1,11 +1,16 @@
 package com.guokrspace.duducar;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -17,8 +22,10 @@ import com.dexafree.materialList.card.CardProvider;
 import com.dexafree.materialList.card.OnActionClickListener;
 import com.dexafree.materialList.card.action.WelcomeButtonAction;
 import com.dexafree.materialList.view.MaterialListView;
+import com.guokrspace.duducar.adapter.OrdersAdapter;
 import com.guokrspace.duducar.database.OrderRecord;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -37,6 +44,12 @@ public class OrderHistoryActivity extends AppCompatActivity{
     private Context mContext;
     private MaterialListView materialListView;
     private Toolbar mToolbar;
+    private RecyclerView mRecyclerView;
+
+    private OrdersAdapter mAdapter;
+    private List<OrderRecord> orderRecords = new ArrayList<>();
+    private LinearLayoutManager mLayoutManager;
+
 
     /**
      * Use this factory method to create a new instance of
@@ -56,39 +69,36 @@ public class OrderHistoryActivity extends AppCompatActivity{
     }
 
     private void initView() {
+        //init toolbar
         initToolBar();
-        materialListView = (MaterialListView) findViewById(R.id.material_listview);
-        List<OrderRecord> orderRecords = mApplication.mDaoSession.getOrderRecordDao().queryBuilder().list();
-        if (orderRecords.size() == 0) {
-            Log.e("hyman_orderrecord", "no order");
-        }
-        for (OrderRecord orderRecord : orderRecords) {
-            Card card = new Card.Builder(mContext)
-                    .setTag("WELCOME_CARD")
-                    .setDismissible()
-                    .withProvider(new CardProvider<>())
-                    .setLayout(R.layout.material_welcome_card_layout)
-                    .setTitle(orderRecord.getOrderTime())
-                    .setTitleColor(Color.GRAY)
-                    .setDescription(orderRecord.getStartAddr() + "-" + orderRecord.getDestAddr())
-                    .setDescriptionColor(Color.GRAY)
-                    .setSubtitle(orderRecord.getMileage())
-                    .setSubtitleColor(Color.GRAY)
-                    .setBackgroundColor(Color.WHITE)
-                    .addAction(R.id.ok_button, new WelcomeButtonAction(mContext)
-                            .setText("Okay!")
-                            .setTextColor(Color.WHITE)
-                            .setListener(new OnActionClickListener() {
-                                @Override
-                                public void onActionClicked(View view, Card card) {
-                                    Toast.makeText(mContext, "Welcome!", Toast.LENGTH_SHORT).show();
-                                }
-                            }))
-                    .endConfig()
-                    .build();
-            materialListView.getAdapter().add(card);
 
-        }
+        orderRecords.addAll(mApplication.mDaoSession.getOrderRecordDao().queryBuilder().list());
+        Log.e("hyman_orderrecord", orderRecords.size() + "");
+        mRecyclerView = (RecyclerView) findViewById(R.id.order_records_recyclerview);
+        mAdapter = new OrdersAdapter(mContext, orderRecords);
+        mAdapter.setOnItemClickListener(new OrdersAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                //点击进入详情界面
+                Intent intent = new Intent(mContext, RatingActivity.class);
+//                intent.putExtra("order", orderRecords.get(position));
+                startActivity(intent);
+
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+                //长按删除
+                mAdapter.removeData(position);
+                mApplication.mDaoSession.getOrderRecordDao().delete(orderRecords.get(position));
+            }
+        });
+        mRecyclerView.setAdapter(mAdapter);
+        mLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.addItemDecoration(new SpaceItemDecoration(40));
+
     }
 
     private void initToolBar() {
@@ -132,6 +142,24 @@ public class OrderHistoryActivity extends AppCompatActivity{
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
+    }
+
+
+
+    private class SpaceItemDecoration extends RecyclerView.ItemDecoration{
+
+        private int space;
+
+        public SpaceItemDecoration(int space) {
+            this.space = space;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+
+            if(parent.getChildPosition(view) != 0)
+                outRect.top = space;
+        }
     }
 
 }

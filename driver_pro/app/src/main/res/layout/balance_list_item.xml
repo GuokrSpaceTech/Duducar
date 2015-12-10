@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/small_padding"
+    android:paddingLeft="@dimen/big_padding"
+    android:paddingRight="@dimen/small_padding"
+    android:paddingTop="@dimen/small_padding">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/trade_cash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-300.00"
+            android:textColor="@color/sky_blue"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/trade_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/trade_cash"
+            android:layout_alignParentRight="true"
+            android:text="银行卡"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp">
+
+        <TextView
+            android:id="@+id/trade_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="提现"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/trade_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2015-11-12 12:21:34"
+            android:layout_alignBaseline="@id/trade_time"
+            android:layout_alignParentRight="true"
+            android:textSize="16sp" />
+
+    </RelativeLayout>
+</LinearLayout>

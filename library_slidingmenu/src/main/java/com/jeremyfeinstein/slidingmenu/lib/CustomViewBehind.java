@@ -105,12 +105,15 @@ public class CustomViewBehind extends ViewGroup {
 
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent e) {
-		return !mChildrenEnabled;
+//		return !mChildrenEnabled;
+		return super.onInterceptTouchEvent(e);
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent e) {
-		return !mChildrenEnabled;
+//		return !mChildrenEnabled;
+		Log.e("hyman_slidingmenu", "touchevent " + e.getAction());
+		return super.onTouchEvent(e);
 	}
 
 	@Override
@@ -435,5 +438,6 @@ public class CustomViewBehind extends ViewGroup {
 		mSelectorDrawable = b;
 		refreshDrawableState();
 	}
+
 
 }

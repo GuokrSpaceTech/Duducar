@@ -120,6 +120,10 @@
         <activity android:name=".ui.ComplainActivity"
             android:label="投诉"
             android:configChanges="keyboardHidden|orientation"/>
+        <activity
+            android:name=".ui.BalanceActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="余额" />
 
         <service
             android:name=".net.DuduService"

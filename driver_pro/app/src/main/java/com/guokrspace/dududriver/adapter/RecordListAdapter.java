@@ -1,5 +1,6 @@
 package com.guokrspace.dududriver.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -56,6 +57,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
                     detailIntent.setClass(context, HistoryOrderDetailActivity.class);
                     detailIntent.putExtra("orderDetail", mItems.get(position));
                     context.startActivity(detailIntent);
+                    ((Activity)context).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 }
             });
         }

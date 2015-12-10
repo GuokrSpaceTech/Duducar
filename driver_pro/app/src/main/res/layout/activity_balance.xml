@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/black_de">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:text="我的余额"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <view
+        android:id="@+id/swipeRefreshLayout"
+        class="android.support.v4.widget.SwipeRefreshLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <com.guokrspace.dududriver.ui.HymanScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal">
+
+                    <TextView
+                        android:id="@+id/my_balance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:paddingRight="6dp"
+                        android:paddingTop="10dp"
+                        android:text="199.9"
+                        android:textColor="@android:color/black"
+                        android:textSize="40sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@id/my_balance"
+                        android:layout_marginLeft="5dp"
+                        android:layout_toRightOf="@id/my_balance"
+                        android:text="元"
+                        android:textColor="@android:color/black" />
+                </RelativeLayout>
+
+                <com.gc.materialdesign.views.ButtonFlat
+                    android:id="@+id/substitute_pay"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="3dp"
+                    android:text="提 现"
+                    android:textSize="7sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="26dp"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1px"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="@android:color/darker_gray" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="26dp"
+                        android:layout_marginRight="26dp"
+                        android:gravity="center"
+                        android:text="收支明细"
+                        android:textColor="#808080"
+                        android:textSize="18sp" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1px"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="@android:color/darker_gray" />
+                </LinearLayout>
+
+                <view
+                    android:id="@+id/noscrolllistview"
+                    class="com.guokrspace.dududriver.view.NoScrollListView"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:cacheColorHint="#00000000"
+                    android:divider="@color/light_gray"
+                    android:dividerHeight="1dip"
+                    android:drawSelectorOnTop="false"
+                    android:fadingEdge="none"
+                    android:listSelector="@android:color/transparent"
+                    android:padding="16dip"
+                    android:scrollbars="none" />
+            </LinearLayout>
+        </com.guokrspace.dududriver.ui.HymanScrollView>
+    </view>
+
+</LinearLayout>

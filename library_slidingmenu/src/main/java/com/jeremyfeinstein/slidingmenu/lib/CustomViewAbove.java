@@ -478,7 +478,7 @@ public class CustomViewAbove extends ViewGroup {
 	public void setAboveOffset(int i) {
 		//		RelativeLayout.LayoutParams params = ((RelativeLayout.LayoutParams)mContent.getLayoutParams());
 		//		params.setMargins(i, params.topMargin, params.rightMargin, params.bottomMargin);
-		mContent.setPadding(i, mContent.getPaddingTop(), 
+		mContent.setPadding(i, mContent.getPaddingTop(),
 				mContent.getPaddingRight(), mContent.getPaddingBottom());
 	}
 
@@ -659,6 +659,8 @@ public class CustomViewAbove extends ViewGroup {
 			}
 			mVelocityTracker.addMovement(ev);
 		}
+
+//		Log.e("hyman_slidingmenu", "Intercept" + action + " " + String.valueOf(mIsBeingDragged || mQuickReturn));
 		return mIsBeingDragged || mQuickReturn;
 	}
 
@@ -773,6 +775,7 @@ public class CustomViewAbove extends ViewGroup {
 			mLastMotionX = MotionEventCompat.getX(ev, pointerIndex);
 			break;
 		}
+
 		return true;
 	}
 	
