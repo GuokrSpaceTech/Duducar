@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:zhy="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="20dp">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1px"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="#009fe8" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="您的评价让我们做的更好"
+            android:textColor="#009fe8"
+            android:textSize="15sp" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1px"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="#009fe8" />
+
+
+    </LinearLayout>
+
+    <RatingBar
+        android:id="@+id/ratingBarBig"
+        style="@style/heartRatingBarBig"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:numStars="5"
+        android:rating="4"
+        android:stepSize="0.5" />
+
+
+    <com.zhy.view.flowlayout.TagFlowLayout
+        android:id="@+id/flowlayout"
+        zhy:max_select="-1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="6dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="16dp"></com.zhy.view.flowlayout.TagFlowLayout>
+
+    <!--<EditText
+        android:id="@+id/comment_edittext"
+        android:background="@drawable/edittext_bg_selector"
+        android:layout_width="fill_parent"
+        android:layout_height="120dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:hint="评价字数不超过100字"
+        android:gravity="top|left"
+        android:imeOptions="actionDone"
+        android:inputType=""
+        android:lineSpacingExtra="3dp"
+        android:maxLength="200"
+        android:padding="5dip"
+        android:textSize="14sp"
+        android:textColor="@android:color/black"/>-->
+    <Button
+        android:id="@+id/evalute_button"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginBottom="6dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/evaluate_btn_bg_selector"
+        android:gravity="center"
+        android:text="评 价"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+
+</LinearLayout>

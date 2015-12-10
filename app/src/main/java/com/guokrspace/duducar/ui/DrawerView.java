@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -49,9 +50,12 @@ public class DrawerView implements View.OnClickListener {
         localSlidingMenu = new SlidingMenu(activity);
         localSlidingMenu.setMode(SlidingMenu.LEFT);
         localSlidingMenu.setTouchModeAbove(SlidingMenu.SLIDING_WINDOW);
+        localSlidingMenu.setTouchModeBehind(SlidingMenu.LEFT);
+//        localSlidingMenu.setTouchModeBehind(SlidingMenu.TOUCHMODE_FULLSCREEN);
         localSlidingMenu.setShadowWidthRes(R.dimen.shadow_width);
         localSlidingMenu.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-        localSlidingMenu.attachToActivity(activity, SlidingMenu.RIGHT);
+        localSlidingMenu.attachToActivity(activity, SlidingMenu.LEFT);
+        localSlidingMenu.setFadeEnabled(true);
         localSlidingMenu.setFadeDegree(0.35f);
         localSlidingMenu.setMenu(R.layout.drawer_left_menu);
         localSlidingMenu.setOnOpenedListener(new SlidingMenu.OnOpenedListener() {

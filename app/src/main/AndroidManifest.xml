@@ -123,19 +123,26 @@
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
             android:label="个人信息" />
+        <activity
+            android:name=".ComplainActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:exported="false"
+            android:label="投诉" />
 
         <!-- wepay init end -->
 
-        <!--&lt;!&ndash; Update Activitys Start &ndash;&gt;
+        <!-- Update Activitys Start -->
         <activity
             android:name="com.umeng.update.UpdateDialogActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
-        &lt;!&ndash; Update Activitys End &ndash;&gt;
-        &lt;!&ndash; Caution! Do not change this app key. It is only for demo usage. &ndash;&gt;
+
+        <!-- Update Activitys End -->
+
+        <!-- Caution! Do not change this app key. It is only for demo usage. -->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="4f83c5d852701564c0000011" >
+            android:value="5667dae667e58ebd3b002e0e" >
         </meta-data>
         <meta-data
             android:name="UMENG_CHANNEL"
@@ -145,7 +152,7 @@
         <service
             android:name="com.umeng.update.net.DownloadingService"
             android:process=":DownloadingService" >
-        </service>-->
+        </service>
     </application>
 
 </manifest>
