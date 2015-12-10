@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.guokrspace.dududriver">
+    package="com.guokrspace.dududriver" >
 
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -45,6 +45,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:persistent="true"
         android:theme="@style/AppBaseTheme" >
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
@@ -61,14 +62,14 @@
 
         <activity
             android:name=".ui.LoginActivity"
-            android:label=""
-            android:configChanges="keyboardHidden|orientation"/>
+            android:configChanges="keyboardHidden|orientation"
+            android:label="" />
         <activity
             android:name=".ui.MainActivity"
-            android:label="@string/app_name"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait"
-            android:launchMode="singleTop">
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -77,16 +78,16 @@
         </activity>
         <activity
             android:name=".ui.SearchActivity"
-            android:label="@string/title_activity_search"
-            android:configChanges="keyboardHidden|orientation"/>
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/title_activity_search" />
         <activity
             android:name=".ui.SettingActivity"
-            android:label="设置"
-            android:configChanges="keyboardHidden|orientation"/>
+            android:configChanges="keyboardHidden|orientation"
+            android:label="设置" />
         <activity
             android:name=".ui.PostOrderActivity"
-            android:label="订单"
-            android:configChanges="keyboardHidden|orientation"/>
+            android:configChanges="keyboardHidden|orientation"
+            android:label="订单" />
 
         <service
             android:name="com.baidu.location.f"
@@ -95,31 +96,33 @@
 
         <activity
             android:name=".ui.PickUpPassengerActivity"
-            android:label="去接乘客"
-            android:configChanges="keyboardHidden|orientation"/>
+            android:configChanges="keyboardHidden|orientation"
+            android:label="去接乘客" />
         <activity
             android:name=".ui.ConfirmBillActivity"
-            android:label="确认账单"
-            android:configChanges="keyboardHidden|orientation"/>
+            android:configChanges="keyboardHidden|orientation"
+            android:label="确认账单" />
         <activity
             android:name=".ui.OrderDetailActivity"
-            android:label="订单详情"
-            android:configChanges="keyboardHidden|orientation"/>
+            android:configChanges="keyboardHidden|orientation"
+            android:label="订单详情" />
         <activity
             android:name=".ui.OrderMapActivity"
-            android:label="订单地图"
-            android:configChanges="keyboardHidden|orientation"/>
-        <activity android:name=".ui.PayCostActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="订单地图" />
+        <activity
+            android:name=".ui.PayCostActivity"
+            android:configChanges="keyboardHidden|orientation"
             android:label="账单支付"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-            android:configChanges="keyboardHidden|orientation"/>
- 
-        <activity android:name=".ui.HistoryOrderDetailActivity"
-            android:label="历史订单详情"
-            android:configChanges="keyboardHidden|orientation"/>
-        <activity android:name=".ui.ComplainActivity"
-            android:label="投诉"
-            android:configChanges="keyboardHidden|orientation"/>
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+        <activity
+            android:name=".ui.HistoryOrderDetailActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="历史订单详情" />
+        <activity
+            android:name=".ui.ComplainActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="投诉" />
 
         <service
             android:name=".net.DuduService"
@@ -133,6 +136,7 @@
         </activity>
 
         <!-- Update Activitys End -->
+
 
         <!-- Caution! Do not change this app key. It is only for demo usage. -->
         <meta-data
@@ -149,7 +153,8 @@
             android:process=":DownloadingService" >
         </service>
 
-
+        <activity android:name=".ui.NaviActivity" >
+        </activity>
     </application>
 
 </manifest>

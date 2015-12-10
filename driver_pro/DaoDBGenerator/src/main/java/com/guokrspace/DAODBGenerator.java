@@ -68,6 +68,6 @@ public class DAODBGenerator {
         notice.addStringProperty("type");
         notice.addStringProperty("messageBody");
         notice.addBooleanProperty("outOfTime");
-        notice.addStringProperty("noticeId");
+        notice.addIntProperty("noticeId");
     }
 }

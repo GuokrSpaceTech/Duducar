@@ -1,6 +1,7 @@
 package com.guokrspace.dududriver.ui;
 
 import android.content.Context;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,6 +30,9 @@ import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.guokrspace.dududriver.R;
+import com.guokrspace.dududriver.common.Constants;
+import com.guokrspace.dududriver.common.NewOrderReceiver;
+import com.guokrspace.dududriver.util.CommonUtil;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -105,6 +109,8 @@ public class OrderMapActivity extends BaseActivity implements View.OnClickListen
     List<LatLng> randomList = new ArrayList<LatLng>();
     Random r = new Random();
 
+    private NewOrderReceiver receiver;
+    private MainOrderDialog dialog;
 
     private MyHandler mHandler = new MyHandler(OrderMapActivity.this);
 
@@ -196,6 +202,19 @@ public class OrderMapActivity extends BaseActivity implements View.OnClickListen
         mLocationClient.registerLocationListener(mDBLocationListener);
     }
 
+    //监听service传来的消息
+    private void registerBroadcastReceiver(){
+        if(mHandler == null){
+            mHandler = new MyHandler(this);
+        }
+        receiver = new NewOrderReceiver(mHandler);
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constants.ACTION_NEW_ORDER);
+        filter.setPriority(1000);
+        registerReceiver(receiver, filter);
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -217,12 +236,14 @@ public class OrderMapActivity extends BaseActivity implements View.OnClickListen
     protected void onPause() {
         super.onPause();
         mMapView.onPause();
+        unregisterReceiver(receiver);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         mMapView.onResume();
+        registerBroadcastReceiver();
     }
 
     @Override
@@ -266,6 +287,16 @@ public class OrderMapActivity extends BaseActivity implements View.OnClickListen
                     //在地图上添加热力图
                     mBaiduMap.addHeatMap(heatmap);
                     mMapView.invalidate();
+                    break;
+                case Constants.MESSAGE_NEW_ORDER:
+                    //有新的订单来了
+                    if(CommonUtil.getCurOrderItem() == null){
+                        return ;
+                    }
+                    if(dialog == null || !dialog.isVisible()){
+                        dialog = new MainOrderDialog(context, CommonUtil.getCurOrderItem());
+                        dialog.show(getSupportFragmentManager(), "mainorderdialog");
+                    }
                     break;
                 default:
                     break;

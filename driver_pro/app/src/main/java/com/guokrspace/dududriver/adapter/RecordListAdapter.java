@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,6 @@ import android.widget.TextView;
 
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.database.OrderRecord;
-import com.guokrspace.dududriver.model.HistoryOrder;
 import com.guokrspace.dududriver.ui.HistoryOrderDetailActivity;
 
 import java.text.SimpleDateFormat;
@@ -44,6 +44,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
     public void onBindViewHolder(RecordViewHolder holder, final int position) {
         if (mItems != null) {
 
+            Log.e("daddy", "endtime "+ mItems.get(position).getEnd_time());
             holder.tvDate.setText(dateFormat(mItems.get(position).getEnd_time()));
             holder.tvOrigin.setText(mItems.get(position).getStart());
             holder.tvDest.setText(mItems.get(position).getDestination());
@@ -71,7 +72,7 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
         if (TextUtils.isEmpty(date)) {
             return "一万年前";
         }
-        Date orderDate = new Date(Long.parseLong(date));
+        Date orderDate = new Date(Long.parseLong(date+"000"));
         SimpleDateFormat format = new SimpleDateFormat("MM月dd日 HH:mm");
         return format.format(orderDate);
     }

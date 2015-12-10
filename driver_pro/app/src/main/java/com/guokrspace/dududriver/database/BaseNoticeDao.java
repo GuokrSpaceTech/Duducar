@@ -28,7 +28,7 @@ public class BaseNoticeDao extends AbstractDao<BaseNotice, Long> {
         public final static Property Type = new Property(2, String.class, "type", false, "TYPE");
         public final static Property MessageBody = new Property(3, String.class, "messageBody", false, "MESSAGE_BODY");
         public final static Property OutOfTime = new Property(4, Boolean.class, "outOfTime", false, "OUT_OF_TIME");
-        public final static Property NoticeId = new Property(5, String.class, "noticeId", false, "NOTICE_ID");
+        public final static Property NoticeId = new Property(5, Integer.class, "noticeId", false, "NOTICE_ID");
     };
 
 
@@ -49,7 +49,7 @@ public class BaseNoticeDao extends AbstractDao<BaseNotice, Long> {
                 "'TYPE' TEXT," + // 2: type
                 "'MESSAGE_BODY' TEXT," + // 3: messageBody
                 "'OUT_OF_TIME' INTEGER," + // 4: outOfTime
-                "'NOTICE_ID' TEXT);"); // 5: noticeId
+                "'NOTICE_ID' INTEGER);"); // 5: noticeId
     }
 
     /** Drops the underlying database table. */
@@ -88,9 +88,9 @@ public class BaseNoticeDao extends AbstractDao<BaseNotice, Long> {
             stmt.bindLong(5, outOfTime ? 1l: 0l);
         }
  
-        String noticeId = entity.getNoticeId();
+        Integer noticeId = entity.getNoticeId();
         if (noticeId != null) {
-            stmt.bindString(6, noticeId);
+            stmt.bindLong(6, noticeId);
         }
     }
 
@@ -109,7 +109,7 @@ public class BaseNoticeDao extends AbstractDao<BaseNotice, Long> {
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // type
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // messageBody
             cursor.isNull(offset + 4) ? null : cursor.getShort(offset + 4) != 0, // outOfTime
-            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5) // noticeId
+            cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5) // noticeId
         );
         return entity;
     }
@@ -122,7 +122,7 @@ public class BaseNoticeDao extends AbstractDao<BaseNotice, Long> {
         entity.setType(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setMessageBody(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
         entity.setOutOfTime(cursor.isNull(offset + 4) ? null : cursor.getShort(offset + 4) != 0);
-        entity.setNoticeId(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setNoticeId(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
      }
     
     /** @inheritdoc */

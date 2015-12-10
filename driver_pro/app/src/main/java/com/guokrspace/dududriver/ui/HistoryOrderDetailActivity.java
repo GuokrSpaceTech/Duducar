@@ -4,8 +4,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -16,8 +19,11 @@ import android.widget.TextView;
 
 import com.gc.materialdesign.views.ButtonFlat;
 import com.guokrspace.dududriver.R;
+import com.guokrspace.dududriver.common.Constants;
+import com.guokrspace.dududriver.common.NewOrderReceiver;
 import com.guokrspace.dududriver.common.VoiceCommand;
 import com.guokrspace.dududriver.database.OrderRecord;
+import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.VoiceUtil;
 import com.guokrspace.dududriver.view.CircleImageView;
 
@@ -28,7 +34,7 @@ import butterknife.OnClick;
 /**
  * Created by hyman on 15/11/26.
  */
-public class HistoryOrderDetailActivity extends BaseActivity {
+public class HistoryOrderDetailActivity extends BaseActivity implements Handler.Callback{
 
     @Bind(R.id.history_detail_toolbar)
     Toolbar mToolbar;
@@ -69,6 +75,9 @@ public class HistoryOrderDetailActivity extends BaseActivity {
     private Context context;
 
     private OrderRecord orderDetail;
+    private NewOrderReceiver receiver;
+    private MainOrderDialog dialog;
+    private Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +86,7 @@ public class HistoryOrderDetailActivity extends BaseActivity {
         ButterKnife.bind(this);
         context = this;
         Intent intent = getIntent();
+        mHandler = new Handler(this);
         orderDetail = (OrderRecord) intent.getSerializableExtra("orderDetail");
         initView();
     }
@@ -116,13 +126,54 @@ public class HistoryOrderDetailActivity extends BaseActivity {
                     break;
             }
             statusTextView.setText(statusStr);
-            sumPriceTextView.setText(orderDetail.getSumprice());
+            sumPriceTextView.setText(orderDetail.getOrg_price());
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerBroadcastReceiver();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        switch (msg.what){
+            case Constants.MESSAGE_NEW_ORDER:
+                //有新的订单来了
+                if(CommonUtil.getCurOrderItem() == null){
+                    return false;
+                }
+                if(dialog == null || !dialog.isVisible()){
+                    dialog = new MainOrderDialog(context, CommonUtil.getCurOrderItem());
+                    dialog.show(getSupportFragmentManager(), "mainorderdialog");
+                }
+                break;
+            default:
+                break;
+        }
+        return false;
+    }
+
+    //监听service传来的消息
+    private void registerBroadcastReceiver(){
+        receiver = new NewOrderReceiver(mHandler);
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constants.ACTION_NEW_ORDER);
+        filter.setPriority(1000);
+        registerReceiver(receiver, filter);
     }
 }

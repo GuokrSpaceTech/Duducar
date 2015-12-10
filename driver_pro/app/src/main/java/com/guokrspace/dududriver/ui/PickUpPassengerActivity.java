@@ -31,7 +31,6 @@ import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.PolylineOptions;
@@ -50,6 +49,9 @@ import com.baidu.navisdk.adapter.BNOuterTTSPlayerCallback;
 import com.baidu.navisdk.adapter.BNRouteGuideManager;
 import com.baidu.navisdk.adapter.BNRoutePlanNode;
 import com.baidu.navisdk.adapter.BaiduNaviManager;
+import com.baidu.navisdk.comapi.routeplan.RoutePlanParams;
+import com.baidu.navisdk.ui.routeguide.BNavigator;
+import com.gc.materialdesign.widgets.Dialog;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.common.VoiceCommand;
@@ -105,6 +107,8 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
     Button btnNavi;
     @Bind(R.id.pickup_naviview)
     FrameLayout mNaviFrame;
+    @Bind(R.id.pickup_mapnavi)
+    FrameLayout mMapNavi;
     @Bind(R.id.pickup_mapview)
     MapView mMapview;
     @Bind(R.id.pickup_btnll)
@@ -243,8 +247,8 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                     isFirstTrack = false;
                 }
 
-                if(Math.abs(currentLatLng.latitude- CommonUtil.getCurLatLng().latitude) > 0.005
-                        ||Math.abs(currentLatLng.longitude - CommonUtil.getCurLatLng().longitude) > 0.005 )
+                if(Math.abs(currentLatLng.latitude- CommonUtil.getCurLatLng().latitude) > 0.0005
+                        ||Math.abs(currentLatLng.longitude - CommonUtil.getCurLatLng().longitude) > 0.0005 )
                     //异常定位
                     break;
                 Log.e("daddy", "start track no exception");
@@ -486,11 +490,11 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                 }
                 if(!isNavigationNow){
                     //启动导航
+
                     BDLocation stLocation = CommonUtil.getMCLocation(CommonUtil.getCurLat(),CommonUtil.getCurLng());
                     BDLocation edLocation = CommonUtil.getMCLocation(Double.valueOf(orderItem.getOrder().getStart_lat()), Double.valueOf(orderItem.getOrder().getStart_lng()));
                     routeplanToNavi(new BNRoutePlanNode(stLocation.getLongitude(), stLocation.getLatitude(), CommonUtil.getCurAddress(), CommonUtil.getCurAddressDescription(), BNRoutePlanNode.CoordinateType.BD09_MC),
                             new BNRoutePlanNode(edLocation.getLongitude(), edLocation.getLatitude(), orderItem.getOrder().getStart(), "乘客所在地", BNRoutePlanNode.CoordinateType.BD09_MC));
-
                 } else {
                     //结束导航
                     BNRouteGuideManager.getInstance().forceQuitNaviWithoutDialog();
@@ -555,11 +559,11 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                 }
                 if (!isNavigationNow) {
                     //启动导航
+
                     BDLocation stLocation = CommonUtil.getMCLocation(CommonUtil.getCurLat(), CommonUtil.getCurLng());
                     BDLocation edLocation = CommonUtil.getMCLocation(Double.valueOf(orderItem.getOrder().getDestination_lat()), Double.valueOf(orderItem.getOrder().getDestination_lng()));
                     routeplanToNavi(new BNRoutePlanNode(stLocation.getLongitude(), stLocation.getLatitude(), CommonUtil.getCurAddress(), CommonUtil.getCurAddressDescription(), BNRoutePlanNode.CoordinateType.BD09_MC),
                             new BNRoutePlanNode(edLocation.getLongitude(), edLocation.getLatitude(), orderItem.getOrder().getStart(), "乘客所在地", BNRoutePlanNode.CoordinateType.BD09_MC));
-
                 } else {
                     //结束导航
                     BNRouteGuideManager.getInstance().forceQuitNaviWithoutDialog();
@@ -575,6 +579,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
     @Override
     public void onConfigurationChanged(android.content.res.Configuration newConfig) {
         BNRouteGuideManager.getInstance().onConfigurationChanged(newConfig);
+        Log.e("daddy", "on config change");
         super.onConfigurationChanged(newConfig);
     };
 
@@ -594,6 +599,8 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         if(isNavigationNow){
             BNRouteGuideManager.getInstance().onPause();
         }
+
+        Log.e("daddy", " gps onpause");
     }
 
     @Override
@@ -635,6 +642,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
             }
         });
 
+        Log.e("daddy", " gps onresume");
     }
 
     @Override
@@ -653,7 +661,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
 
     @Override
     public void onBackPressed() {
-        BNRouteGuideManager.getInstance().onBackPressed(false);
+//        BNRouteGuideManager.getInstance().onBackPressed(false);
     }
 
     @Override
@@ -700,7 +708,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                         isNavigationOk = false;
                     }
 
-                }, null /*mTTSCallback*/);
+                }, mTTSCallback);
     }
     //导航语音回调
     private BNOuterTTSPlayerCallback mTTSCallback = new BNOuterTTSPlayerCallback() {
@@ -723,6 +731,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         @Override
         public int playTTSText(String speech, int bPreempt) {
             // TODO Auto-generated method stub
+            Log.e("daddy", "tts adxt " + speech);
             return 0;
         }
 
@@ -785,15 +794,18 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
             list.add(sNode);
             list.add(eNode);
 
-            boolean launch = BaiduNaviManager.getInstance().launchNavigator(this, list, 1, true, new DemoRoutePlanListener(sNode));
+            boolean launch = BaiduNaviManager.getInstance().launchNavigator(this,
+                    list, RoutePlanParams.NE_RoutePlan_Mode.ROUTE_PLAN_MOD_MIN_TIME,
+                    true, new DemoRoutePlanListener(sNode));
             if(launch){
-
+                Log.e("daddy", " gps launch");
             } else {
                 VoiceUtil.startSpeaking(VoiceCommand.LAUNCH_NAVIGATION_ERROR);
                 isNavigationNow = false;
             }
         }
     }
+
 
     public class DemoRoutePlanListener implements BaiduNaviManager.RoutePlanListener {
 
@@ -806,8 +818,15 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         public void onJumpToNavigator() {
             //TODO 进入导航模式需要调整地图
             isNavigationNow = true;
+//            Intent intent = new Intent(PickUpPassengerActivity.this, NaviActivity.class);
+//            Bundle bundle = new Bundle();
+//            bundle.putSerializable("daddy", (BNRoutePlanNode) mBNRoutePlanNode);
+//            intent.putExtras(bundle);
+//            Log.e("daddy", "start navigation");
+//            startActivity(intent);
             btnNavi.setText("停止导航");
             Log.e("daddy navi", "jump to navigation");
+
             naviView = BNRouteGuideManager.getInstance().onCreate(PickUpPassengerActivity.this, new BNRouteGuideManager.OnNavigationListener() {
                 @Override
                 public void onNaviGuideEnd() {
@@ -820,12 +839,20 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                     Log.e("daddy navi guide", "notify" + i + " " + i1 + " " + i2);
 
                 }
+
             });
             Log.e("daddy navigation", "view " + naviView.getWidth() + " " + naviView.getAlpha());
-            mNaviFrame.addView(naviView);
-            Log.e("daddy navigation", "add view success");
+//            mNaviFrame.addView(naviView);
+//            Log.e("daddy navigation", "add view success");
+//            mMapview.removeAllViews();
+//            mMapview.addView(naviView, 1);
+            naviView.refreshDrawableState();
+            mMapNavi.setVisibility(View.VISIBLE);
+            mMapNavi.addView(naviView);
+            BNavigator.getInstance().startNav();
             mMapview.setVisibility(View.GONE);
-            Log.e("daddy navigation", "mapview gone");
+
+//            Log.e("daddy navigation", "mapview gone");
         }
         @Override
         public void onRoutePlanFailed() {

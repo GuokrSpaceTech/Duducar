@@ -2,16 +2,21 @@ package com.guokrspace.dududriver.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.R;
+import com.guokrspace.dududriver.common.Constants;
+import com.guokrspace.dududriver.common.NewOrderReceiver;
+import com.guokrspace.dududriver.util.CommonUtil;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
@@ -24,7 +29,7 @@ import butterknife.ButterKnife;
 /**
  * Created by hyman on 15/10/24.
  */
-public class SettingActivity extends BaseActivity implements View.OnClickListener{
+public class SettingActivity extends BaseActivity implements View.OnClickListener, Handler.Callback{
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -54,6 +59,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
     private boolean isOpenSound = true;
 
+    private NewOrderReceiver receiver;
+    private MainOrderDialog dialog;
+    private Handler mHandler;
+
 
 
     @Override
@@ -63,6 +72,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
         ButterKnife.bind(this);
         context = this;
         mApplication = DuduDriverApplication.getInstance();
+        mHandler = new Handler(this);
         initView();
     }
 
@@ -96,13 +106,54 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 // TODO: 15/11/29 处理生效相关的逻辑
                 isOpenSound = !isOpenSound;
                 if (isOpenSound) {
-                    showToast("声效已开启");
+                    showToast("语音提示已开启");
                 } else {
-                  showToast("声效已关闭");
+                  showToast("语音提示已关闭");
                 }
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerBroadcastReceiver();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
+
+    //监听service传来的消息
+    private void registerBroadcastReceiver(){
+        receiver = new NewOrderReceiver(mHandler);
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constants.ACTION_NEW_ORDER);
+        filter.setPriority(1000);
+        registerReceiver(receiver, filter);
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        switch (msg.what){
+            case Constants.MESSAGE_NEW_ORDER:
+                //有新的订单来了
+                if(CommonUtil.getCurOrderItem() == null){
+                    return false;
+                }
+                if(dialog == null || !dialog.isVisible()){
+                    dialog = new MainOrderDialog(context, CommonUtil.getCurOrderItem());
+                    dialog.show(getSupportFragmentManager(), "mainorderdialog");
+                }
+                break;
+            default:
+                break;
+        }
+        return false;
     }
 
     @Override
