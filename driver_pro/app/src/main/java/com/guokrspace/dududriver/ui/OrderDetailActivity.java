@@ -4,10 +4,12 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -24,6 +26,7 @@ import com.gc.materialdesign.views.ButtonFlat;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
+import com.guokrspace.dududriver.common.NewOrderReceiver;
 import com.guokrspace.dududriver.common.VoiceCommand;
 import com.guokrspace.dududriver.model.OrderItem;
 import com.guokrspace.dududriver.net.ResponseHandler;
@@ -39,7 +42,7 @@ import butterknife.OnClick;
 /**
  * Created by hyman on 15/11/3.
  */
-public class OrderDetailActivity extends BaseActivity {
+public class OrderDetailActivity extends BaseActivity{
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -207,6 +210,12 @@ public class OrderDetailActivity extends BaseActivity {
             default:
                 break;
         }
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     @Override
@@ -243,5 +252,4 @@ public class OrderDetailActivity extends BaseActivity {
     public static final int PASS_PAY_OVER = 1;
     public static final int DRIVER_PAY_OVER = 2;
     public static final int WAIT_FOR_DRIVER_PAY = 3;
-
 }

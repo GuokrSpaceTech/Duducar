@@ -166,7 +166,7 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
 //                        CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
 //                        VoiceUtil.startSpeaking(VoiceCommand.CONTINUE_WAIT);
 
-                        SocketClient.getInstance().endOrder(price + "", curDistance + "", new ResponseHandler(Looper.myLooper()) {
+                        SocketClient.getInstance().endOrder(price + "", curDistance + "", lowSpeedTime + "", new ResponseHandler(Looper.myLooper()) {
                             @Override
                             public void onSuccess(String messageBody) {
                                 Log.e("PickUpPassengerAct", "success " + messageBody);

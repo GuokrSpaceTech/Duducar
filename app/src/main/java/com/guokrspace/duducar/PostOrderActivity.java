@@ -546,7 +546,7 @@ public class PostOrderActivity extends AppCompatActivity {
         });
 
         /*
-         * Start the timer to for peoriodically ask for nearby cars
+         * Start the timer to for peoriodically ask for nearby cars and draw route line
          */
         timer = new Timer();
         timer.scheduleAtFixedRate(new MyTimerTask(), 2000, 3 * 1000);

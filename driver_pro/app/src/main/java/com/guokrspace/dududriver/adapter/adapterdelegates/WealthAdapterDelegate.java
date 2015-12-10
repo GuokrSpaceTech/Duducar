@@ -57,7 +57,7 @@ public class WealthAdapterDelegate extends AbsAdapterDelegate<List<BaseNoticeIte
 
         holder.tvTime.setText(DateUtil.dateFormat(notice.pay_time + ""));
         Log.e("daddy message", notice.order_id + " " + notice.passenger_mobile + "  " + notice.sumprice);
-        holder.tvContent.setText(String.format(context.getResources().getString(R.string.wealth_add_notice), notice.passenger_mobile == null ? "未知号码" : notice.passenger_mobile.substring(7), Float.parseFloat(notice.sumprice)));
+        holder.tvContent.setText(String.format(context.getResources().getString(R.string.wealth_add_notice), notice.passenger_mobile == null ? "未知号码" : notice.passenger_mobile.substring(7), Float.parseFloat(notice.sumprice == "null" ? "0.01" : notice.sumprice)));
 
         holder.ibDelete.setOnClickListener(new View.OnClickListener() {
             @Override

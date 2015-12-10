@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2A9745121BF9B1DA008C8A7B /* mapapi.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2A9745111BF9B1DA008C8A7B /* mapapi.bundle */; settings = {ASSET_TAGS = (); }; };
-		2A9745181BF9B6C1008C8A7B /* UIColor+RCColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A9745171BF9B6C1008C8A7B /* UIColor+RCColor.m */; settings = {ASSET_TAGS = (); }; };
-		2A97451B1BF9BEF6008C8A7B /* RCAnimatedImagesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A97451A1BF9BEF6008C8A7B /* RCAnimatedImagesView.m */; settings = {ASSET_TAGS = (); }; };
-		2A97451D1BF9C442008C8A7B /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A97451C1BF9C442008C8A7B /* images.xcassets */; settings = {ASSET_TAGS = (); }; };
-		2A9745201BF9CEF3008C8A7B /* RCUnderlineTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A97451F1BF9CEF3008C8A7B /* RCUnderlineTextField.m */; settings = {ASSET_TAGS = (); }; };
+		2A9745121BF9B1DA008C8A7B /* mapapi.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2A9745111BF9B1DA008C8A7B /* mapapi.bundle */; };
+		2A9745181BF9B6C1008C8A7B /* UIColor+RCColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A9745171BF9B6C1008C8A7B /* UIColor+RCColor.m */; };
+		2A97451B1BF9BEF6008C8A7B /* RCAnimatedImagesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A97451A1BF9BEF6008C8A7B /* RCAnimatedImagesView.m */; };
+		2A97451D1BF9C442008C8A7B /* images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2A97451C1BF9C442008C8A7B /* images.xcassets */; };
+		2A9745201BF9CEF3008C8A7B /* RCUnderlineTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A97451F1BF9CEF3008C8A7B /* RCUnderlineTextField.m */; };
 		2AC664461BF9A69200DFDC2A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC664451BF9A69200DFDC2A /* main.m */; };
 		2AC664491BF9A69200DFDC2A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC664481BF9A69200DFDC2A /* AppDelegate.m */; };
 		2AC6644F1BF9A69200DFDC2A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2AC6644D1BF9A69200DFDC2A /* Main.storyboard */; };
@@ -19,7 +19,7 @@
 		2AC664541BF9A69200DFDC2A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2AC664521BF9A69200DFDC2A /* LaunchScreen.storyboard */; };
 		2AC6645F1BF9A69200DFDC2A /* duducarTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC6645E1BF9A69200DFDC2A /* duducarTests.m */; };
 		2AC6646A1BF9A69200DFDC2A /* duducarUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC664691BF9A69200DFDC2A /* duducarUITests.m */; };
-		2AC6647A1BF9AA2100DFDC2A /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC664781BF9AA2100DFDC2A /* LoginViewController.m */; settings = {ASSET_TAGS = (); }; };
+		2AC6647A1BF9AA2100DFDC2A /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC664781BF9AA2100DFDC2A /* LoginViewController.m */; };
 		2AC664911BF9AD5400DFDC2A /* BaiduMapAPI_Base.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AC6648A1BF9AD5400DFDC2A /* BaiduMapAPI_Base.framework */; };
 		2AC664921BF9AD5400DFDC2A /* BaiduMapAPI_Cloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AC6648B1BF9AD5400DFDC2A /* BaiduMapAPI_Cloud.framework */; };
 		2AC664931BF9AD5400DFDC2A /* BaiduMapAPI_Location.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AC6648C1BF9AD5400DFDC2A /* BaiduMapAPI_Location.framework */; };
@@ -37,6 +37,8 @@
 		2AC664A71BF9AE0000DFDC2A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AC664A61BF9AE0000DFDC2A /* CoreTelephony.framework */; };
 		2AC664A91BF9AE1300DFDC2A /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AC664A81BF9AE1300DFDC2A /* libstdc++.6.0.9.tbd */; };
 		653A0C754452B0E8CC7C7931 /* Pods_duducar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C650C89CC0782424F97C23A7 /* Pods_duducar.framework */; };
+		F9E1C96B1C172C330083F19B /* DDSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = F9E1C96A1C172C330083F19B /* DDSocket.m */; };
+		F9E1C96E1C172CB30083F19B /* DDMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9E1C96D1C172CB30083F19B /* DDMainViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,13 +83,6 @@
 		2AC6646B1BF9A69200DFDC2A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2AC664771BF9AA2100DFDC2A /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		2AC664781BF9AA2100DFDC2A /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		2AC6647C1BF9ACF400DFDC2A /* BaiduMapAPI_Base.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BaiduMapAPI_Base.framework; path = ../../../Downloads/BaiduMap_IOSSDK_v2.9.1_All/BaiduMapAPI_Base.framework; sourceTree = "<group>"; };
-		2AC6647E1BF9AD0800DFDC2A /* BaiduMapAPI_Cloud.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BaiduMapAPI_Cloud.framework; path = ../../../Downloads/BaiduMap_IOSSDK_v2.9.1_All/BaiduMapAPI_Cloud.framework; sourceTree = "<group>"; };
-		2AC6647F1BF9AD0800DFDC2A /* BaiduMapAPI_Location.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BaiduMapAPI_Location.framework; path = ../../../Downloads/BaiduMap_IOSSDK_v2.9.1_All/BaiduMapAPI_Location.framework; sourceTree = "<group>"; };
-		2AC664801BF9AD0800DFDC2A /* BaiduMapAPI_Map.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BaiduMapAPI_Map.framework; path = ../../../Downloads/BaiduMap_IOSSDK_v2.9.1_All/BaiduMapAPI_Map.framework; sourceTree = "<group>"; };
-		2AC664811BF9AD0800DFDC2A /* BaiduMapAPI_Radar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BaiduMapAPI_Radar.framework; path = ../../../Downloads/BaiduMap_IOSSDK_v2.9.1_All/BaiduMapAPI_Radar.framework; sourceTree = "<group>"; };
-		2AC664821BF9AD0800DFDC2A /* BaiduMapAPI_Search.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BaiduMapAPI_Search.framework; path = ../../../Downloads/BaiduMap_IOSSDK_v2.9.1_All/BaiduMapAPI_Search.framework; sourceTree = "<group>"; };
-		2AC664831BF9AD0800DFDC2A /* BaiduMapAPI_Utils.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BaiduMapAPI_Utils.framework; path = ../../../Downloads/BaiduMap_IOSSDK_v2.9.1_All/BaiduMapAPI_Utils.framework; sourceTree = "<group>"; };
 		2AC6648A1BF9AD5400DFDC2A /* BaiduMapAPI_Base.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BaiduMapAPI_Base.framework; path = BaiduMap_IOSSDK_v2.9.1_All/BaiduMapAPI_Base.framework; sourceTree = "<group>"; };
 		2AC6648B1BF9AD5400DFDC2A /* BaiduMapAPI_Cloud.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BaiduMapAPI_Cloud.framework; path = BaiduMap_IOSSDK_v2.9.1_All/BaiduMapAPI_Cloud.framework; sourceTree = "<group>"; };
 		2AC6648C1BF9AD5400DFDC2A /* BaiduMapAPI_Location.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BaiduMapAPI_Location.framework; path = BaiduMap_IOSSDK_v2.9.1_All/BaiduMapAPI_Location.framework; sourceTree = "<group>"; };
@@ -107,6 +102,10 @@
 		79A46CB94CB6EE86EFED9B23 /* Pods-duducar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-duducar.release.xcconfig"; path = "Pods/Target Support Files/Pods-duducar/Pods-duducar.release.xcconfig"; sourceTree = "<group>"; };
 		8EDAA3157DD50EAB7226DB83 /* Pods-duducar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-duducar.debug.xcconfig"; path = "Pods/Target Support Files/Pods-duducar/Pods-duducar.debug.xcconfig"; sourceTree = "<group>"; };
 		C650C89CC0782424F97C23A7 /* Pods_duducar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_duducar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F9E1C9691C172C330083F19B /* DDSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDSocket.h; sourceTree = "<group>"; };
+		F9E1C96A1C172C330083F19B /* DDSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDSocket.m; sourceTree = "<group>"; };
+		F9E1C96C1C172CB30083F19B /* DDMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDMainViewController.h; sourceTree = "<group>"; };
+		F9E1C96D1C172CB30083F19B /* DDMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDMainViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,13 +169,6 @@
 				2AC6648E1BF9AD5400DFDC2A /* BaiduMapAPI_Radar.framework */,
 				2AC6648F1BF9AD5400DFDC2A /* BaiduMapAPI_Search.framework */,
 				2AC664901BF9AD5400DFDC2A /* BaiduMapAPI_Utils.framework */,
-				2AC6647E1BF9AD0800DFDC2A /* BaiduMapAPI_Cloud.framework */,
-				2AC6647F1BF9AD0800DFDC2A /* BaiduMapAPI_Location.framework */,
-				2AC664801BF9AD0800DFDC2A /* BaiduMapAPI_Map.framework */,
-				2AC664811BF9AD0800DFDC2A /* BaiduMapAPI_Radar.framework */,
-				2AC664821BF9AD0800DFDC2A /* BaiduMapAPI_Search.framework */,
-				2AC664831BF9AD0800DFDC2A /* BaiduMapAPI_Utils.framework */,
-				2AC6647C1BF9ACF400DFDC2A /* BaiduMapAPI_Base.framework */,
 				C650C89CC0782424F97C23A7 /* Pods_duducar.framework */,
 			);
 			name = Frameworks;
@@ -199,6 +191,8 @@
 				2A97451A1BF9BEF6008C8A7B /* RCAnimatedImagesView.m */,
 				2A9745161BF9B6C1008C8A7B /* UIColor+RCColor.h */,
 				2A9745171BF9B6C1008C8A7B /* UIColor+RCColor.m */,
+				F9E1C9691C172C330083F19B /* DDSocket.h */,
+				F9E1C96A1C172C330083F19B /* DDSocket.m */,
 			);
 			name = utils;
 			sourceTree = "<group>";
@@ -239,6 +233,8 @@
 				2AC664441BF9A69200DFDC2A /* Supporting Files */,
 				2AC664771BF9AA2100DFDC2A /* LoginViewController.h */,
 				2AC664781BF9AA2100DFDC2A /* LoginViewController.m */,
+				F9E1C96C1C172CB30083F19B /* DDMainViewController.h */,
+				F9E1C96D1C172CB30083F19B /* DDMainViewController.m */,
 			);
 			path = duducar;
 			sourceTree = "<group>";
@@ -466,6 +462,8 @@
 				2AC6647A1BF9AA2100DFDC2A /* LoginViewController.m in Sources */,
 				2AC664491BF9A69200DFDC2A /* AppDelegate.m in Sources */,
 				2AC664461BF9A69200DFDC2A /* main.m in Sources */,
+				F9E1C96B1C172C330083F19B /* DDSocket.m in Sources */,
+				F9E1C96E1C172CB30083F19B /* DDMainViewController.m in Sources */,
 				2A97451B1BF9BEF6008C8A7B /* RCAnimatedImagesView.m in Sources */,
 				2A9745201BF9CEF3008C8A7B /* RCUnderlineTextField.m in Sources */,
 			);
@@ -607,14 +605,26 @@
 			baseConfigurationReference = 8EDAA3157DD50EAB7226DB83 /* Pods-duducar.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Kai Yang (6W79MPUU9K)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/BaiduMap_IOSSDK_v2.9.1_All",
 				);
+				GCC_INPUT_FILETYPE = automatic;
 				INFOPLIST_FILE = duducar/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.guokrspace.duducar;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					"\"CocoaAsyncSocket\"",
+					"-framework",
+					"\"CocoaLumberjack\"",
+					"-ObjC",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.mactop.mobi.duducar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "750aca40-bfcb-4479-9855-6fe15ad6e6a6";
 			};
 			name = Debug;
 		};
@@ -623,14 +633,26 @@
 			baseConfigurationReference = 79A46CB94CB6EE86EFED9B23 /* Pods-duducar.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Kai Yang (6W79MPUU9K)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/BaiduMap_IOSSDK_v2.9.1_All",
 				);
+				GCC_INPUT_FILETYPE = automatic;
 				INFOPLIST_FILE = duducar/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.guokrspace.duducar;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					"\"CocoaAsyncSocket\"",
+					"-framework",
+					"\"CocoaLumberjack\"",
+					"-ObjC",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.mactop.mobi.duducar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "750aca40-bfcb-4479-9855-6fe15ad6e6a6";
 			};
 			name = Release;
 		};

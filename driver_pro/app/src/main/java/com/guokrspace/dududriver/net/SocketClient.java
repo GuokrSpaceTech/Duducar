@@ -326,13 +326,15 @@ public class SocketClient {
         return ret;
     }
 
-    public int endOrder(String price, String mileage, ResponseHandler handler){
+    public int endOrder(String price, String mileage, String lowSpeed, ResponseHandler handler){
         int ret = -1;
         JSONObject edOrder = new JSONObject();
         try {
             edOrder.put("cmd", "order_end");
             edOrder.put("price", price);
             edOrder.put("mileage", mileage);
+            edOrder.put("low_speed_time", lowSpeed);
+
             edOrder.put("lat", CommonUtil.getCurLat());
             edOrder.put("lng", CommonUtil.getCurLng());
             edOrder.put("role", "1");

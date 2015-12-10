@@ -173,7 +173,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     protected void onPause() {
         super.onPause();
         isVisiable = false;
-        CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
+//        CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
         unregisterReceiver(receiver);
         mHandler.removeMessages(HANDLE_LOGIN_FAILURE);
     }
@@ -442,9 +442,16 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 if(CommonUtil.getCurrentStatus() == Constants.STATUS_WAIT){
 
                     dialog = new MainOrderDialog(context, orderItem);
-                    Log.e("Daddy m", "orderItem"+ orderItem.getOrder().getStart() + " "+ orderItem.getOrder().getDestination() + " ");
+                    Log.e("Daddy m", "orderItem" + orderItem.getOrder().getStart() + " " + orderItem.getOrder().getDestination() + " ");
                     dialog.setCancelable(true);
-                    dialog.show(getSupportFragmentManager(), "mainorderdialog");
+                    if(isVisiable){
+                        dialog.show(getSupportFragmentManager(), "mainorderdialog");
+                    } else { //处于其他页面或
+                        CommonUtil.setCurOrderItem(orderItem);
+                        Intent intent = new Intent();
+                        intent.setAction(Constants.ACTION_NEW_ORDER);
+                        sendBroadcast(intent);
+                    }
                     CommonUtil.addTodayAllWork();
                     //选择界面不听单
                     CommonUtil.changeCurStatus(Constants.STATUS_DEAL);
@@ -548,6 +555,13 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                     // 服务器有通知推送,
                     Log.e("daddy mesage", "handle new message");
                     updateGrabOrderFragment(MessageTag.MESSAGE_UPDATE_MESSAGE);
+                    abortBroadcast();
+                    break;
+                case Constants.ACTION_NEW_ORDER:
+                    if(dialog == null || !dialog.isVisible()){
+                        dialog = new MainOrderDialog(context, CommonUtil.getCurOrderItem());
+                        dialog.show(getSupportFragmentManager(), "mainorderdialog");
+                    }
                     abortBroadcast();
                     break;
                 default:

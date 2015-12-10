@@ -12,6 +12,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
 import com.baidu.mapapi.model.LatLng;
 import com.guokrspace.dududriver.DuduDriverApplication;
+import com.guokrspace.dududriver.model.OrderItem;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -108,6 +109,16 @@ public class CommonUtil {
     public static void setOrderDealInfoId(int orderDealInfoId) {
         CommonUtil.orderDealInfoId = orderDealInfoId;
     }
+
+    public static OrderItem getCurOrderItem() {
+        return curOrderItem;
+    }
+
+    public static void setCurOrderItem(OrderItem curOrderItem) {
+        CommonUtil.curOrderItem = curOrderItem;
+    }
+
+    private static OrderItem curOrderItem;
 
     private static int orderDealInfoId;
 

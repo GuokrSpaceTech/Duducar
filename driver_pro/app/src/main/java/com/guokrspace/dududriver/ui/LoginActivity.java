@@ -23,11 +23,13 @@ import android.widget.ImageView;
 
 import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.R;
+import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.database.PersonalInformation;
 import com.guokrspace.dududriver.net.DuduService;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
 import com.guokrspace.dududriver.util.AppExitUtil;
+import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 import com.guokrspace.dududriver.view.EditTextHolder;
 import com.guokrspace.dududriver.view.LoadingDialog;
@@ -128,7 +130,6 @@ public class LoginActivity extends BaseActivity implements
         setContentView(R.layout.activity_login);
 
         initView();
-        initView();
 
         AppExitUtil.getInstance().addActivity(this);
     }
@@ -157,6 +158,7 @@ public class LoginActivity extends BaseActivity implements
     protected void initView() {
 //        ActionBar actionBar = getSupportActionBar();
 //        actionBar.hide();
+        CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
 
         mSoftManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         mLoginImg = (ImageView) findViewById(R.id.de_login_logo);
