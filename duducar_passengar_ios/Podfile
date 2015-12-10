@@ -6,6 +6,8 @@ use_frameworks!
 target 'duducar' do
 pod 'CocoaAsyncSocket'
 pod 'CocoaLumberjack'
+pod 'FMDB'
+pod 'Masonry'
 
 end
 

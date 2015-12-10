@@ -10,8 +10,13 @@
 #import "GCDAsyncSocket.h"
 @interface DDSocket : NSObject
 {
-    GCDAsyncSocket * asyncSocket;
+    GCDAsyncSocket *asyncSocket;
+    NSDictionary   *handlerQueue;
 }
 +(DDSocket *)currentSocket;
+- (void)startSocket;
 -(void)sendData:(NSData *)data timeOut:(int)time tag:(int)tag;
+-(void)sendCarRequest:(NSDictionary *)paramDict;
+-(void)sendLoginRequest:(NSDictionary *)paramDict;
+-(void)sendNearCar:(NSDictionary * )parmDict;
 @end
