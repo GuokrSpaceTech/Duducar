@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -23,16 +24,20 @@ public class CostEstimateActivity extends AppCompatActivity {
     private TextView startTextView;
     private TextView endTextView;
     private Button confirmButton;
+    private Toolbar mToolbar;
     private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cost_estimate);
-        getSupportActionBar().setTitle("费用估算");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setTitle("费用估算");
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         AppExitUtil.getInstance().addActivity(this);
+
+        //init toolbar
+        initToolBar();
 
         costEstTextView = (TextView)findViewById(R.id.textViewCostEst);
         startTextView = (TextView)findViewById(R.id.startPointTextView);
@@ -86,8 +91,23 @@ public class CostEstimateActivity extends AppCompatActivity {
             endTextView.setText(endLoc.getAddress());
         }
 
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+    }
+
+    private void initToolBar() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.setTitle("预估费用");
+        mToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back));
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CostEstimateActivity.this.finish();
+            }
+        });
     }
 
     @Override

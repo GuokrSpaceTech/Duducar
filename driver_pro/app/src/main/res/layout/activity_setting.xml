@@ -22,7 +22,6 @@
             android:textSize="20sp"
             android:textStyle="bold" />
     </android.support.v7.widget.Toolbar>
-
     <com.gc.materialdesign.views.ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">

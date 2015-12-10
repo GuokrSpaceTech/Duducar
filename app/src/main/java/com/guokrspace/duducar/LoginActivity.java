@@ -145,8 +145,6 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     protected void initView() {
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
 
         mSoftManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         mLoginImg = (ImageView) findViewById(R.id.de_login_logo);

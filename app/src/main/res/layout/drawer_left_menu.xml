@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/big_padding"
+        android:paddingTop="@dimen/big_padding">
+
+        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/my_avatar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/big_padding"
+            android:src="@mipmap/hyman"
+            app:border_color="#FF000000"
+            app:border_width="1dp" />
+
+        <TextView
+            android:id="@+id/vip_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="@dimen/big_padding"
+            android:layout_toRightOf="@id/my_avatar"
+            android:text="普通会员"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@+id/my_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/vip_type"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/my_avatar"
+            android:text="139****4188"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="@color/drawer_item_divider" />
+
+    <RelativeLayout
+        android:id="@+id/history_orders_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="46dp"
+        android:clickable="true"
+        android:minHeight="46dp"
+        android:paddingLeft="@dimen/big_padding"
+        android:background="@drawable/drawer_item_bg_selector">
+
+        <ImageView
+            android:id="@+id/list_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/list_icon" />
+
+        <TextView
+            android:id="@+id/list_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_toRightOf="@id/list_icon"
+            android:text="历史订单"
+            android:textColor="#272636"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="@color/drawer_item_divider" />
+
+    <RelativeLayout
+        android:id="@+id/setting_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="46dp"
+        android:clickable="true"
+        android:minHeight="46dp"
+        android:paddingLeft="@dimen/big_padding"
+        android:background="@drawable/drawer_item_bg_selector">
+
+        <ImageView
+            android:id="@+id/setting_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/setting_icon" />
+
+        <TextView
+            android:id="@+id/setting_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_toRightOf="@id/setting_icon"
+            android:text="设置"
+            android:textColor="#272636"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="@color/drawer_item_divider" />
+
+    <RelativeLayout
+        android:id="@+id/notice_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="46dp"
+        android:clickable="true"
+        android:minHeight="46dp"
+        android:paddingLeft="@dimen/big_padding"
+        android:background="@drawable/drawer_item_bg_selector">
+
+        <ImageView
+            android:id="@+id/notice_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/notice_icon" />
+
+        <TextView
+            android:id="@+id/notice_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_toRightOf="@id/notice_icon"
+            android:text="消息中心"
+            android:textColor="#272636"
+            android:textSize="16sp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="@color/drawer_item_divider" />
+
+    <ImageView
+        android:id="@+id/banner_img"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:layout_weight="1"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/car" />
+</LinearLayout>

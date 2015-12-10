@@ -25,4 +25,11 @@
     <color name="accent_material_light">#003df5</color>
 
     <color name="navpage">#FFE1E8EB</color>
+    <!--  drawer -->
+    <color name="drawer_bg_color">#333F4C</color>
+    <color name="drawer_item_bg_selected">#54BEF8</color>
+    <color name="drawer_item_divider">#CCCCCC</color>
+    <!-- setting -->
+    <color name="light_gray">#ffe2e3e3</color>
+    <color name="sky_blue">#0195ff</color>
 </resources>
