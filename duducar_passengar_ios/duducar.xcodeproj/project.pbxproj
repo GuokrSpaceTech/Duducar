@@ -14,6 +14,7 @@
 		2AAFDC6D1C186DA600A5AEBD /* DDSearchTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AAFDC6B1C186DA600A5AEBD /* DDSearchTableViewController.m */; };
 		2AAFDC6E1C186DA600A5AEBD /* DDSearchTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2AAFDC6C1C186DA600A5AEBD /* DDSearchTableViewController.xib */; };
 		2AAFDC731C186DCE00A5AEBD /* SearchResultTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AAFDC711C186DCE00A5AEBD /* SearchResultTableViewCell.m */; };
+		2AAFDC771C196C4700A5AEBD /* DDDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AAFDC761C196C4700A5AEBD /* DDDatabase.m */; };
 		2AC664461BF9A69200DFDC2A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC664451BF9A69200DFDC2A /* main.m */; };
 		2AC664491BF9A69200DFDC2A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC664481BF9A69200DFDC2A /* AppDelegate.m */; };
 		2AC6644F1BF9A69200DFDC2A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2AC6644D1BF9A69200DFDC2A /* Main.storyboard */; };
@@ -66,6 +67,8 @@
 		2AAFDC6C1C186DA600A5AEBD /* DDSearchTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DDSearchTableViewController.xib; sourceTree = "<group>"; };
 		2AAFDC701C186DCE00A5AEBD /* SearchResultTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultTableViewCell.h; sourceTree = "<group>"; };
 		2AAFDC711C186DCE00A5AEBD /* SearchResultTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultTableViewCell.m; sourceTree = "<group>"; };
+		2AAFDC751C196C4700A5AEBD /* DDDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDDatabase.h; sourceTree = "<group>"; };
+		2AAFDC761C196C4700A5AEBD /* DDDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDDatabase.m; sourceTree = "<group>"; };
 		2AC664411BF9A69200DFDC2A /* duducar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = duducar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AC664451BF9A69200DFDC2A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2AC664471BF9A69200DFDC2A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -170,6 +173,8 @@
 				2A9745171BF9B6C1008C8A7B /* UIColor+RCColor.m */,
 				F9E1C9691C172C330083F19B /* DDSocket.h */,
 				F9E1C96A1C172C330083F19B /* DDSocket.m */,
+				2AAFDC751C196C4700A5AEBD /* DDDatabase.h */,
+				2AAFDC761C196C4700A5AEBD /* DDDatabase.m */,
 			);
 			name = utils;
 			sourceTree = "<group>";
@@ -454,6 +459,7 @@
 				2AC664491BF9A69200DFDC2A /* AppDelegate.m in Sources */,
 				2AC664461BF9A69200DFDC2A /* main.m in Sources */,
 				2AAFDC731C186DCE00A5AEBD /* SearchResultTableViewCell.m in Sources */,
+				2AAFDC771C196C4700A5AEBD /* DDDatabase.m in Sources */,
 				F9E1C96B1C172C330083F19B /* DDSocket.m in Sources */,
 				F9E1C96E1C172CB30083F19B /* DDMainViewController.m in Sources */,
 				2AAFDC6D1C186DA600A5AEBD /* DDSearchTableViewController.m in Sources */,
@@ -606,7 +612,7 @@
 				);
 				GCC_INPUT_FILETYPE = automatic;
 				INFOPLIST_FILE = duducar/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.guokrspace.duducar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -627,7 +633,7 @@
 				);
 				GCC_INPUT_FILETYPE = automatic;
 				INFOPLIST_FILE = duducar/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.guokrspace.duducar;
 				PRODUCT_NAME = "$(TARGET_NAME)";

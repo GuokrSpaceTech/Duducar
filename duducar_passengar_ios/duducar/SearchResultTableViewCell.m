@@ -53,14 +53,14 @@
     [_addrNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.contentView.mas_top);
         make.left.equalTo(self.contentView.mas_left).offset(8);
-        make.right.equalTo(self.contentView.mas_right).offset(8);
+        make.right.equalTo(self.contentView.mas_right).offset(-8);
         make.height.mas_equalTo(addrNameHeight);
     }];
     
     [_addrDetailLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_addrNameLabel.mas_bottom);
         make.left.equalTo(self.contentView.mas_left).offset(8);
-        make.right.equalTo(self.contentView.mas_right).offset(8);
+        make.right.equalTo(self.contentView.mas_right).offset(-8);
         make.height.mas_equalTo(addrDetailHeight);
     }];
 }

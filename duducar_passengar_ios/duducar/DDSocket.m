@@ -20,13 +20,17 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 #define READ_HEADER_LINE_BY_LINE 1
 
+
 static DDSocket * instanceSocket = nil;
+static NSString * responseNotificationName = @"DDSocketResponseNotification";
+
 @implementation DDSocket
 +(DDSocket *)currentSocket
 {
     if(instanceSocket == nil)
     {
         instanceSocket = [[self alloc]init];
+        
     }
     
     return instanceSocket;
@@ -46,9 +50,7 @@ static DDSocket * instanceSocket = nil;
 
 - (void)startSocket
 {
-
     asyncSocket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
-    
     
     NSError *error = nil;
     
@@ -166,9 +168,9 @@ completionHandler:(void (^)(BOOL shouldTrustPeer))completionHandler
 {
     DDLogVerbose(@"socket:didReadData:withTag:");
     
-    NSString *response = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    
     [asyncSocket readDataWithTimeout:-1 tag:0];
+    
+    NSString *response = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     
     //Deserialastion a Json String into Dictionary
     NSError *jsonError;
@@ -176,22 +178,7 @@ completionHandler:(void (^)(BOOL shouldTrustPeer))completionHandler
     NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:objectData
                                                                  options:NSJSONReadingMutableContainers
                                                                    error:&jsonError];
-    NSString *token = [responseDict objectForKey:@"token"];
-    
-    if(token!=NULL)
-    {
-        NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"login", @"13700000002", @"2",    token,    nil]
-                                                                    forKeys:[NSArray arrayWithObjects:@"cmd",   @"mobile",      @"role", @"token", nil]];
-        NSError * error = nil;
-        NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSUTF8StringEncoding error:&error];
-        
-        NSMutableString *jsonString = [[NSMutableString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        [jsonString appendString:@"\n"];
-        NSData *outStr = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-        
-        [asyncSocket writeData:outStr withTimeout:-1.0 tag:0];
-    }
-    
+    [[NSNotificationCenter defaultCenter] postNotificationName:responseNotificationName object:self userInfo:responseDict];
     
     DDLogInfo(@"Response:\n%@", response);
     
@@ -203,4 +190,33 @@ completionHandler:(void (^)(BOOL shouldTrustPeer))completionHandler
     
     DDLogVerbose(@"socketDidDisconnect:withError: \"%@\"", err);
 }
+
+#pragma mark
+#pragma mark == Protocols
+-(void)sendCarRequest:(NSDictionary *)paramDict
+{
+    NSError * error = nil;
+    NSData * jsonData = [NSJSONSerialization dataWithJSONObject:paramDict options:NSUTF8StringEncoding error:&error];
+    
+    NSMutableString *jsonString = [[NSMutableString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    [jsonString appendString:@"\n"];
+    
+    NSData *outStr = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    
+    [asyncSocket writeData:outStr withTimeout:-1.0 tag:0];
+}
+
+-(void)sendLoginRequest:(NSDictionary *)paramDict
+{
+    NSError *error = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:paramDict options:NSUTF8StringEncoding error:&error];
+    
+    NSMutableString *jsonString = [[NSMutableString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    [jsonString appendString:@"\n"];
+    
+    NSData *outStr = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    
+    [asyncSocket writeData:outStr withTimeout:-1.0 tag:0];
+}
+
 @end
