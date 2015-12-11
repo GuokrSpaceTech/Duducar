@@ -1,4 +1,5 @@
 PODS:
+  - BaiduMapKit (2.9.1)
   - CocoaAsyncSocket (7.4.2)
   - CocoaLumberjack (2.2.0):
     - CocoaLumberjack/Default (= 2.2.0)
@@ -16,12 +17,14 @@ PODS:
   - Masonry (0.6.3)
 
 DEPENDENCIES:
+  - BaiduMapKit
   - CocoaAsyncSocket
   - CocoaLumberjack
   - FMDB
   - Masonry
 
 SPEC CHECKSUMS:
+  BaiduMapKit: 97d2d44b41a876de2371fb91ddf78cdf84dafa05
   CocoaAsyncSocket: f5783bdedd232d91b89769bc4b5a1580aed518ad
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
   FMDB: 96e8f1bcc1329e269330f99770ad4285d9003e52

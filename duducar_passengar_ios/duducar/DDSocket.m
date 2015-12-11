@@ -51,9 +51,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 
 - (void)startSocket
 {
-
     asyncSocket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
-    
     
     NSError *error = nil;
     
