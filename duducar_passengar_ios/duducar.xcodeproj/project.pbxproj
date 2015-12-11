@@ -38,6 +38,8 @@
 		81D8145E1C1A8EC500612B6E /* TravelDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81D8145D1C1A8EC500612B6E /* TravelDetailViewController.m */; };
 		81D814611C1AB2CB00612B6E /* PersionInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81D814601C1AB2CB00612B6E /* PersionInfoViewController.m */; };
 		81D814641C1AB2DD00612B6E /* HisoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81D814631C1AB2DD00612B6E /* HisoryViewController.m */; };
+		81D8146A1C1AC65200612B6E /* CallCarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81D814691C1AC65200612B6E /* CallCarViewController.m */; };
+		81D8146E1C1AD0CA00612B6E /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 81D8146D1C1AD0CA00612B6E /* Location.m */; };
 		F9E1C96B1C172C330083F19B /* DDSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = F9E1C96A1C172C330083F19B /* DDSocket.m */; };
 		F9E1C96E1C172CB30083F19B /* DDMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9E1C96D1C172CB30083F19B /* DDMainViewController.m */; };
 /* End PBXBuildFile section */
@@ -110,6 +112,10 @@
 		81D814601C1AB2CB00612B6E /* PersionInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersionInfoViewController.m; sourceTree = "<group>"; };
 		81D814621C1AB2DD00612B6E /* HisoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HisoryViewController.h; sourceTree = "<group>"; };
 		81D814631C1AB2DD00612B6E /* HisoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HisoryViewController.m; sourceTree = "<group>"; };
+		81D814681C1AC65200612B6E /* CallCarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallCarViewController.h; sourceTree = "<group>"; };
+		81D814691C1AC65200612B6E /* CallCarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallCarViewController.m; sourceTree = "<group>"; };
+		81D8146C1C1AD0CA00612B6E /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
+		81D8146D1C1AD0CA00612B6E /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
 		8EDAA3157DD50EAB7226DB83 /* Pods-duducar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-duducar.debug.xcconfig"; path = "Pods/Target Support Files/Pods-duducar/Pods-duducar.debug.xcconfig"; sourceTree = "<group>"; };
 		C650C89CC0782424F97C23A7 /* Pods_duducar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_duducar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9E1C9691C172C330083F19B /* DDSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDSocket.h; sourceTree = "<group>"; };
@@ -229,6 +235,7 @@
 		2AC664431BF9A69200DFDC2A /* duducar */ = {
 			isa = PBXGroup;
 			children = (
+				81D8146B1C1AD0B700612B6E /* Model */,
 				2AAFDC6F1C186DB700A5AEBD /* view */,
 				2A9745151BF9B692008C8A7B /* utils */,
 				2AC664471BF9A69200DFDC2A /* AppDelegate.h */,
@@ -255,6 +262,8 @@
 				81D814601C1AB2CB00612B6E /* PersionInfoViewController.m */,
 				81D814621C1AB2DD00612B6E /* HisoryViewController.h */,
 				81D814631C1AB2DD00612B6E /* HisoryViewController.m */,
+				81D814681C1AC65200612B6E /* CallCarViewController.h */,
+				81D814691C1AC65200612B6E /* CallCarViewController.m */,
 			);
 			path = duducar;
 			sourceTree = "<group>";
@@ -284,6 +293,15 @@
 				2AC6646B1BF9A69200DFDC2A /* Info.plist */,
 			);
 			path = duducarUITests;
+			sourceTree = "<group>";
+		};
+		81D8146B1C1AD0B700612B6E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				81D8146C1C1AD0CA00612B6E /* Location.h */,
+				81D8146D1C1AD0CA00612B6E /* Location.m */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		DCB55A63EADA005BD1A388F9 /* Pods */ = {
@@ -482,6 +500,8 @@
 				2A9745181BF9B6C1008C8A7B /* UIColor+RCColor.m in Sources */,
 				2AAFDC7A1C1A546600A5AEBD /* PostOrderViewController.m in Sources */,
 				81D814611C1AB2CB00612B6E /* PersionInfoViewController.m in Sources */,
+				81D8146A1C1AC65200612B6E /* CallCarViewController.m in Sources */,
+				81D8146E1C1AD0CA00612B6E /* Location.m in Sources */,
 				2AC6647A1BF9AA2100DFDC2A /* LoginViewController.m in Sources */,
 				2AC664491BF9A69200DFDC2A /* AppDelegate.m in Sources */,
 				2AC664461BF9A69200DFDC2A /* main.m in Sources */,
