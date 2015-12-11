@@ -14,6 +14,7 @@ PODS:
   - FMDB/common (2.5)
   - FMDB/standard (2.5):
     - FMDB/common
+  - HCSStarRatingView (1.4.3)
   - Masonry (0.6.3)
 
 DEPENDENCIES:
@@ -21,6 +22,7 @@ DEPENDENCIES:
   - CocoaAsyncSocket
   - CocoaLumberjack
   - FMDB
+  - HCSStarRatingView (~> 1.4.3)
   - Masonry
 
 SPEC CHECKSUMS:
@@ -28,6 +30,7 @@ SPEC CHECKSUMS:
   CocoaAsyncSocket: f5783bdedd232d91b89769bc4b5a1580aed518ad
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
   FMDB: 96e8f1bcc1329e269330f99770ad4285d9003e52
+  HCSStarRatingView: bada6ae98258c3019531e0218030e2d5ad10765a
   Masonry: ff105a956abcd19a618b2028b121cb638d7a8e2f
 
 COCOAPODS: 0.39.0

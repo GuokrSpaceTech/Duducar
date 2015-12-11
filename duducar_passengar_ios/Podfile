@@ -9,6 +9,7 @@ pod 'CocoaLumberjack'
 pod 'FMDB'
 pod 'Masonry'
 pod 'BaiduMapKit'
+pod 'HCSStarRatingView', '~> 1.4.3'
 end
 
 target 'duducarTests' do
