@@ -30,7 +30,7 @@
 -(void)createTable
 {
     [queue inDatabase:^(FMDatabase *db) {
-        NSString *sqlStr = @"CREATE TABLE IF NOT EXISTS personInfo('id' INT PRIMARY KEY AUTOINCREMENT NOT NULL,'token' text,'phone' text);";
+        NSString *sqlStr = @"CREATE TABLE IF NOT EXISTS personInfo('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,'token' text,'phone' text);";
         [db executeUpdate:sqlStr];
     }];
 }

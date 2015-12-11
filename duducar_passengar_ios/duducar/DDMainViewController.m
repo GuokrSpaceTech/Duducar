@@ -12,6 +12,7 @@
 #import <BaiduMapAPI_Search/BMKSearchComponent.h>
 #import "DDSearchTableViewController.h"
 #import "LoginViewController.h"
+#import "PostOrderViewController.h"
 #import "DDSocket.h"
 #import "DDDatabase.h"
 #import "UIColor+RCColor.h"
@@ -303,6 +304,23 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
     {
         if([status intValue] == 1)
         {
+            NSString *activeOrderJson;
+            
+            if([responseDict objectForKey:@"active_order"])
+            {
+                activeOrderJson = [responseDict objectForKey:@"active_order"];
+            
+                //Deserialastion a Json String into Dictionary
+                NSError *jsonError;
+                NSData  *objectData = [activeOrderJson dataUsingEncoding:NSUTF8StringEncoding];
+                NSDictionary *activeOrder = [NSJSONSerialization JSONObjectWithData:objectData
+                                                                             options:NSJSONReadingMutableContainers
+                                                                               error:&jsonError];
+                PostOrderViewController *postVC = [[PostOrderViewController alloc] init];
+                postVC.activeOrder = activeOrder;
+                [self.navigationController pushViewController:postVC animated:YES];
+            } else {
+            
             //Login Succedded, 直接叫车
             NSDictionary *param = @{@"cmd": @"create_order", @"role": @"2", @"start":startLocation.name, @"destination":endLocation.name,
                                     @"start_lat":@(startLocation.pt.latitude), @"start_lng":@(startLocation.pt.longitude),
@@ -310,6 +328,8 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
                                     @"pre_mileage":@(12), @"pre_price":@(65), @"car_type":@(1)};
             
             [[DDSocket currentSocket] sendCarRequest:param];
+            }
+            
         } else {
             //弹出登陆界面
             LoginViewController *loginVC = [[LoginViewController alloc]init];

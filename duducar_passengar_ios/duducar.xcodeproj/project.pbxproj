@@ -15,6 +15,7 @@
 		2AAFDC6E1C186DA600A5AEBD /* DDSearchTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2AAFDC6C1C186DA600A5AEBD /* DDSearchTableViewController.xib */; };
 		2AAFDC731C186DCE00A5AEBD /* SearchResultTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AAFDC711C186DCE00A5AEBD /* SearchResultTableViewCell.m */; };
 		2AAFDC771C196C4700A5AEBD /* DDDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AAFDC761C196C4700A5AEBD /* DDDatabase.m */; };
+		2AAFDC7A1C1A546600A5AEBD /* PostOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AAFDC791C1A546600A5AEBD /* PostOrderViewController.m */; };
 		2AC664461BF9A69200DFDC2A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC664451BF9A69200DFDC2A /* main.m */; };
 		2AC664491BF9A69200DFDC2A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC664481BF9A69200DFDC2A /* AppDelegate.m */; };
 		2AC6644F1BF9A69200DFDC2A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2AC6644D1BF9A69200DFDC2A /* Main.storyboard */; };
@@ -69,6 +70,8 @@
 		2AAFDC711C186DCE00A5AEBD /* SearchResultTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultTableViewCell.m; sourceTree = "<group>"; };
 		2AAFDC751C196C4700A5AEBD /* DDDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDDatabase.h; sourceTree = "<group>"; };
 		2AAFDC761C196C4700A5AEBD /* DDDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDDatabase.m; sourceTree = "<group>"; };
+		2AAFDC781C1A546600A5AEBD /* PostOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostOrderViewController.h; sourceTree = "<group>"; };
+		2AAFDC791C1A546600A5AEBD /* PostOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostOrderViewController.m; sourceTree = "<group>"; };
 		2AC664411BF9A69200DFDC2A /* duducar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = duducar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AC664451BF9A69200DFDC2A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2AC664471BF9A69200DFDC2A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -230,6 +233,8 @@
 				2AAFDC6A1C186DA600A5AEBD /* DDSearchTableViewController.h */,
 				2AAFDC6B1C186DA600A5AEBD /* DDSearchTableViewController.m */,
 				2AAFDC6C1C186DA600A5AEBD /* DDSearchTableViewController.xib */,
+				2AAFDC781C1A546600A5AEBD /* PostOrderViewController.h */,
+				2AAFDC791C1A546600A5AEBD /* PostOrderViewController.m */,
 			);
 			path = duducar;
 			sourceTree = "<group>";
@@ -455,6 +460,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2A9745181BF9B6C1008C8A7B /* UIColor+RCColor.m in Sources */,
+				2AAFDC7A1C1A546600A5AEBD /* PostOrderViewController.m in Sources */,
 				2AC6647A1BF9AA2100DFDC2A /* LoginViewController.m in Sources */,
 				2AC664491BF9A69200DFDC2A /* AppDelegate.m in Sources */,
 				2AC664461BF9A69200DFDC2A /* main.m in Sources */,
