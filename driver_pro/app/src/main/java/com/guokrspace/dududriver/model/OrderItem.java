@@ -1,7 +1,5 @@
 package com.guokrspace.dududriver.model;
 
-import com.baidu.mapapi.model.LatLng;
-
 import java.io.Serializable;
 
 /**
@@ -39,7 +37,7 @@ public class OrderItem implements Serializable {
 
     private String distance;
 
-    public class Order implements Serializable{
+    public static class Order implements Serializable{
 
         String start_lat;
         String start_lng;

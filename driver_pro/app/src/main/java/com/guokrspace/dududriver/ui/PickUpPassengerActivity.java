@@ -177,6 +177,10 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
     private BNRoutePlanNode mBNRoutePlanNode = null;
     private Timer timer = null;
 
+    private double baseDistance;
+    private double baseCharge;
+    private int baseLowTime;
+
     private OnGetRoutePlanResultListener routePlanResultListener = new OnGetRoutePlanResultListener() {
         @Override
         public void onGetWalkingRouteResult(WalkingRouteResult walkingRouteResult) {
@@ -316,8 +320,8 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
 
     private void startCharging(){
             //TODO: to charge
-        curDistance = 0.0d;
-        lowSpeedTime = 0;
+        curDistance = 0.0d + baseDistance;
+        lowSpeedTime = 0 + baseLowTime;
         minutes = 0;
         preLat = CommonUtil.getCurLat();
         preLng = CommonUtil.getCurLng();
@@ -408,7 +412,42 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null) {
             orderItem = (OrderItem) bundle.getSerializable("orderItem");
-            initGetPassView();
+            boolean isRecover = bundle.getBoolean("isRecover");
+            if(isRecover){//恢复到去送乘客的状态
+                if(bundle.getString("lastCharge").equals("null")){
+                    // 测试数据
+                    baseDistance = 0;
+                    baseLowTime = 1;
+                } else {
+                    try {
+                        JSONObject lastCharge = new JSONObject(bundle.getString("lastCharge"));
+                        baseDistance = Double.parseDouble((String) lastCharge.get("current_mile"));
+                        baseCharge = Double.parseDouble((String) lastCharge.get("current_charge"));
+                        baseLowTime = Integer.parseInt((String) lastCharge.get("low_speed_time"));
+                        double baseLat = Double.parseDouble((String) lastCharge.get("current_lat"));
+                        double baseLng = Double.parseDouble((String) lastCharge.get("current_lng"));
+                        long baseTime = Long.parseLong((String) lastCharge.get("current_time"));
+
+                        //之前走过的距离
+                        double midDistance = DistanceUtil.getDistance(new LatLng(baseLat, baseLng), new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng()));
+
+                        if ((midDistance * 1000 / (System.currentTimeMillis() - baseTime)) >= STRANGEDISTANCE) { //这一次的距离跳转异常
+                            //drop it, use max distance
+                            baseDistance += STRANGEDISTANCE * (System.currentTimeMillis() - baseTime) / 1000;
+                        } else {
+                            baseDistance += midDistance;
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                Log.e("daddy", "终端");
+                initBaiduMap();
+                initGoDestView();
+                startCharging();
+            } else {
+                initGetPassView();
+            }
         } else {
             Log.e("PickUpPassengerActivity", "wrong params in order");
         }
@@ -444,39 +483,13 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
 
         passengerLatLng =  new LatLng(
                 Double.valueOf(orderItem.getOrder().getStart_lat()), Double.valueOf(orderItem.getOrder().getStart_lng()));
+
         ed = PlanNode.withLocation(passengerLatLng);
-
-        mBaiduMap = mMapview.getMap();
-        mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);//普通地图
-        // 隐藏缩放控件
-        int childCount = mMapview.getChildCount();
-        View zoom = null;
-        for (int i = 0; i < childCount; i++) {
-            View child = mMapview.getChildAt(i);
-            if (child instanceof ZoomControls) {
-                zoom = child;
-                break;
-            }
-        }
-        zoom.setVisibility(View.GONE);
-
-        MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(16.0f);
-        mBaiduMap.setMapStatus(msu);
-
-        //禁止转动地图
-        mBaiduMap.getUiSettings().setRotateGesturesEnabled(false);
-
-        // 开启定位图层
-        mBaiduMap.setMyLocationEnabled(true);
-        mCurrentMode = MyLocationConfiguration.LocationMode.FOLLOWING;
-        mCurrentMarker = BitmapDescriptorFactory.fromResource(R.drawable.caricon);
-        mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(mCurrentMode, true, mCurrentMarker));
-
         st = PlanNode.withLocation(new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng()));
 
-        routePlanSearch = RoutePlanSearch.newInstance();
+        initBaiduMap();
+
         routePlanSearch.drivingSearch(new DrivingRoutePlanOption().from(st).to(ed));
-        routePlanSearch.setOnGetRoutePlanResultListener(routePlanResultListener);
 
         //3秒一次  更新界面
         timer = new Timer();
@@ -507,21 +520,61 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         });
     }
 
+    private void initBaiduMap(){
+
+        mBaiduMap = mMapview.getMap();
+        mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);//普通地图
+        // 隐藏缩放控件
+        int childCount = mMapview.getChildCount();
+        View zoom = null;
+        for (int i = 0; i < childCount; i++) {
+            View child = mMapview.getChildAt(i);
+            if (child instanceof ZoomControls) {
+                zoom = child;
+                break;
+            }
+        }
+        zoom.setVisibility(View.GONE);
+
+        MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(16.0f);
+        mBaiduMap.setMapStatus(msu);
+
+        //禁止转动地图
+        mBaiduMap.getUiSettings().setRotateGesturesEnabled(false);
+
+        // 开启定位图层
+        mBaiduMap.setMyLocationEnabled(true);
+        mCurrentMode = MyLocationConfiguration.LocationMode.FOLLOWING;
+        mCurrentMarker = BitmapDescriptorFactory.fromResource(R.drawable.caricon);
+        mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(mCurrentMode, true, mCurrentMarker));
+
+        routePlanSearch = RoutePlanSearch.newInstance();
+        routePlanSearch.setOnGetRoutePlanResultListener(routePlanResultListener);
+    }
+
     private void initGoDestView(){
 
         toolbar.setTitle("订单开始");
+        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.return_icon));
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        timer.cancel();
-        timer = null;
+        if(timer != null){
+            timer.cancel();
+            timer = null;
+        }
 
         //3秒一次  更新界面
         timer = new Timer();
         timer.scheduleAtFixedRate(new DrawLineTimerTask(), 7000, 3 * 1000);
 
-        btnConfirm.setText(CommonUtil.getStartPrice() + "元      到达目的地");
+        String price = CommonUtil.getStartPrice() + "";
+        if(baseCharge > CommonUtil.getStartPrice()){
+            price = baseCharge + "";
+        }
+
+        btnConfirm.setText(price + "元   到达目的地");
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -537,6 +590,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
             }
         });
 
+        tvMyPosition.setText(orderItem.getOrder().getStart());
         tvPassengerPosition.setText(orderItem.getOrder().getDestination());
 
         passengerLatLng = new LatLng(

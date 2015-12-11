@@ -251,6 +251,7 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
                 //确认完毕进入导航页面
                 Intent intent = new Intent(context, PickUpPassengerActivity.class);
                 intent.putExtra("orderItem", order);
+                intent.putExtra("isRecover", false);
                 startActivity(intent);
                 dismiss();
                 break;
