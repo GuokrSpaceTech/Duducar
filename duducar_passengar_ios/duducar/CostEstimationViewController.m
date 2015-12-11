@@ -7,6 +7,7 @@
 //
 
 #import "CostEstimationViewController.h"
+#import "PaymentViewController.h"
 
 @interface CostEstimationViewController ()
 
@@ -16,7 +17,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
+        self.edgesForExtendedLayout = UIRectEdgeNone;
     // Do any additional setup after loading the view from its nib.
+    
+    NSLog(@"");
 }
 
 - (void)didReceiveMemoryWarning {
@@ -34,4 +40,8 @@
 }
 */
 
+- (IBAction)confirmAction:(id)sender {
+    PaymentViewController *paymentVC = [[PaymentViewController alloc] initWithNibName:@"PaymentViewController" bundle:nil];
+    [self.navigationController pushViewController:paymentVC animated:YES];
+}
 @end

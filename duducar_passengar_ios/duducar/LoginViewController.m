@@ -360,12 +360,12 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
         if([status intValue]==1)
         {
             token = [responseDict objectForKey:@"token"];
-            mobile = [(UITextField*)[self.view viewWithTag:UserTextFieldTag] text];
+//            mobile = [(UITextField*)[self.view viewWithTag:UserTextFieldTag] text];
             
             if(token!=NULL)
             {
                 NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"login", mobile,  @"2",    token,    nil]
-                                                                            forKeys:[NSArray arrayWithObjects:@"cmd",   @"mobile",      @"role", @"token", nil]];
+                                                                            forKeys:[NSArray arrayWithObjects:@"cmd",   @"mobile",  @"role",  @"token", nil]];
                 NSError * error = nil;
                 NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSUTF8StringEncoding error:&error];
                 
@@ -377,14 +377,14 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
             }
         } else
         {
-            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@""
-                                                                           message:@"验证码错误"
-                                                                    preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleDefault
-                                                                  handler:^(UIAlertAction * action) {}];
-            
-            [alert addAction:defaultAction];
-            [self presentViewController:alert animated:YES completion:nil];
+//            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@""
+//                                                                           message:@"验证码错误"
+//                                                                    preferredStyle:UIAlertControllerStyleAlert];
+//            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleDefault
+//                                                                  handler:^(UIAlertAction * action) {}];
+//            
+//            [alert addAction:defaultAction];
+//            [self presentViewController:alert animated:YES completion:nil];
         }
         
     }
@@ -399,14 +399,14 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
         }
         else
         {
-            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@""
-                                                                       message:@"登陆失败"
-                                                                 preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleDefault
-                                                                  handler:^(UIAlertAction * action) {}];
-            
-            [alert addAction:defaultAction];
-            [self presentViewController:alert animated:YES completion:nil];
+//            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@""
+//                                                                       message:@"登陆失败"
+//                                                                 preferredStyle:UIAlertControllerStyleAlert];
+//            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleDefault
+//                                                                  handler:^(UIAlertAction * action) {}];
+//            
+//            [alert addAction:defaultAction];
+//            [self presentViewController:alert animated:YES completion:nil];
         }
     }
 

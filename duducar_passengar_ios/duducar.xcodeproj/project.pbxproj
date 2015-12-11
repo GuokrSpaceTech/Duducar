@@ -16,6 +16,10 @@
 		2AAFDC731C186DCE00A5AEBD /* SearchResultTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AAFDC711C186DCE00A5AEBD /* SearchResultTableViewCell.m */; };
 		2AAFDC771C196C4700A5AEBD /* DDDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AAFDC761C196C4700A5AEBD /* DDDatabase.m */; };
 		2AAFDC7A1C1A546600A5AEBD /* PostOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AAFDC791C1A546600A5AEBD /* PostOrderViewController.m */; };
+		2AAFDC7E1C1A7DC700A5AEBD /* CostEstimationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AAFDC7C1C1A7DC700A5AEBD /* CostEstimationViewController.m */; };
+		2AAFDC7F1C1A7DC700A5AEBD /* CostEstimationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2AAFDC7D1C1A7DC700A5AEBD /* CostEstimationViewController.xib */; };
+		2AAFDC831C1AD36E00A5AEBD /* PaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AAFDC811C1AD36E00A5AEBD /* PaymentViewController.m */; };
+		2AAFDC841C1AD36E00A5AEBD /* PaymentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2AAFDC821C1AD36E00A5AEBD /* PaymentViewController.xib */; };
 		2AC664461BF9A69200DFDC2A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC664451BF9A69200DFDC2A /* main.m */; };
 		2AC664491BF9A69200DFDC2A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC664481BF9A69200DFDC2A /* AppDelegate.m */; };
 		2AC6644F1BF9A69200DFDC2A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2AC6644D1BF9A69200DFDC2A /* Main.storyboard */; };
@@ -72,6 +76,12 @@
 		2AAFDC761C196C4700A5AEBD /* DDDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDDatabase.m; sourceTree = "<group>"; };
 		2AAFDC781C1A546600A5AEBD /* PostOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostOrderViewController.h; sourceTree = "<group>"; };
 		2AAFDC791C1A546600A5AEBD /* PostOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostOrderViewController.m; sourceTree = "<group>"; };
+		2AAFDC7B1C1A7DC700A5AEBD /* CostEstimationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CostEstimationViewController.h; sourceTree = "<group>"; };
+		2AAFDC7C1C1A7DC700A5AEBD /* CostEstimationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CostEstimationViewController.m; sourceTree = "<group>"; };
+		2AAFDC7D1C1A7DC700A5AEBD /* CostEstimationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CostEstimationViewController.xib; sourceTree = "<group>"; };
+		2AAFDC801C1AD36E00A5AEBD /* PaymentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaymentViewController.h; sourceTree = "<group>"; };
+		2AAFDC811C1AD36E00A5AEBD /* PaymentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaymentViewController.m; sourceTree = "<group>"; };
+		2AAFDC821C1AD36E00A5AEBD /* PaymentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PaymentViewController.xib; sourceTree = "<group>"; };
 		2AC664411BF9A69200DFDC2A /* duducar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = duducar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AC664451BF9A69200DFDC2A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2AC664471BF9A69200DFDC2A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -235,6 +245,12 @@
 				2AAFDC6C1C186DA600A5AEBD /* DDSearchTableViewController.xib */,
 				2AAFDC781C1A546600A5AEBD /* PostOrderViewController.h */,
 				2AAFDC791C1A546600A5AEBD /* PostOrderViewController.m */,
+				2AAFDC7B1C1A7DC700A5AEBD /* CostEstimationViewController.h */,
+				2AAFDC7C1C1A7DC700A5AEBD /* CostEstimationViewController.m */,
+				2AAFDC7D1C1A7DC700A5AEBD /* CostEstimationViewController.xib */,
+				2AAFDC801C1AD36E00A5AEBD /* PaymentViewController.h */,
+				2AAFDC811C1AD36E00A5AEBD /* PaymentViewController.m */,
+				2AAFDC821C1AD36E00A5AEBD /* PaymentViewController.xib */,
 			);
 			path = duducar;
 			sourceTree = "<group>";
@@ -384,6 +400,8 @@
 			files = (
 				2AC664541BF9A69200DFDC2A /* LaunchScreen.storyboard in Resources */,
 				2AC664511BF9A69200DFDC2A /* Assets.xcassets in Resources */,
+				2AAFDC841C1AD36E00A5AEBD /* PaymentViewController.xib in Resources */,
+				2AAFDC7F1C1A7DC700A5AEBD /* CostEstimationViewController.xib in Resources */,
 				2AC6644F1BF9A69200DFDC2A /* Main.storyboard in Resources */,
 				2A97451D1BF9C442008C8A7B /* images.xcassets in Resources */,
 				2AAFDC6E1C186DA600A5AEBD /* DDSearchTableViewController.xib in Resources */,
@@ -464,11 +482,13 @@
 				2AC6647A1BF9AA2100DFDC2A /* LoginViewController.m in Sources */,
 				2AC664491BF9A69200DFDC2A /* AppDelegate.m in Sources */,
 				2AC664461BF9A69200DFDC2A /* main.m in Sources */,
+				2AAFDC831C1AD36E00A5AEBD /* PaymentViewController.m in Sources */,
 				2AAFDC731C186DCE00A5AEBD /* SearchResultTableViewCell.m in Sources */,
 				2AAFDC771C196C4700A5AEBD /* DDDatabase.m in Sources */,
 				F9E1C96B1C172C330083F19B /* DDSocket.m in Sources */,
 				F9E1C96E1C172CB30083F19B /* DDMainViewController.m in Sources */,
 				2AAFDC6D1C186DA600A5AEBD /* DDSearchTableViewController.m in Sources */,
+				2AAFDC7E1C1A7DC700A5AEBD /* CostEstimationViewController.m in Sources */,
 				2A97451B1BF9BEF6008C8A7B /* RCAnimatedImagesView.m in Sources */,
 				2A9745201BF9CEF3008C8A7B /* RCUnderlineTextField.m in Sources */,
 			);

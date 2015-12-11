@@ -9,6 +9,7 @@
 #import "DDSearchTableViewController.h"
 #import "SearchResultTableViewCell.h"
 #import <BaiduMapAPI_Search/BMKSearchComponent.h>
+#import "CostEstimationViewController.h"
 #import "Masonry.h"
 
 @interface DDSearchTableViewController () <UISearchBarDelegate,UISearchControllerDelegate, UISearchDisplayDelegate, BMKPoiSearchDelegate>
@@ -78,7 +79,9 @@ static NSString *cellidentify = @"resultItem";
         [self.navigationController popViewControllerAnimated:YES];
     } else if(_endPointCompletionHandler!=nil) {
         _endPointCompletionHandler(selectedAddr);
-        [self.navigationController popViewControllerAnimated:YES];
+        
+        CostEstimationViewController *costVC = [[CostEstimationViewController alloc]initWithNibName:@"CostEstimationViewController" bundle:nil];
+        [self.navigationController pushViewController:costVC animated:YES];
     }
 }
 
