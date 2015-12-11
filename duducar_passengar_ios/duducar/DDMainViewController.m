@@ -50,7 +50,7 @@
     
     
     
-    UIView * topView = [[UIView alloc]initWithFrame:CGRectMake(10, 84, self.view.frame.size.width-20, 100)];
+    UIView * topView = [[UIView alloc]initWithFrame:CGRectMake(10, self.view.frame.size.height - 170, self.view.frame.size.width-20, 100)];
     topView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:topView];
     
@@ -68,6 +68,15 @@
     [stopButton addTarget:self action:@selector(stop:) forControlEvents:UIControlEventTouchUpInside];
     [stopButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [topView addSubview:stopButton];
+    
+    
+    UIButton * callCarButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    callCarButton.frame = CGRectMake(10, self.view.frame.size.height - 60, self.view.frame.size.width-20, 40);
+    callCarButton.backgroundColor = [UIColor blueColor];
+    [callCarButton setTitle:@"呼叫专车" forState:UIControlStateNormal];
+    [callCarButton addTarget:self action:@selector(callCar:) forControlEvents:UIControlEventTouchUpInside];
+    [callCarButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.view addSubview:callCarButton];
 
 
     // 叫车大头针
@@ -118,6 +127,10 @@
             }
         }
     }
+    
+}
+-(void)callCar:(id)sender
+{
     
 }
 -(void)start:(id)sender
