@@ -4,21 +4,34 @@ import android.content.Context;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.text.TextUtils;
+import android.util.Log;
+import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
 import com.baidu.mapapi.model.LatLng;
 import com.guokrspace.dududriver.DuduDriverApplication;
+import com.guokrspace.dududriver.model.OrderItem;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by hyman on 15/10/22.
  */
 public class CommonUtil {
+
+    public static final String MONTH_DAY_ZH = "MM月dd日 HH:mm";
+    public static final String YEAR_MONTH_DAY = "yyyy-MM-dd HH:mm:ss";
+
 
     public static boolean isGpsOpen(Context mContext){
         LocationManager locationManager
@@ -96,6 +109,16 @@ public class CommonUtil {
     public static void setOrderDealInfoId(int orderDealInfoId) {
         CommonUtil.orderDealInfoId = orderDealInfoId;
     }
+
+    public static OrderItem getCurOrderItem() {
+        return curOrderItem;
+    }
+
+    public static void setCurOrderItem(OrderItem curOrderItem) {
+        CommonUtil.curOrderItem = curOrderItem;
+    }
+
+    private static OrderItem curOrderItem;
 
     private static int orderDealInfoId;
 
@@ -247,6 +270,39 @@ public class CommonUtil {
 
     public static float getStartPrice(){
         return Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), "starting_price", "5.5"));
+    }
+
+    //格式化日期
+    public static String dateFormat(String date, String pattern) {
+        if (TextUtils.isEmpty(date)) {
+            return "刚刚";
+        }
+        String currentTime = String.valueOf(System.currentTimeMillis());
+        if (currentTime.length() > date.length()) {
+            StringBuilder sb = new StringBuilder(date);
+            for (int i = 0; i < currentTime.length() - date.length(); i++) {
+                sb.append("0");
+            }
+            date = sb.toString();
+        }
+        Date orderDate = new Date(Long.parseLong(date));
+        SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.CHINA);
+        return format.format(orderDate);
+    }
+
+    //格式化手机号：139****3214
+    public static String phoneNumFormat(String mobiles) {
+        if (TextUtils.isEmpty(mobiles)) {
+            return "110";
+        }
+        Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
+        Matcher m = p.matcher(mobiles);
+        if (mobiles.length() == 11 && m.matches()) {
+            String centerNums = mobiles.substring(3, 7);
+            mobiles = mobiles.replace(centerNums, "****");
+            return mobiles;
+        }
+        return mobiles;
     }
 
 }

@@ -9,4 +9,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="shadow_width">15.0dip</dimen>
     <dimen name="slidingmenu_offset">50.0dip</dimen>
+    <dimen name="complain_item_height">50dp</dimen>
 </resources>

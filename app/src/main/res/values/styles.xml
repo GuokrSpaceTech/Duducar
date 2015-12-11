@@ -4,7 +4,7 @@
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/de_actionbar_bg</item>
-        <item name="colorAccent">@android:color/white</item>
+        <item name="colorAccent">@color/lite_blue</item>
         <item name="colorPrimaryDark">@color/black_de</item>
         <item name="android:textColorPrimary">@android:color/white</item>
     </style>
@@ -86,8 +86,8 @@
 
     <style name="heartRatingBarBig" parent="@android:style/Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/heart_rating_bar_big</item>
-        <item name="android:minHeight">57dp</item>
-        <item name="android:maxHeight">57dp</item>
+        <item name="android:minHeight">45dp</item>
+        <item name="android:maxHeight">45dp</item>
     </style>
 
     <!-- Navigation Header -->

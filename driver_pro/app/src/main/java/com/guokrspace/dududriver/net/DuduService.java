@@ -19,11 +19,15 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
+import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.common.Constants;
+import com.guokrspace.dududriver.database.PersonalInformation;
 import com.guokrspace.dududriver.net.message.HeartBeatMessage;
 import com.guokrspace.dududriver.net.message.MessageTag;
 import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
+
+import java.util.List;
 
 /*
 * get baidu map location
@@ -187,7 +191,32 @@ public class DuduService extends Service {
                 if(error.contains("login")){//登陆出现问题
                     //将登陆状态置为false
                     SharedPreferencesUtils.setParam(DuduService.this, SharedPreferencesUtils.LOGIN_STATE, false);
+                    //后台尝试登录
+                    List localUsers = DuduDriverApplication.getInstance().
+                            mDaoSession.getPersonalInformationDao().
+                            queryBuilder().list();
+                    if(localUsers != null && localUsers.size() > 0){
+                        PersonalInformation user = (PersonalInformation) localUsers.get(0);
+                        SocketClient.getInstance().autoLoginRequest(user.getMobile(), "1", user.getToken(), new ResponseHandler(Looper.myLooper()) {
+                            @Override
+                            public void onSuccess(String messageBody) {
+                                SharedPreferencesUtils.setParam(DuduService.this, SharedPreferencesUtils.LOGIN_STATE, true);
+                            }
+
+                            @Override
+                            public void onFailure(String error) {
+                                Log.e("login in failure!", "errorbody " + error);
+                            }
+
+                            @Override
+                            public void onTimeout() {
+                                Log.e("hyman", "登陆超时");
+                            }
+                        });
+                    }
+                    //向主界面发送广播
                     sendBroadCast(Constants.SERVICE_ACTION_RELOGIN);
+
                 }
             }
 
@@ -271,7 +300,10 @@ public class DuduService extends Service {
         @Override
         protected SocketClient doInBackground(String... message) {
             //we create a TCPClient object and
-            mTcpClient = new SocketClient();
+//            mTcpClient = new SocketClient();
+            if(mTcpClient == null){
+                mTcpClient = new SocketClient();
+            }
             mTcpClient.run();
 
             return null;

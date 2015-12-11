@@ -25,6 +25,9 @@ public class Constants {
     public static final String SERVICE_ACTION_RELOGIN = "LOG_IN_ERROR_TRY_AGAIN";
     public static final String SERVICE_ACTION_MESAGE = "GOT_A_NEW_MESSAGE";
 
+    public static final String ACTION_NEW_ORDER = "GOT_A_NEW_ORDER";
+    public static final int MESSAGE_NEW_ORDER = 0x5009;
+
     public static final int ORDER_PAGE_NUM = 10;
     public static final int MESSAGE_PER_PAGE = 40;
 

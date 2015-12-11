@@ -14,7 +14,7 @@ public class DateUtil {
         if (TextUtils.isEmpty(date)) {
             return "刚刚";
         }
-        Date orderDate = new Date(Long.parseLong(date));
+        Date orderDate = new Date(Long.parseLong(date+"000"));
         SimpleDateFormat format = new SimpleDateFormat("MM月dd日 HH:mm");
         return format.format(orderDate);
     }

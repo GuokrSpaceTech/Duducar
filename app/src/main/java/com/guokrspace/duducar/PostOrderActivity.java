@@ -11,6 +11,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
@@ -79,6 +80,7 @@ public class PostOrderActivity extends AppCompatActivity {
     boolean isFirstLoc = true;// 是否首次定位
     boolean isStartFollow = false;
     ProgressBar mProgressBar;
+    Toolbar mToolbar;
 
     int state;
 
@@ -240,8 +242,10 @@ public class PostOrderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_order_cab);
 
         // ActionBar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(orderStatusString);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setTitle(orderStatusString);
+        //init toolbar
+        initToolBar();
         AppExitUtil.getInstance().addActivity(this);
 
         //Get Args
@@ -333,13 +337,28 @@ public class PostOrderActivity extends AppCompatActivity {
 
         state = WAITING_FOR_ORDER_CONFIRM;
 
-        getSupportActionBar().setTitle("正在预约中...");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setTitle("正在预约中...");
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mApplication = (DuduApplication) getApplicationContext();
 
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+    }
+
+    private void initToolBar() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.setTitle("正在预约中...");
+        mToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back));
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //
+            }
+        });
     }
 
     @Override
@@ -527,7 +546,7 @@ public class PostOrderActivity extends AppCompatActivity {
         });
 
         /*
-         * Start the timer to for peoriodically ask for nearby cars
+         * Start the timer to for peoriodically ask for nearby cars and draw route line
          */
         timer = new Timer();
         timer.scheduleAtFixedRate(new MyTimerTask(), 2000, 3 * 1000);

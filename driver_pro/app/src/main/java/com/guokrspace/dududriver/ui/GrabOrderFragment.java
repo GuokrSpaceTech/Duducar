@@ -144,6 +144,8 @@ public class GrabOrderFragment extends BaseFragment implements Handler.Callback{
             if(type == null){
                 continue;
             }
+            Log.e("daddy map", "notice id " + notice.getNoticeId());
+            Log.e("daddy map ", "body" + body);
             if(type.equals("PayOver")){//支付通知
                 notices.add(new WealthNotice(body));
             } else if(type.equals("Notice")){//系统通知
@@ -183,23 +185,29 @@ public class GrabOrderFragment extends BaseFragment implements Handler.Callback{
                 Log.e("daddy message", "pull new message");
                 pullMessage();
                 break;
+            case NEW_MESSAGE_UPDATE:
+                baseNoticeItems = initData();
+                mAdapter.notifyDataSetChanged();
+                break;
             default:
                 break;
         }
         return false;
     }
 
+    private final int NEW_MESSAGE_UPDATE = 102;
+
     private void pullMessage() {
         //获取数据库中的消息列表, 按id顺序大到小排列
         List messageList = DuduDriverApplication.getInstance().mDaoSession.getBaseNoticeDao().queryBuilder().orderDesc(BaseNoticeDao.Properties.NoticeId).list();
-        String currentId = "0";
+        Integer currentId = 0;
         if(messageList.size() > 0){
             currentId = ((BaseNotice)messageList.get(0)).getNoticeId();
             //TODO 要做失效通知的清除操作
         }
         Log.e("daddy messaeg" ,"currentId  " + currentId);
         //每次登陆都去拉取最新的消息
-        SocketClient.getInstance().pullMessages("new", Constants.MESSAGE_PER_PAGE, Integer.parseInt(currentId), new ResponseHandler(Looper.myLooper()) {
+        SocketClient.getInstance().pullMessages("new", Constants.MESSAGE_PER_PAGE, currentId, new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
                 Log.e("daddy message", messageBody + "recive");
@@ -220,20 +228,19 @@ public class GrabOrderFragment extends BaseFragment implements Handler.Callback{
                         Log.e("daddy message", query.list().size() + "dudu" + duduMessage.getMessage_id() + "messa" + duduMessage.getMessage_body());
                         if (query.list().size() < 1) {
                             Log.e("daddy message", "size + 1");
-                            long a = DuduDriverApplication.getInstance().mDaoSession.getBaseNoticeDao().insert(getBaseNotice(duduMessage));
-                            Log.e("daddy message", "id " + a);
+                            DuduDriverApplication.getInstance().mDaoSession.getBaseNoticeDao().insert(getBaseNotice(duduMessage));
                             isUpdate = true;
                         }
                     }
                     if (isUpdate) {
                         baseNoticeItems.clear();
-                        baseNoticeItems = initData();
+                        baseNoticeItems.addAll(initData());
                         Log.e("daddy message", baseNoticeItems.size() + "");
                         if (baseNoticeItems.size() < 1) {//没有任何消息
                             baseNoticeItems.add(new DuduNotice());
                         }
-                        mAdapter.notifyDataSetChanged();
                     }
+                    mAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -251,7 +258,7 @@ public class GrabOrderFragment extends BaseFragment implements Handler.Callback{
     private BaseNotice getBaseNotice(DuduMessage message){
         BaseNotice notice = new BaseNotice();
         notice.setDate(DateUtil.dateFormat(System.currentTimeMillis() + ""));
-        notice.setNoticeId(message.getMessage_id());
+        notice.setNoticeId(Integer.parseInt(message.getMessage_id()));
         notice.setMessageBody(message.getMessage_body());
         notice.setOutOfTime(false);
         notice.setType(message.getMessage_type());

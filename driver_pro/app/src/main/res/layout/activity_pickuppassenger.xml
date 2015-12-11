@@ -113,6 +113,12 @@
         android:layout_height="0dip"
         android:layout_weight="1">
 
+        <FrameLayout
+            android:id="@+id/pickup_mapnavi"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:visibility="gone" />
+
         <com.baidu.mapapi.map.MapView
             android:id="@+id/pickup_mapview"
             android:layout_width="fill_parent"

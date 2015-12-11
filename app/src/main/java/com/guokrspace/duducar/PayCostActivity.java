@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -102,6 +103,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
     private RadioButton aliRadioButton;
     private RadioButton wxRadioButton;
     private RadioButton checkedRadioButton;
+    private Toolbar mToolbar;
     
     private android.support.v7.app.AlertDialog.Builder alterDialog;
     private static final int SDK_PAY_FLAG = 1;
@@ -187,6 +189,9 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
         //注册应用
         msgApi.registerApp(WePayUtil.APP_ID);
 
+        //init toolbar
+        initToolBar();
+
         //UI
         payButton = (Button)findViewById(R.id.buttonPayConfirm);
         feeTextView = (TextView)findViewById(R.id.textViewFee);
@@ -213,11 +218,38 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
             feeTextView.setText(tripOverOrderDetail.getOrg_price());
         }
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
 
         AppExitUtil.getInstance().addActivity(this);
 
+    }
+
+    private void initToolBar() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.setTitle("订单支付");
+        mToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back));
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alterDialog = new android.support.v7.app.AlertDialog.Builder(PayCostActivity.this);
+                alterDialog.setMessage("选择稍后支付或司机代付").setPositiveButton(
+                        "确认", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                }).show();
+            }
+        });
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.guokrspace.dududriver.ui;
 
-import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,26 +25,23 @@ import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.adapter.RecordListAdapter;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.database.OrderRecord;
-import com.guokrspace.dududriver.model.HistoryOrder;
 import com.guokrspace.dududriver.model.HistoryOrderResponseModel;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
-import com.guokrspace.dududriver.net.message.OrderDetail;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 import com.guokrspace.dududriver.view.CircleImageView;
 import com.guokrspace.dududriver.view.DividerItemDecoration;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by hyman on 15/10/23.
@@ -76,7 +73,11 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
     @Bind(R.id.swipeRefreshLayout)
     SwipeRefreshLayout refreshLayout;
 
-    private Context context;
+    @OnClick(R.id.balance_rl) void enterBalancePage() {
+        startActivity(new Intent(getActivity(), BalanceActivity.class));
+        getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    }
+
     private DuduDriverApplication mApplication;
     private LinearLayoutManager mLayoutManager;
 

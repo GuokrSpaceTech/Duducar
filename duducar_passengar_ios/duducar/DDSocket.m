@@ -44,6 +44,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         [formatter setReplacementString:@"socket-cf" forQueueLabel:GCDAsyncSocketThreadName];
         
         [[DDTTYLogger sharedInstance] setLogFormatter:formatter];
+        
     }
     return self;
 }

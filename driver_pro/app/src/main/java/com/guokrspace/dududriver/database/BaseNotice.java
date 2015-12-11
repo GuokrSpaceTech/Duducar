@@ -11,7 +11,7 @@ public class BaseNotice {
     private String type;
     private String messageBody;
     private Boolean outOfTime;
-    private String noticeId;
+    private Integer noticeId;
 
     public BaseNotice() {
     }
@@ -20,7 +20,7 @@ public class BaseNotice {
         this.id = id;
     }
 
-    public BaseNotice(Long id, String date, String type, String messageBody, Boolean outOfTime, String noticeId) {
+    public BaseNotice(Long id, String date, String type, String messageBody, Boolean outOfTime, Integer noticeId) {
         this.id = id;
         this.date = date;
         this.type = type;
@@ -69,11 +69,11 @@ public class BaseNotice {
         this.outOfTime = outOfTime;
     }
 
-    public String getNoticeId() {
+    public Integer getNoticeId() {
         return noticeId;
     }
 
-    public void setNoticeId(String noticeId) {
+    public void setNoticeId(Integer noticeId) {
         this.noticeId = noticeId;
     }
 
