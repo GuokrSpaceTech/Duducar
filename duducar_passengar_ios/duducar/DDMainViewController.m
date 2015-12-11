@@ -17,8 +17,11 @@
 #import "Masonry.h"
 #import "DDLog.h"
 #import "DDTTYLogger.h"
+#import "DDLeftView.h"
 
-@interface DDMainViewController ()<BMKMapViewDelegate,BMKLocationServiceDelegate,BMKGeoCodeSearchDelegate>
+#import "PersionInfoViewController.h"
+#import "HisoryViewController.h"
+@interface DDMainViewController ()<BMKMapViewDelegate,BMKLocationServiceDelegate,BMKGeoCodeSearchDelegate,LeftViewDelegate>
 {
     BMKGeoCodeSearch* _geocodesearch;
     UIButton *startLocButton;
@@ -32,6 +35,9 @@
     CLLocationCoordinate2D endCoordinate2D;
     
     NSString *currCity;
+    
+    DDLeftView * leftView;
+    BOOL leftViewShow;
 }
 @property (nonatomic,strong)BMKMapView* mapView ;
 @property (nonatomic,strong)BMKLocationService *locService;
@@ -48,6 +54,14 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+     self.view.backgroundColor = [UIColor whiteColor];
+    // 左侧按钮
+    
+    UIBarButtonItem * leftItem  = [[UIBarButtonItem alloc]initWithTitle:@"left" style:UIBarButtonItemStyleDone target:self action:@selector(leftCilck:)];
+    self.navigationItem.leftBarButtonItem = leftItem;
+    
+
+    
     _geocodesearch = [[BMKGeoCodeSearch alloc]init];
     _geocodesearch.delegate =self;
     
@@ -74,6 +88,9 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     [startLocButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [startLocButton addTarget:self action:@selector(searchStartLocationButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [topView addSubview:startLocButton];
+    
+    
+    
     
     stopLocButton = [UIButton buttonWithType:UIButtonTypeCustom];
     stopLocButton.frame = CGRectMake(0, topView.frame.size.height/2.0, topView.frame.size.width, topView.frame.size.height/2.0);
@@ -146,6 +163,13 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     view1.center = self.view.center;
     [self.view addSubview:view1];
     
+    
+    leftView = [[DDLeftView alloc]initWithFrame:CGRectMake(-self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    leftView.backgroundColor = [UIColor clearColor];
+    leftView.delegate = self;
+    [self.view addSubview:leftView];
+    leftViewShow = NO;
+    
     [[DDSocket currentSocket] startSocket];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveResponseHandles:) name:responseNotificationName object:nil];
@@ -153,6 +177,23 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
 }
 
+-(void)leftCilck:(id)sender
+{
+    if(leftViewShow == NO)
+    {
+        leftViewShow = YES;
+        [UIView animateWithDuration:0.3 animations:^{
+            leftView.frame = CGRectMake(0, 0,self.view.frame.size.width, self.view.frame.size.height);
+        }];
+    }
+    else
+    {
+        leftViewShow = NO;
+        [UIView animateWithDuration:0.3 animations:^{
+            leftView.frame = CGRectMake(-self.view.frame.size.width, 0,self.view.frame.size.width, self.view.frame.size.height);
+        }];
+    }
+}
 -(void)viewWillAppear:(BOOL)animated {
     [_mapView viewWillAppear];
     _mapView.delegate = self; // 此处记得不用的时候需要置nil，否则影响内存的释放
@@ -330,7 +371,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     
     [searchVC setEndPointCompletionHandler:^(BMKPoiInfo *endPoint) {
         endLocation = endPoint;
-        startLocButton.titleLabel.text = endLocation.name;
+        stopLocButton.titleLabel.text = endLocation.name;
     }];
     
     [searchVC setStartPointCompletionHandler:nil];
@@ -404,10 +445,6 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     else if([command isEqualToString:@"get_near_car_resp"])
     {
         //Hack for now
-        NSDictionary * dic11 = @{@"lat":@(39.915),@"lng":@"116.404"};
-        responseDict = @{@"cmd":@"get_near_car_resp",@"status":@"1",@"cars":@[dic11]};
-        NSString *command = [responseDict objectForKey:@"cmd"];
-        NSNumber *status =[responseDict objectForKey:@"status"];
         
         if([status intValue] == 1)
         {
@@ -437,4 +474,31 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     }
 }
 
+-(void)leftViewDisappear
+{
+    leftViewShow = NO;
+    [UIView animateWithDuration:0.3 animations:^{
+        leftView.frame = CGRectMake(-self.view.frame.size.width, 0,self.view.frame.size.width, self.view.frame.size.height);
+    }];
+
+}
+#pragma mark ==== leftView delegate ===
+-(void)leftViewClose:(DDLeftView *)leftView
+{
+    [self leftViewDisappear];
+}
+-(void)leftView:(DDLeftView *)leftView index:(NSInteger)index
+{
+     [self leftViewDisappear];
+    if(index == 0)
+    {
+        PersionInfoViewController * persionVC = [[PersionInfoViewController alloc]init];
+        [self.navigationController pushViewController:persionVC animated:YES];
+    }
+    else
+    {
+        HisoryViewController * persionVC = [[HisoryViewController alloc]init];
+        [self.navigationController pushViewController:persionVC animated:YES];
+    }
+}
 @end

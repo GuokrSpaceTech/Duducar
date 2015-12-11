@@ -34,6 +34,10 @@
 		2AC664A71BF9AE0000DFDC2A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AC664A61BF9AE0000DFDC2A /* CoreTelephony.framework */; };
 		2AC664A91BF9AE1300DFDC2A /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AC664A81BF9AE1300DFDC2A /* libstdc++.6.0.9.tbd */; };
 		653A0C754452B0E8CC7C7931 /* Pods_duducar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C650C89CC0782424F97C23A7 /* Pods_duducar.framework */; };
+		81D814581C1A8C3400612B6E /* DDLeftView.m in Sources */ = {isa = PBXBuildFile; fileRef = 81D814571C1A8C3400612B6E /* DDLeftView.m */; };
+		81D8145E1C1A8EC500612B6E /* TravelDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81D8145D1C1A8EC500612B6E /* TravelDetailViewController.m */; };
+		81D814611C1AB2CB00612B6E /* PersionInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81D814601C1AB2CB00612B6E /* PersionInfoViewController.m */; };
+		81D814641C1AB2DD00612B6E /* HisoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81D814631C1AB2DD00612B6E /* HisoryViewController.m */; };
 		F9E1C96B1C172C330083F19B /* DDSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = F9E1C96A1C172C330083F19B /* DDSocket.m */; };
 		F9E1C96E1C172CB30083F19B /* DDMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9E1C96D1C172CB30083F19B /* DDMainViewController.m */; };
 /* End PBXBuildFile section */
@@ -98,6 +102,14 @@
 		2AC664A61BF9AE0000DFDC2A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		2AC664A81BF9AE1300DFDC2A /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "usr/lib/libstdc++.6.0.9.tbd"; sourceTree = SDKROOT; };
 		79A46CB94CB6EE86EFED9B23 /* Pods-duducar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-duducar.release.xcconfig"; path = "Pods/Target Support Files/Pods-duducar/Pods-duducar.release.xcconfig"; sourceTree = "<group>"; };
+		81D814561C1A8C3400612B6E /* DDLeftView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDLeftView.h; sourceTree = "<group>"; };
+		81D814571C1A8C3400612B6E /* DDLeftView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDLeftView.m; sourceTree = "<group>"; };
+		81D8145C1C1A8EC500612B6E /* TravelDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TravelDetailViewController.h; sourceTree = "<group>"; };
+		81D8145D1C1A8EC500612B6E /* TravelDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TravelDetailViewController.m; sourceTree = "<group>"; };
+		81D8145F1C1AB2CB00612B6E /* PersionInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersionInfoViewController.h; sourceTree = "<group>"; };
+		81D814601C1AB2CB00612B6E /* PersionInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersionInfoViewController.m; sourceTree = "<group>"; };
+		81D814621C1AB2DD00612B6E /* HisoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HisoryViewController.h; sourceTree = "<group>"; };
+		81D814631C1AB2DD00612B6E /* HisoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HisoryViewController.m; sourceTree = "<group>"; };
 		8EDAA3157DD50EAB7226DB83 /* Pods-duducar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-duducar.debug.xcconfig"; path = "Pods/Target Support Files/Pods-duducar/Pods-duducar.debug.xcconfig"; sourceTree = "<group>"; };
 		C650C89CC0782424F97C23A7 /* Pods_duducar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_duducar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9E1C9691C172C330083F19B /* DDSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDSocket.h; sourceTree = "<group>"; };
@@ -235,6 +247,14 @@
 				2AAFDC6C1C186DA600A5AEBD /* DDSearchTableViewController.xib */,
 				2AAFDC781C1A546600A5AEBD /* PostOrderViewController.h */,
 				2AAFDC791C1A546600A5AEBD /* PostOrderViewController.m */,
+				81D814561C1A8C3400612B6E /* DDLeftView.h */,
+				81D814571C1A8C3400612B6E /* DDLeftView.m */,
+				81D8145C1C1A8EC500612B6E /* TravelDetailViewController.h */,
+				81D8145D1C1A8EC500612B6E /* TravelDetailViewController.m */,
+				81D8145F1C1AB2CB00612B6E /* PersionInfoViewController.h */,
+				81D814601C1AB2CB00612B6E /* PersionInfoViewController.m */,
+				81D814621C1AB2DD00612B6E /* HisoryViewController.h */,
+				81D814631C1AB2DD00612B6E /* HisoryViewController.m */,
 			);
 			path = duducar;
 			sourceTree = "<group>";
@@ -345,7 +365,7 @@
 				TargetAttributes = {
 					2AC664401BF9A69200DFDC2A = {
 						CreatedOnToolsVersion = 7.0;
-						DevelopmentTeam = 24QP873G9R;
+						DevelopmentTeam = 66LZ5GHZ5K;
 					};
 					2AC664591BF9A69200DFDC2A = {
 						CreatedOnToolsVersion = 7.0;
@@ -461,15 +481,19 @@
 			files = (
 				2A9745181BF9B6C1008C8A7B /* UIColor+RCColor.m in Sources */,
 				2AAFDC7A1C1A546600A5AEBD /* PostOrderViewController.m in Sources */,
+				81D814611C1AB2CB00612B6E /* PersionInfoViewController.m in Sources */,
 				2AC6647A1BF9AA2100DFDC2A /* LoginViewController.m in Sources */,
 				2AC664491BF9A69200DFDC2A /* AppDelegate.m in Sources */,
 				2AC664461BF9A69200DFDC2A /* main.m in Sources */,
+				81D8145E1C1A8EC500612B6E /* TravelDetailViewController.m in Sources */,
 				2AAFDC731C186DCE00A5AEBD /* SearchResultTableViewCell.m in Sources */,
+				81D814581C1A8C3400612B6E /* DDLeftView.m in Sources */,
 				2AAFDC771C196C4700A5AEBD /* DDDatabase.m in Sources */,
 				F9E1C96B1C172C330083F19B /* DDSocket.m in Sources */,
 				F9E1C96E1C172CB30083F19B /* DDMainViewController.m in Sources */,
 				2AAFDC6D1C186DA600A5AEBD /* DDSearchTableViewController.m in Sources */,
 				2A97451B1BF9BEF6008C8A7B /* RCAnimatedImagesView.m in Sources */,
+				81D814641C1AB2DD00612B6E /* HisoryViewController.m in Sources */,
 				2A9745201BF9CEF3008C8A7B /* RCUnderlineTextField.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

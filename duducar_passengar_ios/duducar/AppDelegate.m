@@ -98,6 +98,18 @@ BMKMapManager* _mapManager;
 }
 
 
+- (void)onGetNetworkState:(int)iError
+{
+    
+}
 
+/**
+ *返回授权验证错误
+ *@param iError 错误号 : 为0时验证通过，具体参加BMKPermissionCheckResultCode
+ */
+- (void)onGetPermissionState:(int)iError
+{
+    
+}
 
 @end
