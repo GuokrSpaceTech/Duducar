@@ -86,8 +86,12 @@ strip_invalid_archs() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-duducar/CocoaAsyncSocket.framework"
   install_framework "Pods-duducar/CocoaLumberjack.framework"
+  install_framework "Pods-duducar/FMDB.framework"
+  install_framework "Pods-duducar/Masonry.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-duducar/CocoaAsyncSocket.framework"
   install_framework "Pods-duducar/CocoaLumberjack.framework"
+  install_framework "Pods-duducar/FMDB.framework"
+  install_framework "Pods-duducar/Masonry.framework"
 fi

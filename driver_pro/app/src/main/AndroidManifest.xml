@@ -114,15 +114,19 @@
             android:name=".ui.PayCostActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="账单支付"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            android:configChanges="keyboardHidden|orientation"/>
+ 
+        <activity android:name=".ui.HistoryOrderDetailActivity"
+            android:label="历史订单详情"
+            android:configChanges="keyboardHidden|orientation"/>
+        <activity android:name=".ui.ComplainActivity"
+            android:label="投诉"
+            android:configChanges="keyboardHidden|orientation"/>
         <activity
-            android:name=".ui.HistoryOrderDetailActivity"
+            android:name=".ui.BalanceActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="历史订单详情" />
-        <activity
-            android:name=".ui.ComplainActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:label="投诉" />
+            android:label="余额" />
 
         <service
             android:name=".net.DuduService"

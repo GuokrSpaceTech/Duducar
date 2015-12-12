@@ -2,11 +2,19 @@
 <items version="2" >
 
     <item
+<<<<<<< HEAD
         jar="/Users/daddyfang/Duducar/app/build/intermediates/exploded-aar/Duducar/library_slidingmenu/unspecified/jars/classes.jar"
         jumboMode="false"
         revision="23.0.1"
         sha1="116b96a6b8c4e02f40ed39e084a5b460cc35fdab">
         <dex dex="/Users/daddyfang/Duducar/app/build/intermediates/pre-dexed/debug/classes-27e76b2c963004a300d786e3a8f07f81a04f6bfa.jar" />
+=======
+        jar="/Users/hyman/Duducar/app/build/intermediates/exploded-aar/Duducar/library_slidingmenu/unspecified/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="e951a6efacdbf12d2197298ae99a431060507430">
+        <dex dex="/Users/hyman/Duducar/app/build/intermediates/pre-dexed/release/classes-189e1381544a958f58c448e50ccd181db95db7a6.jar" />
+>>>>>>> d9ce8e58a20f7710799852696b259be21451396b
     </item>
 
 </items>

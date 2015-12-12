@@ -32,4 +32,9 @@
     <!-- setting -->
     <color name="light_gray">#ffe2e3e3</color>
     <color name="sky_blue">#0195ff</color>
+
+    <!-- rating -->
+    <color name="dark_red">#BB404D</color>
+    <color name="dim_foreground_dark">#bebebe</color>
+    <color name="tag_bg_color">#0ddcff</color>
 </resources>

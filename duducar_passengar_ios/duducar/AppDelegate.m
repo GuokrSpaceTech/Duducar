@@ -11,7 +11,7 @@
 #import "LoginViewController.h"
 #import "UIColor+RCColor.h"
 #import "DDMainViewController.h"
-
+#import "DDSocket.h"
 BMKMapManager* _mapManager;
 
 @interface AppDelegate ()
@@ -35,8 +35,9 @@ BMKMapManager* _mapManager;
     if (!ret) {
         NSLog(@"Baidu Map Manager Starting Failed!");
     }
-    
+    [[DDSocket currentSocket] startSocket];
     //登录
+    
     NSString *token =[[NSUserDefaults standardUserDefaults] objectForKey:@"userToken"];
     NSString *userName = [[NSUserDefaults standardUserDefaults] objectForKey:@"userName"];
     NSString *password = [[NSUserDefaults standardUserDefaults] objectForKey:@"userPwd"];

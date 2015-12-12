@@ -145,7 +145,7 @@ public class OrderMapActivity extends BaseActivity implements View.OnClickListen
 
     private void initView() {
         mToolbar.setTitle("订单地图");
-        mToolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.return_icon));
+        mToolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.return_white));
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

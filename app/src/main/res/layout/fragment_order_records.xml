@@ -2,7 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
+    android:background="@color/light_gray"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
@@ -19,11 +19,16 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin">
 
-        <com.dexafree.materialList.view.MaterialListView
+        <!--<com.dexafree.materialList.view.MaterialListView
             android:id="@+id/material_listview"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            app:column_count="1" />
+            app:column_count="1" />-->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/order_records_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
     </RelativeLayout>
 
 
