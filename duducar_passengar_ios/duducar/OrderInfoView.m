@@ -69,7 +69,7 @@
     _driverNameLabel.frame = CGRectMake(60, self.frame.size.height-30, 100, 20);
     photoImageView.frame = CGRectMake(self.frame.size.width-50, self.frame.size.height-40, 30, 30);
     
-    bottomView.frame = CGRectZero;
+    bottomView.frame = CGRectMake(0, self.frame.size.height, self.frame.size.width, 1);
     
     _carNumLabel.frame = CGRectZero;
     _carNameLabel.frame = CGRectZero;
