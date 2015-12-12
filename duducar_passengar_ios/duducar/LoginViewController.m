@@ -17,7 +17,6 @@
 
 
 // Log levels: off, error, warn, info, verbose
-static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 static NSString * responseNotificationName = @"DDSocketResponseNotification";
 
 #define  SERVER_PORT 8282  // 0 => automatic
@@ -54,7 +53,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
 @property (weak) NSTimer *repeatingTimer;
 @property NSUInteger timerCount;
 
-- (void)countedTimerAction:(NSTimer*)theTimer;
+-(void)countedTimerAction:(NSTimer *)timer;
 @end
 
 @implementation LoginViewController
