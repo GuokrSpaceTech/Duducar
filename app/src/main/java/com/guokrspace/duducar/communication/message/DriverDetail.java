@@ -1,6 +1,8 @@
 package com.guokrspace.duducar.communication.message;
 
-public class DriverDetail
+import java.io.Serializable;
+
+public class DriverDetail implements Serializable
 {
     String name;
     String avatar;

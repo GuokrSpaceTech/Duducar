@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
+import android.speech.tts.Voice;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -56,7 +57,10 @@ import com.guokrspace.duducar.communication.DuduService;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
 import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
+import com.guokrspace.duducar.communication.message.DriverDetail;
+import com.guokrspace.duducar.communication.message.DriverInfo;
 import com.guokrspace.duducar.communication.message.NearByCars;
+import com.guokrspace.duducar.communication.message.OrderDetail;
 import com.guokrspace.duducar.communication.message.SearchLocation;
 import com.guokrspace.duducar.database.CommonUtil;
 import com.guokrspace.duducar.database.PersonalInformation;
@@ -64,6 +68,9 @@ import com.guokrspace.duducar.ui.DrawerView;
 import com.guokrspace.duducar.ui.OrderConfirmationView;
 import com.guokrspace.duducar.ui.WinToast;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 import java.util.Timer;
@@ -313,6 +320,7 @@ public class PreOrderActivity extends AppCompatActivity
         List persons = mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().limit(1).list();
         if(persons.size()==1) {
             person = (PersonalInformation) persons.get(0);
+            CommonUtil.setPersion(person);
             doLogin(person);
         }
 
@@ -414,6 +422,56 @@ public class PreOrderActivity extends AppCompatActivity
                 Log.e("daddy login ", "success");
                 WinToast.toast(PreOrderActivity.this, "登陆成功");
                 //TODO: init userinfo;
+                //检测是否存在正在进行的订单
+                try {
+                    JSONObject object = new JSONObject(messageBody);
+                    String hasActive = (String)object.get("has_active_order");
+                    if(hasActive.equals("1")){
+                        //存在正在执行的订单
+                        String status = (String)object.get("order_status");
+                        if(status.equals("5")){//订单已经取消
+                            return;
+                        }
+                        mApplication.mPersonalInformation = person;
+                        OrderDetail orderDetail = FastJsonTools.getObject((String) object.get("active_order"), OrderDetail.class);
+                        if(status.equals("1")){
+                            Toast.makeText(PreOrderActivity.this, "您有订单正在等待派发", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(PreOrderActivity.this, PostOrderActivity.class);
+                            intent.putExtra("isRecover", true);
+                            intent.putExtra("status", "1");
+                            intent.putExtra("order_detail", orderDetail);
+                            startActivityForResult(intent, 0x6002);
+                        } else if(status.equals("2")){
+                            Toast.makeText(PreOrderActivity.this, "我们已经为你指派司机", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(PreOrderActivity.this, PostOrderActivity.class);
+                            intent.putExtra("isRecover", true);
+                            intent.putExtra("status", "2");
+                            intent.putExtra("order_detail", orderDetail);
+                            DriverDetail driverDetail = FastJsonTools.getObject((String) object.get("driver"), DriverDetail.class);
+                            intent.putExtra("driver_detail", driverDetail);
+                            startActivityForResult(intent, 0x6002);
+                        } else if(status.equals("3")){
+                            Toast.makeText(PreOrderActivity.this, "您有正在执行的行程", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(PreOrderActivity.this, PostOrderActivity.class);
+                            intent.putExtra("isRecover", true);
+                            intent.putExtra("status", "3");
+                            intent.putExtra("order_detail", orderDetail);
+                            DriverDetail driverDetail = FastJsonTools.getObject((String) object.get("driver"), DriverDetail.class);
+                            intent.putExtra("driver_detail", driverDetail);
+                            intent.putExtra("current_charge", (String) object.get("current_charge"));
+                            startActivityForResult(intent, 0x6002);
+                        } else if(status.equals("4")){ //存在未支付的订单
+
+                            return;
+                        } else {
+                            //订单已经取消
+                            Log.e("daddy", "bad status");
+                            return;
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override

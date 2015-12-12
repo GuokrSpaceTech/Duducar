@@ -76,6 +76,10 @@ public class OrderDetail implements Serializable {
     String pay_type;
     String pay_role;
 
+    int status;
+    int rating;
+
+
     public String getAdd_price1() {
         return add_price1;
     }
@@ -115,9 +119,6 @@ public class OrderDetail implements Serializable {
     public void setPay_role(String pay_role) {
         this.pay_role = pay_role;
     }
-
-    int status;
-    int rating;
 
     public int getId() {
         return id;

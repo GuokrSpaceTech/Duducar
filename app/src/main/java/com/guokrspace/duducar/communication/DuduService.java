@@ -25,6 +25,9 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.guokrspace.duducar.DuduApplication;
 import com.guokrspace.duducar.common.Constants;
 import com.guokrspace.duducar.database.CommonUtil;
+import com.guokrspace.duducar.database.PersonalInformation;
+
+import java.util.List;
 
 /*
 * get baidu map location
@@ -225,6 +228,27 @@ public class DuduService extends Service {
                     //将登陆状态置为false
                     Log.e("daddy", "login eror in success");
                     sendBroadCast(Constants.SERVICE_ACTION_RELOGIN);
+
+                    List persons = mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().limit(1).list();
+                    if(persons.size() > 0){ // 重新登陆连接
+                        PersonalInformation person = (PersonalInformation)persons.get(0);
+                        SocketClient.getInstance().sendLoginReguest(person.getMobile(), Constants.PASSENGER_ROLE, person.getToken(), new ResponseHandler(Looper.getMainLooper()) {
+                            @Override
+                            public void onSuccess(String messageBody) {
+                                Log.e("daddy login ", "success");
+                            }
+
+                            @Override
+                            public void onFailure(String error) {
+
+                            }
+
+                            @Override
+                            public void onTimeout() {
+
+                            }
+                        });
+                    }
                 }
             }
 

@@ -13,6 +13,7 @@ public class OrderDetail implements Serializable{
     int id;
     String orderNum;
     int driver_id;
+    String driver_mobile;
     int passenger_id;
     String passenger_mobile;
     String start;
@@ -29,16 +30,70 @@ public class OrderDetail implements Serializable{
     int rent_type;
     String addtional_price;
     String org_price;
+    String add_price1;
+    String add_price2;
+    String add_price3;
     String isCancel;
     String mileage;
     String sumprice;
+    String low_speed_time;
     Long create_time;
     int isCityline;
     String cityline_id;
     String pay_time;
     String pay_type;
+    String pay_role;
+
     int status;
     int rating;
+
+    public String getDriver_mobile() {
+        return driver_mobile;
+    }
+
+    public void setDriver_mobile(String driver_mobile) {
+        this.driver_mobile = driver_mobile;
+    }
+
+    public String getAdd_price1() {
+        return add_price1;
+    }
+
+    public void setAdd_price1(String add_price1) {
+        this.add_price1 = add_price1;
+    }
+
+    public String getAdd_price2() {
+        return add_price2;
+    }
+
+    public void setAdd_price2(String add_price2) {
+        this.add_price2 = add_price2;
+    }
+
+    public String getAdd_price3() {
+        return add_price3;
+    }
+
+    public void setAdd_price3(String add_price3) {
+        this.add_price3 = add_price3;
+    }
+
+    public String getLow_speed_time() {
+        return low_speed_time;
+    }
+
+    public void setLow_speed_time(String low_speed_time) {
+        this.low_speed_time = low_speed_time;
+    }
+
+    public String getPay_role() {
+        return pay_role;
+    }
+
+    public void setPay_role(String pay_role) {
+        this.pay_role = pay_role;
+    }
 
     public int getId() {
         return id;

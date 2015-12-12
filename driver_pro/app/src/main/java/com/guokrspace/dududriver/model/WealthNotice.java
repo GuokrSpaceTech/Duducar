@@ -64,6 +64,7 @@ public class WealthNotice implements BaseNoticeItem {
             } else if(object.get("pay_time") instanceof String){
                 pay_time = Long.parseLong((String) object.get("pay_time"));
             }
+            pay_role = object.get("pay_role") == null ? 2 : (Integer)object.get("pay_role");
             mileage = object.get("mileage") == null ? "1" : (String) object.get("mileage");
             low_speed_time = object.get("low_speed_time") == null ? "0" : (String) object.get("low_speed_time");
 

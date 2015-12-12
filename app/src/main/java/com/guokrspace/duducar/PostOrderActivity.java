@@ -46,12 +46,15 @@ import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
 import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
 import com.guokrspace.duducar.communication.message.ChargeDetail;
+import com.guokrspace.duducar.communication.message.DriverDetail;
 import com.guokrspace.duducar.communication.message.DriverInfo;
 import com.guokrspace.duducar.communication.message.MessageTag;
 import com.guokrspace.duducar.communication.message.NearByCars;
+import com.guokrspace.duducar.communication.message.OrderDetail;
 import com.guokrspace.duducar.communication.message.SearchLocation;
 import com.guokrspace.duducar.communication.message.TripOver;
 import com.guokrspace.duducar.communication.message.TripStart;
+import com.guokrspace.duducar.database.CommonUtil;
 import com.guokrspace.duducar.database.OrderRecord;
 import com.guokrspace.duducar.ui.DriverInformationView;
 import com.squareup.picasso.Picasso;
@@ -132,7 +135,7 @@ public class PostOrderActivity extends AppCompatActivity {
                     break;
                 case MessageTag.MESSAGE_ORDER_CANCEL_TIMEOUT:
                     if (state == ORDER_CANCELLING) {
-                        getSupportActionBar().setTitle("司机已接单,正在路上");
+                        getSupportActionBar().setTitle("网络环境差, 取消失败");
                         mFab.setClickable(false);
                         mFab.setVisibility(View.GONE);
                         mFab.setEnabled(false);
@@ -169,7 +172,7 @@ public class PostOrderActivity extends AppCompatActivity {
 
                     break;
                 case MessageTag.MESSAGE_CAR_ARRIVED:
-                    orderStatusString = "已经上车";
+                    orderStatusString = "已经上车, 正在前往目的地";
                     getSupportActionBar().setTitle(orderStatusString);
 
                     //修正上车地点
@@ -234,26 +237,18 @@ public class PostOrderActivity extends AppCompatActivity {
         }
     };
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_cab);
+    private void initOrder(OrderDetail orderDetail){
+        start = new SearchLocation();
+        start.setLat(orderDetail.getStart_lat());
+        start.setLng(orderDetail.getStart_lng());
+        start.setAddress(orderDetail.getStart());
+        dest = new SearchLocation();
+        dest.setLat(orderDetail.getDestination_lat());
+        dest.setLng(orderDetail.getDestination_lng());
+        dest.setAddress(orderDetail.getDestination());
+    }
 
-        // ActionBar
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(orderStatusString);
-        AppExitUtil.getInstance().addActivity(this);
-
-        //Get Args
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            start = (SearchLocation) bundle.get("start");
-            dest = (SearchLocation) bundle.get("dest");
-
-            Log.e("daddy", "request car");
-            requestCar();
-        }
-
+    private void initBaiduMap(){
         // 地图初始化
         mMapView = (MapView) findViewById(R.id.bmapView);
         mBaiduMap = mMapView.getMap();
@@ -262,11 +257,7 @@ public class PostOrderActivity extends AppCompatActivity {
         mBaiduMap.setMyLocationEnabled(true);
         mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(MyLocationConfiguration.LocationMode.NORMAL, true, mCurrentMarker));
 
-//        mBaiduMap.getUiSettings().setRotateGesturesEnabled(false);
-//        mBaiduMap.getUiSettings().setScrollGesturesEnabled(false);
-//        mBaiduMap.getUiSettings().setZoomGesturesEnabled(false);
-
-        LatLng initLoc = new LatLng(28.173,112.9584);
+        LatLng initLoc = new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng());
         MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(initLoc);
         mBaiduMap.animateMapStatus(u);
 
@@ -289,10 +280,96 @@ public class PostOrderActivity extends AppCompatActivity {
         mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
         MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(18.0f);
         mBaiduMap.setMapStatus(msu);
+    }
 
-        //UI
+    private void initBaseUI(){
+
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
         mFab = (Button) findViewById(R.id.fab);
+
+        mCurrentChargeView = (TextView) findViewById(R.id.currentChargeView);
+        mStartTextView = (TextView) findViewById(R.id.textViewStart);
+        mDestTextView = (TextView) findViewById(R.id.textViewDestination);
+        if (start != null)
+            mStartTextView.setText(start.getAddress());
+        if (dest != null)
+            mDestTextView.setText(dest.getAddress());
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mApplication = (DuduApplication) getApplicationContext();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_order_cab);
+
+        // ActionBar
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(orderStatusString);
+        AppExitUtil.getInstance().addActivity(this);
+
+        //Get Args
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            boolean isRecover = bundle.getBoolean("isRecover", false);
+            if(isRecover){
+                String status = bundle.getString("status");
+                if(status.equals("1")){ // '1-订单初始化 2-接单 3-开始 4-结束 5-取消’,
+                    //初始化订单信息
+                    initOrder((OrderDetail)bundle.getSerializable("order_detail"));
+                    //重新发送
+                    cancelOrder();
+                    requestCar();
+                    //加载界面
+                } else if(status.equals("2")){
+                    OrderDetail orderDetail = (OrderDetail) bundle.getSerializable("order_detail");
+                    DriverDetail driverDetail = (DriverDetail) bundle.getSerializable("driver_detail");
+                    initOrder(orderDetail);
+                    driver = new DriverInfo();
+                    driver.setDriver(driverDetail);
+                    state = WAITING_FOR_ORDER_CONFIRM;
+                    initBaiduMap();
+                    initBaseUI();
+                    mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_DISPATCHED);
+                    return;
+                } else if(status.equals("3")){
+                    OrderDetail orderDetail = (OrderDetail) bundle.getSerializable("order_detail");
+                    DriverDetail driverDetail = (DriverDetail) bundle.getSerializable("driver_detail");
+                    initOrder(orderDetail);
+                    driver = new DriverInfo();
+                    driver.setDriver(driverDetail);
+                    initBaiduMap();
+                    initBaseUI();
+
+                    isWaitForCar = false;
+                    order_start = new TripStart();
+                    order_start.setOrder(orderDetail);
+                    mHandler.sendEmptyMessage(MessageTag.MESSAGE_CAR_ARRIVED);
+                    return;
+                } else {
+                    Log.e("daddy", "recover in error status");
+                    finish();
+                }
+            } else {
+                start = (SearchLocation) bundle.get("start");
+                dest = (SearchLocation) bundle.get("dest");
+
+                Log.e("daddy", "request car");
+                requestCar();
+            }
+        }
+
+        //初始化百度地图
+        initBaiduMap();
+
+        //UI
+        initBaseUI();
+
         mFab.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -315,31 +392,15 @@ public class PostOrderActivity extends AppCompatActivity {
 
                             @Override
                             public void onTimeout() {
-
                             }
                         });
                 return false;
             }
         });
-        mCurrentChargeView = (TextView) findViewById(R.id.currentChargeView);
+
         mCurrentChargeView.setVisibility(View.GONE);
-
-        mStartTextView = (TextView) findViewById(R.id.textViewStart);
-        mDestTextView = (TextView) findViewById(R.id.textViewDestination);
-        if (start != null)
-            mStartTextView.setText(start.getAddress());
-        if (dest != null)
-            mDestTextView.setText(dest.getAddress());
-
         state = WAITING_FOR_ORDER_CONFIRM;
-
         getSupportActionBar().setTitle("正在预约中...");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        mApplication = (DuduApplication) getApplicationContext();
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
     }
 
     @Override

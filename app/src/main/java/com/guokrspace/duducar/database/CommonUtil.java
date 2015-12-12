@@ -46,6 +46,16 @@ public class CommonUtil {
 
     private static long curTime;
 
+    public static PersonalInformation getPersion() {
+        return persion;
+    }
+
+    public static void setPersion(PersonalInformation persion) {
+        CommonUtil.persion = persion;
+    }
+
+    private static PersonalInformation persion;
+
     public static OrderDetail tripOverOrderDetail = null;
 
 }
