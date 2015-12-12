@@ -9,11 +9,19 @@
 #import "CallCarViewController.h"
 #import <BaiduMapAPI_Map/BMKMapComponent.h>
 #import <BaiduMapAPI_Location/BMKLocationComponent.h>
-
+#import "Driver.h"
+#import "StartEndView.h"
+#import "OrderInfoView.h"
 @interface CallCarViewController ()<BMKMapViewDelegate,BMKLocationServiceDelegate>
 {
     BMKLocationService *_locService;
     BMKMapView * _mapView;
+    
+    StartEndView * startEndView;
+    
+    OrderInfoView * driverInfoView;
+
+    BOOL isDown; //是否是向下滑
 }
 @end
 
@@ -27,12 +35,34 @@
     NSString *command = [responseDict objectForKey:@"cmd"];
     NSNumber *status = [responseDict objectForKey:@"status"];
     
-    if([command isEqualToString:@"create_order"])
+    if([command isEqualToString:@"create_order_resp"])
     {
         if([status integerValue] == 1)
         {
-            //叫车成功
+                //没有错
         }
+    }
+    else if ([command isEqualToString:@"order_accept"])
+    {
+        //有接单
+        if([status intValue] == 1)
+        {
+            NSDictionary * driver = responseDict[@"driver"];
+            
+            self.orderDriver = [[Driver alloc]initWithDic:driver];
+            driverInfoView.driver = self.orderDriver;
+             //更新UI
+            //出现不完全的司机VIew
+            [UIView animateWithDuration:.3 animations:^{
+                driverInfoView.frame = CGRectMake(0, self.view.frame.size.height-150, self.view.frame.size.width, 150);
+                isDown = YES;
+                [driverInfoView smallViewFrame];
+            }];
+
+        }
+   
+       
+        
     }
 }
 
@@ -45,6 +75,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    
+    UIBarButtonItem * leftItem = [[UIBarButtonItem alloc]initWithTitle:@"返回" style:UIBarButtonItemStyleDone target:self action:@selector(back:)];
+    self.navigationItem.leftBarButtonItem = leftItem;
+    
     _locService = [[BMKLocationService alloc]init];
     [_locService startUserLocationService];
     _mapView = [[BMKMapView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
@@ -54,11 +88,64 @@
     _mapView.userTrackingMode = BMKUserTrackingModeNone;//设置定位的状态
     _mapView.showsUserLocation = YES;//显示定位图层
     [self.view addSubview:_mapView];
+    
+    
+    startEndView = [[StartEndView alloc]initWithFrame:CGRectMake(20, 80, self.view.frame.size.width-40, 100)];
+    [self.view addSubview:startEndView];
+    startEndView.startLabel.text = _startLocation.name;
+    startEndView.endLabel.text = _endLocation.name;
+    
+
+    
+    driverInfoView= [[OrderInfoView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 150)];
+    driverInfoView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:driverInfoView];
+    [driverInfoView smallViewFrame];
+    
+    UISwipeGestureRecognizer * swap = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swap:)];
+    swap.direction = UISwipeGestureRecognizerDirectionUp;
+    swap.numberOfTouchesRequired =1;
+    [driverInfoView addGestureRecognizer:swap];
+    
+    UISwipeGestureRecognizer * swap1 = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swap:)];
+    swap1.direction = UISwipeGestureRecognizerDirectionDown;
+    swap1.numberOfTouchesRequired =1;
+    [driverInfoView addGestureRecognizer:swap1];
+    
     [self callCar];
     
 }
 
+-(void)swap:(UISwipeGestureRecognizer *)tap
+{
+    if(tap.direction == UISwipeGestureRecognizerDirectionDown)
+    {
+        NSLog(@"sown");
+        if(isDown==NO)
+        {
+            [UIView animateWithDuration:0.3 animations:^{
+                driverInfoView.frame = CGRectMake(0, self.view.frame.size.height-150, self.view.frame.size.width, 150);
+                [driverInfoView smallViewFrame];
+                isDown = YES;
+            }];
+        }
+        
+    }
+    else
+    {
+        NSLog(@"up");
+        [UIView animateWithDuration:0.3 animations:^{
+            driverInfoView.frame = CGRectMake(0, self.view.frame.size.height-200, self.view.frame.size.width, 200);
+            [driverInfoView allViewFrame];
+            isDown = NO;
+        }];
+    }
+}
 
+-(void)back:(id)sender
+{
+    //确认取消订单
+}
 -(void)callCar
 {
     //启动进度条

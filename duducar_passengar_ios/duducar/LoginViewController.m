@@ -60,7 +60,10 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
 @synthesize animatedImagesView = _animatedImagesView;
 #define UserTextFieldTag 1000
 #define PassWordFieldTag 1001
-
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.

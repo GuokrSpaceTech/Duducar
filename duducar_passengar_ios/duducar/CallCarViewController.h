@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "DDSocket.h"
 #import "Location.h"
+@class Driver;
 @interface CallCarViewController : UIViewController
 @property (nonatomic,strong)Location * startLocation;
 @property (nonatomic,strong)Location * endLocation;
+@property (nonatomic,strong)    Driver * orderDriver;
 @end

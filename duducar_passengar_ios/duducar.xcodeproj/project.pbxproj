@@ -51,6 +51,9 @@
 		81D814641C1AB2DD00612B6E /* HisoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81D814631C1AB2DD00612B6E /* HisoryViewController.m */; };
 		81D8146A1C1AC65200612B6E /* CallCarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81D814691C1AC65200612B6E /* CallCarViewController.m */; };
 		81D8146E1C1AD0CA00612B6E /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 81D8146D1C1AD0CA00612B6E /* Location.m */; };
+		F983BFE11C1C176B00E942E1 /* Driver.m in Sources */ = {isa = PBXBuildFile; fileRef = F983BFE01C1C176B00E942E1 /* Driver.m */; };
+		F983BFE41C1C1AF500E942E1 /* StartEndView.m in Sources */ = {isa = PBXBuildFile; fileRef = F983BFE31C1C1AF500E942E1 /* StartEndView.m */; };
+		F983BFE71C1C1F0D00E942E1 /* OrderInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = F983BFE61C1C1F0D00E942E1 /* OrderInfoView.m */; };
 		F9E1C96B1C172C330083F19B /* DDSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = F9E1C96A1C172C330083F19B /* DDSocket.m */; };
 		F9E1C96E1C172CB30083F19B /* DDMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9E1C96D1C172CB30083F19B /* DDMainViewController.m */; };
 /* End PBXBuildFile section */
@@ -143,6 +146,12 @@
 		81D8146D1C1AD0CA00612B6E /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
 		8EDAA3157DD50EAB7226DB83 /* Pods-duducar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-duducar.debug.xcconfig"; path = "Pods/Target Support Files/Pods-duducar/Pods-duducar.debug.xcconfig"; sourceTree = "<group>"; };
 		C650C89CC0782424F97C23A7 /* Pods_duducar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_duducar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F983BFDF1C1C176B00E942E1 /* Driver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Driver.h; sourceTree = "<group>"; };
+		F983BFE01C1C176B00E942E1 /* Driver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Driver.m; sourceTree = "<group>"; };
+		F983BFE21C1C1AF500E942E1 /* StartEndView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartEndView.h; sourceTree = "<group>"; };
+		F983BFE31C1C1AF500E942E1 /* StartEndView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StartEndView.m; sourceTree = "<group>"; };
+		F983BFE51C1C1F0D00E942E1 /* OrderInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderInfoView.h; sourceTree = "<group>"; };
+		F983BFE61C1C1F0D00E942E1 /* OrderInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderInfoView.m; sourceTree = "<group>"; };
 		F9E1C9691C172C330083F19B /* DDSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDSocket.h; sourceTree = "<group>"; };
 		F9E1C96A1C172C330083F19B /* DDSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDSocket.m; sourceTree = "<group>"; };
 		F9E1C96C1C172CB30083F19B /* DDMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDMainViewController.h; sourceTree = "<group>"; };
@@ -239,6 +248,10 @@
 			children = (
 				2AAFDC701C186DCE00A5AEBD /* SearchResultTableViewCell.h */,
 				2AAFDC711C186DCE00A5AEBD /* SearchResultTableViewCell.m */,
+				F983BFE21C1C1AF500E942E1 /* StartEndView.h */,
+				F983BFE31C1C1AF500E942E1 /* StartEndView.m */,
+				F983BFE51C1C1F0D00E942E1 /* OrderInfoView.h */,
+				F983BFE61C1C1F0D00E942E1 /* OrderInfoView.m */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -343,6 +356,8 @@
 			children = (
 				81D8146C1C1AD0CA00612B6E /* Location.h */,
 				81D8146D1C1AD0CA00612B6E /* Location.m */,
+				F983BFDF1C1C176B00E942E1 /* Driver.h */,
+				F983BFE01C1C176B00E942E1 /* Driver.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -549,6 +564,7 @@
 				81D814611C1AB2CB00612B6E /* PersionInfoViewController.m in Sources */,
 				81D8146A1C1AC65200612B6E /* CallCarViewController.m in Sources */,
 				81D8146E1C1AD0CA00612B6E /* Location.m in Sources */,
+				F983BFE71C1C1F0D00E942E1 /* OrderInfoView.m in Sources */,
 				2AC6647A1BF9AA2100DFDC2A /* LoginViewController.m in Sources */,
 				2AAFDC881C1B04B800A5AEBD /* RatingViewController.m in Sources */,
 				2AC664491BF9A69200DFDC2A /* AppDelegate.m in Sources */,
@@ -557,8 +573,10 @@
 				81D8145E1C1A8EC500612B6E /* TravelDetailViewController.m in Sources */,
 				2AAFDC731C186DCE00A5AEBD /* SearchResultTableViewCell.m in Sources */,
 				81D814581C1A8C3400612B6E /* DDLeftView.m in Sources */,
+				F983BFE41C1C1AF500E942E1 /* StartEndView.m in Sources */,
 				2AAFDC771C196C4700A5AEBD /* DDDatabase.m in Sources */,
 				F9E1C96B1C172C330083F19B /* DDSocket.m in Sources */,
+				F983BFE11C1C176B00E942E1 /* Driver.m in Sources */,
 				F9E1C96E1C172CB30083F19B /* DDMainViewController.m in Sources */,
 				2AAFDC6D1C186DA600A5AEBD /* DDSearchTableViewController.m in Sources */,
 				2AAFDC7E1C1A7DC700A5AEBD /* CostEstimationViewController.m in Sources */,
@@ -704,8 +722,8 @@
 			baseConfigurationReference = 8EDAA3157DD50EAB7226DB83 /* Pods-duducar.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Kai Yang (6W79MPUU9K)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Kai Yang (6W79MPUU9K)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/BaiduMap_IOSSDK_v2.9.1_All",
@@ -717,7 +735,7 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.guokrspace.duducar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "75ff8405-f8ff-4dd0-95ae-5676f1617180";
 			};
 			name = Debug;
 		};
@@ -726,8 +744,8 @@
 			baseConfigurationReference = 79A46CB94CB6EE86EFED9B23 /* Pods-duducar.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Kai Yang (6W79MPUU9K)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Kai Yang (6W79MPUU9K)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/BaiduMap_IOSSDK_v2.9.1_All",
@@ -739,7 +757,7 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.guokrspace.duducar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "75ff8405-f8ff-4dd0-95ae-5676f1617180";
 			};
 			name = Release;
 		};

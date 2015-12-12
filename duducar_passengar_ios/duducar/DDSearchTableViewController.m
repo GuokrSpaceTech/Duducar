@@ -79,9 +79,9 @@ static NSString *cellidentify = @"resultItem";
         [self.navigationController popViewControllerAnimated:YES];
     } else if(_endPointCompletionHandler!=nil) {
         _endPointCompletionHandler(selectedAddr);
-        
-        CostEstimationViewController *costVC = [[CostEstimationViewController alloc]initWithNibName:@"CostEstimationViewController" bundle:nil];
-        [self.navigationController pushViewController:costVC animated:YES];
+        [self.navigationController popViewControllerAnimated:YES];
+//        CostEstimationViewController *costVC = [[CostEstimationViewController alloc]initWithNibName:@"CostEstimationViewController" bundle:nil];
+//        [self.navigationController pushViewController:costVC animated:YES];
     }
 }
 
