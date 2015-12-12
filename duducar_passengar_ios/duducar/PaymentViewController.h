@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface PaymentViewController : UIViewController
+- (IBAction)paymentAction:(id)sender;
 
 @end

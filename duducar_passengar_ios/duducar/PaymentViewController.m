@@ -7,6 +7,7 @@
 //
 
 #import "PaymentViewController.h"
+#import "RatingViewController.h"
 
 @interface PaymentViewController ()
 
@@ -37,4 +38,8 @@
 }
 */
 
+- (IBAction)paymentAction:(id)sender {
+    RatingViewController *rateVC = [[RatingViewController alloc] initWithNibName:@"RatingViewController" bundle:nil];
+    [self.navigationController pushViewController:rateVC animated:YES];
+}
 @end
