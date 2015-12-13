@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import <BaiduMapAPI_Map/BMKMapComponent.h>
+#import <AlipaySDK/AlipaySDK.h>
 #import "LoginViewController.h"
 #import "UIColor+RCColor.h"
 #import "DDMainViewController.h"
@@ -31,34 +32,15 @@ BMKMapManager* _mapManager;
         
     // 要使用百度地图，请先启动BaiduMapManager
     _mapManager = [[BMKMapManager alloc]init];
-    BOOL ret = [_mapManager start:@"RSkGZjTYcKnpnbyL9la7EACg" generalDelegate:self];
+    BOOL ret = [_mapManager start:@"pAqrNjjrWSzPHrAlfd3DQHSx" generalDelegate:self];
     if (!ret) {
         NSLog(@"Baidu Map Manager Starting Failed!");
     }
-    [[DDSocket currentSocket] startSocket];
-    //登录
-    
-    NSString *token =[[NSUserDefaults standardUserDefaults] objectForKey:@"userToken"];
-    NSString *userName = [[NSUserDefaults standardUserDefaults] objectForKey:@"userName"];
-    NSString *password = [[NSUserDefaults standardUserDefaults] objectForKey:@"userPwd"];
-    
-    //User has logged in
-//    if(token.length && userName.length && password.length)
-//    {
-//        DDMainViewController * mainVC = [[DDMainViewController alloc]init];
-//        UINavigationController * navigation = [[UINavigationController alloc] initWithRootViewController:mainVC];
-//        self.window.rootViewController = navigation;
-//        
-//    } else { //User not logged in
-//        LoginViewController *loginVC = [[LoginViewController alloc] init];
-//        UINavigationController *_navi =
-//        [[UINavigationController alloc] initWithRootViewController:loginVC];
-//        self.window.rootViewController = _navi;
-//    }
     
     DDMainViewController * mainVC = [[DDMainViewController alloc]init];
     UINavigationController * navigation = [[UINavigationController alloc] initWithRootViewController:mainVC];
     self.window.rootViewController = navigation;
+    
     //统一导航条样式
     UIFont *font = [UIFont systemFontOfSize:19.f];
     NSDictionary *textAttributes = @{
@@ -70,6 +52,8 @@ BMKMapManager* _mapManager;
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithHexString:@"0195ff" alpha:1.0f]];
     
     [self.window makeKeyAndVisible];
+    
+    [[DDSocket currentSocket] startSocket];
     
     // Override point for customization after application launch.
     return YES;
@@ -98,6 +82,40 @@ BMKMapManager* _mapManager;
 }
 
 
+- (void)onGetNetworkState:(int)iError
+{
+    
+}
 
+/**
+ *返回授权验证错误
+ *@param iError 错误号 : 为0时验证通过，具体参加BMKPermissionCheckResultCode
+ */
+- (void)onGetPermissionState:(int)iError
+{
+    
+}
+
+#pragma mark
+#pragma mark == Alipay Delegate
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    
+    //如果极简开发包不可用，会跳转支付宝钱包进行支付，需要将支付宝钱包的支付结果回传给开发包
+    if ([url.host isEqualToString:@"safepay"]) {
+        [[AlipaySDK defaultService] processOrderWithPaymentResult:url standbyCallback:^(NSDictionary *resultDic) {
+            //【由于在跳转支付宝客户端支付的过程中，商户app在后台很可能被系统kill了，所以pay接口的callback就会失效，请商户对standbyCallback返回的回调结果进行处理,就是在这个方法里面处理跟callback一样的逻辑】
+            NSLog(@"result = %@",resultDic);
+        }];
+    }
+    if ([url.host isEqualToString:@"platformapi"]){//支付宝钱包快登授权返回authCode
+        
+        [[AlipaySDK defaultService] processAuthResult:url standbyCallback:^(NSDictionary *resultDic) {
+            //【由于在跳转支付宝客户端支付的过程中，商户app在后台很可能被系统kill了，所以pay接口的callback就会失效，请商户对standbyCallback返回的回调结果进行处理,就是在这个方法里面处理跟callback一样的逻辑】
+            NSLog(@"result = %@",resultDic);
+        }];
+    }
+    return YES;
+}
 
 @end

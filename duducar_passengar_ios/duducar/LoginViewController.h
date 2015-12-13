@@ -10,10 +10,7 @@
 #import "RCAnimatedImagesView.h"
 #import "RCUnderlineTextField.h"
 #import "UIColor+RCColor.h"
-@import CocoaAsyncSocket;
 
 @interface LoginViewController : UIViewController<RCAnimatedImagesViewDelegate>
-{
-    GCDAsyncSocket *asyncSocket;
-}
+
 @end

@@ -44,16 +44,15 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         [formatter setReplacementString:@"socket-cf" forQueueLabel:GCDAsyncSocketThreadName];
         
         [[DDTTYLogger sharedInstance] setLogFormatter:formatter];
-        
+        [DDLog addLogger:[DDTTYLogger sharedInstance]];
+
     }
     return self;
 }
 
 - (void)startSocket
 {
-
     asyncSocket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
-    
     
     NSError *error = nil;
     
@@ -192,6 +191,8 @@ completionHandler:(void (^)(BOOL shouldTrustPeer))completionHandler
     //
     
     DDLogVerbose(@"socketDidDisconnect:withError: \"%@\"", err);
+    
+//    [self startSocket];
 }
 
 #pragma mark

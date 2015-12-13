@@ -19,12 +19,22 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>HCSStarRatingView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Masonry.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
 		<key>Pods-duducar.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>SDWebImage.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -47,7 +57,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DEEC2B53DCEEE36CB8448ED6B49CF482</key>
+		<key>ADBEA4D6BF9C4F9CE128C39B696CEEDC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>DD65858066A030AD07D060979F4E4958</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E3CA83DF49D20F850D9EA0C2E9DC6DAA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
