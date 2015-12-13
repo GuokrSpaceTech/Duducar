@@ -2,57 +2,75 @@ package com.guokrspace.duducar.communication.message;
 
 import java.io.Serializable;
 
-//{"id":29,"orderNum":"12345678889","driver_id":3,"passenger_id":3,"passenger_mobile":"13900000002",
-//        "start":"\u6e56\u5357\u7701\u957f\u6c99\u5e02\u5cb3\u9e93\u533a\u767b\u9ad8\u8def4-2",
-//        "destination":"\u83ab\u4fea\u82b1\u56ed","start_lat":28.185693,"start_lng":112.949612,
-//        "destination_lat":28.185693,"destination_lng":112.949612,"start_time":1447162569,
-//        "end_time":1447162579,"pre_mileage":"0.00","pre_price":"0.00","car_type":1,"rent_type":0,"additional_price":null,
-//        "org_price":"0.01","isCancel":null,
-//        "mileage":"0.0","sumprice":null,"create_time":1447162560,"isCityline":0,"cityline_id":null,"pay_time":null,"pay_type":null,"status":4,"rating":0}}
+//\"id\":1139,\"orderNum\":\"2015121219231450485797\",
+// \"driver_id\":5,
+// \"passenger_id\":4,\"passenger_mobile\":\"13700000003\"
+// ,\"start\":\"\\u6e56\\u5357\\u7701\\u957f\\u6c99\\u5e02\\u5cb3\\u9e93\\u533a\\u9e93\\u5c71\\u5357\\u8def\",\"d
+// estination\":\"\\u65b0\\u5409\\u7965\\u7f51\\u554a\",\
+// "start_lat\":28.185328,\"start_lng\":112.949661,\"destination_lat\":28.185328,\"destination_lng\":112.949661,\
+// "start_time\":1449913836,
+// \"end_time\":1449919394,\
+// "pre_mileage\":\"0.00\",\"pre_price\":\"0.00\",\
+// "car_type\":1,\"rent_type\":0,\"additional_price\":\"0.00\",
+// \"org_price\":\"0.11\",\"add_price1\":\"0\",\"add_price2\":\"0\",\"add_price3\"
+// :\"0\",\"isCancel\":0,\"mileage\":\"0.00\",\"sumprice\":\"0.11\",\"low_speed_time\":\"10\",
+// \"create_time\":1449913797,
+// \"isCityline\":0,\"cityline_id\":0,\
+// "pay_time\":0,\"pay_type\":0,\"pay_role\":1,\"status\":4,
+// \"rating\":0,\
+// "driver\":\"{\\\"name\\\":\\\"\\\\u
+// 738b\\\\u5e08\\\\u5085\\\",\\\"mobile\\\":\\\"
+// 13900000005\\\",\\\"avatar\\\":\\\"http:\\\\\\\/\\\\\\\/120.24.237.15:83\\\\\\\/Uploads\\\\\\\/Pict
+// ure\\\\\\\/2015-11-10\\\\\\\/444444444444444440.j
+// pg\\\",\\\"plate\\\":\\\"\\\\u6e58A3366A\\\",\\\"pic
+// ture\\\":\\\"http:\\\\\\\/\\\\\\\/120.24.237.15:
+// 83\\\\\\\/Uploads\\\\\\\/Picture\\\\\\\/2015-11-10\\\\\\\/1496144_229305.jpg\\\",\
+// \\"description\\\":\\\" \\\\u94f6\\\\u7070\\\\u8272\\\\u6717\\\\u9038\\\"}\"}",
+
 public class OrderDetail implements Serializable{
-    int id;
-    String orderNum;
-    int driver_id;
-    String driver_mobile;
-    int passenger_id;
-    String passenger_mobile;
-    String start;
-    String destination;
-    Double start_lat;
-    Double start_lng;
-    Double destination_lat;
-    Double destination_lng;
-    Long start_time;
-    Long end_time;
-    String pre_mileage;
-    String pre_price;
-    int car_type;
-    int rent_type;
-    String addtional_price;
-    String org_price;
-    String add_price1;
-    String add_price2;
-    String add_price3;
-    String isCancel;
-    String mileage;
-    String sumprice;
-    String low_speed_time;
-    Long create_time;
-    int isCityline;
-    String cityline_id;
-    String pay_time;
-    String pay_type;
-    String pay_role;
+    public String id;
+    public String orderNum;
+    public String driver_id;
+    public String passenger_id;
+    public String passenger_mobile;
+    public String start;
+    public String destination;
+    public String start_lat;
+    public String start_lng;
+    public String destination_lat;
+    public String destination_lng;
+    public String start_time;
+    public String end_time;
+    public String pre_mileage;
+    public String pre_price;
+    public String car_type;
+    public String rent_type;
+    public String addtional_price;
+    public String org_price;
+    public String add_price1;
+    public String add_price2;
+    public String add_price3;
+    public String isCancel;
+    public String mileage;
+    public String sumprice;
+    public String low_speed_time;
+    public String create_time;
+    public String isCityline;
+    public String cityline_id;
+    public String pay_time;
+    public String pay_type;
+    public String pay_role;
 
-    int status;
-    int rating;
+    public String status;
+    public String rating;
+    public String driver;
 
-    public String getDriver_mobile() {
-        return driver_mobile;
+    public String getDriver() {
+        return driver;
     }
 
-    public void setDriver_mobile(String driver_mobile) {
-        this.driver_mobile = driver_mobile;
+    public void setDriver(String driver) {
+        this.driver = driver;
     }
 
     public String getAdd_price1() {
@@ -95,11 +113,11 @@ public class OrderDetail implements Serializable{
         this.pay_role = pay_role;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -111,19 +129,19 @@ public class OrderDetail implements Serializable{
         this.orderNum = orderNum;
     }
 
-    public int getDriver_id() {
+    public String getDriver_id() {
         return driver_id;
     }
 
-    public void setDriver_id(int driver_id) {
+    public void setDriver_id(String driver_id) {
         this.driver_id = driver_id;
     }
 
-    public int getPassenger_id() {
+    public String getPassenger_id() {
         return passenger_id;
     }
 
-    public void setPassenger_id(int passenger_id) {
+    public void setPassenger_id(String passenger_id) {
         this.passenger_id = passenger_id;
     }
 
@@ -151,51 +169,51 @@ public class OrderDetail implements Serializable{
         this.destination = destination;
     }
 
-    public Double getStart_lat() {
+    public String getStart_lat() {
         return start_lat;
     }
 
-    public void setStart_lat(Double start_lat) {
+    public void setStart_lat(String start_lat) {
         this.start_lat = start_lat;
     }
 
-    public Double getStart_lng() {
+    public String getStart_lng() {
         return start_lng;
     }
 
-    public void setStart_lng(Double start_lng) {
+    public void setStart_lng(String start_lng) {
         this.start_lng = start_lng;
     }
 
-    public Double getDestination_lat() {
+    public String getDestination_lat() {
         return destination_lat;
     }
 
-    public void setDestination_lat(Double destination_lat) {
+    public void setDestination_lat(String destination_lat) {
         this.destination_lat = destination_lat;
     }
 
-    public Double getDestination_lng() {
+    public String getDestination_lng() {
         return destination_lng;
     }
 
-    public void setDestination_lng(Double destination_lng) {
+    public void setDestination_lng(String destination_lng) {
         this.destination_lng = destination_lng;
     }
 
-    public Long getStart_time() {
+    public String getStart_time() {
         return start_time;
     }
 
-    public void setStart_time(Long start_time) {
+    public void setStart_time(String start_time) {
         this.start_time = start_time;
     }
 
-    public Long getEnd_time() {
+    public String getEnd_time() {
         return end_time;
     }
 
-    public void setEnd_time(Long end_time) {
+    public void setEnd_time(String end_time) {
         this.end_time = end_time;
     }
 
@@ -215,19 +233,19 @@ public class OrderDetail implements Serializable{
         this.pre_price = pre_price;
     }
 
-    public int getCar_type() {
+    public String getCar_type() {
         return car_type;
     }
 
-    public void setCar_type(int car_type) {
+    public void setCar_type(String car_type) {
         this.car_type = car_type;
     }
 
-    public int getRent_type() {
+    public String getRent_type() {
         return rent_type;
     }
 
-    public void setRent_type(int rent_type) {
+    public void setRent_type(String rent_type) {
         this.rent_type = rent_type;
     }
 
@@ -271,19 +289,19 @@ public class OrderDetail implements Serializable{
         this.sumprice = sumprice;
     }
 
-    public Long getCreate_time() {
+    public String getCreate_time() {
         return create_time;
     }
 
-    public void setCreate_time(Long create_time) {
+    public void setCreate_time(String create_time) {
         this.create_time = create_time;
     }
 
-    public int getIsCityline() {
+    public String getIsCityline() {
         return isCityline;
     }
 
-    public void setIsCityline(int isCityline) {
+    public void setIsCityline(String isCityline) {
         this.isCityline = isCityline;
     }
 
@@ -311,19 +329,19 @@ public class OrderDetail implements Serializable{
         this.pay_type = pay_type;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public int getRating() {
+    public String getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(String rating) {
         this.rating = rating;
     }
 }

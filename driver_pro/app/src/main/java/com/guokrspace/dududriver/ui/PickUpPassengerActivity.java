@@ -559,6 +559,23 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final AlertDialog.Builder alertrDialog = new AlertDialog.Builder(PickUpPassengerActivity.this);
+                alertrDialog.setMessage("订单正在执行, 请确认完成订单!");
+                alertrDialog.setCancelable(true);
+
+                alertrDialog.setNegativeButton("继续执行", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                alertrDialog.show();
+            }
+        });
+
 
         if(timer != null){
             timer.cancel();
@@ -872,39 +889,39 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         public void onJumpToNavigator() {
             //TODO 进入导航模式需要调整地图
             isNavigationNow = true;
-//            Intent intent = new Intent(PickUpPassengerActivity.this, NaviActivity.class);
-//            Bundle bundle = new Bundle();
-//            bundle.putSerializable("daddy", (BNRoutePlanNode) mBNRoutePlanNode);
-//            intent.putExtras(bundle);
-//            Log.e("daddy", "start navigation");
-//            startActivity(intent);
-            btnNavi.setText("停止导航");
-            Log.e("daddy navi", "jump to navigation");
-
-            naviView = BNRouteGuideManager.getInstance().onCreate(PickUpPassengerActivity.this, new BNRouteGuideManager.OnNavigationListener() {
-                @Override
-                public void onNaviGuideEnd() {
-                    //TODO 导航结束
-                    isNavigationNow = false;
-                }
-
-                @Override
-                public void notifyOtherAction(int i, int i1, int i2, Object o) {
-                    Log.e("daddy navi guide", "notify" + i + " " + i1 + " " + i2);
-
-                }
-
-            });
-            Log.e("daddy navigation", "view " + naviView.getWidth() + " " + naviView.getAlpha());
+            Intent intent = new Intent(PickUpPassengerActivity.this, NaviActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("daddy", (BNRoutePlanNode) mBNRoutePlanNode);
+            intent.putExtras(bundle);
+            Log.e("daddy", "start navigation");
+            startActivity(intent);
+//            btnNavi.setText("停止导航");
+//            Log.e("daddy navi", "jump to navigation");
+//
+//            naviView = BNRouteGuideManager.getInstance().onCreate(PickUpPassengerActivity.this, new BNRouteGuideManager.OnNavigationListener() {
+//                @Override
+//                public void onNaviGuideEnd() {
+//                    //TODO 导航结束
+//                    isNavigationNow = false;
+//                }
+//
+//                @Override
+//                public void notifyOtherAction(int i, int i1, int i2, Object o) {
+//                    Log.e("daddy navi guide", "notify" + i + " " + i1 + " " + i2);
+//
+//                }
+//
+//            });
+//            Log.e("daddy navigation", "view " + naviView.getWidth() + " " + naviView.getAlpha());
 //            mNaviFrame.addView(naviView);
 //            Log.e("daddy navigation", "add view success");
 //            mMapview.removeAllViews();
 //            mMapview.addView(naviView, 1);
-            naviView.refreshDrawableState();
-            mMapNavi.setVisibility(View.VISIBLE);
-            mMapNavi.addView(naviView);
-            BNavigator.getInstance().startNav();
-            mMapview.setVisibility(View.GONE);
+//            naviView.refreshDrawableState();
+//            mMapNavi.setVisibility(View.VISIBLE);
+//            mMapNavi.addView(naviView);
+//            BNavigator.getInstance().startNav();
+//            mMapview.setVisibility(View.GONE);
 
 //            Log.e("daddy navigation", "mapview gone");
         }
