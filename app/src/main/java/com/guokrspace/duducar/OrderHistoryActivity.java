@@ -2,7 +2,6 @@ package com.guokrspace.duducar;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,15 +11,9 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
-import com.dexafree.materialList.card.Card;
-import com.dexafree.materialList.card.CardProvider;
-import com.dexafree.materialList.card.OnActionClickListener;
-import com.dexafree.materialList.card.action.WelcomeButtonAction;
 import com.dexafree.materialList.view.MaterialListView;
 import com.guokrspace.duducar.adapter.OrdersAdapter;
 import com.guokrspace.duducar.database.OrderRecord;
@@ -73,7 +66,6 @@ public class OrderHistoryActivity extends AppCompatActivity{
         initToolBar();
 
         orderRecords.addAll(mApplication.mDaoSession.getOrderRecordDao().queryBuilder().list());
-        Log.e("hyman_orderrecord", orderRecords.size() + "");
         mRecyclerView = (RecyclerView) findViewById(R.id.order_records_recyclerview);
         mAdapter = new OrdersAdapter(mContext, orderRecords);
         mAdapter.setOnItemClickListener(new OrdersAdapter.OnItemClickListener() {

@@ -118,7 +118,6 @@ public class RatingActivity extends ActionBarActivity {
             driverNameTextView.setText(mDriver.getName());
             carPlateNumberTextView.setText(mDriver.getPlate());
             carDescriptionTextView.setText(mDriver.getDescription());
-            ratingBarSmall.setRating(mDriver.getRating());
             phoneImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

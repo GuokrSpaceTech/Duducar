@@ -28,7 +28,7 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <com.guokrspace.dududriver.ui.HymanScrollView
+        <com.guokrspace.dududriver.view.HymanScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="none">
@@ -123,7 +123,7 @@
                     android:padding="16dip"
                     android:scrollbars="none" />
             </LinearLayout>
-        </com.guokrspace.dududriver.ui.HymanScrollView>
+        </com.guokrspace.dududriver.view.HymanScrollView>
     </view>
 
 </LinearLayout>

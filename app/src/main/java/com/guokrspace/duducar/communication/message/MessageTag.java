@@ -64,6 +64,9 @@ public class MessageTag {
     public static final int DRIVER_PAY = 0x1011;
     public static final int NEW_MESSAGE = 0x1013;
     public static final int DRIVER_POSITION = 0x1014;
+    public static final int BASEINFO = 0x1016;
+    public static final int CANCEL_ORDER = 0x1018;
+
 
     public static MessageTag getInstance(){
         if(s_instance == null) new MessageTag();
@@ -96,6 +99,8 @@ public class MessageTag {
         MessageTag.put("current_charge", CURRENT_TRIP_FEE);
         MessageTag.put("new_message", NEW_MESSAGE);
         MessageTag.put("driver_position", DRIVER_POSITION);
+        MessageTag.put("baseinfo", BASEINFO);
+        MessageTag.put("cancel_order", CANCEL_ORDER);
     }
 
     public int Tag(String command)

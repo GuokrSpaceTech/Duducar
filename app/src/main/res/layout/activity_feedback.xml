@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/de_actionbar_bg">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:text="帮助与反馈"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </android.support.v7.widget.Toolbar>
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:indeterminate="true"
+        android:visibility="invisible"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="36dp">
+
+        <TextView
+            android:id="@+id/feedback_titile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="请您提出宝贵的意见："
+            android:textColor="@color/lite_blue"
+            android:textSize="17sp"
+            android:layout_marginBottom="10dp"/>
+
+        <EditText
+            android:id="@+id/feedback_edittext"
+            android:layout_below="@id/feedback_titile"
+            android:layout_width="fill_parent"
+            android:layout_height="180dp"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/edittext_bg_selector"
+            android:gravity="top|left"
+            android:hint="反馈字数不超过200字"
+            android:imeOptions="actionDone"
+            android:inputType=""
+            android:lineSpacingExtra="3dp"
+            android:maxLength="200"
+            android:padding="5dip"
+            android:textColor="@android:color/black"
+            android:textSize="15sp" />
+        <Button
+            android:id="@+id/publish_button"
+            android:layout_below="@id/feedback_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginBottom="6dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/evaluate_btn_bg_selector"
+            android:gravity="center"
+            android:text="提交反馈"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:onClick="publishFeedBack"/>
+    </RelativeLayout>
+
+</LinearLayout>

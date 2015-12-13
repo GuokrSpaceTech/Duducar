@@ -1,6 +1,7 @@
 package com.guokrspace.duducar;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -26,6 +27,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     private ShSwitchView switchView;
     private RelativeLayout soundSettingLayout;
     private RelativeLayout updateApkLayout;
+    private RelativeLayout feedbackLayout;
 
 
     @Override
@@ -44,8 +46,10 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
         soundSettingLayout = (RelativeLayout) findViewById(R.id.sound_setting_layout);
         updateApkLayout = (RelativeLayout) findViewById(R.id.apk_update_layout);
+        feedbackLayout = (RelativeLayout) findViewById(R.id.feedback_layout);
         soundSettingLayout.setOnClickListener(this);
         updateApkLayout.setOnClickListener(this);
+        feedbackLayout.setOnClickListener(this);
 
     }
 
@@ -95,6 +99,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                     }
                 });
                 UmengUpdateAgent.forceUpdate(context);
+                break;
+            case R.id.feedback_layout:
+                startActivity(new Intent(this, FeedBackActivity.class));
                 break;
             default:
                 break;

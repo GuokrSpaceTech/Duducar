@@ -29,6 +29,12 @@ public class SharedPreferencesUtils {
 
 	public static final String COMFIRM_TRADE_RESULT_SID = "tradeSid";
 
+	public static final String BASEINFO_COMMENTS = "comments";
+
+	public static final String BASEINFO_COMPLAINTS = "complaints";
+
+	public static final String BASEINFO_CANCEL_REASONS = "cancel_reasons";
+
 	/**
 	 * 保存单个数据的方法，我们需要拿到保存数据的具体类型，然后根据类型调用不同的保存方法
 	 * 

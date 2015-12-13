@@ -43,4 +43,6 @@
     <color name="materialGreen">#FF34A350</color>
 
     <color name="navpage">#FFE1E8EB</color>
+    <color name="complain_btn_color">#BED6FF</color>
+    <color name="dim_foreground_dark">#bebebe</color>
 </resources>

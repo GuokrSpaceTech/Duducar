@@ -115,7 +115,6 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
                         isRefreshing = false;
                         HistoryOrderResponseModel responseModel = null;
                         if (!TextUtils.isEmpty(messageBody)) {
-                            Log.e("hyman_log", "加载成功" + messageBody);
 //                                responseModel = FastJsonTools.getObject(messageBody, HistoryOrderResponseModel.class);
                             responseModel = new Gson().fromJson(messageBody, HistoryOrderResponseModel.class);
                         }

@@ -15,6 +15,7 @@ import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
@@ -29,6 +30,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ZoomControls;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -63,9 +67,12 @@ import com.guokrspace.duducar.database.PersonalInformation;
 import com.guokrspace.duducar.ui.DrawerView;
 import com.guokrspace.duducar.ui.OrderConfirmationView;
 import com.guokrspace.duducar.ui.WinToast;
+import com.guokrspace.duducar.util.SharedPreferencesUtils;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -573,6 +580,49 @@ public class PreOrderActivity extends AppCompatActivity
             case RESULT_OK:
             if (requestCode == ACTVITY_LOGIN_REQUEST) {
                 drawerView.refreshMenuView();
+                //获取baseinfo信息
+                SocketClient.getInstance().getBaseInfoRequest("2", new ResponseHandler(Looper.myLooper()) {
+                    @Override
+                    public void onSuccess(String messageBody) {
+                        String comments = "";
+                        String complaints = "";
+                        String cancel_reasons = "";
+                        if (!TextUtils.isEmpty(messageBody)) {
+                            JSONObject responseObj = JSON.parseObject(messageBody);
+                            if (responseObj != null) {
+                                if (responseObj.containsKey("comments")) {
+                                    JSONArray commentsList = responseObj.getJSONArray("comments");
+                                    comments = commentsList.toJSONString();
+                                }
+                                if (responseObj.containsKey("complaint")) {
+                                    JSONArray complaintList = responseObj.getJSONArray("complaint");
+                                    complaints = complaintList.toJSONString();
+                                }
+                                if (responseObj.containsKey("cancel_order_reason")) {
+                                    JSONArray reasonList = responseObj.getJSONArray("cancel_order_reason");
+                                    cancel_reasons = reasonList.toJSONString();
+                                }
+                                Map<String, Object> baseinfo = new HashMap<>();
+                                baseinfo.put(SharedPreferencesUtils.BASEINFO_COMMENTS, comments);
+                                baseinfo.put(SharedPreferencesUtils.BASEINFO_COMPLAINTS, complaints);
+                                baseinfo.put(SharedPreferencesUtils.BASEINFO_CANCEL_REASONS, cancel_reasons);
+                                SharedPreferencesUtils.setParams(mContext, baseinfo);
+                            }
+                        }
+
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+                        showToast("获取baseinfo失败~");
+                    }
+
+                    @Override
+                    public void onTimeout() {
+                        showToast("获取baseinfo超时...");
+
+                    }
+                });
             } else if (requestCode == ACTIVITY_SEARCH_START_REQUEST) {
 
                 Bundle bundle = data.getExtras();
@@ -628,6 +678,10 @@ public class PreOrderActivity extends AppCompatActivity
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void showToast(String msg) {
+        Toast.makeText(PreOrderActivity.this, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override

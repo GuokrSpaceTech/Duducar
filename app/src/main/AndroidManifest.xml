@@ -128,6 +128,12 @@
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
             android:label="投诉" />
+        <activity
+            android:name=".FeedBackActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:windowSoftInputMode="stateVisible|adjustUnspecified"
+            android:exported="false"
+            android:label="帮助与反馈" />
 
         <!-- wepay init end -->
 

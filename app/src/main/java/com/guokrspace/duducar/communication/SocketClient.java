@@ -429,5 +429,48 @@ public class SocketClient {
         return ret;
     }
 
+    /*
+     * 获取乘客端基本信息，
+     * @author hyman
+     * @param role
+     * @param handler
+     * @return
+     */
+    public int getBaseInfoRequest(String role, ResponseHandler handler) {
+        int ret = -1;
+        JSONObject carmsg = new JSONObject();
+        try {
+            carmsg.put("cmd", MessageTag.getInstance().Command(MessageTag.BASEINFO));
+            carmsg.put("role", role);
+            ret = sendMessage(carmsg, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return ret;
+    }
+
+
+    /* 乘客在等待司机，还没上车的这个阶段取消订单，要提交取消原因
+     * @author hyman
+     * @param reason_id
+     * @param role
+     * @param handler
+     * @return
+     */
+    public int sendCancelOrderRequest(int reason_id, String role, ResponseHandler handler) {
+        int ret = -1;
+        JSONObject carmsg = new JSONObject();
+        try {
+            carmsg.put("cmd", MessageTag.getInstance().Command(MessageTag.CANCEL_ORDER));
+            carmsg.put("role", role);
+            carmsg.put("reason_id", reason_id);
+            ret = sendMessage(carmsg, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
 
 }

@@ -1,4 +1,4 @@
-package com.guokrspace.dududriver.ui;
+package com.guokrspace.dududriver.view;
 
 import android.content.Context;
 import android.graphics.Rect;

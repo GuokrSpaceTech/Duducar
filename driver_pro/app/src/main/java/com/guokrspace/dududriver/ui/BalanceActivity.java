@@ -79,7 +79,7 @@ public class BalanceActivity extends BaseActivity implements Handler.Callback{
             if (isNetworkAvailable()) {
                 currentBillId = Long.MAX_VALUE;
                 mHandler.sendEmptyMessageDelayed(HANDLE_REFRESH_OVER, 1000l);
-                // TODO 刷新、获取历史订单数据
+                // TODO 刷新、获取账单流水数据
                 /*SocketClient.getInstance().getHistoryOrders("old", Constants.ORDER_PAGE_NUM, currentOrderId, new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
@@ -206,7 +206,9 @@ public class BalanceActivity extends BaseActivity implements Handler.Callback{
     public boolean handleMessage(Message msg) {
         switch (msg.what){
             case HANDLE_REFRESH_OVER:
-                mRefreshLayout.setRefreshing(false);
+                if (mRefreshLayout != null) {
+                    mRefreshLayout.setRefreshing(false);
+                }
                 showToast("加载完成");
                 isRefreshing = false;
                 break;

@@ -112,7 +112,6 @@
             android:label="订单地图" />
         <activity
             android:name=".ui.PayCostActivity"
-            android:configChanges="keyboardHidden|orientation"
             android:label="账单支付"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             android:configChanges="keyboardHidden|orientation"/>

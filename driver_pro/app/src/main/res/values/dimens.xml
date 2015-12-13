@@ -7,7 +7,7 @@
          https://developer.android.com/design/patterns/navigation-drawer.html -->
     <dimen name="navigation_drawer_width">240dp</dimen>
 
-    <dimen name="padding_indicator">12dp</dimen>
+    <dimen name="padding_indicator">20dp</dimen>
     <dimen name="text_size_indicator">18dp</dimen>
     <dimen name="grid_item_margin">5dp</dimen>
     <dimen name="bill_item_padding">36dp</dimen>

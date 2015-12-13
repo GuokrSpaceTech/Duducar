@@ -1,6 +1,7 @@
 package com.guokrspace.duducar;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,19 +13,26 @@ import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ZoomControls;
 
+import com.alibaba.fastjson.JSON;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -42,10 +50,14 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.guokrspace.duducar.adapter.CancelReasonAdapter;
 import com.guokrspace.duducar.common.Constants;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
 import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
+import com.guokrspace.duducar.communication.http.model.IdAndValueModel;
 import com.guokrspace.duducar.communication.message.ChargeDetail;
 import com.guokrspace.duducar.communication.message.DriverInfo;
 import com.guokrspace.duducar.communication.message.MessageTag;
@@ -53,12 +65,16 @@ import com.guokrspace.duducar.communication.message.NearByCars;
 import com.guokrspace.duducar.communication.message.SearchLocation;
 import com.guokrspace.duducar.communication.message.TripOver;
 import com.guokrspace.duducar.communication.message.TripStart;
+import com.guokrspace.duducar.database.CommonUtil;
 import com.guokrspace.duducar.database.OrderRecord;
 import com.guokrspace.duducar.ui.DriverInformationView;
+import com.guokrspace.duducar.util.DisplayUtils;
+import com.guokrspace.duducar.util.SharedPreferencesUtils;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -66,6 +82,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import me.drakeet.materialdialog.MaterialDialog;
 
 public class PostOrderActivity extends AppCompatActivity {
 
@@ -81,8 +99,14 @@ public class PostOrderActivity extends AppCompatActivity {
     boolean isStartFollow = false;
     ProgressBar mProgressBar;
     Toolbar mToolbar;
+    Button cancelButton;
+
+    MaterialDialog cancelDialog;
+    ProgressDialog progressDialog;
 
     int state;
+
+    private IdAndValueModel reasonSelected;
 
     //Baidu Map Location
     MapView mMapView = null;
@@ -119,6 +143,10 @@ public class PostOrderActivity extends AppCompatActivity {
     final static int ORDER_CANCEL_CONFIRMED = 4;
     final static int INCAR = 5;
     final static int ORDER_COMPETED = 6;
+    final static int CANCEL_ORDER_SUCCESS = 7;
+    final static int CANCEL_ORDER_FAILURE = 8;
+    final static int CANCEL_ORDER_TIMEOUT = 9;
+
 
     private Timer timer;
 
@@ -155,6 +183,7 @@ public class PostOrderActivity extends AppCompatActivity {
 
                         orderStatusString = "出租车即将到达";
                         getSupportActionBar().setTitle(orderStatusString);
+                        cancelButton.setVisibility(View.VISIBLE);
 
                         if (driver != null) {
                             updateDriverUI(driver);
@@ -171,6 +200,7 @@ public class PostOrderActivity extends AppCompatActivity {
 
                     break;
                 case MessageTag.MESSAGE_CAR_ARRIVED:
+                    cancelButton.setVisibility(View.GONE);
                     orderStatusString = "已经上车";
                     getSupportActionBar().setTitle(orderStatusString);
 
@@ -229,6 +259,32 @@ public class PostOrderActivity extends AppCompatActivity {
                         return;
                     drawLine(mBaiduMap, prevLocation, currentLocation);
                     prevLocation = currentLocation;
+                    break;
+                case CANCEL_ORDER_SUCCESS:
+                    String messageBody = (String) message.obj;
+                    progressDialog.dismiss();
+                    showToast("订单已取消！");
+                    PostOrderActivity.this.finish();
+                    break;
+                case CANCEL_ORDER_FAILURE:
+                    progressDialog.dismiss();
+                    String error = (String) message.obj;
+                    if (!TextUtils.isEmpty(error)) {
+                        com.alibaba.fastjson.JSONObject errorJson = JSON.parseObject(error);
+                        String status = errorJson.getString("status");
+                        if (TextUtils.equals(status, "-101")) {
+                            showToast("原本没有订单！");
+
+                        } else if (TextUtils.equals(status, "-102")) {
+                            showToast("已经开始计费，无法取消！");
+                        }
+                        return;
+                    }
+                    showToast("提交失败~");
+                    break;
+                case CANCEL_ORDER_TIMEOUT:
+                    progressDialog.dismiss();
+                    showToast("提交超时~");
                     break;
                 default:
                     break;
@@ -359,6 +415,91 @@ public class PostOrderActivity extends AppCompatActivity {
                 //
             }
         });
+
+        cancelButton = (Button) findViewById(R.id.cancel_btn);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelDialog.show();
+            }
+        });
+        initCancelDialog();
+    }
+
+    /*
+     *  初始化取消订单dialog
+     *  @author hyman
+     */
+    private void initCancelDialog() {
+        cancelDialog = new MaterialDialog(PostOrderActivity.this);
+        cancelDialog.setTitle("请选择取消原因：");
+        LayoutInflater _inflater = LayoutInflater.from(mContext);
+        LinearLayout dialogView = (LinearLayout) _inflater.inflate(R.layout.order_cancel_dialog, null, false);
+        ListView reasonList = (ListView) dialogView.findViewById(R.id.reason_list);
+        final List<IdAndValueModel> idAndValueModels = new ArrayList<>();
+        String reasons = (String) SharedPreferencesUtils.getParam(mContext, SharedPreferencesUtils.BASEINFO_CANCEL_REASONS, "");
+        if (!TextUtils.isEmpty(reasons)) {
+            Log.e("hyman_baseinfo", reasons);
+//            idAndValueModels.addAll(FastJsonTools.getListObject(reasons, IdAndValueModel.class));
+            List<IdAndValueModel> idAndValueModels1 = new Gson().fromJson(reasons, new TypeToken<ArrayList<IdAndValueModel>>() {
+            }.getType());
+            idAndValueModels.addAll(idAndValueModels1);
+            Log.e("hyman_baseinfo", idAndValueModels.size() + " ");
+        }
+        final CancelReasonAdapter _adapter = new CancelReasonAdapter(mContext, idAndValueModels);
+        _adapter.setOnItemCheckedListener(new CancelReasonAdapter.OnItemCheckedListener() {
+            @Override
+            public void onItemChecked(int position) {
+                Toast.makeText(mContext, "选中了 " + (position + 1), Toast.LENGTH_SHORT).show();
+                reasonSelected = idAndValueModels.get(position);
+            }
+        });
+        reasonList.setAdapter(_adapter);
+        cancelDialog.setContentView(dialogView);
+        cancelDialog.setCanceledOnTouchOutside(false);
+        cancelDialog.setNegativeButton("放弃", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                _adapter.clearCheckRecord();
+                cancelDialog.dismiss();
+            }
+        });
+        cancelDialog.setPositiveButton("确定", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                _adapter.clearCheckRecord();
+                cancelDialog.dismiss();
+                //提交取消原因
+                progressDialog = new ProgressDialog(mContext, ProgressDialog.STYLE_SPINNER);
+                progressDialog.show();
+                SocketClient.getInstance().sendCancelOrderRequest(reasonSelected.getId(), "2", new ResponseHandler(Looper.myLooper()) {
+                    @Override
+                    public void onSuccess(String messageBody) {
+
+                        mHandler.sendMessageDelayed(mHandler.obtainMessage(CANCEL_ORDER_SUCCESS, messageBody), 500l);
+
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+
+                        mHandler.sendMessageDelayed(mHandler.obtainMessage(CANCEL_ORDER_FAILURE, error), 500l);
+                    }
+
+                    @Override
+                    public void onTimeout() {
+
+                        mHandler.sendEmptyMessageDelayed(CANCEL_ORDER_TIMEOUT, 500l);
+
+                    }
+                });
+            }
+        });
+
+    }
+
+    private void showToast(String msg) {
+        Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
