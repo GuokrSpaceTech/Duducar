@@ -22,6 +22,9 @@
 #import "PersionInfoViewController.h"
 #import "HisoryViewController.h"
 #import "Location.h"
+
+#import "CallCarViewController.h"
+#import "OrderInfoView.h"
 @interface DDMainViewController ()<BMKMapViewDelegate,BMKLocationServiceDelegate,BMKGeoCodeSearchDelegate,LeftViewDelegate>
 {
     BMKGeoCodeSearch* _geocodesearch;
@@ -36,6 +39,8 @@
     Location * startLocation;
     Location * endLocation;
     Location * currLocation;
+    
+    BOOL isLoginSuccess;
 }
 @property (nonatomic,strong)BMKMapView* mapView ;
 @property (nonatomic,strong)BMKLocationService *locService;
@@ -121,6 +126,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveResponseHandles:) name:responseNotificationName object:nil];
     
+
 }
 
 -(void)leftCilck:(id)sender
@@ -294,17 +300,16 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 
 -(void)callForCab:(id)sender
 {
-    
-    [[DDDatabase sharedDatabase] selectFromPersonInfo:^(NSString *token, NSString *phone) {
-        if(token==nil || phone == nil)
-        {
-            LoginViewController *loginVC = [[LoginViewController alloc]init];
-            [self.navigationController pushViewController:loginVC animated:YES];
-        } else {
-            NSDictionary *paramDict = @{@"cmd":@"login", @"role":@"2", @"mobile":phone, @"token":token};
-            [[DDSocket currentSocket] sendLoginRequest:paramDict];
-        }
-    }];
+    if(isLoginSuccess)
+    {
+        CallCarViewController * carVC = [[CallCarViewController alloc]init] ;
+        carVC.startLocation = startLocation;
+        carVC.endLocation = endLocation;
+        [self.navigationController pushViewController:carVC animated:YES];
+    } else {
+        LoginViewController *loginVC = [[LoginViewController alloc]init];
+        [self.navigationController pushViewController:loginVC animated:YES];
+    }
 }
 
 #pragma mark
@@ -323,7 +328,18 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     {
         if([status intValue] == 1)
         {
-            //Kick off the timer
+            [[DDDatabase sharedDatabase] selectFromPersonInfo:^(NSString *token, NSString *phone) {
+                if(token==nil || phone == nil)
+                {
+//                    LoginViewController *loginVC = [[LoginViewController alloc]init];
+//                    [self.navigationController pushViewController:loginVC animated:YES];
+                    isLoginSuccess = false;
+                } else {
+                    NSDictionary *paramDict = @{@"cmd":@"login", @"role":@"2", @"mobile":phone, @"token":token};
+                    [[DDSocket currentSocket] sendLoginRequest:paramDict];
+                }
+            }];
+            
             self.timerCount = 5;
             self.repeatingTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countedTimerAction:) userInfo:nil repeats:YES];
         }
@@ -332,42 +348,39 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     {
         if([status intValue] == 1)
         {
-            NSString *activeOrderJson;
-            
-            if([responseDict objectForKey:@"active_order"])
-            {
-                activeOrderJson = [responseDict objectForKey:@"active_order"];
-            
-                //Deserialastion a Json String into Dictionary
-                NSError *jsonError;
-                NSData  *objectData = [activeOrderJson dataUsingEncoding:NSUTF8StringEncoding];
-                NSDictionary *activeOrder = [NSJSONSerialization JSONObjectWithData:objectData
-                                                                             options:NSJSONReadingMutableContainers
-                                                                               error:&jsonError];
-                PostOrderViewController *postVC = [[PostOrderViewController alloc] init];
-                postVC.activeOrder = activeOrder;
-                [self.navigationController pushViewController:postVC animated:YES];
-            } else {
-            
-            //Login Succedded, 直接叫车
-            NSDictionary *param = @{@"cmd": @"create_order", @"role": @"2", @"start":startLocation.name, @"destination":endLocation.name,
-                                    @"start_lat":@(startLocation.coordinate2D.latitude), @"start_lng":@(startLocation.coordinate2D.longitude),
-                                    @"destination_lat":@(endLocation.coordinate2D.latitude), @"destination_lng":@(endLocation.coordinate2D.longitude),
-                                    @"pre_mileage":@(12), @"pre_price":@(65), @"car_type":@(1)};
-            
-            [[DDSocket currentSocket] sendCarRequest:param];
-            }
-            
+            isLoginSuccess = true;
+//            NSString *activeOrderJson;
+//            
+//            if([responseDict objectForKey:@"active_order"])
+//            {
+//                activeOrderJson = [responseDict objectForKey:@"active_order"];
+//            
+//                //Deserialastion a Json String into Dictionary
+//                NSError *jsonError;
+//                NSData  *objectData = [activeOrderJson dataUsingEncoding:NSUTF8StringEncoding];
+//                NSDictionary *activeOrder = [NSJSONSerialization JSONObjectWithData:objectData
+//                                                                             options:NSJSONReadingMutableContainers
+//                                                                               error:&jsonError];
+//                PostOrderViewController *postVC = [[PostOrderViewController alloc] init];
+//                postVC.activeOrder = activeOrder;
+//                [self.navigationController pushViewController:postVC animated:YES];
+//            } else {
+//            //Login Succedded, 直接叫车
+//            NSDictionary *param = @{@"cmd": @"create_order", @"role": @"2", @"start":startLocation.name, @"destination":endLocation.name,
+//                                    @"start_lat":@(startLocation.coordinate2D.latitude), @"start_lng":@(startLocation.coordinate2D.longitude),
+//                                    @"destination_lat":@(endLocation.coordinate2D.latitude), @"destination_lng":@(endLocation.coordinate2D.longitude),
+//                                    @"pre_mileage":@(12), @"pre_price":@(65), @"car_type":@(1)};
+//            [[DDSocket currentSocket] sendCarRequest:param];
+//            }
         } else {
             //弹出登陆界面
-            LoginViewController *loginVC = [[LoginViewController alloc]init];
-            [self.navigationController pushViewController:loginVC animated:YES];
+//            LoginViewController *loginVC = [[LoginViewController alloc]init];
+//            [self.navigationController pushViewController:loginVC animated:YES];
+            isLoginSuccess = false;
         }
     }
     else if([command isEqualToString:@"get_near_car_resp"])
     {
-        //Hack for now
-        
         if([status intValue] == 1)
         {
             //获取附近车辆信息
@@ -388,7 +401,6 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
                     coor.longitude = lng;
                     pointAnnotation.coordinate = coor;
                     [_mapView addAnnotation:pointAnnotation];
-                    
                     
                 }
             }
@@ -443,7 +455,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         [jsonString appendString:@"\n"];
         NSData *outStr = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
         
-        [[DDSocket currentSocket]sendData:outStr timeOut:-1.0 tag:0];
+       // [[DDSocket currentSocket]sendData:outStr timeOut:-1.0 tag:0];
     }
 }
 @end

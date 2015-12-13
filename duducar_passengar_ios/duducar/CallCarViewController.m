@@ -9,11 +9,21 @@
 #import "CallCarViewController.h"
 #import <BaiduMapAPI_Map/BMKMapComponent.h>
 #import <BaiduMapAPI_Location/BMKLocationComponent.h>
-
-@interface CallCarViewController ()<BMKMapViewDelegate,BMKLocationServiceDelegate>
+#import "Driver.h"
+#import "StartEndView.h"
+#import "OrderInfoView.h"
+#import "CostEstimationViewController.h"
+@interface CallCarViewController ()<BMKMapViewDelegate,BMKLocationServiceDelegate,UIAlertViewDelegate>
 {
     BMKLocationService *_locService;
     BMKMapView * _mapView;
+    
+    StartEndView * startEndView;
+    
+    OrderInfoView * driverInfoView;
+
+    BOOL isDown; //是否是向下滑
+    
 }
 @end
 
@@ -27,12 +37,102 @@
     NSString *command = [responseDict objectForKey:@"cmd"];
     NSNumber *status = [responseDict objectForKey:@"status"];
     
-    if([command isEqualToString:@"create_order"])
+    if([command isEqualToString:@"create_order_resp"])
     {
         if([status integerValue] == 1)
         {
-            //叫车成功
+                //没有错
         }
+    }
+    else if ([command isEqualToString:@"order_accept"])
+    {
+        //有接单
+        if([status intValue] == 1)
+        {
+            NSDictionary * driver = responseDict[@"driver"];
+            
+            self.orderDriver = [[Driver alloc]initWithDic:driver];
+            driverInfoView.driver = self.orderDriver;
+             //更新UI
+            //出现不完全的司机VIew
+            [UIView animateWithDuration:.3 animations:^{
+                driverInfoView.frame = CGRectMake(0, self.view.frame.size.height-150, self.view.frame.size.width, 150);
+                isDown = YES;
+                [driverInfoView smallViewFrame];
+            }];
+
+        }
+   
+       
+        
+    }
+    else if([command isEqualToString:@"cancel_order_resp"])
+    {
+        if([status integerValue] == 1 || [status intValue] == -101)
+        {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        else if([status intValue] == -102)
+        {
+            NSLog(@"不能取消");
+        }
+    }
+    else if([command isEqualToString:@"current_charge"])
+    {
+        //费用
+//        {
+////            cmd = "current_charge";
+////            "current_charge" = "0.01";
+////            "current_mile" = "0.0";
+////            "low_speed_time" = 0;
+//        }
+
+    }
+    else if([command isEqualToString:@"order_end"])
+    {
+
+        //        (lldb) po responseDict
+        //        {
+        //            cmd = "order_end";
+        //            order =     {
+        //                "add_price1" = "<null>";
+        //                "add_price2" = "<null>";
+        //                "add_price3" = "<null>";
+        //                "additional_price" = "0.00";
+        //                "car_type" = 1;
+        //                "cityline_id" = 0;
+        //                "create_time" = 1449920275;
+        //                destination = "\U5317\U4eac\U5c55\U89c8\U9986";
+        //                "destination_lat" = "40.06377";
+        //                "destination_lng" = "116.32138";
+        //                "driver_id" = 3;
+        //                "end_time" = 1449920506;
+        //                id = 1154;
+        //                isCancel = 0;
+        //                isCityline = 0;
+        //                "low_speed_time" = "<null>";
+        //                mileage = "4.650858443200497";
+        //                orderNum = 2015121219414697995097;
+        //                "org_price" = "0.02";
+        //                "passenger_id" = 2;
+        //                "passenger_mobile" = 13700000002;
+        //                "pay_role" = 2;
+        //                "pay_time" = 0;
+        //                "pay_type" = 0;
+        //                "pre_mileage" = "12.00";
+        //                "pre_price" = "65.00";
+        //                rating = 0;
+        //                "rent_type" = 0;
+        //                start = "\U897f\U4e8c\U65d7\U5317\U8def";
+        //                "start_lat" = "40.063761";
+        //                "start_lng" = "116.321411";
+        //                "start_time" = 1449920378;
+        //                status = 4;
+        //                sumprice = "0.02";
+        //            };
+        
+        CostEstimationViewController *costVC = [[CostEstimationViewController alloc]initWithNibName:@"CostEstimationViewController" bundle:nil];
+        [self.navigationController pushViewController:costVC animated:YES];
     }
 }
 
@@ -41,9 +141,32 @@
         _mapView = nil;
     }
 }
+
+#pragma mark -==== 取消订单=====
+-(void)cancelOrder
+{
+    NSDictionary *param = @ {@"cmd": @"cancel_order", @"role": @"2"};
+    
+    [[DDSocket currentSocket] sendCarRequest:param];
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex ==0 )
+    {
+        NSLog(@"取消");
+    }else if(buttonIndex == 1)
+    {
+        //确定
+        [self cancelOrder];
+    }
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    UIBarButtonItem * leftItem = [[UIBarButtonItem alloc]initWithTitle:@"返回" style:UIBarButtonItemStyleDone target:self action:@selector(back:)];
+    self.navigationItem.leftBarButtonItem = leftItem;
     
     _locService = [[BMKLocationService alloc]init];
     [_locService startUserLocationService];
@@ -54,11 +177,67 @@
     _mapView.userTrackingMode = BMKUserTrackingModeNone;//设置定位的状态
     _mapView.showsUserLocation = YES;//显示定位图层
     [self.view addSubview:_mapView];
+    
+    
+    startEndView = [[StartEndView alloc]initWithFrame:CGRectMake(20, 80, self.view.frame.size.width-40, 100)];
+    [self.view addSubview:startEndView];
+    startEndView.startLabel.text = _startLocation.name;
+    startEndView.endLabel.text = _endLocation.name;
+    
+
+    
+    driverInfoView= [[OrderInfoView alloc]initWithFrame:CGRectMake(0, self.view.frame.size.height, self.view.frame.size.width, 150)];
+    driverInfoView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:driverInfoView];
+    [driverInfoView smallViewFrame];
+    
+    UISwipeGestureRecognizer * swap = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swap:)];
+    swap.direction = UISwipeGestureRecognizerDirectionUp;
+    swap.numberOfTouchesRequired =1;
+    [driverInfoView addGestureRecognizer:swap];
+    
+    UISwipeGestureRecognizer * swap1 = [[UISwipeGestureRecognizer alloc]initWithTarget:self action:@selector(swap:)];
+    swap1.direction = UISwipeGestureRecognizerDirectionDown;
+    swap1.numberOfTouchesRequired =1;
+    [driverInfoView addGestureRecognizer:swap1];
+    
     [self callCar];
     
 }
 
+-(void)swap:(UISwipeGestureRecognizer *)tap
+{
+    if(tap.direction == UISwipeGestureRecognizerDirectionDown)
+    {
+        NSLog(@"sown");
+        if(isDown==NO)
+        {
+            [UIView animateWithDuration:0.3 animations:^{
+                driverInfoView.frame = CGRectMake(0, self.view.frame.size.height-150, self.view.frame.size.width, 150);
+                [driverInfoView smallViewFrame];
+                isDown = YES;
+            }];
+        }
+        
+    }
+    else
+    {
+        NSLog(@"up");
+        [UIView animateWithDuration:0.3 animations:^{
+            driverInfoView.frame = CGRectMake(0, self.view.frame.size.height-200, self.view.frame.size.width, 200);
+            [driverInfoView allViewFrame];
+            isDown = NO;
+        }];
+    }
+}
 
+-(void)back:(id)sender
+{
+    //确认取消订单
+    
+    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"是否取消订单" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    [alert show];
+}
 -(void)callCar
 {
     //启动进度条

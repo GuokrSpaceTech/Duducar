@@ -89,6 +89,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-duducar/FMDB.framework"
   install_framework "Pods-duducar/HCSStarRatingView.framework"
   install_framework "Pods-duducar/Masonry.framework"
+  install_framework "Pods-duducar/SDWebImage.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-duducar/CocoaAsyncSocket.framework"
@@ -96,4 +97,5 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-duducar/FMDB.framework"
   install_framework "Pods-duducar/HCSStarRatingView.framework"
   install_framework "Pods-duducar/Masonry.framework"
+  install_framework "Pods-duducar/SDWebImage.framework"
 fi

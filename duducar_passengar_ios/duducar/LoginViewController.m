@@ -60,7 +60,10 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
 @synthesize animatedImagesView = _animatedImagesView;
 #define UserTextFieldTag 1000
 #define PassWordFieldTag 1001
-
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
@@ -119,7 +122,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
     userNameTextField.textColor = [UIColor whiteColor];
     userNameTextField.text = [self getDefaultUserName];
     if (userNameTextField.text.length > 0) {
-        [userNameTextField setFont:[UIFont fontWithName:@"Heiti SC" size:25.0]];
+        [userNameTextField setFont:[UIFont fontWithName:@"Heiti SC" size:16.0]];
     }
     userNameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     userNameTextField.adjustsFontSizeToFitWidth = YES;
@@ -168,7 +171,6 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
     passwordTextField.translatesAutoresizingMaskIntoConstraints = NO;
     userNameTextField.translatesAutoresizingMaskIntoConstraints = NO;
     
-    
     //添加约束
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:bottomBackground attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeBottom multiplier:1.0 constant:20]];
     
@@ -183,10 +185,6 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
     
     [self.view addConstraints:viewConstraints];
     
-//    NSLayoutConstraint* userProtocolLabelConstraint = [NSLayoutConstraint constraintWithItem:userProtocolButton attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX
-//                                                                                  multiplier:1.f
-//                                                                                    constant:0];
-//    [self.view addConstraint:userProtocolLabelConstraint];
     NSDictionary* inputViews = NSDictionaryOfVariableBindings(userNameTextField, verifyCodeButton, passwordTextField, loginButton);
     
     NSArray* inputViewConstraints=[[[[[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[userNameTextField]-20-[verifyCodeButton]|" options:0 metrics:nil views:inputViews]
@@ -253,8 +251,8 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
     NSString* userName = [(UITextField*)[self.view viewWithTag:UserTextFieldTag] text];
     NSString* userPwd = [(UITextField*)[self.view viewWithTag:PassWordFieldTag] text];
     
-    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"verify", userName, @"2", userPwd ,  nil]
-                                                                forKeys:[NSArray arrayWithObjects:@"cmd",      @"mobile",      @"role", @"verifycode", nil]];
+    NSDictionary * postDictionary = [NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:@"verify",userName,@"2",userPwd,nil]
+                                                                 forKeys:[NSArray arrayWithObjects:@"cmd",@"mobile",@"role",@"verifycode",nil]];
     NSError * error = nil;
     NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSUTF8StringEncoding error:&error];
     
@@ -263,19 +261,12 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
     NSData *outStr = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
 
     [[DDSocket currentSocket] sendData:outStr timeOut:-1 tag:0];
-    
 }
 
-- (IBAction)register:(id)sender
+- (IBAction)registerMobile:(id)sender
 {
-    NSString* mobileNumber = [(UITextField*)[self.view viewWithTag:UserTextFieldTag] text];
+    mobile = [(UITextField*)[self.view viewWithTag:UserTextFieldTag] text];
     
-    [self registerMobile:mobileNumber];
-}
-
-- (void)registerMobile:(NSString *) mobileNumber
-{
-    mobile = userNameTextField.text;
     NSString *phoneRegex = @"^((\\+)|(00)|)[0-9]{11,13}$";
     NSPredicate *phoneTest = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", phoneRegex];
     
@@ -305,8 +296,8 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
         [self presentViewController:alert animated:YES completion:nil];
     }
 }
-#pragma mark - TIMER Handles
 
+#pragma mark - TIMER Handles
 -(void)countedTimerAction:(NSTimer *)timer
 {
     self.timerCount --;
@@ -359,7 +350,6 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
         if([status intValue]==1)
         {
             token = [responseDict objectForKey:@"token"];
-//            mobile = [(UITextField*)[self.view viewWithTag:UserTextFieldTag] text];
             
             if(token!=NULL)
             {

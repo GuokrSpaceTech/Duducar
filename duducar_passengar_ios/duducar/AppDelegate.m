@@ -36,31 +36,11 @@ BMKMapManager* _mapManager;
     if (!ret) {
         NSLog(@"Baidu Map Manager Starting Failed!");
     }
-    [[DDSocket currentSocket] startSocket];
-    
-    //登录
-    
-    NSString *token =[[NSUserDefaults standardUserDefaults] objectForKey:@"userToken"];
-    NSString *userName = [[NSUserDefaults standardUserDefaults] objectForKey:@"userName"];
-    NSString *password = [[NSUserDefaults standardUserDefaults] objectForKey:@"userPwd"];
-    
-    //User has logged in
-//    if(token.length && userName.length && password.length)
-//    {
-//        DDMainViewController * mainVC = [[DDMainViewController alloc]init];
-//        UINavigationController * navigation = [[UINavigationController alloc] initWithRootViewController:mainVC];
-//        self.window.rootViewController = navigation;
-//        
-//    } else { //User not logged in
-//        LoginViewController *loginVC = [[LoginViewController alloc] init];
-//        UINavigationController *_navi =
-//        [[UINavigationController alloc] initWithRootViewController:loginVC];
-//        self.window.rootViewController = _navi;
-//    }
     
     DDMainViewController * mainVC = [[DDMainViewController alloc]init];
     UINavigationController * navigation = [[UINavigationController alloc] initWithRootViewController:mainVC];
     self.window.rootViewController = navigation;
+    
     //统一导航条样式
     UIFont *font = [UIFont systemFontOfSize:19.f];
     NSDictionary *textAttributes = @{
@@ -72,6 +52,8 @@ BMKMapManager* _mapManager;
     [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithHexString:@"0195ff" alpha:1.0f]];
     
     [self.window makeKeyAndVisible];
+    
+    [[DDSocket currentSocket] startSocket];
     
     // Override point for customization after application launch.
     return YES;

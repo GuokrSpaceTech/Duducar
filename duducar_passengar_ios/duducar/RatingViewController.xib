@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
@@ -22,6 +22,7 @@
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Z0h-L0-k0F">
                             <rect key="frame" x="546" y="49" width="30" height="30"/>
+                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="30" id="9N0-NH-uIX"/>
                                 <constraint firstAttribute="width" secondItem="Z0h-L0-k0F" secondAttribute="height" multiplier="1:1" id="Rji-Ys-doL"/>
@@ -29,6 +30,7 @@
                         </imageView>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="EDJ-og-UnK">
                             <rect key="frame" x="8" y="40" width="50" height="48"/>
+                            <animations/>
                             <constraints>
                                 <constraint firstAttribute="width" secondItem="EDJ-og-UnK" secondAttribute="height" multiplier="29:28" id="3jb-Xf-AZy" userLabel="aspect = 1:1"/>
                                 <constraint firstAttribute="height" constant="48" id="vYv-Pz-gFN" userLabel="height = 60"/>
@@ -39,36 +41,42 @@
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="湘A•ER998" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eD7-eT-gzN">
                                     <rect key="frame" x="137" y="8" width="89" height="21"/>
+                                    <animations/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="黑色本田雅阁" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RbX-9y-RRg">
                                     <rect key="frame" x="15" y="37" width="102" height="21"/>
+                                    <animations/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="王师傅" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VhV-sK-thS">
                                     <rect key="frame" x="15" y="8" width="51" height="21"/>
+                                    <animations/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="4.0星" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XlH-L1-Vh4">
                                     <rect key="frame" x="137" y="75" width="42" height="21"/>
+                                    <animations/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <view contentMode="scaleToFill" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="OtJ-Uc-uve" customClass="HCSStarRatingView">
                                     <rect key="frame" x="15" y="68" width="100" height="36"/>
+                                    <animations/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="100" id="ieh-SL-aKH"/>
                                     </constraints>
                                 </view>
                             </subviews>
+                            <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="bottom" secondItem="OtJ-Uc-uve" secondAttribute="bottom" constant="8" id="8I1-O3-7fz"/>
@@ -85,6 +93,7 @@
                             </constraints>
                         </view>
                     </subviews>
+                    <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="icA-fg-Aod" firstAttribute="top" secondItem="sLx-dg-3e8" secondAttribute="top" constant="8" id="9dF-7i-Mvk"/>
@@ -104,12 +113,14 @@
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="车费详情" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E9O-F3-VmF">
                             <rect key="frame" x="258" y="5" width="68" height="21"/>
+                            <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cbb-NX-xYI" userLabel="leftline">
                             <rect key="frame" x="8" y="15" width="242" height="1"/>
+                            <animations/>
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="m1l-pl-8B7"/>
@@ -117,12 +128,14 @@
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eJJ-BW-xyP" userLabel="rightline">
                             <rect key="frame" x="334" y="15" width="242" height="1"/>
+                            <animations/>
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="ijl-4U-sRa"/>
                             </constraints>
                         </view>
                     </subviews>
+                    <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="E9O-F3-VmF" firstAttribute="leading" secondItem="Cbb-NX-xYI" secondAttribute="trailing" constant="8" id="45z-x7-tm7"/>
@@ -141,12 +154,14 @@
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="匿名评价司机" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GEQ-5R-PNt">
                             <rect key="frame" x="241" y="5" width="102" height="21"/>
+                            <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NlM-2B-6Kx" userLabel="leftline">
                             <rect key="frame" x="8" y="15" width="225" height="1"/>
+                            <animations/>
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="CtB-mg-7j9"/>
@@ -154,12 +169,14 @@
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VnR-fn-gnr" userLabel="rightline">
                             <rect key="frame" x="351" y="15" width="225" height="1"/>
+                            <animations/>
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="vmN-1k-dta"/>
                             </constraints>
                         </view>
                     </subviews>
+                    <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="GEQ-5R-PNt" firstAttribute="centerX" secondItem="Wel-BQ-vlf" secondAttribute="centerX" id="1av-A4-bLV"/>
@@ -175,6 +192,7 @@
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GEe-1V-Z3e" customClass="HCSStarRatingView">
                     <rect key="frame" x="60" y="324" width="480" height="44"/>
+                    <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="1JQ-GF-xDy"/>
@@ -185,23 +203,27 @@
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="车费" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Edi-nM-ZXj">
                             <rect key="frame" x="8" y="33" width="36" height="22"/>
+                            <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="元" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oBb-14-PMD">
                             <rect key="frame" x="558" y="33" width="18" height="22"/>
+                            <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="39.9" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U6K-OD-4oi">
                             <rect key="frame" x="247" y="18" width="91" height="53"/>
+                            <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="44"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
+                    <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="Edi-nM-ZXj" firstAttribute="centerY" secondItem="nYd-Uw-CqW" secondAttribute="centerY" id="6Ir-xw-cq8"/>
@@ -214,6 +236,7 @@
                     </constraints>
                 </view>
             </subviews>
+            <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="nYd-Uw-CqW" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="73q-z5-yzE"/>
