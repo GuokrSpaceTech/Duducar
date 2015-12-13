@@ -84,35 +84,39 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="RatingActivity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="RatingActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/RatingActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.16216215">
+            <state vertical-scroll-proportion="0.0">
               <caret line="140" column="52" selection-start-line="140" selection-start-column="52" selection-end-line="140" selection-end-column="52" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PreOrderActivity.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="PreOrderActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/PreOrderActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.357142">
-              <caret line="541" column="30" selection-start-line="541" selection-start-column="30" selection-end-line="541" selection-end-column="30" />
+            <state vertical-scroll-proportion="0.90865386">
+              <caret line="397" column="84" selection-start-line="397" selection-start-column="84" selection-end-line="397" selection-end-column="84" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#10596#10624#0" expanded="true" />
-                <element signature="e#14047#17549#0" expanded="true" />
-                <element signature="e#17548#17549#0" expanded="true" />
-                <element signature="e#19423#19653#0" expanded="true" />
-                <element signature="e#19652#19653#0" expanded="true" />
-                <element signature="e#20619#20620#0" expanded="true" />
-                <element signature="e#20686#20687#0" expanded="true" />
-                <element signature="e#26783#26817#0" expanded="true" />
-                <element signature="e#26887#26921#0" expanded="true" />
+                <element signature="e#14047#17453#0" expanded="true" />
+                <element signature="e#15007#15277#0" expanded="true" />
+                <element signature="e#15276#15277#0" expanded="true" />
+                <element signature="e#15305#15881#0" expanded="true" />
+                <element signature="e#15880#15881#0" expanded="true" />
+                <element signature="e#17452#17453#0" expanded="true" />
+                <element signature="e#19327#19557#0" expanded="true" />
+                <element signature="e#19556#19557#0" expanded="true" />
+                <element signature="e#20523#20524#0" expanded="true" />
+                <element signature="e#20590#20591#0" expanded="true" />
+                <element signature="e#26687#26721#0" expanded="true" />
+                <element signature="e#26791#26825#0" expanded="true" />
                 <element signature="class#MyLocationListener#0;class#PreOrderActivity#0" expanded="false" />
                 <element signature="method#onKeyDown#0;class#PreOrderActivity#0" expanded="false" />
-                <element signature="e#40214#40255#0" expanded="true" />
+                <element signature="e#40118#40159#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -2943,11 +2947,11 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/communication/SocketClient.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/communication/fastjson/FastJsonTools.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/communication/message/DriverDetail.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/PreOrderActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/communication/message/OrderDetail.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/PayCostActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/PostOrderActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/RatingActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/PreOrderActivity.java" />
       </list>
     </option>
   </component>
@@ -3977,28 +3981,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/PreOrderActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.357142">
-          <caret line="541" column="30" selection-start-line="541" selection-start-column="30" selection-end-line="541" selection-end-column="30" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#10596#10624#0" expanded="true" />
-            <element signature="e#14047#17549#0" expanded="true" />
-            <element signature="e#17548#17549#0" expanded="true" />
-            <element signature="e#19423#19653#0" expanded="true" />
-            <element signature="e#19652#19653#0" expanded="true" />
-            <element signature="e#20619#20620#0" expanded="true" />
-            <element signature="e#20686#20687#0" expanded="true" />
-            <element signature="e#26783#26817#0" expanded="true" />
-            <element signature="e#26887#26921#0" expanded="true" />
-            <element signature="class#MyLocationListener#0;class#PreOrderActivity#0" expanded="false" />
-            <element signature="method#onKeyDown#0;class#PreOrderActivity#0" expanded="false" />
-            <element signature="e#40214#40255#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/communication/message/OrderDetail.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -4027,9 +4009,35 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/RatingActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.16216215">
+        <state vertical-scroll-proportion="0.0">
           <caret line="140" column="52" selection-start-line="140" selection-start-column="52" selection-end-line="140" selection-end-column="52" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/PreOrderActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.90865386">
+          <caret line="397" column="84" selection-start-line="397" selection-start-column="84" selection-end-line="397" selection-end-column="84" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#10596#10624#0" expanded="true" />
+            <element signature="e#14047#17453#0" expanded="true" />
+            <element signature="e#15007#15277#0" expanded="true" />
+            <element signature="e#15276#15277#0" expanded="true" />
+            <element signature="e#15305#15881#0" expanded="true" />
+            <element signature="e#15880#15881#0" expanded="true" />
+            <element signature="e#17452#17453#0" expanded="true" />
+            <element signature="e#19327#19557#0" expanded="true" />
+            <element signature="e#19556#19557#0" expanded="true" />
+            <element signature="e#20523#20524#0" expanded="true" />
+            <element signature="e#20590#20591#0" expanded="true" />
+            <element signature="e#26687#26721#0" expanded="true" />
+            <element signature="e#26791#26825#0" expanded="true" />
+            <element signature="class#MyLocationListener#0;class#PreOrderActivity#0" expanded="false" />
+            <element signature="method#onKeyDown#0;class#PreOrderActivity#0" expanded="false" />
+            <element signature="e#40118#40159#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
