@@ -315,6 +315,20 @@ public class SocketClient {
         return ret;
     }
 
+    public int pullNotPaidOrder(String role, ResponseHandler handler){
+        int ret = -1;
+
+        JSONObject notPaid = new JSONObject();
+        try {
+            notPaid.put("cmd", "not_paid_order");
+            notPaid.put("role", role);
+            ret = sendMessage(notPaid, handler, 5);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
     public int sendOrderCancel(String role, ResponseHandler handler){
 
         int ret = -1;

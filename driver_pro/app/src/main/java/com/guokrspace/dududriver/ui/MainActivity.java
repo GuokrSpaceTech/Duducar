@@ -25,6 +25,7 @@ import android.widget.Button;
 
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
+import com.gc.materialdesign.widgets.ProgressDialog;
 import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.adapter.TabPagerAdapter;
@@ -46,6 +47,8 @@ import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 import com.guokrspace.dududriver.util.VoiceUtil;
 import com.guokrspace.dududriver.view.ListenProgressView;
 import com.viewpagerindicator.TabPageIndicator;
+
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -167,6 +170,10 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         * */
 //        CommonUtil.updateToday();
         mHandler.sendEmptyMessage(UPDATE_GRABORDER);
+
+        if(isOnline){
+            pullOrder();
+        }
     }
 
     @Override
@@ -195,7 +202,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         registerReceiver(messageReceiver, mFilter);
     }
     //进行自动登陆
-    private void doLogin(PersonalInformation user) {
+    private void doLogin(PersonalInformation user, final boolean recover) {
         if (user == null) {
             return;
         }
@@ -203,13 +210,59 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         SocketClient.getInstance().autoLoginRequest(user.getMobile(), "1", user.getToken(), new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
+
                 showCustomToast("登陆成功");
                 Log.e("login in success!", "messageBody" + messageBody);
                 SharedPreferencesUtils.setParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, true);
+
                 pullBaseInfo();
                 pullOrder();
                 mHandler.sendEmptyMessage(MessageTag.MESSAGE_UPDATE_MESSAGE);
                 isOnline = true;
+                if(!recover){
+                    return;
+                }
+                try {
+                    JSONObject object = new JSONObject(messageBody);
+                    String active = (String) object.get("has_active_order");
+                    if (active.equals("1")) {//存在正在执行的订单
+                        String status = (String) object.get("order_status");
+                        String orderDetail = (String) object.get("active_order");
+                        if (status.equals("1")) {//发送放弃接单消息给服务器
+                            //TODO
+                        } else if (status.equals("5")) {//订单已经取消
+                            //TODO
+                        } else if (status.equals("2")) {//接单去接乘客
+                            ProgressDialog dialog = new ProgressDialog(MainActivity.this, "检测到上次异常退出,正在进入未完成订单");
+                            VoiceUtil.startSpeaking(VoiceCommand.LAST_TIME_EXIT_EXCEPTION);
+                            dialog.show();
+                            OrderItem orderItem = FastJsonTools.getObject(orderDetail, OrderItem.class);
+                            Intent intent = new Intent(MainActivity.this, PickUpPassengerActivity.class);
+                            intent.putExtra("orderItem", orderItem);
+                            intent.putExtra("isRecover", false);
+                            startActivity(intent);
+                            dialog.dismiss();
+                            //选择界面不听单
+                            CommonUtil.changeCurStatus(Constants.STATUS_GET);
+                        } else if (status.equals("3")) {//去送乘客的路上
+                            ProgressDialog dialog = new ProgressDialog(MainActivity.this, "还有未完结的订单");
+                            VoiceUtil.startSpeaking(VoiceCommand.LAST_TIME_ORDER_NOT_END);
+                            dialog.show();
+                            OrderItem orderItem = FastJsonTools.getObject(orderDetail, OrderItem.class);
+                            Intent intent = new Intent(MainActivity.this, PickUpPassengerActivity.class);
+                            intent.putExtra("orderItem", orderItem);
+                            intent.putExtra("isRecover", true);
+                            intent.putExtra("lastCharge", (String) object.get("last_charge"));
+                            startActivity(intent);
+                            CommonUtil.changeCurStatus(Constants.STATUS_RUN);
+                            dialog.dismiss();
+                        } else if (status.equals("4")) {//发送了账单
+                            //TODO
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -229,9 +282,6 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             }
         });
     }
-
-
-
 
     private void pullOrder() {
         //注册派单监听
@@ -315,7 +365,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 if (isListeneing) {
                     if (!isOnline && userInfo != null) {
                         CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
-                        doLogin(userInfo);
+                        doLogin(userInfo, true);
                         VoiceUtil.startSpeaking(VoiceCommand.CONNECT_SERVER);
                         isListeneing = !isListeneing;
                         return false;
@@ -423,7 +473,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         switch (msg.what) {
             case HANDLE_LOGIN_FAILURE:
                 if (isVisiable) {
-                    doLogin(userInfo);
+                    doLogin(userInfo, true);
                 }
                 break;
             case NEW_ORDER_ARRIVE:
@@ -546,7 +596,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             switch (action){
                 case Constants.SERVICE_ACTION_RELOGIN:
                     if(userInfo != null) { // 用户登陆出错
-                       doLogin(userInfo);
+                       doLogin(userInfo, true);
                     } else {
                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     }

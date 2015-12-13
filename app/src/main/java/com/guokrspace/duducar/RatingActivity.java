@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
 import com.guokrspace.duducar.communication.message.DriverDetail;
@@ -46,8 +47,10 @@ public class RatingActivity extends ActionBarActivity {
     private TextView  priceTextView;
     private Toolbar mToolbar;
     private TagFlowLayout mTagFlowLayout;
+    private Button payButton;
 
     private OrderDetail mOrder;
+    private int status;
     private DriverDetail mDriver;
 
     private Handler mHandler= new Handler() {
@@ -75,9 +78,11 @@ public class RatingActivity extends ActionBarActivity {
         carPlateNumberTextView = (TextView)findViewById(R.id.carPlateNumber);
         carDescriptionTextView = (TextView)findViewById(R.id.carDescription);
         ratingBarBig = (RatingBar)findViewById(R.id.ratingBarBig);
+        ratingBarSmall = (RatingBar)findViewById(R.id.ratingBar);
         phoneImageView = (ImageView)findViewById(R.id.phone);
         priceTextView = (TextView)findViewById(R.id.price);
         mTagFlowLayout = (TagFlowLayout) findViewById(R.id.flowlayout);
+        payButton = (Button)findViewById(R.id.pay_button);
 
         final LayoutInflater mInflater = LayoutInflater.from(context);
         mTagFlowLayout.setAdapter(new TagAdapter<String>(mVals) {
@@ -105,9 +110,11 @@ public class RatingActivity extends ActionBarActivity {
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null)
         {
-            mOrder = (OrderDetail)bundle.get("order");
+            mOrder = (OrderDetail)bundle.getSerializable("order");
+            status = Integer.parseInt(mOrder.getStatus());
+            mDriver = new Gson().fromJson(mOrder.getDriver(), DriverDetail.class);
         }
-        mDriver = ((DuduApplication)getApplicationContext()).mDriverDetail;
+//        mDriver = ((DuduApplication)getApplicationContext()).mDriverDetail;
 
         //Update UI
         if (mDriver != null) {
@@ -118,6 +125,8 @@ public class RatingActivity extends ActionBarActivity {
             driverNameTextView.setText(mDriver.getName());
             carPlateNumberTextView.setText(mDriver.getPlate());
             carDescriptionTextView.setText(mDriver.getDescription());
+//            ratingBarSmall.setRating(Float.parseFloat(mDriver.getRating()));
+
             phoneImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -129,12 +138,27 @@ public class RatingActivity extends ActionBarActivity {
         if(mOrder!=null) {
             priceTextView.setText(mOrder.getOrg_price());
         }
+
+        if(Integer.parseInt(mOrder.getStatus()) == 4){//未支付
+            findViewById(R.id.evaluate_layout).setVisibility(View.GONE);
+            payButton.setVisibility(View.VISIBLE);
+            payButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(RatingActivity.this, PayCostActivity.class);
+                    intent.putExtra("order", mOrder);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+        }
+
         ratingBarBig.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
                 //Send Rating Request
                 ratingBar.setRating(v);
-                SocketClient.getInstance().sendRatingRequest(mOrder.getId(), (int) v, new ResponseHandler(Looper.getMainLooper()) {
+                SocketClient.getInstance().sendRatingRequest(Integer.parseInt(mOrder.getId()), (int) v, new ResponseHandler(Looper.getMainLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
                     }

@@ -390,6 +390,9 @@ public class SocketClient {
             chargeDetail.put("current_mile", curmile+"");
             chargeDetail.put("current_charge", curCharge+"");
             chargeDetail.put("low_speed_time", lowspeed + "");
+            chargeDetail.put("current_lat", CommonUtil.getCurLat()+"");
+            chargeDetail.put("current_lng", CommonUtil.getCurLng()+"");
+            chargeDetail.put("current_time", System.currentTimeMillis()+"");
             ret = sendMessage(chargeDetail, handler, 5);
         } catch (JSONException e) {
             e.printStackTrace();

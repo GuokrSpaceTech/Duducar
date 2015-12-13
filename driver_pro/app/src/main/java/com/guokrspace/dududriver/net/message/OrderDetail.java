@@ -6,13 +6,42 @@ package com.guokrspace.dududriver.net.message;
 
 import java.io.Serializable;
 
-//{"id":29,"orderNum":"12345678889","driver_id":3,"passenger_id":3,"passenger_mobile":"13900000002",
-//        "start":"\u6e56\u5357\u7701\u957f\u6c99\u5e02\u5cb3\u9e93\u533a\u767b\u9ad8\u8def4-2",
-//        "destination":"\u83ab\u4fea\u82b1\u56ed","start_lat":28.185693,"start_lng":112.949612,
-//        "destination_lat":28.185693,"destination_lng":112.949612,"start_time":1447162569,
-//        "end_time":1447162579,"pre_mileage":"0.00","pre_price":"0.00","car_type":1,"rent_type":0,"additional_price":null,
-//        "org_price":"0.01","isCancel":null,
-//        "mileage":"0.0","sumprice":null,"create_time":1447162560,"isCityline":0,"cityline_id":null,"pay_time":null,"pay_type":null,"status":4,"rating":0}}
+/*
+`orderNum` char(22) NOT NULL,
+        `driver_id` int(11) NOT NULL COMMENT '司机ID',
+        `passenger_id` int(10) unsigned NOT NULL COMMENT '乘客ID',
+        `passenger_mobile` char(11) DEFAULT NULL,
+        `start` varchar(255) NOT NULL COMMENT '出发地址',
+        `destination` varchar(255) NOT NULL COMMENT '目的地址',
+        `start_lat` double NOT NULL COMMENT '出发纬度',
+        `start_lng` double NOT NULL COMMENT '出发经度',
+        `destination_lat` double NOT NULL COMMENT '目的纬度',
+        `destination_lng` double NOT NULL COMMENT '目的经度',
+        `start_time` int(11) DEFAULT NULL COMMENT '开始时间',
+        `end_time` int(11) DEFAULT NULL COMMENT '结束时间',
+        `pre_mileage` decimal(9,2) DEFAULT NULL COMMENT '预估里程',
+        `pre_price` decimal(9,2) DEFAULT NULL COMMENT '预估价格',
+        `car_type` tinyint(3) DEFAULT NULL COMMENT '车型',
+        `rent_type` tinyint(3) DEFAULT '0' COMMENT '0-包车 1-拼车',
+        `additional_price` decimal(9,2) DEFAULT NULL COMMENT '低速加价（总价）',
+        `org_price` decimal(9,2) DEFAULT NULL COMMENT '原始价格（总）',
+        `add_price1` decimal(10,0) DEFAULT '0' COMMENT '附加费1',
+        `add_price2` decimal(10,0) DEFAULT '0' COMMENT '附加费2',
+        `add_price3` decimal(10,0) DEFAULT '0' COMMENT '附加费3',
+        `isCancel` tinyint(2) DEFAULT NULL COMMENT '是否取消',
+        `mileage` decimal(9,2) DEFAULT NULL COMMENT '里程',
+        `sumprice` decimal(9,2) DEFAULT NULL COMMENT '总价（应付价格）',
+        `low_speed_time` decimal(3,0) DEFAULT '0' COMMENT '低速行驶时间（分）',
+        `create_time` int(11) DEFAULT NULL COMMENT '订单创建时间',
+        `isCityline` tinyint(2) DEFAULT '0' COMMENT '是否城际线路 0-否 1-是',
+        `cityline_id` tinyint(2) DEFAULT NULL COMMENT '城际线路ID',
+        `pay_time` int(11) DEFAULT NULL COMMENT '支付时间',
+        `pay_type` tinyint(4) DEFAULT NULL COMMENT '支付类型：1-支付宝 ，2-微信 ，3-银联',
+        `pay_role` tinyint(4) DEFAULT '2' COMMENT '支付角色 1-司机 2-乘客',
+        `status` tinyint(11) DEFAULT NULL COMMENT '1-订单初始化 2-接单 3-开始 4-结束 5-取消',
+        `rating` tinyint(4) DEFAULT '0' COMMENT '0-未评价  ，1-5 评价等级',
+
+*/
 public class OrderDetail implements Serializable {
     int id;
     String orderNum;
@@ -33,16 +62,63 @@ public class OrderDetail implements Serializable {
     int rent_type;
     String addtional_price;
     String org_price;
+    String add_price1;
+    String add_price2;
+    String add_price3;
     String isCancel;
     String mileage;
     String sumprice;
+    String low_speed_time;
     Long create_time;
     int isCityline;
     String cityline_id;
     String pay_time;
     String pay_type;
+    String pay_role;
+
     int status;
     int rating;
+
+
+    public String getAdd_price1() {
+        return add_price1;
+    }
+
+    public void setAdd_price1(String add_price1) {
+        this.add_price1 = add_price1;
+    }
+
+    public String getAdd_price2() {
+        return add_price2;
+    }
+
+    public void setAdd_price2(String add_price2) {
+        this.add_price2 = add_price2;
+    }
+
+    public String getAdd_price3() {
+        return add_price3;
+    }
+
+    public void setAdd_price3(String add_price3) {
+        this.add_price3 = add_price3;
+    }
+
+    public String getLow_speed_time() {
+        return low_speed_time;
+    }
+
+    public void setLow_speed_time(String low_speed_time) {
+        this.low_speed_time = low_speed_time;
+    }
+
+    public String getPay_role() {
+        return pay_role;
+    }
+
+    public void setPay_role(String pay_role) {
+        this.pay_role = pay_role;
+    }
 
     public int getId() {
         return id;

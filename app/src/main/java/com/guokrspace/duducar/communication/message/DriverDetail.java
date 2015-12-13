@@ -1,16 +1,18 @@
 package com.guokrspace.duducar.communication.message;
 
-public class DriverDetail
+import java.io.Serializable;
+
+public class DriverDetail implements Serializable
 {
-    String name;
-    String avatar;
-    String mobile;
+    public String name;
+    public String avatar;
+    public String mobile;
 
-    String picture;
-    String plate;
-    String description;
+    public String picture;
+    public String plate;
+    public String description;
 
-    float rating;
+    public String rating;
 
     public String getName() {
         return name;
@@ -60,11 +62,11 @@ public class DriverDetail
         this.description = description;
     }
 
-    public float getRating() {
+    public String getRating() {
         return rating;
     }
 
-    public void setRating(float rating) {
+    public void setRating(String rating) {
         this.rating = rating;
     }
 }

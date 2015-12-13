@@ -29,6 +29,7 @@ public class FastJsonTools {
         try {
             t = JSON.parseObject(jsonString, cls);
         } catch (Exception e) {
+            e.printStackTrace();
         }
         return t;
     }

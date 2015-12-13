@@ -30,4 +30,7 @@ public class VoiceCommand {
     public static final String NAVIGATION_OVER = "导航完成";
     public static final String LAUNCH_NAVIGATION_ERROR = "地图导航失败";
     public static final String ROUTE_ERROR_NO_NAVIGATION = "失败路径";
+
+    public static final String LAST_TIME_EXIT_EXCEPTION = "检测到异常退出,正在进入未完成订单";
+    public static final String LAST_TIME_ORDER_NOT_END = "检测到非正常结束的订单,正在进入";
 }

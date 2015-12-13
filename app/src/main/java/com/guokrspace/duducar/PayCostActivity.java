@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
+import com.google.gson.Gson;
 import com.guokrspace.duducar.alipay.PayResult;
 import com.guokrspace.duducar.alipay.SignUtils;
 import com.guokrspace.duducar.communication.ResponseHandler;
@@ -29,6 +30,7 @@ import com.guokrspace.duducar.communication.SocketClient;
 import com.guokrspace.duducar.communication.http.DuDuResultCallBack;
 import com.guokrspace.duducar.communication.http.HttpUrls;
 import com.guokrspace.duducar.communication.http.model.UnifiedorderResp;
+import com.guokrspace.duducar.communication.message.DriverDetail;
 import com.guokrspace.duducar.communication.message.MessageTag;
 import com.guokrspace.duducar.communication.message.OrderDetail;
 import com.guokrspace.duducar.database.CommonUtil;
@@ -68,6 +70,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
     String totalFee;
 
     PersonalInformation person;
+    DriverDetail driver;
 
     /*  支付宝支付相关  */
     // 商户PID
@@ -125,20 +128,20 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
                             Toast.makeText(PayCostActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
 
                             Long timestamp = System.currentTimeMillis();
-                            SocketClient.getInstance().sendPayOverRequest(tripOverOrderDetail.getId(), timestamp, tripOverOrderDetail.getOrg_price(), 1 ,new ResponseHandler(Looper.getMainLooper()) {
+                            SocketClient.getInstance().sendPayOverRequest(Integer.parseInt(tripOverOrderDetail.getId()), timestamp, tripOverOrderDetail.getOrg_price(), 1, new ResponseHandler(Looper.getMainLooper()) {
                                 @Override
                                 public void onSuccess(String messageBody) {
-                                    Log.i("","");
+                                    Log.i("", "");
                                 }
 
                                 @Override
                                 public void onFailure(String error) {
-                                    Log.i("","");
+                                    Log.i("", "");
                                 }
 
                                 @Override
                                 public void onTimeout() {
-                                    Log.i("","");
+                                    Log.i("", "");
                                 }
                             });
                             Intent intent = new Intent(mContext, RatingActivity.class);
@@ -215,6 +218,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
         {
             tripOverOrderDetail = (OrderDetail) bundle.get("order");
             CommonUtil.tripOverOrderDetail = tripOverOrderDetail;
+            driver = new Gson().fromJson(tripOverOrderDetail.getDriver(), DriverDetail.class);
             feeTextView.setText(tripOverOrderDetail.getOrg_price());
         }
 
@@ -273,7 +277,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
                     startActivity(intent);
                     Toast.makeText(mContext, "司机已代付!", Toast.LENGTH_LONG).show();
                     finish();
-                    if (Integer.parseInt((String)mDriverPay.get("order_id")) != tripOverOrderDetail.getId()) {
+                    if (Integer.parseInt((String)mDriverPay.get("order_id")) != Integer.parseInt(tripOverOrderDetail.getId())) {
                         //异常情况,不是目前处理订单的消息
                         return;
                     }

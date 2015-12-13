@@ -280,6 +280,18 @@
                     android:textSize="16sp" />
             </LinearLayout>
 
+            <Button
+                android:id="@+id/pay_button"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:padding="5dp"
+                android:background="@color/sky_blue"
+                android:text="立即支付"
+                android:textColor="@color/de_action_white"
+                android:textSize="20sp"
+                android:visibility="gone" />
+
             <include
                 android:id="@+id/evaluate_layout"
                 layout="@layout/evaluate_layout" />
