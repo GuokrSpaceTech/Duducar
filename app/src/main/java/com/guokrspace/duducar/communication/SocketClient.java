@@ -376,6 +376,7 @@ public class SocketClient {
         JSONObject carmsg = new JSONObject();
         try {
             carmsg.put("cmd", "cancel_order");
+            carmsg.put("role", role);
             ret = sendMessage(carmsg, handler, 5);
         } catch (JSONException e) {
             e.printStackTrace();

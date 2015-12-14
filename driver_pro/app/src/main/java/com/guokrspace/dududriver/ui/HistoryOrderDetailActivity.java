@@ -112,15 +112,15 @@ public class HistoryOrderDetailActivity extends BaseActivity implements Handler.
             // TODO: 确定status取值和账单支付情况的对应
             switch (status) {
                 case 4:
-                    statusStr = "已支付";
+                    statusStr = "未支付";
                     substitutePayButton.setVisibility(View.INVISIBLE);
                     break;
                 case 5:
-                    statusStr = "已取消";
+                    statusStr = "已支付";
                     substitutePayButton.setVisibility(View.INVISIBLE);
                     break;
                 default:
-                    statusStr = "未支付";
+                    statusStr = "未完成";
                     break;
             }
             statusTextView.setText(statusStr);

@@ -41,9 +41,10 @@ public class RatingActivity extends ActionBarActivity {
     private TextView  driverNameTextView;
     private TextView  carPlateNumberTextView;
     private TextView  carDescriptionTextView;
-    private RatingBar ratingBarSmall;
     private RatingBar ratingBarBig;
     private ImageView phoneImageView;
+    private TextView  startTextView;
+    private TextView  destinationTextView;
     private TextView  priceTextView;
     private Toolbar mToolbar;
     private TagFlowLayout mTagFlowLayout;
@@ -78,8 +79,9 @@ public class RatingActivity extends ActionBarActivity {
         carPlateNumberTextView = (TextView)findViewById(R.id.carPlateNumber);
         carDescriptionTextView = (TextView)findViewById(R.id.carDescription);
         ratingBarBig = (RatingBar)findViewById(R.id.ratingBarBig);
-        ratingBarSmall = (RatingBar)findViewById(R.id.ratingBar);
         phoneImageView = (ImageView)findViewById(R.id.phone);
+        startTextView = (TextView)findViewById(R.id.start_textview);
+        destinationTextView = (TextView)findViewById(R.id.destination_textview);
         priceTextView = (TextView)findViewById(R.id.price);
         mTagFlowLayout = (TagFlowLayout) findViewById(R.id.flowlayout);
         payButton = (Button)findViewById(R.id.pay_button);
@@ -136,6 +138,8 @@ public class RatingActivity extends ActionBarActivity {
         }
 
         if(mOrder!=null) {
+            startTextView.setText(mOrder.getStart());
+            destinationTextView.setText(mOrder.getDestination());
             priceTextView.setText(mOrder.getOrg_price());
         }
 

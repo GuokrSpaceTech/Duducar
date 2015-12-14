@@ -16,13 +16,10 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -70,13 +67,11 @@ import com.guokrspace.duducar.communication.message.TripStart;
 import com.guokrspace.duducar.database.CommonUtil;
 import com.guokrspace.duducar.database.OrderRecord;
 import com.guokrspace.duducar.ui.DriverInformationView;
-import com.guokrspace.duducar.util.DisplayUtils;
 import com.guokrspace.duducar.util.SharedPreferencesUtils;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -164,7 +159,7 @@ public class PostOrderActivity extends AppCompatActivity {
                     break;
                 case MessageTag.MESSAGE_ORDER_CANCEL_TIMEOUT:
                     if (state == ORDER_CANCELLING) {
-                        getSupportActionBar().setTitle("网络环境差, 取消失败");
+                        getSupportActionBar().setTitle("消息发送失败,请检查网络连接");
                         mFab.setClickable(false);
                         mFab.setVisibility(View.GONE);
                         mFab.setEnabled(false);
@@ -856,7 +851,7 @@ public class PostOrderActivity extends AppCompatActivity {
 
     private void cancelOrder() {
         //Cancel TripOverOrder
-        SocketClient.getInstance().cancelCarRequest("2", new ResponseHandler(Looper.myLooper()) {
+        SocketClient.getInstance().cancelCarRequest(Constants.PASSENGER_ROLE, new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
                 Log.i("", "");

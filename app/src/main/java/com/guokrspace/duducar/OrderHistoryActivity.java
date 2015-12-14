@@ -16,6 +16,7 @@ import android.view.View;
 
 import com.dexafree.materialList.view.MaterialListView;
 import com.guokrspace.duducar.adapter.OrdersAdapter;
+import com.guokrspace.duducar.communication.message.OrderDetail;
 import com.guokrspace.duducar.database.OrderRecord;
 
 import java.util.ArrayList;
@@ -73,7 +74,8 @@ public class OrderHistoryActivity extends AppCompatActivity{
             public void onItemClick(View view, int position) {
                 //点击进入详情界面
                 Intent intent = new Intent(mContext, RatingActivity.class);
-//                intent.putExtra("order", orderRecords.get(position));
+//                OrderDetail orderDetail = getOrderDetail(orderRecords.get(position));
+                intent.putExtra("order", orderRecords.get(position));
                 startActivity(intent);
 
             }
@@ -91,6 +93,11 @@ public class OrderHistoryActivity extends AppCompatActivity{
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.addItemDecoration(new SpaceItemDecoration(40));
 
+    }
+
+    private OrderDetail getOrderDetail(OrderRecord orderRecord){
+        OrderDetail orderDetail = new OrderDetail();
+        return orderDetail;
     }
 
     private void initToolBar() {
