@@ -39,10 +39,11 @@ static NSString *privateKey =
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
         self.edgesForExtendedLayout = UIRectEdgeNone;
     
-    // Do any additional setup after loading the view from its nib.
+    self.chargeLabel.text = _chargePrice;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -58,7 +59,7 @@ static NSString *privateKey =
     order.tradeNO = [self generateTradeNO]; //订单ID（由商家?自?行制定）
     order.productName = @"嘟嘟专车"; //商品标题
     order.productDescription = @"支付车费"; //商品描述
-    order.amount = [NSString stringWithFormat:@"%.2f",0.01f]; //商品价格
+    order.amount = [NSString stringWithFormat:@"%.2f",[self.chargePrice floatValue]]; //商品价格
     order.notifyURL = @"http://120.24.237.15:81/api/Pay/getAlipayResult"; //回调URL
     order.service = @"mobile.securitypay.pay";
     order.paymentType = @"1";
@@ -88,53 +89,17 @@ static NSString *privateKey =
             RatingViewController *rateVC = [[RatingViewController alloc] initWithNibName:@"RatingViewController" bundle:nil];
             [self.navigationController pushViewController:rateVC animated:YES];
         }];
-        
-//        [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
-    
-//    
-
 }
 
-#pragma mark -
-#pragma mark   ==============产生订单信息==============
-
-- (void)generateData{
-    NSArray *subjects = @[@"1",
-                          @"2",@"3",@"4",
-                          @"5",@"6",@"7",
-                          @"8",@"9",@"10"];
-    NSArray *body = @[@"我是测试数据",
-                      @"我是测试数据",
-                      @"我是测试数据",
-                      @"我是测试数据",
-                      @"我是测试数据",
-                      @"我是测试数据",
-                      @"我是测试数据",
-                      @"我是测试数据",
-                      @"我是测试数据",
-                      @"我是测试数据"];
-    
-//    if (nil == self.productList) {
-//        self.productList = [[NSMutableArray alloc] init];
-//    }
-//    else {
-//        [self.productList removeAllObjects];
-//    }
-//    
-//    for (int i = 0; i < [subjects count]; ++i) {
-//        Product *product = [[Product alloc] init];
-//        product.subject = [subjects objectAtIndex:i];
-//        product.body = [body objectAtIndex:i];
-//        
-//        product.price = 0.01f+pow(10,i-2);
-//        [self.productList addObject:product];
-//    }
+- (IBAction)aliPaySelected:(id)sender {
 }
+
+- (IBAction)WechatPaySelected:(id)sender {
+}
+
 #pragma mark -
 #pragma mark   ==============产生随机订单号==============
-
-
 - (NSString *)generateTradeNO
 {
     static int kNumber = 15;

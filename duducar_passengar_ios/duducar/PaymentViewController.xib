@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PaymentViewController">
             <connections>
+                <outlet property="chargeLabel" destination="KGf-cc-ys2" id="4Wq-QF-Qn4"/>
                 <outlet property="view" destination="7fy-Na-zOC" id="rJI-Ds-c02"/>
             </connections>
         </placeholder>
@@ -141,6 +142,9 @@
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0bX-fk-tem">
                             <rect key="frame" x="546" y="5" width="30" height="30"/>
                             <state key="normal" title="选择"/>
+                            <connections>
+                                <action selector="aliPaySelected:" destination="-1" eventType="touchUpOutside" id="OIj-Wd-elO"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -174,6 +178,9 @@
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fy3-Jr-YhZ">
                             <rect key="frame" x="546" y="5" width="30" height="30"/>
                             <state key="normal" title="选择"/>
+                            <connections>
+                                <action selector="WechatPaySelected:" destination="-1" eventType="touchUpInside" id="i3V-u6-P1T"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -222,6 +229,7 @@
                 <constraint firstItem="BDs-tX-5b4" firstAttribute="leading" secondItem="7fy-Na-zOC" secondAttribute="leading" constant="8" id="rzO-ht-hd7"/>
                 <constraint firstAttribute="trailing" secondItem="1eT-BL-Pps" secondAttribute="trailing" constant="8" id="xNo-ST-s09"/>
             </constraints>
+            <point key="canvasLocation" x="117" y="47"/>
         </view>
     </objects>
 </document>
