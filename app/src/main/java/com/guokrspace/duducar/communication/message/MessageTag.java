@@ -60,6 +60,7 @@ public class MessageTag {
     public static final int TRIP_OVER = 0x1008;
     public static final int ORDER_ACCEPT = 0x100E;
     public static final int RATING_SERVICE = 0x100F;
+    public static final int COMPLAIN_SERVICE = 0x1019;
     public static final int PAY_OVER = 0x1010;
     public static final int DRIVER_PAY = 0x1011;
     public static final int NEW_MESSAGE = 0x1013;
@@ -101,6 +102,7 @@ public class MessageTag {
         MessageTag.put("driver_position", DRIVER_POSITION);
         MessageTag.put("baseinfo", BASEINFO);
         MessageTag.put("cancel_order", CANCEL_ORDER);
+        MessageTag.put("complain", COMPLAIN_SERVICE);
     }
 
     public int Tag(String command)

@@ -730,6 +730,7 @@ public class PreOrderActivity extends AppCompatActivity
                 SocketClient.getInstance().getBaseInfoRequest("2", new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
+                        Log.e("daddy", "base info" + messageBody);
                         String comments = "";
                         String complaints = "";
                         String cancel_reasons = "";

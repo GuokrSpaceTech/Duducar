@@ -60,7 +60,7 @@
                 android:background="@drawable/complain_item_bg_selector"
                 android:gravity="left|center_vertical"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:text="服务态度不好"
+                android:text="水水水水"
                 android:textColor="#808080"
                 android:textSize="16sp" />
 

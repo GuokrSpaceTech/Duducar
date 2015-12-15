@@ -5,12 +5,25 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.guokrspace.duducar.communication.ResponseHandler;
+import com.guokrspace.duducar.communication.SocketClient;
+import com.guokrspace.duducar.communication.message.OrderDetail;
+import com.guokrspace.duducar.util.SharedPreferencesUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import me.drakeet.materialdialog.MaterialDialog;
 
@@ -32,6 +45,9 @@ public class ComplainActivity extends AppCompatActivity implements View.OnClickL
 
     private Button[] complainBtns;
 
+    private String complainId = "0";
+    private OrderDetail orderDetail;
+
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -51,6 +67,14 @@ public class ComplainActivity extends AppCompatActivity implements View.OnClickL
                     });
                     dialog.show();
                     break;
+                case 2:
+                    mProgressBar.setVisibility(View.INVISIBLE);
+                    Toast.makeText(ComplainActivity.this, "提交超时,请检查网络", Toast.LENGTH_SHORT).show();
+                    break;
+                case 3:
+                    mProgressBar.setVisibility(View.INVISIBLE);
+                    Toast.makeText(ComplainActivity.this, "请勿重复提交投诉, 如有必要,请直接联系客服", Toast.LENGTH_SHORT).show();
+                    break;
                 default:
                     break;
             }
@@ -63,6 +87,12 @@ public class ComplainActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complain);
         context = this;
+        //get Arg
+        Bundle bundle = getIntent().getExtras();
+        if(bundle!=null)
+        {
+            orderDetail = (OrderDetail)bundle.getSerializable("order");
+        }
         initView();
     }
 
@@ -97,7 +127,23 @@ public class ComplainActivity extends AppCompatActivity implements View.OnClickL
         breakOrderBtn.setOnClickListener(this);
         callButton.setOnClickListener(this);
 
+        String complains = (String)SharedPreferencesUtils.getParam(context, SharedPreferencesUtils.BASEINFO_COMPLAINTS, "");
+        JSONArray jsonArray = JSON.parseArray(complains);
+        int length = jsonArray.size();
+
+
         complainBtns = new Button[]{badMannerBtn, falseOrderBtn, overchangeBtn, detourBtn, chargeTimeoutBtn, breakOrderBtn};
+
+        try {
+            for(int i=0;i<6;i++){
+                com.alibaba.fastjson.JSONObject complain = (com.alibaba.fastjson.JSONObject)jsonArray.get(i);
+                Log.e("daddy complain", complain.getString("value"));
+                complainBtns[i].setText(complain.getString("value"));
+                complainBtns[i].setTag(complain.getString("id"));
+            }
+        } catch (com.alibaba.fastjson.JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -119,24 +165,47 @@ public class ComplainActivity extends AppCompatActivity implements View.OnClickL
                         button.setClickable(false);
                     }
                 }
+                complainId = (String)v.getTag();
                 mProgressBar.setVisibility(View.VISIBLE);
-                new Thread(new Runnable() {
-                    int i = 0;
 
+
+                SocketClient.getInstance().sendComplain(Integer.parseInt(orderDetail.getId()), Integer.parseInt(orderDetail.getDriver_id()), Integer.parseInt(complainId), new ResponseHandler(Looper.myLooper()) {
                     @Override
-                    public void run() {
-                        while (i <= 2) {
-                            i++;
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+                    public void onSuccess(String messageBody) {
+                        new Thread(new Runnable() {
+                            int i = 0;
+                            @Override
+                            public void run() {
+                                while (i <= 1) {
+                                    i++;
+                                    try {
+                                        Thread.sleep(1000);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
 
-                        }
+                                }
+                            }
+                        }).start();
                         mHandler.sendEmptyMessage(1);
                     }
-                }).start();
+
+                    @Override
+                    public void onFailure(String error) {
+                        for (Button button : complainBtns) {
+                            button.setClickable(false);
+                        }
+                        mHandler.sendEmptyMessage(3);
+                    }
+
+                    @Override
+                    public void onTimeout() {
+                        for (Button button : complainBtns) {
+                            button.setClickable(true);
+                        }
+                        mHandler.sendEmptyMessage(2);
+                    }
+                });
                 break;
             default:
                 break;

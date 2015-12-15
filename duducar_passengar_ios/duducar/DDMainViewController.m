@@ -1,7 +1,11 @@
 //
 //  DDMainViewController.m
-//  duducar
-//
+//  主要功能：
+//  - 自动定位
+//  - 搜索起点 和 终点
+//  - 进入叫车页面
+//  - 进入侧拉辅助页面
+//  - 定期获取周边专车
 //  Created by wenpeifang on 15/12/8.
 //  Copyright © 2015年 guokrspace. All rights reserved.
 //
@@ -11,6 +15,7 @@
 #import "DDSearchTableViewController.h"
 #import "LoginViewController.h"
 #import "PostOrderViewController.h"
+#import "CostEstimationViewController.h"
 #import "DDSocket.h"
 #import "DDDatabase.h"
 #import "UIColor+RCColor.h"
@@ -18,6 +23,7 @@
 #import "DDLog.h"
 #import "DDTTYLogger.h"
 #import "DDLeftView.h"
+#import "Masonry.h"
 
 #import "PersionInfoViewController.h"
 #import "HisoryViewController.h"
@@ -28,24 +34,28 @@
 @interface DDMainViewController ()<BMKMapViewDelegate,BMKLocationServiceDelegate,BMKGeoCodeSearchDelegate,LeftViewDelegate>
 {
     BMKGeoCodeSearch* _geocodesearch;
+    BMKMapView* _mapView ;
+    BMKLocationService *_locService;
+    
+    NSString *currCity;
+    Location * startLocation;
+    Location * endLocation;
+    Location * currMapCenterLocation;
+    BMKUserLocation *currentLoc;
+    
+    BOOL isLoginSuccess;
+    
     UIButton *startLocButton;
     UIButton *stopLocButton;
     UIButton *callCabButton;
-
-    NSString *currCity;
+    UIButton *estCostButton;
+    
     DDLeftView * leftView;
     BOOL leftViewShow;
 
-    Location * startLocation;
-    Location * endLocation;
-    Location * currLocation;
-    
-    BOOL isLoginSuccess;
+    NSTimer *_repeatingTimer;
+    NSUInteger _timerCount;
 }
-@property (nonatomic,strong)BMKMapView* mapView ;
-@property (nonatomic,strong)BMKLocationService *locService;
-@property (weak) NSTimer *repeatingTimer;
-@property NSUInteger timerCount;
 
 -(void)countedTimerAction:(NSTimer*)theTimer;
 -(void)searchStartLocationButtonClicked:(id)sender;
@@ -60,48 +70,64 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-     self.view.backgroundColor = [UIColor whiteColor];
-    // 左侧按钮
+    /*
+     * Init UI
+     */
+    self.view.backgroundColor = [UIColor whiteColor];
     
+    // 左侧按钮
     UIBarButtonItem * leftItem  = [[UIBarButtonItem alloc]initWithTitle:@"left" style:UIBarButtonItemStyleDone target:self action:@selector(leftCilck:)];
     self.navigationItem.leftBarButtonItem = leftItem;
-    startLocation = [[Location alloc]init];
-    endLocation = [[Location alloc]init];
-    currLocation = [[Location alloc]init];
-    _geocodesearch = [[BMKGeoCodeSearch alloc]init];
-    _geocodesearch.delegate =self;
+    leftView = [[DDLeftView alloc]initWithFrame:CGRectMake(-self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    leftView.backgroundColor = [UIColor clearColor];
+    leftView.delegate = self;
+    [self.view addSubview:leftView];
+    leftViewShow = NO;
     
-    _locService = [[BMKLocationService alloc]init];
-    _locService.delegate = self;
-    [_locService startUserLocationService];
+    //Map View
     _mapView = [[BMKMapView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     _mapView.zoomLevel = 15;
-    
-    
-    _mapView.userTrackingMode = BMKUserTrackingModeNone;//设置定位的状态
     _mapView.showsUserLocation = NO;//先关闭显示的定位图层
-    _mapView.userTrackingMode = BMKUserTrackingModeNone;//设置定位的状态
+    _mapView.userTrackingMode = BMKUserTrackingModeFollow;//设置定位的状态
     _mapView.showsUserLocation = YES;//显示定位图层
     [self.view addSubview:_mapView];
     
-    UIView * topView = [[UIView alloc]initWithFrame:CGRectMake(10, self.view.frame.size.height - 170, self.view.frame.size.width-20, 100)];
-    topView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:topView];
+    // 定位按钮
+    UIButton *locButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [locButton setTitle:@"定位" forState:UIControlStateNormal];
+    [locButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [locButton addTarget:self action:@selector(locButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:locButton];
+
+    
+    //起点 终点
+    UIView * backView = [[UIView alloc]initWithFrame:CGRectMake(10, self.view.frame.size.height - 170, self.view.frame.size.width-20, 100)];
+    backView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:backView];
     
     startLocButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    startLocButton.frame = CGRectMake(0, 0, topView.frame.size.width, topView.frame.size.height/2.0);
+    startLocButton.frame = CGRectMake(0, 0, backView.frame.size.width, backView.frame.size.height/2.0);
     [startLocButton setTitle:@"输入起点" forState:UIControlStateNormal];
     [startLocButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [startLocButton addTarget:self action:@selector(searchStartLocationButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [topView addSubview:startLocButton];
+    [backView addSubview:startLocButton];
     
     stopLocButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    stopLocButton.frame = CGRectMake(0, topView.frame.size.height/2.0, topView.frame.size.width, topView.frame.size.height/2.0);
+    stopLocButton.frame = CGRectMake(0, backView.frame.size.height/2.0, backView.frame.size.width, backView.frame.size.height/2.0);
     [stopLocButton setTitle:@"输入终点" forState:UIControlStateNormal];
     [stopLocButton addTarget:self action:@selector(searchEndLocationButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [stopLocButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [topView addSubview:stopLocButton];
+    [backView addSubview:stopLocButton];
     
+    // 费用估算按钮
+    estCostButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [estCostButton setTitle:@"费用估算" forState:UIControlStateNormal];
+    [estCostButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [estCostButton addTarget:self action:@selector(estimateButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    estCostButton.enabled = false;
+    [self.view addSubview:estCostButton];
+    
+    //叫车按钮
     callCabButton = [UIButton buttonWithType:UIButtonTypeSystem];
     callCabButton.frame = CGRectMake(10, self.view.frame.size.height - 60, self.view.frame.size.width-20, 40);
     callCabButton.backgroundColor = [UIColor blueColor];
@@ -111,62 +137,77 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     callCabButton.userInteractionEnabled = NO;
     [self.view addSubview:callCabButton];
     
-    // 叫车大头针
+    // 当前未知大头针
     UIView * view1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 10, 10)];
     view1.backgroundColor = [UIColor redColor];
     view1.center = self.view.center;
     [self.view addSubview:view1];
     
+    //Add Constrains
+    [locButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(@60);
+        make.width.mas_equalTo(@60);
+        make.bottom.equalTo(backView.mas_top).offset(-8);
+        make.right.equalTo(backView.mas_right);
+    }];
     
-    leftView = [[DDLeftView alloc]initWithFrame:CGRectMake(-self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    leftView.backgroundColor = [UIColor clearColor];
-    leftView.delegate = self;
-    [self.view addSubview:leftView];
-    leftViewShow = NO;
+    [estCostButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(@30);
+        make.width.mas_equalTo(@60);
+        make.centerY.equalTo(stopLocButton.mas_centerY);
+        make.right.equalTo(stopLocButton.mas_right);
+    }];
+
+    /*
+     * nit Data
+     */
+    startLocation = [[Location alloc]init];
+    endLocation = [[Location alloc]init];
+    currMapCenterLocation = [[Location alloc]init];
+
+    /*
+     * Geocoder Init
+     */
+    _geocodesearch = [[BMKGeoCodeSearch alloc]init];
+    _geocodesearch.delegate =self;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveResponseHandles:) name:responseNotificationName object:nil];
+    /*
+     * Location Service init
+     */
+     _locService = [[BMKLocationService alloc]init];
+    _locService.delegate = self;
+    [_locService startUserLocationService];
     
 
 }
 
--(void)leftCilck:(id)sender
-{
-    if(leftViewShow == NO)
-    {
-        leftViewShow = YES;
-        [UIView animateWithDuration:0.3 animations:^{
-            leftView.frame = CGRectMake(0, 0,self.view.frame.size.width, self.view.frame.size.height);
-        }];
-    }
-    else
-    {
-        leftViewShow = NO;
-        [UIView animateWithDuration:0.3 animations:^{
-            leftView.frame = CGRectMake(-self.view.frame.size.width, 0,self.view.frame.size.width, self.view.frame.size.height);
-        }];
-    }
-}
+
 -(void)viewWillAppear:(BOOL)animated {
     [_mapView viewWillAppear];
     _mapView.delegate = self; // 此处记得不用的时候需要置nil，否则影响内存的释放
+    /*
+     * 监听来自Socket的服务消息
+     */
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveResponseHandles:) name:responseNotificationName object:nil];
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
     [_mapView viewWillDisappear];
     _mapView.delegate = nil; // 不用时，置nil
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)dealloc {
     if (_mapView) {
         _mapView = nil;
     }
+    
     if(_repeatingTimer!=nil)
         _repeatingTimer = nil;
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark
@@ -186,8 +227,8 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         startLocation.name = address;
         startLocation.coordinate2D = result.location;
         
-        currLocation.name = address;
-        currLocation.coordinate2D = result.location;
+        currMapCenterLocation.name = address;
+        currMapCenterLocation.coordinate2D = result.location;
         
         currCity = result.addressDetail.city;
         NSLog(@"当前城市:%@, 当前地址:%@",currCity, address);
@@ -203,17 +244,14 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     CLLocationCoordinate2D  coord = [_mapView convertPoint:centerPosition toCoordinateFromView:self.view];
     
     startLocation.coordinate2D = coord;
+    
     BMKReverseGeoCodeOption *reverseGeocodeSearchOption = [[BMKReverseGeoCodeOption alloc]init];
     reverseGeocodeSearchOption.reverseGeoPoint = coord;
     [_geocodesearch reverseGeoCode:reverseGeocodeSearchOption];
-
-    
 }
 
 - (void)mapViewDidFinishLoading:(BMKMapView *)mapView
 {
-    CLLocationCoordinate2D  coord =_locService.userLocation.location.coordinate;
-    _mapView.centerCoordinate = coord;
 }
 
 // 根据anntation生成对应的View
@@ -257,6 +295,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 {
     NSLog(@"didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude,userLocation.location.coordinate.longitude);
     [_mapView updateLocationData:userLocation];
+    currentLoc = userLocation;
     
 }
 
@@ -272,7 +311,6 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         startLocation.name = startPoint.name;
         startLocButton.titleLabel.text = startLocation.name;
         [_mapView setCenterCoordinate:startPoint.pt animated:YES];
-        
     }];
     
     [searchVC setEndPointCompletionHandler:nil];
@@ -291,6 +329,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         endLocation.name = endPoint.name;
         stopLocButton.titleLabel.text = endLocation.name;
         callCabButton.userInteractionEnabled = YES;
+        estCostButton.enabled = true;
     }];
     
     [searchVC setStartPointCompletionHandler:nil];
@@ -312,6 +351,47 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     }
 }
 
+-(void)locButtonClick:(id)sender
+{
+    [_mapView updateLocationData:currentLoc];
+    
+    _mapView.showsUserLocation = NO;//先关闭显示的定位图层
+    _mapView.userTrackingMode = BMKUserTrackingModeFollow;//设置定位的状态
+    _mapView.showsUserLocation = YES;//显示定位图层
+    
+    BMKReverseGeoCodeOption *reverseGeocodeSearchOption = [[BMKReverseGeoCodeOption alloc]init];
+    reverseGeocodeSearchOption.reverseGeoPoint = currentLoc.location.coordinate;;
+    [_geocodesearch reverseGeoCode:reverseGeocodeSearchOption];
+    
+}
+
+-(void)estimateButtonClick:(id)sender
+{
+    CostEstimationViewController *costVC = [[CostEstimationViewController alloc]initWithNibName:@"CostEstimationViewController" bundle:nil];
+    costVC.startLoc = startLocation;
+    costVC.endLoc   = endLocation;
+    costVC.city = currCity;
+    [self.navigationController pushViewController:costVC animated:YES];
+}
+
+-(void)leftCilck:(id)sender
+{
+    if(leftViewShow == NO)
+    {
+        leftViewShow = YES;
+        [UIView animateWithDuration:0.3 animations:^{
+            leftView.frame = CGRectMake(0, 0,self.view.frame.size.width, self.view.frame.size.height);
+        }];
+    }
+    else
+    {
+        leftViewShow = NO;
+        [UIView animateWithDuration:0.3 animations:^{
+            leftView.frame = CGRectMake(-self.view.frame.size.width, 0,self.view.frame.size.width, self.view.frame.size.height);
+        }];
+    }
+}
+
 #pragma mark
 #pragma mark == Receive Notification from Socket Response data
 - (void)receiveResponseHandles:(NSNotification *)notification
@@ -324,6 +404,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     NSString *command = [responseDict objectForKey:@"cmd"];
     NSNumber *status = [responseDict objectForKey:@"status"];
     
+    //Initial Message From Server {status: 1}。连接成功，如果已经保存Token，直接发起Login请求。
     if(command == nil)
     {
         if([status intValue] == 1)
@@ -331,17 +412,16 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
             [[DDDatabase sharedDatabase] selectFromPersonInfo:^(NSString *token, NSString *phone) {
                 if(token==nil || phone == nil)
                 {
-//                    LoginViewController *loginVC = [[LoginViewController alloc]init];
-//                    [self.navigationController pushViewController:loginVC animated:YES];
                     isLoginSuccess = false;
                 } else {
                     NSDictionary *paramDict = @{@"cmd":@"login", @"role":@"2", @"mobile":phone, @"token":token};
-                    [[DDSocket currentSocket] sendLoginRequest:paramDict];
+                    [[DDSocket currentSocket] sendRequest:paramDict];
                 }
             }];
             
-            self.timerCount = 5;
-            self.repeatingTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countedTimerAction:) userInfo:nil repeats:YES];
+            //Kick off the timer。 定期获得周边车辆信息。
+            _timerCount = 5;
+            _repeatingTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countedTimerAction:) userInfo:nil repeats:YES];
         }
     }
     else if([command isEqualToString:@"login_resp"])
@@ -349,33 +429,25 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         if([status intValue] == 1)
         {
             isLoginSuccess = true;
-//            NSString *activeOrderJson;
-//            
-//            if([responseDict objectForKey:@"active_order"])
-//            {
-//                activeOrderJson = [responseDict objectForKey:@"active_order"];
-//            
-//                //Deserialastion a Json String into Dictionary
-//                NSError *jsonError;
-//                NSData  *objectData = [activeOrderJson dataUsingEncoding:NSUTF8StringEncoding];
-//                NSDictionary *activeOrder = [NSJSONSerialization JSONObjectWithData:objectData
-//                                                                             options:NSJSONReadingMutableContainers
-//                                                                               error:&jsonError];
-//                PostOrderViewController *postVC = [[PostOrderViewController alloc] init];
-//                postVC.activeOrder = activeOrder;
-//                [self.navigationController pushViewController:postVC animated:YES];
-//            } else {
-//            //Login Succedded, 直接叫车
-//            NSDictionary *param = @{@"cmd": @"create_order", @"role": @"2", @"start":startLocation.name, @"destination":endLocation.name,
-//                                    @"start_lat":@(startLocation.coordinate2D.latitude), @"start_lng":@(startLocation.coordinate2D.longitude),
-//                                    @"destination_lat":@(endLocation.coordinate2D.latitude), @"destination_lng":@(endLocation.coordinate2D.longitude),
-//                                    @"pre_mileage":@(12), @"pre_price":@(65), @"car_type":@(1)};
-//            [[DDSocket currentSocket] sendCarRequest:param];
-//            }
+            //如果有当前活跃订单，直接进入叫车界面。
+            NSString *activeOrderJson;
+            
+            if([responseDict objectForKey:@"active_order"])
+            {
+                activeOrderJson = [responseDict objectForKey:@"active_order"];
+            
+                //Deserialastion a Json String into Dictionary
+                NSError *jsonError;
+                NSData  *objectData = [activeOrderJson dataUsingEncoding:NSUTF8StringEncoding];
+                NSDictionary *activeOrder = [NSJSONSerialization JSONObjectWithData:objectData
+                                                                        options:NSJSONReadingMutableContainers
+                                                                          error:&jsonError];
+                CallCarViewController *postVC = [[CallCarViewController alloc] init];
+                postVC.activeOrder = activeOrder;
+                [self.navigationController pushViewController:postVC animated:YES];
+            }
         } else {
-            //弹出登陆界面
-//            LoginViewController *loginVC = [[LoginViewController alloc]init];
-//            [self.navigationController pushViewController:loginVC animated:YES];
+            //自动登录出现错误
             isLoginSuccess = false;
         }
     }
@@ -385,7 +457,6 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         {
             //获取附近车辆信息
             [_mapView removeAnnotations:_mapView.annotations];
-            NSString * car_number = [NSString stringWithFormat:@"%@",responseDict[@"car_number"]];
             NSArray * arr = responseDict[@"cars"];
             if([arr isKindOfClass:[NSArray class]])
             {
@@ -401,21 +472,13 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
                     coor.longitude = lng;
                     pointAnnotation.coordinate = coor;
                     [_mapView addAnnotation:pointAnnotation];
-                    
                 }
             }
         }
     }
 }
 
--(void)leftViewDisappear
-{
-    leftViewShow = NO;
-    [UIView animateWithDuration:0.3 animations:^{
-        leftView.frame = CGRectMake(-self.view.frame.size.width, 0,self.view.frame.size.width, self.view.frame.size.height);
-    }];
-
-}
+#pragma mark 
 #pragma mark ==== leftView delegate ===
 -(void)leftViewClose:(DDLeftView *)leftView
 {
@@ -435,6 +498,14 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         [self.navigationController pushViewController:persionVC animated:YES];
     }
 }
+-(void)leftViewDisappear
+{
+    leftViewShow = NO;
+    [UIView animateWithDuration:0.3 animations:^{
+        leftView.frame = CGRectMake(-self.view.frame.size.width, 0,self.view.frame.size.width, self.view.frame.size.height);
+    }];
+    
+}
 
 #pragma mark - TIMER Handles
 
@@ -442,11 +513,11 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 {
     _timerCount --;
     
-    if(_timerCount==0 && currLocation!=nil)
+    if(_timerCount==0 && currMapCenterLocation!=nil)
     {
         _timerCount = 5;
         
-        NSDictionary *postDictionary = [NSDictionary dictionaryWithObjects:@[@"get_near_car",@(currLocation.coordinate2D.latitude),@(currLocation.coordinate2D.longitude),@"1", @"2"] forKeys:@[@"cmd",@"lat",@"lng",@"car_type", @"role"]];
+        NSDictionary *postDictionary = [NSDictionary dictionaryWithObjects:@[@"get_near_car",@(currMapCenterLocation.coordinate2D.latitude),@(currMapCenterLocation.coordinate2D.longitude),@"1", @"2"] forKeys:@[@"cmd",@"lat",@"lng",@"car_type", @"role"]];
         
         NSError * error = nil;
         NSData * jsonData = [NSJSONSerialization dataWithJSONObject:postDictionary options:NSUTF8StringEncoding error:&error];
@@ -455,7 +526,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         [jsonString appendString:@"\n"];
         NSData *outStr = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
         
-       // [[DDSocket currentSocket]sendData:outStr timeOut:-1.0 tag:0];
+//        [[DDSocket currentSocket]sendData:outStr timeOut:-1.0 tag:0];
     }
 }
 @end

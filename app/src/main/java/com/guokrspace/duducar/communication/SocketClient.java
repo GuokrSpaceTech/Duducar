@@ -404,16 +404,34 @@ public class SocketClient {
         return ret;
     }
 
-    public int sendRatingRequest(int orderid, int rating, ResponseHandler handler)
+    public int sendRatingRequest(int orderId, int rating, String comments, ResponseHandler handler)
     {
         int ret = -1;
         JSONObject carmsg = new JSONObject();
         try {
             carmsg.put("cmd", MessageTag.getInstance().Command(MessageTag.RATING_SERVICE));
             carmsg.put("role","2");
-            carmsg.put("order_id",orderid);
+            carmsg.put("comments", comments);
+            carmsg.put("order_id",orderId);
             carmsg.put("rating",rating);
             ret = sendMessage(carmsg, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return ret;
+    }
+
+    public int sendComplain(int orderId, int driverId, int complainId, ResponseHandler handler) {
+        int ret = -1;
+        JSONObject complain = new JSONObject();
+        try{
+            complain.put("cmd", MessageTag.getInstance().Command(MessageTag.COMPLAIN_SERVICE));
+            complain.put("role", "2");
+            complain.put("order_id", orderId);
+            complain.put("driver_id", driverId);
+            complain.put("complain_id", complainId);
+            ret = sendMessage(complain, handler, 5);
         } catch (JSONException e) {
             e.printStackTrace();
         }
