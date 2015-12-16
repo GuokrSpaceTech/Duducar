@@ -13,10 +13,11 @@
     GCDAsyncSocket *asyncSocket;
     NSDictionary   *handlerQueue;
 }
+@property (nonatomic, strong) NSDictionary *responseDict;
+
 +(DDSocket *)currentSocket;
 - (void)startSocket;
 -(void)sendData:(NSData *)data timeOut:(int)time tag:(int)tag;
--(void)sendCarRequest:(NSDictionary *)paramDict;
--(void)sendLoginRequest:(NSDictionary *)paramDict;
+-(void)sendRequest:(NSDictionary *)paramDict;
 
 @end

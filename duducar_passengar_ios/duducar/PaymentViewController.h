@@ -9,6 +9,14 @@
 #import <UIKit/UIKit.h>
 
 @interface PaymentViewController : UIViewController
-- (IBAction)paymentAction:(id)sender;
 
+- (IBAction)paymentAction:(id)sender;
+- (IBAction)aliPaySelected:(id)sender;
+- (IBAction)WechatPaySelected:(id)sender;
+
+@property (weak, nonatomic) IBOutlet UILabel *chargeLabel;
+
+@property (nonatomic, strong) NSString *chargePrice;
+@property (nonatomic, strong) NSString *mileage;
+@property (nonatomic, strong) NSString *lowSpeedTime;
 @end

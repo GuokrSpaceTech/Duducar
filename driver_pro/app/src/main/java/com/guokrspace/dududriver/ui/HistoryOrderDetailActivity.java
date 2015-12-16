@@ -6,6 +6,7 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gc.materialdesign.views.ButtonFlat;
 import com.guokrspace.dududriver.R;
@@ -21,6 +23,9 @@ import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.common.NewOrderReceiver;
 import com.guokrspace.dududriver.common.VoiceCommand;
 import com.guokrspace.dududriver.database.OrderRecord;
+import com.guokrspace.dududriver.model.OrderItem;
+import com.guokrspace.dududriver.net.ResponseHandler;
+import com.guokrspace.dududriver.net.SocketClient;
 import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.VoiceUtil;
 import com.guokrspace.dududriver.view.CircleImageView;
@@ -52,6 +57,37 @@ public class HistoryOrderDetailActivity extends BaseActivity implements Handler.
     LinearLayout checkDetailLayout;
     @Bind(R.id.substitute_pay)
     ButtonFlat substitutePayButton;
+    @OnClick(R.id.substitute_pay)
+    public void substittePay(){
+        //向服务器发起代付请求,无论成功失败都跳转到代付页面.
+        SocketClient.getInstance().checkIfPaid(orderDetail.getId().intValue(), new ResponseHandler(Looper.myLooper()) {
+            @Override
+            public void onSuccess(String messageBody) { //未支付
+                Intent intent = new Intent(context, PayCostActivity.class);
+                OrderItem orderItem = new OrderItem();
+                orderItem.setOrder(getOrder(orderDetail));
+                intent.putExtra("orderItem", orderItem);
+                intent.putExtra("price", Double.parseDouble(orderDetail.getSumprice()));
+                intent.putExtra("orderNum", orderDetail.getOrderNum());
+                intent.putExtra("mileage", Double.parseDouble(orderDetail.getMileage()));
+                startActivity(intent);
+            }
+
+            @Override
+            public void onFailure(String error) {//已支付
+                Toast.makeText(HistoryOrderDetailActivity.this, "已支付, 请刷新历史订单", Toast.LENGTH_SHORT).show();
+                substitutePayButton.setVisibility(View.GONE);
+                statusTextView.setText("已支付");
+            }
+
+            @Override
+            public void onTimeout() {
+                Toast.makeText(HistoryOrderDetailActivity.this, "连接服务器超时, 请检查网络状况", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
     @Bind(R.id.send_complain_btn)
     Button complainButton;
     @OnClick(R.id.send_complain_btn)
@@ -112,15 +148,15 @@ public class HistoryOrderDetailActivity extends BaseActivity implements Handler.
             // TODO: 确定status取值和账单支付情况的对应
             switch (status) {
                 case 4:
+                    statusStr = "未支付";
+                    substitutePayButton.setVisibility(View.VISIBLE);
+                    break;
+                case 5:
                     statusStr = "已支付";
                     substitutePayButton.setVisibility(View.INVISIBLE);
                     break;
-                case 5:
-                    statusStr = "已取消";
-                    substitutePayButton.setVisibility(View.INVISIBLE);
-                    break;
                 default:
-                    statusStr = "未支付";
+                    statusStr = "未完成";
                     break;
             }
             statusTextView.setText(statusStr);
@@ -173,5 +209,18 @@ public class HistoryOrderDetailActivity extends BaseActivity implements Handler.
         filter.addAction(Constants.ACTION_NEW_ORDER);
         filter.setPriority(1000);
         registerReceiver(receiver, filter);
+    }
+
+    private OrderItem.Order getOrder(OrderRecord orderRecord){
+        OrderItem.Order order = new OrderItem.Order();
+        order.setDestination(orderRecord.getDestination());
+        order.setDestination_lat(orderRecord.getDestination_lat());
+        order.setDestination_lng(orderRecord.getDestination_lng());
+        order.setId(orderRecord.getId() + "");
+        order.setPassenger_mobile(orderRecord.getPassenger_mobile());
+        order.setStart(orderRecord.getStart());
+        order.setStart_lat(orderRecord.getStart_lat());
+        order.setStart_lng(orderRecord.getStart_lng());
+        return order;
     }
 }

@@ -177,10 +177,11 @@ completionHandler:(void (^)(BOOL shouldTrustPeer))completionHandler
     //Deserialastion a Json String into Dictionary
     NSError *jsonError;
     NSData  *objectData = [response dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *responseDict = [NSJSONSerialization JSONObjectWithData:objectData
-                                                                 options:NSJSONReadingMutableContainers
-                                                                   error:&jsonError];
-    [[NSNotificationCenter defaultCenter] postNotificationName:responseNotificationName object:self userInfo:responseDict];
+    _responseDict = [[NSDictionary alloc]init];
+    _responseDict = [NSJSONSerialization JSONObjectWithData:objectData
+                                                 options:NSJSONReadingMutableContainers
+                                                   error:&jsonError];
+    [[NSNotificationCenter defaultCenter] postNotificationName:responseNotificationName object:self userInfo:_responseDict];
     
     DDLogInfo(@"Response:\n%@", response);
     
@@ -197,23 +198,10 @@ completionHandler:(void (^)(BOOL shouldTrustPeer))completionHandler
 
 #pragma mark
 #pragma mark == Protocols
--(void)sendCarRequest:(NSDictionary *)paramDict
+-(void)sendRequest:(NSDictionary *)paramDict
 {
     NSError * error = nil;
     NSData * jsonData = [NSJSONSerialization dataWithJSONObject:paramDict options:NSUTF8StringEncoding error:&error];
-    
-    NSMutableString *jsonString = [[NSMutableString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-    [jsonString appendString:@"\n"];
-    
-    NSData *outStr = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-    
-    [asyncSocket writeData:outStr withTimeout:-1.0 tag:0];
-}
-
--(void)sendLoginRequest:(NSDictionary *)paramDict
-{
-    NSError *error = nil;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:paramDict options:NSUTF8StringEncoding error:&error];
     
     NSMutableString *jsonString = [[NSMutableString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     [jsonString appendString:@"\n"];

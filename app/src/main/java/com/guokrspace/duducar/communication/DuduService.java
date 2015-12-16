@@ -73,7 +73,6 @@ public class DuduService extends Service {
          */
         Log.e("daddy", "service start");
         if(mTcpClient == null){
-            mTcpClient = null;
             conctTask = new connectTask(); //Connect to server
             conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }

@@ -2,7 +2,7 @@
 //  LoginViewController.m
 //  duducar
 //
-//  Created by mactop on 11/16/15.
+//  Created by Kyle on 11/16/15.
 //  Copyright © 2015 guokrspace. All rights reserved.
 //
 
@@ -60,14 +60,13 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
 @synthesize animatedImagesView = _animatedImagesView;
 #define UserTextFieldTag 1000
 #define PassWordFieldTag 1001
--(void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
     
+    /*
+     * 初始化UI
+     */
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     
     //添加动态背景
@@ -156,7 +155,6 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
     
     UIButton* loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [loginButton addTarget:self action:@selector(actionLogin:) forControlEvents:UIControlEventTouchUpInside];
-//    [loginButton setBackgroundImage:[UIImage imageNamed:@"login_button"] forState:UIControlStateNormal];
     loginButton.backgroundColor = [UIColor colorWithHexString:@"0195ff" alpha:1.0f];
     loginButton.imageView.contentMode = UIViewContentModeCenter;
     [loginButton setTitle:@"确定" forState:UIControlStateNormal];
@@ -195,6 +193,9 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
     
     [_inputBackground addConstraints:inputViewConstraints];
     
+    /*
+     * 监听Socket的服务器消息
+     */
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveResponseHandles:) name:responseNotificationName object:nil];
 }
 
@@ -202,6 +203,12 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
 {
     [super viewWillAppear:animated];
     [self.animatedImagesView startAnimating];
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -317,6 +324,8 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
     
 }
 
+#pragma mark
+#pragma mark == Handle Received data from Socket
 -(void)receiveResponseHandles:(NSNotification *)notification
 {
     NSDictionary *responseDict = notification.userInfo;
@@ -366,14 +375,14 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
             }
         } else
         {
-//            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@""
-//                                                                           message:@"验证码错误"
-//                                                                    preferredStyle:UIAlertControllerStyleAlert];
-//            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleDefault
-//                                                                  handler:^(UIAlertAction * action) {}];
-//            
-//            [alert addAction:defaultAction];
-//            [self presentViewController:alert animated:YES completion:nil];
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@""
+                                                                           message:@"验证码错误"
+                                                                    preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleDefault
+                                                                  handler:^(UIAlertAction * action) {}];
+            
+            [alert addAction:defaultAction];
+            [self presentViewController:alert animated:YES completion:nil];
         }
         
     }
@@ -381,21 +390,23 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
     {
         if([status intValue]==1)
         {
+            //保存Token
             [[DDDatabase sharedDatabase] insertDataToPersonInfoTableToken:token phone:mobile];
             
+            //进入主界面
             DDMainViewController *mainVC = [[DDMainViewController alloc]init];
             [self.navigationController pushViewController:mainVC animated:YES];
         }
         else
         {
-//            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@""
-//                                                                       message:@"登陆失败"
-//                                                                 preferredStyle:UIAlertControllerStyleAlert];
-//            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleDefault
-//                                                                  handler:^(UIAlertAction * action) {}];
-//            
-//            [alert addAction:defaultAction];
-//            [self presentViewController:alert animated:YES completion:nil];
+            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@""
+                                                                       message:@"登陆失败"
+                                                                 preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleDefault
+                                                                  handler:^(UIAlertAction * action) {}];
+            
+            [alert addAction:defaultAction];
+            [self presentViewController:alert animated:YES completion:nil];
         }
     }
 

@@ -346,6 +346,21 @@ public class SocketClient {
         return ret;
     }
 
+    public int checkIfPaid(int orderid, ResponseHandler handler){
+        int ret = -1;
+        JSONObject check = new JSONObject();
+
+        try {
+            check.put("cmd", "pay_check");
+            check.put("order_id", orderid);
+            check.put("role", "1");
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        return ret;
+    }
+
     public int endOrderSelfPay(int orderid, String price, String mileage, ResponseHandler handler){
         int ret = -1;
         JSONObject edOrder = new JSONObject();

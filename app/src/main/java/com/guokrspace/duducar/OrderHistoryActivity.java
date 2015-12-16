@@ -35,6 +35,7 @@ import com.guokrspace.duducar.communication.http.model.Order;
 import com.guokrspace.duducar.database.CommonUtil;
 import com.guokrspace.duducar.database.DriverRecord;
 import com.guokrspace.duducar.database.DriverRecordDao;
+import com.guokrspace.duducar.communication.message.OrderDetail;
 import com.guokrspace.duducar.database.OrderRecord;
 
 import java.lang.reflect.InvocationTargetException;
@@ -324,6 +325,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements Handler.C
             public void onItemClick(View view, int position) {
                 //点击进入详情界面
                 Intent intent = new Intent(mContext, RatingActivity.class);
+//                OrderDetail orderDetail = getOrderDetail(orderRecords.get(position));
                 intent.putExtra("order", orderRecords.get(position));
                 startActivity(intent);
 
@@ -371,6 +373,11 @@ public class OrderHistoryActivity extends AppCompatActivity implements Handler.C
         //下拉刷新
         mRefreshLayout.setOnRefreshListener(refreshListener);
 
+    }
+
+    private OrderDetail getOrderDetail(OrderRecord orderRecord){
+        OrderDetail orderDetail = new OrderDetail();
+        return orderDetail;
     }
 
     private void initToolBar() {

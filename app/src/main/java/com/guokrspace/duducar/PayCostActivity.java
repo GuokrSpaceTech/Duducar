@@ -145,6 +145,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
                                 }
                             });
                             Intent intent = new Intent(mContext, RatingActivity.class);
+                            tripOverOrderDetail.setStatus("5");
                             intent.putExtra("order", tripOverOrderDetail);
                             startActivity(intent);
 
