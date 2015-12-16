@@ -38,4 +38,10 @@
     <color name="dim_foreground_dark">#bebebe</color>
     <color name="tag_bg_color">#0ddcff</color>
     <color name="complain_btn_color">#BED6FF</color>
+
+    <!-- swiperefreshlayout -->
+    <color name="materialRed">#FFC93437</color>
+    <color name="materialBlue">#FF375BF1</color>
+    <color name="materialYellow">#FFF7D23E</color>
+    <color name="materialGreen">#FF34A350</color>
 </resources>

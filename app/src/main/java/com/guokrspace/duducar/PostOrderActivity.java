@@ -16,13 +16,10 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -70,13 +67,11 @@ import com.guokrspace.duducar.communication.message.TripStart;
 import com.guokrspace.duducar.database.CommonUtil;
 import com.guokrspace.duducar.database.OrderRecord;
 import com.guokrspace.duducar.ui.DriverInformationView;
-import com.guokrspace.duducar.util.DisplayUtils;
 import com.guokrspace.duducar.util.SharedPreferencesUtils;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -164,7 +159,7 @@ public class PostOrderActivity extends AppCompatActivity {
                     break;
                 case MessageTag.MESSAGE_ORDER_CANCEL_TIMEOUT:
                     if (state == ORDER_CANCELLING) {
-                        getSupportActionBar().setTitle("网络环境差, 取消失败");
+                        getSupportActionBar().setTitle("消息发送失败,请检查网络连接");
                         mFab.setClickable(false);
                         mFab.setVisibility(View.GONE);
                         mFab.setEnabled(false);
@@ -724,24 +719,24 @@ public class PostOrderActivity extends AppCompatActivity {
                 order_finish = FastJsonTools.getObject(messageBody, TripOver.class);
 
                 OrderRecord orderRecord = new OrderRecord();
-                orderRecord.setStartAddr(order_start.getOrder().getStart());
-                orderRecord.setDestAddr(order_finish.getOrder().getDestination());
+                orderRecord.setStart(order_start.getOrder().getStart());
+                orderRecord.setDestination(order_finish.getOrder().getDestination());
                 Double startLat = Double.parseDouble(order_finish.getOrder().getStart_lat());
                 Double startLng = Double.parseDouble(order_finish.getOrder().getStart_lng());
                 Double destLat = Double.parseDouble(order_finish.getOrder().getDestination_lat());
                 Double destLng = Double.parseDouble(order_finish.getOrder().getDestination_lng());
-                orderRecord.setStartLat(startLat == null ? "0" : String.valueOf(startLat));
-                orderRecord.setStartLng(startLng == null ? "0" : String.valueOf(startLng));
-                orderRecord.setDestLat(destLat == null ? "0" : String.valueOf(destLat));
-                orderRecord.setDestLng(destLng == null ? "0" : String.valueOf(destLng));
+                orderRecord.setStart_lat(startLat == null ? 0.0 : startLat);
+                orderRecord.setStart_lng(startLng == null ? 0.0 : startLng);
+                orderRecord.setDestination_lat(destLat == null ? 0.0 : destLat);
+                orderRecord.setDestination_lng(destLng == null ? 0.0 : destLng);
                 orderRecord.setMileage(order_finish.getOrder().getMileage());
-                orderRecord.setPrice(order_finish.getOrder().getOrg_price());
-                orderRecord.setCarType(String.valueOf(order_finish.getOrder().getCar_type()));
+                orderRecord.setOrg_price(order_finish.getOrder().getOrg_price());
+                orderRecord.setCar_type(Integer.parseInt(order_finish.getOrder().getCar_type()));
                 SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd HH:mm");
                 String dateStr = sdf.format(new Date());
-                orderRecord.setOrderTime(dateStr);
+                orderRecord.setEnd_time(System.currentTimeMillis());
 
-                mApplication.mDaoSession.getOrderRecordDao().insert(orderRecord);
+//                mApplication.mDaoSession.getOrderRecordDao().insert(orderRecord);
                 mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_COMPLETED);
             }
 
@@ -856,7 +851,7 @@ public class PostOrderActivity extends AppCompatActivity {
 
     private void cancelOrder() {
         //Cancel TripOverOrder
-        SocketClient.getInstance().cancelCarRequest("2", new ResponseHandler(Looper.myLooper()) {
+        SocketClient.getInstance().cancelCarRequest(Constants.PASSENGER_ROLE, new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
                 Log.i("", "");

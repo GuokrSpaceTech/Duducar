@@ -22,6 +22,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
+import com.guokrspace.duducar.communication.http.model.Driver;
+import com.guokrspace.duducar.communication.http.model.Order;
 import com.guokrspace.duducar.communication.message.DriverDetail;
 import com.guokrspace.duducar.communication.message.OrderDetail;
 import com.guokrspace.duducar.ui.WinToast;
@@ -30,28 +32,34 @@ import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RatingActivity extends ActionBarActivity {
 
     private String[] mVals = new String[]
             {"神准时", "态度好有礼貌", "主动打电话联系", "车况良好"};
 
+    private List<String> comments = new ArrayList<String>();
     private Context context;
 
     private ImageView avatarImageView;
     private TextView  driverNameTextView;
     private TextView  carPlateNumberTextView;
     private TextView  carDescriptionTextView;
-    private RatingBar ratingBarSmall;
     private RatingBar ratingBarBig;
     private ImageView phoneImageView;
+    private TextView  startTextView;
+    private TextView  destinationTextView;
     private TextView  priceTextView;
     private Toolbar mToolbar;
     private TagFlowLayout mTagFlowLayout;
     private Button payButton;
-
-    private OrderDetail mOrder;
+    
+    private Order mOrder;
+    private Button commentButton;
     private int status;
-    private DriverDetail mDriver;
+    private Driver mDriver;
 
     private Handler mHandler= new Handler() {
             public void handleMessage(Message msg) {
@@ -78,17 +86,19 @@ public class RatingActivity extends ActionBarActivity {
         carPlateNumberTextView = (TextView)findViewById(R.id.carPlateNumber);
         carDescriptionTextView = (TextView)findViewById(R.id.carDescription);
         ratingBarBig = (RatingBar)findViewById(R.id.ratingBarBig);
-        ratingBarSmall = (RatingBar)findViewById(R.id.ratingBar);
         phoneImageView = (ImageView)findViewById(R.id.phone);
+        startTextView = (TextView)findViewById(R.id.start_textview);
+        destinationTextView = (TextView)findViewById(R.id.destination_textview);
         priceTextView = (TextView)findViewById(R.id.price);
         mTagFlowLayout = (TagFlowLayout) findViewById(R.id.flowlayout);
         payButton = (Button)findViewById(R.id.pay_button);
+        commentButton = (Button)findViewById(R.id.evalute_button);
 
         final LayoutInflater mInflater = LayoutInflater.from(context);
-        mTagFlowLayout.setAdapter(new TagAdapter<String>(mVals) {
+        final TagAdapter<String> tagAdapter = new TagAdapter<String>(mVals) {
 
             @Override
-            public View getView(FlowLayout parent, int position, String s) {
+            public View getView(FlowLayout parent, int position, final String s) {
                 TextView tv = (TextView) mInflater.inflate(R.layout.flowlayout_tag,
                         mTagFlowLayout, false);
                 Drawable drawable = null;
@@ -104,19 +114,23 @@ public class RatingActivity extends ActionBarActivity {
                 tv.setText(s);
                 return tv;
             }
-        });
+        };
+        mTagFlowLayout.setAdapter(tagAdapter);
 
         //get Arg
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null)
         {
-            mOrder = (OrderDetail)bundle.getSerializable("order");
-            status = Integer.parseInt(mOrder.getStatus());
-            mDriver = new Gson().fromJson(mOrder.getDriver(), DriverDetail.class);
+            mOrder = (Order)bundle.getSerializable("order");
+            status = mOrder.getStatus();
+//            mDriver = new Gson().fromJson(mOrder.getDriver(), DriverDetail.class);
+            mDriver = mOrder.getDriver();
+            ratingBarBig.setRating(Float.parseFloat(mDriver.getRating()));
         }
 //        mDriver = ((DuduApplication)getApplicationContext()).mDriverDetail;
 
         //Update UI
+
         if (mDriver != null) {
             if(mDriver.getAvatar()!=null)
             {
@@ -125,7 +139,6 @@ public class RatingActivity extends ActionBarActivity {
             driverNameTextView.setText(mDriver.getName());
             carPlateNumberTextView.setText(mDriver.getPlate());
             carDescriptionTextView.setText(mDriver.getDescription());
-//            ratingBarSmall.setRating(Float.parseFloat(mDriver.getRating()));
 
             phoneImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -136,10 +149,12 @@ public class RatingActivity extends ActionBarActivity {
         }
 
         if(mOrder!=null) {
+            startTextView.setText(mOrder.getStart());
+            destinationTextView.setText(mOrder.getDestination());
             priceTextView.setText(mOrder.getOrg_price());
         }
 
-        if(Integer.parseInt(mOrder.getStatus()) == 4){//未支付
+        if(mOrder.getStatus() == 4){//未支付
             findViewById(R.id.evaluate_layout).setVisibility(View.GONE);
             payButton.setVisibility(View.VISIBLE);
             payButton.setOnClickListener(new View.OnClickListener() {
@@ -153,12 +168,22 @@ public class RatingActivity extends ActionBarActivity {
             });
         }
 
-        ratingBarBig.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+        if(Float.parseFloat(mOrder.getRating()) != 0){// 已支付 已评价
+            findViewById(R.id.evaluate_layout).setVisibility(View.GONE);
+        }
+
+        commentButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-                //Send Rating Request
-                ratingBar.setRating(v);
-                SocketClient.getInstance().sendRatingRequest(Integer.parseInt(mOrder.getId()), (int) v, new ResponseHandler(Looper.getMainLooper()) {
+            public void onClick(View v) {
+                //TODO  添加点击了的评论到ARRAYLIST
+                String comment ="";
+                if(comments.size() > 0){
+                    for(String s : comments){
+                        comment += s + ",";
+                    }
+                }
+
+                SocketClient.getInstance().sendRatingRequest(Integer.parseInt(mOrder.getId()), (int)ratingBarBig.getRating(), comment, new ResponseHandler(Looper.getMainLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
                     }
@@ -173,9 +198,14 @@ public class RatingActivity extends ActionBarActivity {
                 });
 
                 WinToast.toast(RatingActivity.this, "谢谢评价。");
-//                startActivity(new Intent(RatingActivity.this, PreOrderActivity.class));
                 finish();
+            }
+        });
 
+        ratingBarBig.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
+                ratingBar.setRating(v);
             }
         });
 
@@ -201,7 +231,9 @@ public class RatingActivity extends ActionBarActivity {
     }
 
     public void enterComplainPage(View view) {
-        startActivity(new Intent(context, ComplainActivity.class));
+        Intent intent = new Intent(context, ComplainActivity.class);
+        intent.putExtra("order", mOrder);
+        startActivity(intent);
     }
 
     @Override
