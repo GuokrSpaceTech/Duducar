@@ -66,6 +66,7 @@ public class MessageTag {
     public static final int DRIVER_POSITION = 0x1014;
     public static final int BASEINFO = 0x1016;
     public static final int CANCEL_ORDER = 0x1018;
+    public static final int HISTORY_ORDERS = 0x101A;
 
 
     public static MessageTag getInstance(){
@@ -101,6 +102,7 @@ public class MessageTag {
         MessageTag.put("driver_position", DRIVER_POSITION);
         MessageTag.put("baseinfo", BASEINFO);
         MessageTag.put("cancel_order", CANCEL_ORDER);
+        MessageTag.put("history_orders", HISTORY_ORDERS);
     }
 
     public int Tag(String command)

@@ -12,7 +12,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
-import android.speech.tts.Voice;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -38,7 +37,6 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.baidu.location.Poi;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
@@ -62,8 +60,6 @@ import com.guokrspace.duducar.communication.DuduService;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
 import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
-import com.guokrspace.duducar.communication.message.DriverDetail;
-import com.guokrspace.duducar.communication.message.DriverInfo;
 import com.guokrspace.duducar.communication.message.NearByCars;
 import com.guokrspace.duducar.communication.message.OrderDetail;
 import com.guokrspace.duducar.communication.message.SearchLocation;
@@ -75,9 +71,9 @@ import com.guokrspace.duducar.ui.WinToast;
 import com.guokrspace.duducar.util.SharedPreferencesUtils;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
-import java.util.HashMap;
 import org.json.JSONException;
-import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
@@ -93,7 +89,6 @@ public class PreOrderActivity extends AppCompatActivity
     private Context mContext = this;
     MapView mMapView = null;
     BaiduMap mBaiduMap = null;
-
 
 
     // 定位相关
@@ -167,7 +162,7 @@ public class PreOrderActivity extends AppCompatActivity
 
         duduService = new Intent(this, DuduService.class);
         startService(duduService);
-        Log.e("daddy","oncreate");
+        Log.e("daddy", "oncreate");
         List persons = mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().list();
         if (persons.size() <= 0) { //Not Logged in
             Log.e("daddy", "person size < 0");
@@ -183,8 +178,8 @@ public class PreOrderActivity extends AppCompatActivity
         requestLocButton = (Button) findViewById(R.id.buttonLoc);
         startLocButton = (TextView) findViewById(R.id.startButton);
         destLocButton = (TextView) findViewById(R.id.destButton);
-        nearByCarsTextView = (TextView)findViewById(R.id.nearByCarsTextView);
-        callCabButton = (Button)findViewById(R.id.callaCabButton);
+        nearByCarsTextView = (TextView) findViewById(R.id.nearByCarsTextView);
+        callCabButton = (Button) findViewById(R.id.callaCabButton);
         tempImageView = (ImageView) findViewById(R.id.mapview_temp);
 
         // 地图初始化
@@ -204,7 +199,7 @@ public class PreOrderActivity extends AppCompatActivity
         zoom.setVisibility(View.GONE);
         //
         Log.e("daddy", "init baidu map");
-        LatLng initLoc = new LatLng(28.173,112.9584);
+        LatLng initLoc = new LatLng(28.173, 112.9584);
         MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(initLoc);
         mBaiduMap.animateMapStatus(u);
         mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
@@ -310,9 +305,9 @@ public class PreOrderActivity extends AppCompatActivity
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(sidingMenu.isMenuShowing()){
+                if (sidingMenu.isMenuShowing()) {
                     sidingMenu.showContent();
-                }else{
+                } else {
                     sidingMenu.showMenu();
                 }
             }
@@ -327,7 +322,7 @@ public class PreOrderActivity extends AppCompatActivity
     private void initListener() {
 
         List persons = mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().limit(1).list();
-        if(persons.size()==1) {
+        if (persons.size() == 1) {
             person = (PersonalInformation) persons.get(0);
             CommonUtil.setPersion(person);
             doLogin(person);
@@ -342,11 +337,11 @@ public class PreOrderActivity extends AppCompatActivity
                     Intent intent = new Intent(mContext, LoginActivity.class);
                     startActivityForResult(intent, ACTVITY_LOGIN_REQUEST);
                     finish();
-                } else if(dest == null || destLocButton.getText().length() < 1) {
+                } else if (dest == null || destLocButton.getText().length() < 1) {
                     WinToast.toast(PreOrderActivity.this, "请先输入目的地");
-                }else{
+                } else {
                     mApplication.mPersonalInformation = (PersonalInformation) persons.get(0);
-                    Intent intent = new Intent(mContext,PostOrderActivity.class);
+                    Intent intent = new Intent(mContext, PostOrderActivity.class);
                     intent.putExtra("start", start);
                     intent.putExtra("dest", dest);
                     startActivityForResult(intent, 0x6002);
@@ -398,36 +393,32 @@ public class PreOrderActivity extends AppCompatActivity
                 SocketClient.getInstance().pullNotPaidOrder(Constants.PASSENGER_ROLE, new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
-                        try {
-                            JSONObject noPaid = new JSONObject(messageBody);
-                            if(((String)noPaid.get("order_status")).equals("1")){//存在未支付的账单
-                                final OrderDetail notPaidOrder = new Gson().fromJson((String)noPaid.get("order"), OrderDetail.class);
-                                final MaterialDialog dialog = new MaterialDialog(PreOrderActivity.this);
-                                dialog.setTitle("账单欠费").setMessage("您还有支付的订单, 请尽快完成支付, 否则将无法继续为您提供服务!")
-                                        .setCanceledOnTouchOutside(false).setNegativeButton("稍后支付", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        dialog.dismiss();
-                                    }
-                                }).setPositiveButton("立即支付", new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        Intent intent = new Intent(PreOrderActivity.this, RatingActivity.class);
-                                        intent.putExtra("order", notPaidOrder);
-                                        startActivity(intent);
-                                        dialog.dismiss();
-                                        finish();
-                                    }
-                                });
+                        JSONObject noPaid = JSON.parseObject(messageBody);
+                        if (((String) noPaid.get("order_status")).equals("1")) {//存在未支付的账单
+                            final OrderDetail notPaidOrder = new Gson().fromJson((String) noPaid.get("order"), OrderDetail.class);
+                            final MaterialDialog dialog = new MaterialDialog(PreOrderActivity.this);
+                            dialog.setTitle("账单欠费").setMessage("您还有支付的订单, 请尽快完成支付, 否则将无法继续为您提供服务!")
+                                    .setCanceledOnTouchOutside(false).setNegativeButton("稍后支付", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialog.dismiss();
+                                }
+                            }).setPositiveButton("立即支付", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent intent = new Intent(PreOrderActivity.this, RatingActivity.class);
+                                    intent.putExtra("order", notPaidOrder);
+                                    startActivity(intent);
+                                    dialog.dismiss();
+                                    finish();
+                                }
+                            });
 
-                            } else { //正常跳转
-                                Intent intent = new Intent(mContext, SearchActivity.class);
-                                intent.putExtra("location", start); //Search nearby from the start
-                                intent.putExtra("city", city);
-                                startActivityForResult(intent, ACTIVITY_SEARCH_DEST_REQUEST);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        } else { //正常跳转
+                            Intent intent = new Intent(mContext, SearchActivity.class);
+                            intent.putExtra("location", start); //Search nearby from the start
+                            intent.putExtra("city", city);
+                            startActivityForResult(intent, ACTIVITY_SEARCH_DEST_REQUEST);
                         }
                     }
 
@@ -458,9 +449,9 @@ public class PreOrderActivity extends AppCompatActivity
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            switch (action){
+            switch (action) {
                 case Constants.SERVICE_ACTION_RELOGIN:
-                    if(person != null) { // 用户登陆出错
+                    if (person != null) { // 用户登陆出错
                         doLogin(person);
                     } else {
                         Intent loginIntent = new Intent(mContext, LoginActivity.class);
@@ -473,41 +464,38 @@ public class PreOrderActivity extends AppCompatActivity
         }
     }
 
-    private void checkNotPaid(){
+    private void checkNotPaid() {
 
         SocketClient.getInstance().pullNotPaidOrder(Constants.PASSENGER_ROLE, new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
-                try {
 
-                    JSONObject noPaid = new JSONObject(messageBody);
-                    if(((String)noPaid.get("order_status")).equals("1")){//存在未支付的账单
+
+                JSONObject noPaid = JSON.parseObject(messageBody);
+                if (((String) noPaid.get("order_status")).equals("1")) {//存在未支付的账单
 //                        final OrderDetail notPaidOrder = FastJsonTools.getObject((String)noPaid.get("order"), OrderDetail.class);
-                        Log.e("daddy fang", (String)noPaid.get("order"));
-                        final OrderDetail notPaidOrder = new Gson().fromJson((String)noPaid.get("order"), OrderDetail.class);
+                    Log.e("daddy fang", (String) noPaid.get("order"));
+                    final OrderDetail notPaidOrder = new Gson().fromJson((String) noPaid.get("order"), OrderDetail.class);
 //                        Log.e("daddy order", notPaidOrder.toString());
-                        final MaterialDialog dialog = new MaterialDialog(PreOrderActivity.this);
-                        dialog.setCanceledOnTouchOutside(false);
-                        dialog.setTitle("账单欠费").setMessage("您还有支付的订单, 请尽快完成支付, 否则将无法继续为您提供服务!")
-                                .setCanceledOnTouchOutside(false).setNegativeButton("稍后支付", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        }).setPositiveButton("立即支付", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent(PreOrderActivity.this, RatingActivity.class);
-                                intent.putExtra("order", notPaidOrder);
-                                Log.e("daddy", notPaidOrder.getStatus() + "");
-                                startActivity(intent);
-                                dialog.dismiss();
-                                finish();
-                            }
-                        }).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    final MaterialDialog dialog = new MaterialDialog(PreOrderActivity.this);
+                    dialog.setCanceledOnTouchOutside(false);
+                    dialog.setTitle("账单欠费").setMessage("您还有支付的订单, 请尽快完成支付, 否则将无法继续为您提供服务!")
+                            .setCanceledOnTouchOutside(false).setNegativeButton("稍后支付", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    }).setPositiveButton("立即支付", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(PreOrderActivity.this, RatingActivity.class);
+                            intent.putExtra("order", notPaidOrder);
+                            Log.e("daddy", notPaidOrder.getStatus() + "");
+                            startActivity(intent);
+                            dialog.dismiss();
+                            finish();
+                        }
+                    }).show();
                 }
 
             }
@@ -525,7 +513,7 @@ public class PreOrderActivity extends AppCompatActivity
         });
     }
 
-    private void doLogin(final PersonalInformation person){
+    private void doLogin(final PersonalInformation person) {
 
         SocketClient.getInstance().sendLoginReguest(person.getMobile(), Constants.PASSENGER_ROLE, person.getToken(), new ResponseHandler(Looper.getMainLooper()) {
             @Override
@@ -534,52 +522,49 @@ public class PreOrderActivity extends AppCompatActivity
                 WinToast.toast(PreOrderActivity.this, "登陆成功");
                 //TODO: init userinfo;
                 //检测是否存在正在进行的订单
-                try {
-                    JSONObject object = new JSONObject(messageBody);
-                    String hasActive = (String)object.get("has_active_order");
-                    if(hasActive.equals("1")){
-                        //存在正在执行的订单
-                        String status = (String)object.get("order_status");
-                        if(status.equals("5")){//订单已经取消
-                            return;
-                        }
-                        mApplication.mPersonalInformation = person;
-                        Log.e("daddy fang", (String) object.get("active_order"));
-                        OrderDetail orderDetail = new Gson().fromJson((String) object.get("active_order"), OrderDetail.class);
-                        Log.e("daddy fang", orderDetail.getId()+"");
-                        if(status.equals("1")){
-                            Toast.makeText(PreOrderActivity.this, "您有订单正在等待派发", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(PreOrderActivity.this, PostOrderActivity.class);
-                            intent.putExtra("isRecover", true);
-                            intent.putExtra("status", "1");
-                            intent.putExtra("order_detail", orderDetail);
-                            startActivityForResult(intent, 0x6002);
-                        } else if(status.equals("2")){
-                            Toast.makeText(PreOrderActivity.this, "我们已经为你指派司机", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(PreOrderActivity.this, PostOrderActivity.class);
-                            intent.putExtra("isRecover", true);
-                            intent.putExtra("status", "2");
-                            intent.putExtra("order_detail", orderDetail);
-                            intent.putExtra("driver_detail", orderDetail.getDriver());
-                            startActivityForResult(intent, 0x6002);
-                        } else if(status.equals("3")){
-                            Toast.makeText(PreOrderActivity.this, "您有正在执行的行程", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(PreOrderActivity.this, PostOrderActivity.class);
-                            intent.putExtra("isRecover", true);
-                            intent.putExtra("status", "3");
-                            intent.putExtra("order_detail", orderDetail);
-                            intent.putExtra("driver_detail", orderDetail.getDriver());
-                            startActivityForResult(intent, 0x6002);
-                        } else if(status.equals("4")){ //存在未支付的订单
-                            checkNotPaid();
-                        } else {
-                            //订单已经取消
-                            Log.e("daddy", "bad status");
-                            return;
-                        }
+
+                JSONObject object = JSON.parseObject(messageBody);
+                String hasActive = (String) object.get("has_active_order");
+                if (hasActive.equals("1")) {
+                    //存在正在执行的订单
+                    String status = (String) object.get("order_status");
+                    if (status.equals("5")) {//订单已经取消
+                        return;
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    mApplication.mPersonalInformation = person;
+                    Log.e("daddy fang", (String) object.get("active_order"));
+                    OrderDetail orderDetail = new Gson().fromJson((String) object.get("active_order"), OrderDetail.class);
+                    Log.e("daddy fang", orderDetail.getId() + "");
+                    if (status.equals("1")) {
+                        Toast.makeText(PreOrderActivity.this, "您有订单正在等待派发", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(PreOrderActivity.this, PostOrderActivity.class);
+                        intent.putExtra("isRecover", true);
+                        intent.putExtra("status", "1");
+                        intent.putExtra("order_detail", orderDetail);
+                        startActivityForResult(intent, 0x6002);
+                    } else if (status.equals("2")) {
+                        Toast.makeText(PreOrderActivity.this, "我们已经为你指派司机", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(PreOrderActivity.this, PostOrderActivity.class);
+                        intent.putExtra("isRecover", true);
+                        intent.putExtra("status", "2");
+                        intent.putExtra("order_detail", orderDetail);
+                        intent.putExtra("driver_detail", orderDetail.getDriver());
+                        startActivityForResult(intent, 0x6002);
+                    } else if (status.equals("3")) {
+                        Toast.makeText(PreOrderActivity.this, "您有正在执行的行程", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(PreOrderActivity.this, PostOrderActivity.class);
+                        intent.putExtra("isRecover", true);
+                        intent.putExtra("status", "3");
+                        intent.putExtra("order_detail", orderDetail);
+                        intent.putExtra("driver_detail", orderDetail.getDriver());
+                        startActivityForResult(intent, 0x6002);
+                    } else if (status.equals("4")) { //存在未支付的订单
+                        checkNotPaid();
+                    } else {
+                        //订单已经取消
+                        Log.e("daddy", "bad status");
+                        return;
+                    }
                 }
             }
 
@@ -727,7 +712,7 @@ public class PreOrderActivity extends AppCompatActivity
     }
 
     //监听service传来的消息
-    private void registerBroadcastReceiver(){
+    private void registerBroadcastReceiver() {
         receiver = new ServiceReceiver();
         IntentFilter filter = new IntentFilter(Constants.SERVICE_BROADCAST);
         filter.addAction(Constants.SERVICE_ACTION_RELOGIN);
@@ -736,100 +721,100 @@ public class PreOrderActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch(resultCode) {
+        switch (resultCode) {
             case RESULT_OK:
-            if (requestCode == ACTVITY_LOGIN_REQUEST) {
-                drawerView.refreshMenuView();
-                //获取baseinfo信息
-                SocketClient.getInstance().getBaseInfoRequest("2", new ResponseHandler(Looper.myLooper()) {
-                    @Override
-                    public void onSuccess(String messageBody) {
-                        String comments = "";
-                        String complaints = "";
-                        String cancel_reasons = "";
-                        if (!TextUtils.isEmpty(messageBody)) {
-                            JSONObject responseObj = JSON.parseObject(messageBody);
-                            if (responseObj != null) {
-                                if (responseObj.containsKey("comments")) {
-                                    JSONArray commentsList = responseObj.getJSONArray("comments");
-                                    comments = commentsList.toJSONString();
+                if (requestCode == ACTVITY_LOGIN_REQUEST) {
+                    drawerView.refreshMenuView();
+                    //获取baseinfo信息
+                    SocketClient.getInstance().getBaseInfoRequest("2", new ResponseHandler(Looper.myLooper()) {
+                        @Override
+                        public void onSuccess(String messageBody) {
+                            String comments = "";
+                            String complaints = "";
+                            String cancel_reasons = "";
+                            if (!TextUtils.isEmpty(messageBody)) {
+                                JSONObject responseObj = JSON.parseObject(messageBody);
+                                if (responseObj != null) {
+                                    if (responseObj.containsKey("comments")) {
+                                        JSONArray commentsList = responseObj.getJSONArray("comments");
+                                        comments = commentsList.toJSONString();
+                                    }
+                                    if (responseObj.containsKey("complaint")) {
+                                        JSONArray complaintList = responseObj.getJSONArray("complaint");
+                                        complaints = complaintList.toJSONString();
+                                    }
+                                    if (responseObj.containsKey("cancel_order_reason")) {
+                                        JSONArray reasonList = responseObj.getJSONArray("cancel_order_reason");
+                                        cancel_reasons = reasonList.toJSONString();
+                                    }
+                                    Map<String, Object> baseinfo = new HashMap<>();
+                                    baseinfo.put(SharedPreferencesUtils.BASEINFO_COMMENTS, comments);
+                                    baseinfo.put(SharedPreferencesUtils.BASEINFO_COMPLAINTS, complaints);
+                                    baseinfo.put(SharedPreferencesUtils.BASEINFO_CANCEL_REASONS, cancel_reasons);
+                                    SharedPreferencesUtils.setParams(mContext, baseinfo);
                                 }
-                                if (responseObj.containsKey("complaint")) {
-                                    JSONArray complaintList = responseObj.getJSONArray("complaint");
-                                    complaints = complaintList.toJSONString();
-                                }
-                                if (responseObj.containsKey("cancel_order_reason")) {
-                                    JSONArray reasonList = responseObj.getJSONArray("cancel_order_reason");
-                                    cancel_reasons = reasonList.toJSONString();
-                                }
-                                Map<String, Object> baseinfo = new HashMap<>();
-                                baseinfo.put(SharedPreferencesUtils.BASEINFO_COMMENTS, comments);
-                                baseinfo.put(SharedPreferencesUtils.BASEINFO_COMPLAINTS, complaints);
-                                baseinfo.put(SharedPreferencesUtils.BASEINFO_CANCEL_REASONS, cancel_reasons);
-                                SharedPreferencesUtils.setParams(mContext, baseinfo);
                             }
+
                         }
 
+                        @Override
+                        public void onFailure(String error) {
+                            showToast("获取baseinfo失败~");
+                        }
+
+                        @Override
+                        public void onTimeout() {
+                            showToast("获取baseinfo超时...");
+
+                        }
+                    });
+                } else if (requestCode == ACTIVITY_SEARCH_START_REQUEST) {
+
+                    Bundle bundle = data.getExtras();
+                    if (bundle != null) {
+                        start = (SearchLocation) bundle.get("location");
+                        LatLng searchLoc = start.getLocation();
+
+                        startLocButton.setText(start.getAddress());
+
+                        mBaiduMap.clear();
+                        mBaiduMap.addOverlay(new MarkerOptions().position(searchLoc)
+                                .icon(BitmapDescriptorFactory
+                                        .fromResource(R.drawable.ic_current_position_pin)));
+                        mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLng(searchLoc));
+                        mGeoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(searchLoc));
                     }
+                } else if (requestCode == ACTIVITY_SEARCH_DEST_REQUEST) {
+                    Bundle bundle = data.getExtras();
+                    if (bundle != null) {
+                        dest = (SearchLocation) bundle.get("location");
+                        destLocButton.setText(dest.getAddress());
+                        destLocButton.setTextColor(getResources().getColor(android.R.color.black));
+                        callCabButton.setEnabled(true);
 
-                    @Override
-                    public void onFailure(String error) {
-                        showToast("获取baseinfo失败~");
+                        Intent intent = new Intent(mContext, CostEstimateActivity.class);
+                        intent.putExtra("start", start);
+                        intent.putExtra("dest", dest);
+
+                        startActivityForResult(intent, ACTVITY_COST_ESTIMATE_REQUEST);
                     }
-
-                    @Override
-                    public void onTimeout() {
-                        showToast("获取baseinfo超时...");
+                } else if (requestCode == ACTVITY_COST_ESTIMATE_REQUEST) {
+                    final List persons = mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().list();
+                    if (persons.size() <= 0) { //Not Logged in
+                        Intent intent = new Intent(mContext, LoginActivity.class);
+                        startActivityForResult(intent, ACTVITY_LOGIN_REQUEST);
+                        finish();
+                    } else if (dest == null) {
+                        WinToast.toast(PreOrderActivity.this, "请先输入目的地");
+                    } else {
+                        mApplication.mPersonalInformation = (PersonalInformation) persons.get(0);
+                        Intent intent = new Intent(mContext, PostOrderActivity.class);
+                        intent.putExtra("start", start);
+                        intent.putExtra("dest", dest);
+                        startActivityForResult(intent, 0x6002);
 
                     }
-                });
-            } else if (requestCode == ACTIVITY_SEARCH_START_REQUEST) {
-
-                Bundle bundle = data.getExtras();
-                if (bundle != null) {
-                    start = (SearchLocation) bundle.get("location");
-                    LatLng searchLoc = start.getLocation();
-
-                    startLocButton.setText(start.getAddress());
-
-                    mBaiduMap.clear();
-                    mBaiduMap.addOverlay(new MarkerOptions().position(searchLoc)
-                            .icon(BitmapDescriptorFactory
-                                    .fromResource(R.drawable.ic_current_position_pin)));
-                    mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLng(searchLoc));
-                    mGeoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(searchLoc));
                 }
-            } else if (requestCode == ACTIVITY_SEARCH_DEST_REQUEST) {
-                Bundle bundle = data.getExtras();
-                if (bundle != null) {
-                    dest = (SearchLocation) bundle.get("location");
-                    destLocButton.setText(dest.getAddress());
-                    destLocButton.setTextColor(getResources().getColor(android.R.color.black));
-                    callCabButton.setEnabled(true);
-
-                    Intent intent = new Intent(mContext, CostEstimateActivity.class);
-                    intent.putExtra("start", start);
-                    intent.putExtra("dest", dest);
-
-                    startActivityForResult(intent, ACTVITY_COST_ESTIMATE_REQUEST);
-                }
-            } else if (requestCode == ACTVITY_COST_ESTIMATE_REQUEST) {
-                final List persons = mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().list();
-                if (persons.size() <= 0) { //Not Logged in
-                    Intent intent = new Intent(mContext, LoginActivity.class);
-                    startActivityForResult(intent, ACTVITY_LOGIN_REQUEST);
-                    finish();
-                } else if(dest==null) {
-                    WinToast.toast(PreOrderActivity.this, "请先输入目的地");
-                }else{
-                    mApplication.mPersonalInformation = (PersonalInformation) persons.get(0);
-                    Intent intent = new Intent(mContext, PostOrderActivity.class);
-                    intent.putExtra("start", start);
-                    intent.putExtra("dest", dest);
-                    startActivityForResult(intent, 0x6002);
-
-                }
-            }
                 break;
             case RESULT_CANCELED:
                 destLocButton.setText("");
@@ -897,7 +882,7 @@ public class PreOrderActivity extends AppCompatActivity
             try {
                 if (locData != null)
                     mBaiduMap.setMyLocationData(locData);
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -920,7 +905,6 @@ public class PreOrderActivity extends AppCompatActivity
     }
 
 
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
@@ -939,7 +923,7 @@ public class PreOrderActivity extends AppCompatActivity
             alterDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    if(duduService != null) {
+                    if (duduService != null) {
                         stopService(duduService);
                     }
                     AppExitUtil.getInstance().exit();
@@ -1040,19 +1024,16 @@ public class PreOrderActivity extends AppCompatActivity
     }
 
 
-
-
-
     private class MyTimerTask extends TimerTask {
         @Override
         public void run() {
             if (start != null) {
 
-                if(System.currentTimeMillis() - CommonUtil.getCurTime() > 1000 * 60){
+                if (System.currentTimeMillis() - CommonUtil.getCurTime() > 1000 * 60) {
                     //TODO :百度地图定位 60秒超时
                 }
 
-                if(CommonUtil.isLocationSuccess()){//定位成功
+                if (CommonUtil.isLocationSuccess()) {//定位成功
 
                     SocketClient.getInstance().sendNearByCarRequestTest(CommonUtil.getCurLat(), CommonUtil.getCurLng(), "1", new ResponseHandler(Looper.getMainLooper()) {
                         @Override

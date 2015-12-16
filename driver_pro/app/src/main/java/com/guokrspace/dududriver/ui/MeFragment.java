@@ -107,7 +107,6 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
             }
             if (isNetworkAvailable()) {
                 currentOrderId = Long.MAX_VALUE;
-                // TODO 刷新、获取历史订单数据
                 SocketClient.getInstance().getHistoryOrders("old", Constants.ORDER_PAGE_NUM, currentOrderId, new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {

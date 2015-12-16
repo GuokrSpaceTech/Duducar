@@ -22,6 +22,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
+import com.guokrspace.duducar.communication.http.model.Driver;
+import com.guokrspace.duducar.communication.http.model.Order;
 import com.guokrspace.duducar.communication.message.DriverDetail;
 import com.guokrspace.duducar.communication.message.OrderDetail;
 import com.guokrspace.duducar.ui.WinToast;
@@ -49,9 +51,9 @@ public class RatingActivity extends ActionBarActivity {
     private TagFlowLayout mTagFlowLayout;
     private Button payButton;
 
-    private OrderDetail mOrder;
+    private Order mOrder;
     private int status;
-    private DriverDetail mDriver;
+    private Driver mDriver;
 
     private Handler mHandler= new Handler() {
             public void handleMessage(Message msg) {
@@ -110,9 +112,10 @@ public class RatingActivity extends ActionBarActivity {
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null)
         {
-            mOrder = (OrderDetail)bundle.getSerializable("order");
-            status = Integer.parseInt(mOrder.getStatus());
-            mDriver = new Gson().fromJson(mOrder.getDriver(), DriverDetail.class);
+            mOrder = (Order)bundle.getSerializable("order");
+            status = mOrder.getStatus();
+//            mDriver = new Gson().fromJson(mOrder.getDriver(), DriverDetail.class);
+            mDriver = mOrder.getDriver();
         }
 //        mDriver = ((DuduApplication)getApplicationContext()).mDriverDetail;
 
@@ -139,7 +142,7 @@ public class RatingActivity extends ActionBarActivity {
             priceTextView.setText(mOrder.getOrg_price());
         }
 
-        if(Integer.parseInt(mOrder.getStatus()) == 4){//未支付
+        if(mOrder.getStatus() == 4){//未支付
             findViewById(R.id.evaluate_layout).setVisibility(View.GONE);
             payButton.setVisibility(View.VISIBLE);
             payButton.setOnClickListener(new View.OnClickListener() {
@@ -158,7 +161,7 @@ public class RatingActivity extends ActionBarActivity {
             public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
                 //Send Rating Request
                 ratingBar.setRating(v);
-                SocketClient.getInstance().sendRatingRequest(Integer.parseInt(mOrder.getId()), (int) v, new ResponseHandler(Looper.getMainLooper()) {
+                SocketClient.getInstance().sendRatingRequest(mOrder.getId().intValue(), (int) v, new ResponseHandler(Looper.getMainLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
                     }
