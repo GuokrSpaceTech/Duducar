@@ -719,24 +719,24 @@ public class PostOrderActivity extends AppCompatActivity {
                 order_finish = FastJsonTools.getObject(messageBody, TripOver.class);
 
                 OrderRecord orderRecord = new OrderRecord();
-                orderRecord.setStartAddr(order_start.getOrder().getStart());
-                orderRecord.setDestAddr(order_finish.getOrder().getDestination());
+                orderRecord.setStart(order_start.getOrder().getStart());
+                orderRecord.setDestination(order_finish.getOrder().getDestination());
                 Double startLat = Double.parseDouble(order_finish.getOrder().getStart_lat());
                 Double startLng = Double.parseDouble(order_finish.getOrder().getStart_lng());
                 Double destLat = Double.parseDouble(order_finish.getOrder().getDestination_lat());
                 Double destLng = Double.parseDouble(order_finish.getOrder().getDestination_lng());
-                orderRecord.setStartLat(startLat == null ? "0" : String.valueOf(startLat));
-                orderRecord.setStartLng(startLng == null ? "0" : String.valueOf(startLng));
-                orderRecord.setDestLat(destLat == null ? "0" : String.valueOf(destLat));
-                orderRecord.setDestLng(destLng == null ? "0" : String.valueOf(destLng));
+                orderRecord.setStart_lat(startLat == null ? 0.0 : startLat);
+                orderRecord.setStart_lng(startLng == null ? 0.0 : startLng);
+                orderRecord.setDestination_lat(destLat == null ? 0.0 : destLat);
+                orderRecord.setDestination_lng(destLng == null ? 0.0 : destLng);
                 orderRecord.setMileage(order_finish.getOrder().getMileage());
-                orderRecord.setPrice(order_finish.getOrder().getOrg_price());
-                orderRecord.setCarType(String.valueOf(order_finish.getOrder().getCar_type()));
+                orderRecord.setOrg_price(order_finish.getOrder().getOrg_price());
+                orderRecord.setCar_type(Integer.parseInt(order_finish.getOrder().getCar_type()));
                 SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd HH:mm");
                 String dateStr = sdf.format(new Date());
-                orderRecord.setOrderTime(dateStr);
+                orderRecord.setEnd_time(System.currentTimeMillis());
 
-                mApplication.mDaoSession.getOrderRecordDao().insert(orderRecord);
+//                mApplication.mDaoSession.getOrderRecordDao().insert(orderRecord);
                 mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_COMPLETED);
             }
 

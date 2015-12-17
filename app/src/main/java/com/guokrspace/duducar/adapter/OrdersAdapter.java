@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.guokrspace.duducar.R;
+import com.guokrspace.duducar.communication.http.model.Order;
 import com.guokrspace.duducar.database.OrderRecord;
 
 import java.text.SimpleDateFormat;
@@ -23,11 +24,11 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.RecordView
 
     private Context context;
 
-    private List<OrderRecord> mItems = null;
+    private List<Order> mItems = null;
 
     private OnItemClickListener mOnItemClickListener;
 
-    public OrdersAdapter(Context context, List<OrderRecord> mItems) {
+    public OrdersAdapter(Context context, List<Order> mItems) {
         this.context = context;
         this.mItems = mItems;
     }
@@ -46,9 +47,9 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.RecordView
     @Override
     public void onBindViewHolder(final RecordViewHolder holder, int position) {
         if (mItems != null) {
-            holder.tvTime.setText(mItems.get(position).getOrderTime());
-            holder.tvStart.setText(mItems.get(position).getStartAddr());
-            holder.tvDestination.setText(mItems.get(position).getDestAddr());
+            holder.tvTime.setText(mItems.get(position).getEnd_time() + "");
+            holder.tvStart.setText(mItems.get(position).getStart());
+            holder.tvDestination.setText(mItems.get(position).getDestination());
             holder.tvStatus.setText("已完成");
             if (mOnItemClickListener != null) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {

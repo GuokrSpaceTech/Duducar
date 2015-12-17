@@ -687,8 +687,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
             public void onSuccess(String messageBody) {
                 try {
                     JSONObject mCancel = new JSONObject(messageBody);
-                    if (orderItem == null){
-                            //|| mCancel.get("order_no") != orderItem.getOrder().getId()) {
+                    if (orderItem == null ) {
                         //订单已经取消或者已经接到乘客  无法取消订单
                         return;
                     }

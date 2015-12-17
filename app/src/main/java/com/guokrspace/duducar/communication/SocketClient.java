@@ -506,4 +506,31 @@ public class SocketClient {
     }
 
 
+    /*
+     * 获取乘客端历史订单
+     * @author hyman
+     *
+     * @param type
+     * @param number
+     * @param order_id
+     * @param handler
+     * @return
+     */
+    public int getHistoryOrders(String type, int number, Long order_id, ResponseHandler handler) {
+        int ret = -1;
+        JSONObject carmsg = new JSONObject();
+        try {
+            carmsg.put("cmd", MessageTag.getInstance().Command(MessageTag.HISTORY_ORDERS));
+            carmsg.put("role", "2");
+            carmsg.put("type", type);
+            carmsg.put("number", number);
+            carmsg.put("order_id", order_id);
+            ret = sendMessage(carmsg, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
+
 }
