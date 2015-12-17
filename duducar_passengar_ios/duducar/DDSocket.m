@@ -20,6 +20,12 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 #define READ_HEADER_LINE_BY_LINE 1
 
+@interface DDSocket ()
+{
+    NSString *trunctedResponse;
+}
+@end
+
 
 static DDSocket * instanceSocket = nil;
 static NSString * responseNotificationName = @"DDSocketResponseNotification";
@@ -45,6 +51,8 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         
         [[DDTTYLogger sharedInstance] setLogFormatter:formatter];
         [DDLog addLogger:[DDTTYLogger sharedInstance]];
+        
+        trunctedResponse = @"";
 
     }
     return self;
@@ -173,6 +181,17 @@ completionHandler:(void (^)(BOOL shouldTrustPeer))completionHandler
     [asyncSocket readDataWithTimeout:-1 tag:0];
     
     NSString *response = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    NSRange range = [response rangeOfString:@"\n"];
+    if(range.location==NSNotFound)
+    {
+        trunctedResponse = response;
+    } else {
+        if(![trunctedResponse isEqualToString:@""])
+        {
+            response = [trunctedResponse stringByAppendingString:response];
+            trunctedResponse = @"";
+        }
+    }
     
     //Deserialastion a Json String into Dictionary
     NSError *jsonError;

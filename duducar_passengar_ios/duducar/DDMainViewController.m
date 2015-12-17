@@ -14,7 +14,6 @@
 #import <BaiduMapAPI_Location/BMKLocationComponent.h>
 #import "DDSearchTableViewController.h"
 #import "LoginViewController.h"
-#import "PostOrderViewController.h"
 #import "CostEstimationViewController.h"
 #import "DDSocket.h"
 #import "DDDatabase.h"
@@ -75,15 +74,6 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
      */
     self.view.backgroundColor = [UIColor whiteColor];
     
-    // 左侧按钮
-    UIBarButtonItem * leftItem  = [[UIBarButtonItem alloc]initWithTitle:@"left" style:UIBarButtonItemStyleDone target:self action:@selector(leftCilck:)];
-    self.navigationItem.leftBarButtonItem = leftItem;
-    leftView = [[DDLeftView alloc]initWithFrame:CGRectMake(-self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    leftView.backgroundColor = [UIColor clearColor];
-    leftView.delegate = self;
-    [self.view addSubview:leftView];
-    leftViewShow = NO;
-    
     //Map View
     _mapView = [[BMKMapView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     _mapView.zoomLevel = 15;
@@ -98,7 +88,6 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     [locButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [locButton addTarget:self action:@selector(locButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:locButton];
-
     
     //起点 终点
     UIView * backView = [[UIView alloc]initWithFrame:CGRectMake(10, self.view.frame.size.height - 170, self.view.frame.size.width-20, 100)];
@@ -157,9 +146,18 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         make.centerY.equalTo(stopLocButton.mas_centerY);
         make.right.equalTo(stopLocButton.mas_right);
     }];
+    
+    // 左侧按钮
+    UIBarButtonItem * leftItem  = [[UIBarButtonItem alloc]initWithTitle:@"left" style:UIBarButtonItemStyleDone target:self action:@selector(leftCilck:)];
+    self.navigationItem.leftBarButtonItem = leftItem;
+    leftView = [[DDLeftView alloc]initWithFrame:CGRectMake(-self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height)];
+    leftView.backgroundColor = [UIColor clearColor];
+    leftView.delegate = self;
+    [self.view addSubview:leftView];
+    leftViewShow = NO;
 
     /*
-     * nit Data
+     * Init Data
      */
     startLocation = [[Location alloc]init];
     endLocation = [[Location alloc]init];
@@ -293,7 +291,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
  */
 - (void)didUpdateBMKUserLocation:(BMKUserLocation *)userLocation
 {
-    NSLog(@"didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude,userLocation.location.coordinate.longitude);
+    //NSLog(@"didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude,userLocation.location.coordinate.longitude);
     [_mapView updateLocationData:userLocation];
     currentLoc = userLocation;
     
@@ -432,7 +430,9 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
             //如果有当前活跃订单，直接进入叫车界面。
             NSString *activeOrderJson;
             
-            if([responseDict objectForKey:@"active_order"])
+            int activeOrderNum = [[responseDict objectForKey:@"has_active_order"] intValue];
+            
+            if(activeOrderNum > 0)
             {
                 activeOrderJson = [responseDict objectForKey:@"active_order"];
             
@@ -526,7 +526,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         [jsonString appendString:@"\n"];
         NSData *outStr = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
         
-//        [[DDSocket currentSocket]sendData:outStr timeOut:-1.0 tag:0];
+        [[DDSocket currentSocket]sendData:outStr timeOut:-1.0 tag:0];
     }
 }
 @end

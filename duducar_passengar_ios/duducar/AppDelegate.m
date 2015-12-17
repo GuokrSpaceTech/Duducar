@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "WXApiManager.h"
 #import <BaiduMapAPI_Map/BMKMapComponent.h>
 #import <AlipaySDK/AlipaySDK.h>
 #import "LoginViewController.h"
@@ -36,6 +37,9 @@ BMKMapManager* _mapManager;
     if (!ret) {
         NSLog(@"Baidu Map Manager Starting Failed!");
     }
+    
+    //向微信注册wxd930ea5d5a258f4f
+    [WXApi registerApp:@"wxb3a91786fc792d8c" withDescription:@"Dudu专车"];
     
     DDMainViewController * mainVC = [[DDMainViewController alloc]init];
     UINavigationController * navigation = [[UINavigationController alloc] initWithRootViewController:mainVC];
@@ -107,15 +111,21 @@ BMKMapManager* _mapManager;
             //【由于在跳转支付宝客户端支付的过程中，商户app在后台很可能被系统kill了，所以pay接口的callback就会失效，请商户对standbyCallback返回的回调结果进行处理,就是在这个方法里面处理跟callback一样的逻辑】
             NSLog(@"result = %@",resultDic);
         }];
-    }
-    if ([url.host isEqualToString:@"platformapi"]){//支付宝钱包快登授权返回authCode
+    } else if ([url.host isEqualToString:@"platformapi"]){//支付宝钱包快登授权返回authCode
         
         [[AlipaySDK defaultService] processAuthResult:url standbyCallback:^(NSDictionary *resultDic) {
             //【由于在跳转支付宝客户端支付的过程中，商户app在后台很可能被系统kill了，所以pay接口的callback就会失效，请商户对standbyCallback返回的回调结果进行处理,就是在这个方法里面处理跟callback一样的逻辑】
             NSLog(@"result = %@",resultDic);
         }];
+    } else {
+        return [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
     }
+
     return YES;
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    return  [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
 }
 
 @end
