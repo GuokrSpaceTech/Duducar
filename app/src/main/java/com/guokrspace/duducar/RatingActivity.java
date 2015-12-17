@@ -24,8 +24,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.google.gson.Gson;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
-import com.guokrspace.duducar.communication.http.model.Driver;
-import com.guokrspace.duducar.communication.http.model.Order;
 import com.guokrspace.duducar.communication.message.DriverDetail;
 import com.guokrspace.duducar.communication.message.OrderDetail;
 import com.guokrspace.duducar.database.OrderRecord;
@@ -63,7 +61,7 @@ public class RatingActivity extends ActionBarActivity {
     private TagFlowLayout mTagFlowLayout;
     private Button payButton;
     
-    private Order mOrder;
+//    private Order mOrder;
     private Button commentButton;
 
     private OrderDetail mOrder;
@@ -176,7 +174,7 @@ public class RatingActivity extends ActionBarActivity {
             priceTextView.setText(mOrder.getOrg_price());
         }
 
-        if(mOrder.getStatus() == 4){//未支付
+        if(mOrder.getStatus().equals("4")){//未支付
             findViewById(R.id.evaluate_layout).setVisibility(View.GONE);
             payButton.setVisibility(View.VISIBLE);
             payButton.setOnClickListener(new View.OnClickListener() {

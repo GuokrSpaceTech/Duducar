@@ -60,6 +60,7 @@ import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
 import com.guokrspace.dududriver.net.message.MessageTag;
 import com.guokrspace.dududriver.util.CommonUtil;
+import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 import com.guokrspace.dududriver.util.VoiceUtil;
 import com.guokrspace.dududriver.view.CircleImageView;
 
@@ -559,6 +560,9 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        SharedPreferencesUtils.setParam(PickUpPassengerActivity.this, Constants.PREFERENCE_KEY_ORDER_STATUS, Constants.STATUS_RUN);
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -586,10 +590,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         timer = new Timer();
         timer.scheduleAtFixedRate(new DrawLineTimerTask(), 7000, 3 * 1000);
 
-        String price = CommonUtil.getStartPrice() + "";
-        if(baseCharge > CommonUtil.getStartPrice()){
-            price = baseCharge + "";
-        }
+        final String price = baseCharge > CommonUtil.getStartPrice() ? baseCharge + "" : CommonUtil.getStartPrice() + "";
 
         btnConfirm.setText(price + "元   到达目的地");
         btnConfirm.setOnClickListener(new View.OnClickListener() {
@@ -597,6 +598,8 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
             public void onClick(View v) {
                 //TODO:无论如何都要结束订单
                 stopCharging();
+                SharedPreferencesUtils.setParam(PickUpPassengerActivity.this, Constants.PREFERENCE_KEY_ORDER_STATUS, Constants.STATUS_REACH);
+
                 Intent intent = new Intent(PickUpPassengerActivity.this, ConfirmBillActivity.class);
                 intent.putExtra("orderItem", orderItem);
                 intent.putExtra("mileage", curDistance);

@@ -1,5 +1,6 @@
 package com.guokrspace.dududriver.net;
 
+import android.app.ActivityManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -192,6 +193,10 @@ public class DuduService extends Service {
                     //将登陆状态置为false
                     SharedPreferencesUtils.setParam(DuduService.this, SharedPreferencesUtils.LOGIN_STATE, false);
                     //后台尝试登录
+                    if(!isRunningApp(getApplicationContext())){
+                        //正在执行
+                        return;
+                    }
                     List localUsers = DuduDriverApplication.getInstance().
                             mDaoSession.getPersonalInformationDao().
                             queryBuilder().list();
@@ -337,6 +342,20 @@ public class DuduService extends Service {
 
             }
         });
+    }
+
+    public boolean isRunningApp(Context context) {
+        boolean isAppRunning = false;
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> list = am.getRunningTasks(100);
+        for (ActivityManager.RunningTaskInfo info : list) {
+            if (info.topActivity.getPackageName().equals(Constants.PACKAGE_NAME) && info.baseActivity.getPackageName().equals(Constants.PACKAGE_NAME)) {
+                isAppRunning = true;
+                // find it, break
+                break;
+            }
+        }
+        return isAppRunning;
     }
 }
 
