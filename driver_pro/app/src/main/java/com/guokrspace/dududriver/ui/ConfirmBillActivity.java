@@ -40,6 +40,7 @@ import java.math.BigDecimal;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by hyman on 15/11/3.
@@ -76,6 +77,13 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
     ImageButton ibHeightSpeedCostAdd;
     @Bind(R.id.bridge_cost_minus)
     ImageButton ibBridgeCostMinus;
+    @OnClick(R.id.bridge_cost_minus)
+    private void minusBridge(){
+        if(addPrice1>1){
+            addPrice1--;
+            tvBridgeCost.setText(addPrice1+"");
+        }
+    }
     @Bind(R.id.bridge_cost)
     TextView tvBridgeCost;
     @Bind(R.id.bridge_cost_add)
@@ -98,6 +106,10 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
     private float lowcost;
     private float milecost;
     private double curDistance;
+
+    private double addPrice1 = 0;
+    private double addPrice2 = 0;
+    private double addPrice3 = 0;
 
     private final int PAY_OVER = 0X001;
 

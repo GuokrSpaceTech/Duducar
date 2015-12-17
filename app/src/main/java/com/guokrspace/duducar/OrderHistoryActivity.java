@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.dexafree.materialList.view.MaterialListView;
 import com.guokrspace.duducar.adapter.OrdersAdapter;
@@ -76,8 +77,8 @@ public class OrderHistoryActivity extends AppCompatActivity{
                 Intent intent = new Intent(mContext, RatingActivity.class);
 //                OrderDetail orderDetail = getOrderDetail(orderRecords.get(position));
                 intent.putExtra("order", orderRecords.get(position));
-                startActivity(intent);
-
+//                startActivity(intent);
+                Toast.makeText(OrderHistoryActivity.this, "暂时无法提供详细内容", Toast.LENGTH_SHORT).show();
             }
 
             @Override
