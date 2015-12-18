@@ -81,9 +81,4 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:1.3.0'
     compile 'com.zhy:okhttputils:1.0.2'
     compile 'me.drakeet.materialdialog:library:1.2.8'
-    compile files('libs/dozer/commons-beanutils-1.9.2.jar')
-    compile files('libs/dozer/commons-lang3-3.4.jar')
-    compile files('libs/dozer/commons-logging-1.2.jar')
-    compile files('libs/dozer/slf4j-api-1.7.13.jar')
-    compile files('libs/dozer/slf4j-simple-1.7.13.jar')
 }

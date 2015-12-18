@@ -493,4 +493,31 @@ public class SocketClient {
     }
 
 
+    /*
+     * 获取司机端余额和交易明细列表
+     * @author hyman
+     *
+     * @param type
+     * @param number
+     * @param bill_id
+     * @param handler
+     * @return
+     */
+    public int getBillsRequest(String type, int number, Long bill_id, ResponseHandler handler) {
+        int ret = -1;
+        JSONObject carmsg = new JSONObject();
+        try {
+            carmsg.put("cmd", MessageTag.getInstance().Command(MessageTag.GET_BILLS));
+            carmsg.put("role", "1");
+            carmsg.put("type", type);
+            carmsg.put("number", number);
+            carmsg.put("bill_id", bill_id);
+            ret = sendMessage(carmsg, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
+
 }

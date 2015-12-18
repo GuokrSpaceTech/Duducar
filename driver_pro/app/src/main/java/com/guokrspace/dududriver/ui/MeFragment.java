@@ -101,6 +101,7 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
 
         @Override
         public void onRefresh() {
+            hasMore = true;
             if (isRefreshing) {
                 showToast("正在刷新，请稍后...");
                 return;

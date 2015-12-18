@@ -3,6 +3,7 @@ package com.guokrspace.duducar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
@@ -82,6 +83,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements Handler.C
     private SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
+            hasMore = true;
             if (isRefreshing) {
                 showToast("正在刷新，请稍后...");
                 return;
@@ -215,6 +217,8 @@ public class OrderHistoryActivity extends AppCompatActivity implements Handler.C
 
     private void transform2OrderRecords(List<OrderRecord> orderRecords, List<Order> orders) {
         for (Order order : orders) {
+            // 如果是司机代付，就不添加到列表中
+            if (order.getPay_role() == 1) continue;
             OrderRecord orderRecord = getOrderRecord(order);
             orderRecords.add(orderRecord);
         }
@@ -383,6 +387,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements Handler.C
     private void initToolBar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle("历史订单");
+        mToolbar.setTitleTextColor(Color.WHITE);
         mToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back));
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);

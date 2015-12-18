@@ -21,8 +21,19 @@ public class DAODBGenerator {
         addConfig(schema);
         addOrder(schema);
         addBaseNotice(schema);
+        addBill(schema);
 
-        new DaoGenerator().generateAll(schema, "/Users/daddyfang/Duducar/driver_pro/app/src/main/java");
+        new DaoGenerator().generateAll(schema, "/Users/hyman/Duducar/driver_pro/app/src/main/java");
+    }
+
+    private static void addBill(Schema schema) {
+        Entity bill = schema.addEntity("BillRecord");
+        bill.addLongProperty("id").primaryKey();
+        bill.addStringProperty("money");
+        bill.addStringProperty("description");
+        bill.addStringProperty("time");
+        bill.addIntProperty("type");
+        bill.addStringProperty("opposite");
     }
 
     private static void addConfig(Schema schema) {

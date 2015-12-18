@@ -67,6 +67,7 @@ public class MessageTag {
 
     //hyman
     public static final int HISTORY_ORDERS = 0x1013;
+    public static final int GET_BILLS = 0x101C;
 
 //    public static final int ORDER_CONFIRM = 0X1010;
 
@@ -102,6 +103,7 @@ public class MessageTag {
 
         //hyman
         MessageTag.put("history_orders", HISTORY_ORDERS);
+        MessageTag.put("get_bills", GET_BILLS);
     }
 
     public int Tag(String command)

@@ -126,6 +126,11 @@
             android:name=".ui.BalanceActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="余额" />
+        <activity
+            android:name=".ui.FeedBackActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="意见反馈"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
         <service
             android:name=".net.DuduService"

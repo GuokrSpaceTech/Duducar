@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Looper;
@@ -298,6 +299,7 @@ public class PreOrderActivity extends AppCompatActivity
     private void initToolBar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle(getString(R.string.app_name));
+        mToolbar.setTitleTextColor(Color.WHITE);
         mToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_drawericon));
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);

@@ -19,6 +19,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
+import com.guokrspace.duducar.communication.http.model.Order;
 import com.guokrspace.duducar.communication.message.OrderDetail;
 import com.guokrspace.duducar.util.SharedPreferencesUtils;
 
@@ -46,7 +47,7 @@ public class ComplainActivity extends AppCompatActivity implements View.OnClickL
     private Button[] complainBtns;
 
     private String complainId = "0";
-    private OrderDetail orderDetail;
+    private Order orderDetail;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -91,7 +92,7 @@ public class ComplainActivity extends AppCompatActivity implements View.OnClickL
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null)
         {
-            orderDetail = (OrderDetail)bundle.getSerializable("order");
+            orderDetail = (Order)bundle.getSerializable("order");
         }
         initView();
     }
@@ -169,7 +170,7 @@ public class ComplainActivity extends AppCompatActivity implements View.OnClickL
                 mProgressBar.setVisibility(View.VISIBLE);
 
 
-                SocketClient.getInstance().sendComplain(Integer.parseInt(orderDetail.getId()), Integer.parseInt(orderDetail.getDriver_id()), Integer.parseInt(complainId), new ResponseHandler(Looper.myLooper()) {
+                SocketClient.getInstance().sendComplain(orderDetail.getId().intValue(), Integer.parseInt(orderDetail.getDriver_id() + ""), Integer.parseInt(complainId), new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
                         new Thread(new Runnable() {

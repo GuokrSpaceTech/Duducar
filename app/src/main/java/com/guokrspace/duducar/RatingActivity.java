@@ -10,6 +10,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,25 +21,31 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
 import com.guokrspace.duducar.communication.http.model.Driver;
+import com.guokrspace.duducar.communication.http.model.IdAndValueModel;
 import com.guokrspace.duducar.communication.http.model.Order;
-import com.guokrspace.duducar.communication.message.DriverDetail;
-import com.guokrspace.duducar.communication.message.OrderDetail;
 import com.guokrspace.duducar.ui.WinToast;
+import com.guokrspace.duducar.util.SharedPreferencesUtils;
 import com.squareup.picasso.Picasso;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class RatingActivity extends ActionBarActivity {
 
     private String[] mVals = new String[]
             {"神准时", "态度好有礼貌", "主动打电话联系", "车况良好"};
+
+    List<IdAndValueModel> commentModels = new ArrayList<>();
 
     private List<String> comments = new ArrayList<String>();
     private Context context;
@@ -55,11 +62,14 @@ public class RatingActivity extends ActionBarActivity {
     private Toolbar mToolbar;
     private TagFlowLayout mTagFlowLayout;
     private Button payButton;
+    private TextView statusTextView;
     
     private Order mOrder;
     private Button commentButton;
     private int status;
     private Driver mDriver;
+
+    private Set<IdAndValueModel> selectedTags = new HashSet<>();
 
     private Handler mHandler= new Handler() {
             public void handleMessage(Message msg) {
@@ -93,9 +103,34 @@ public class RatingActivity extends ActionBarActivity {
         mTagFlowLayout = (TagFlowLayout) findViewById(R.id.flowlayout);
         payButton = (Button)findViewById(R.id.pay_button);
         commentButton = (Button)findViewById(R.id.evalute_button);
+        statusTextView = (TextView) findViewById(R.id.order_status_textview);
+
+        String comments = (String) SharedPreferencesUtils.getParam(context, SharedPreferencesUtils.BASEINFO_COMMENTS, "");
+        Log.e("hyman_raing", comments);
+        List<IdAndValueModel> commentModels1 = new Gson().fromJson(comments, new TypeToken<ArrayList<IdAndValueModel>>() {}.getType());
+        commentModels.addAll(commentModels1);
 
         final LayoutInflater mInflater = LayoutInflater.from(context);
-        final TagAdapter<String> tagAdapter = new TagAdapter<String>(mVals) {
+        final TagAdapter<IdAndValueModel> tagAdapter = new TagAdapter<IdAndValueModel>(commentModels) {
+            @Override
+            public View getView(FlowLayout parent, int position, IdAndValueModel idAndValueModel) {
+                TextView tv = (TextView) mInflater.inflate(R.layout.flowlayout_tag,
+                        mTagFlowLayout, false);
+                Drawable drawable = null;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    drawable = context.getResources().getDrawable(R.mipmap.praise, context.getTheme());
+                } else {
+                    drawable = context.getResources().getDrawable(R.mipmap.praise);
+                }
+                drawable.setBounds(0, 0, dp2px(17), dp2px(17));
+                tv.setCompoundDrawables(null, null, drawable, null);
+                tv.setCompoundDrawablePadding(10);
+                tv.setTextSize(sp2px(5));
+                tv.setText(idAndValueModel.getValue());
+                return tv;
+            }
+        };
+        /*final TagAdapter<String> tagAdapter = new TagAdapter<String>(mVals) {
 
             @Override
             public View getView(FlowLayout parent, int position, final String s) {
@@ -114,8 +149,17 @@ public class RatingActivity extends ActionBarActivity {
                 tv.setText(s);
                 return tv;
             }
-        };
+        };*/
         mTagFlowLayout.setAdapter(tagAdapter);
+        mTagFlowLayout.setOnSelectListener(new TagFlowLayout.OnSelectListener() {
+            @Override
+            public void onSelected(Set<Integer> selectPosSet) {
+                Iterator _iterator = selectPosSet.iterator();
+                while (_iterator.hasNext()) {
+                    selectedTags.add(commentModels.get((Integer) _iterator.next()));
+                }
+            }
+        });
 
         //get Arg
         Bundle bundle = getIntent().getExtras();
@@ -125,7 +169,7 @@ public class RatingActivity extends ActionBarActivity {
             status = mOrder.getStatus();
 //            mDriver = new Gson().fromJson(mOrder.getDriver(), DriverDetail.class);
             mDriver = mOrder.getDriver();
-            ratingBarBig.setRating(Float.parseFloat(mDriver.getRating()));
+//            ratingBarBig.setRating(mDriver.getRating());
         }
 //        mDriver = ((DuduApplication)getApplicationContext()).mDriverDetail;
 
@@ -155,6 +199,7 @@ public class RatingActivity extends ActionBarActivity {
         }
 
         if(mOrder.getStatus() == 4){//未支付
+            statusTextView.setText("待支付");
             findViewById(R.id.evaluate_layout).setVisibility(View.GONE);
             payButton.setVisibility(View.VISIBLE);
             payButton.setOnClickListener(new View.OnClickListener() {
@@ -168,7 +213,7 @@ public class RatingActivity extends ActionBarActivity {
             });
         }
 
-        if(Float.parseFloat(mOrder.getRating()) != 0){// 已支付 已评价
+        if(mOrder.getRating() != 0){// 已支付 已评价
             findViewById(R.id.evaluate_layout).setVisibility(View.GONE);
         }
 
@@ -177,23 +222,29 @@ public class RatingActivity extends ActionBarActivity {
             public void onClick(View v) {
                 //TODO  添加点击了的评论到ARRAYLIST
                 String comment ="";
-                if(comments.size() > 0){
-                    for(String s : comments){
-                        comment += s + ",";
+                if (selectedTags.size() > 0) {
+                    Iterator<IdAndValueModel> iterator = selectedTags.iterator();
+                    while (iterator.hasNext()) {
+                        comment += iterator.next().getId() + ",";
                     }
                 }
+                comment = comment.substring(0, comment.length() - 1);
+                Log.e("hyman_rating", comment);
 
-                SocketClient.getInstance().sendRatingRequest(Integer.parseInt(mOrder.getId()), (int)ratingBarBig.getRating(), comment, new ResponseHandler(Looper.getMainLooper()) {
+                SocketClient.getInstance().sendRatingRequest(mOrder.getId().intValue(), (int)ratingBarBig.getRating(), comment, new ResponseHandler(Looper.getMainLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
+                        WinToast.toast(context, "谢谢您的评价");
                     }
 
                     @Override
                     public void onFailure(String error) {
+                        WinToast.toast(context, error);
                     }
 
                     @Override
                     public void onTimeout() {
+                        WinToast.toast(context, "请求超时");
                     }
                 });
 
