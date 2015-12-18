@@ -42,7 +42,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     self.navigationItem.leftBarButtonItem = leftItem;
     
     _mapView = [[BMKMapView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    _mapView.zoomLevel = 15;
+    _mapView.zoomLevel = 14;
     _mapView.userTrackingMode = BMKUserTrackingModeNone;//设置定位的状态
     _mapView.showsUserLocation = NO;//先关闭显示的定位图层
     _mapView.userTrackingMode = BMKUserTrackingModeNone;//设置定位的状态

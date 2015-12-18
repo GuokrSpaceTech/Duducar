@@ -15,6 +15,7 @@
 #import "DDSearchTableViewController.h"
 #import "LoginViewController.h"
 #import "CostEstimationViewController.h"
+#import "PaymentViewController.h"
 #import "DDSocket.h"
 #import "DDDatabase.h"
 #import "UIColor+RCColor.h"
@@ -25,7 +26,7 @@
 #import "Masonry.h"
 
 #import "PersionInfoViewController.h"
-#import "HisoryViewController.h"
+#import "HistoryViewController.h"
 #import "Location.h"
 
 #import "CallCarViewController.h"
@@ -76,7 +77,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     
     //Map View
     _mapView = [[BMKMapView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    _mapView.zoomLevel = 15;
+    _mapView.zoomLevel = 14;
     _mapView.showsUserLocation = NO;//先关闭显示的定位图层
     _mapView.userTrackingMode = BMKUserTrackingModeFollow;//设置定位的状态
     _mapView.showsUserLocation = YES;//显示定位图层
@@ -123,7 +124,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     [callCabButton setTitle:@"呼叫专车" forState:UIControlStateNormal];
     [callCabButton addTarget:self action:@selector(callForCab:) forControlEvents:UIControlEventTouchUpInside];
     [callCabButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    callCabButton.userInteractionEnabled = NO;
+    callCabButton.enabled = false;
     [self.view addSubview:callCabButton];
     
     // 当前未知大头针
@@ -175,8 +176,6 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
      _locService = [[BMKLocationService alloc]init];
     _locService.delegate = self;
     [_locService startUserLocationService];
-    
-
 }
 
 
@@ -326,7 +325,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         endLocation.coordinate2D = endPoint.pt;
         endLocation.name = endPoint.name;
         stopLocButton.titleLabel.text = endLocation.name;
-        callCabButton.userInteractionEnabled = YES;
+        callCabButton.enabled = true;
         estCostButton.enabled = true;
     }];
     
@@ -427,11 +426,11 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         if([status intValue] == 1)
         {
             isLoginSuccess = true;
-            //如果有当前活跃订单，直接进入叫车界面。
             NSString *activeOrderJson;
             
             int activeOrderNum = [[responseDict objectForKey:@"has_active_order"] intValue];
             
+            //如果有当前活跃订单
             if(activeOrderNum > 0)
             {
                 activeOrderJson = [responseDict objectForKey:@"active_order"];
@@ -442,9 +441,47 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
                 NSDictionary *activeOrder = [NSJSONSerialization JSONObjectWithData:objectData
                                                                         options:NSJSONReadingMutableContainers
                                                                           error:&jsonError];
-                CallCarViewController *postVC = [[CallCarViewController alloc] init];
-                postVC.activeOrder = activeOrder;
-                [self.navigationController pushViewController:postVC animated:YES];
+                
+                //如果订单未结束
+                /*
+                const STATUS_INITATION 	=1 ;
+                const STATUS_ACCEPT 		=2 ;
+                const STATUS_START 			=3 ;
+                const STATUS_END 			=4 ;
+                const STATUS_PAID			=5 ;
+                const STATUS_CANCEL 		=-1 ;   //用户取消
+                 */
+                NSString *orderStatus = [activeOrder objectForKey:@"status"];
+                //进行中订单
+                if([orderStatus isEqualToString:@"1"] || [orderStatus isEqualToString:@"2"] || [orderStatus isEqualToString:@"3"])
+                {
+                    CallCarViewController *postVC = [[CallCarViewController alloc] init];
+                    postVC.activeOrder = activeOrder;
+                    [self.navigationController pushViewController:postVC animated:YES];
+                }
+                //已经支付
+                else if([orderStatus isEqualToString:@"5"])
+                {
+                    //存入历史订单库
+                    [[DDDatabase sharedDatabase]insertOrder:activeOrderJson];
+                }
+                //未支付或者司机代付订单
+                else if([orderStatus isEqualToString:@"4"])
+                {
+                    NSString *payrole = [activeOrder objectForKey:@"pay_role"];
+                    //如果司机代付
+                    if([payrole isEqualToString:@"1"])
+                    {
+                        //查看历史订单库
+                    }
+                    else
+                    //需要支付
+                    {
+                        PaymentViewController *payVC = [[PaymentViewController alloc]initWithNibName:@"" bundle:nil];
+                        [payVC setActiveOrder:activeOrder];
+                        [self.navigationController pushViewController:payVC animated:YES];
+                    }
+                }
             }
         } else {
             //自动登录出现错误
@@ -494,8 +531,8 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     }
     else
     {
-        HisoryViewController * persionVC = [[HisoryViewController alloc]init];
-        [self.navigationController pushViewController:persionVC animated:YES];
+        HistoryViewController * histroyVC = [[HistoryViewController alloc]initWithNibName:@"HistoryViewController" bundle:nil];
+        [self.navigationController pushViewController:histroyVC animated:YES];
     }
 }
 -(void)leftViewDisappear

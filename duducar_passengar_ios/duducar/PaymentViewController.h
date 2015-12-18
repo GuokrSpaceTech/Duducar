@@ -15,6 +15,7 @@
 - (IBAction)WechatPaySelected:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UILabel *chargeLabel;
+@property (strong, nonatomic) NSDictionary *activeOrder;
 
 @property (nonatomic, strong) NSString *chargePrice;
 @property (nonatomic, strong) NSString *mileage;

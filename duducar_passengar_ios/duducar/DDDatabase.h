@@ -19,4 +19,7 @@
 -(void)createTable;
 -(void)selectFromPersonInfo:(void (^)(NSString *token, NSString *phone))completionHandler;
 -(void)insertDataToPersonInfoTableToken:(NSString *)token phone:(NSString *)phone;
+
+-(void)selectOrderHistory:(void (^)(NSArray *))completionHandler;
+-(void)insertOrder:(NSString *)order;
 @end
