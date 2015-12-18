@@ -194,7 +194,7 @@ public class DuduService extends Service {
                     SharedPreferencesUtils.setParam(DuduService.this, SharedPreferencesUtils.LOGIN_STATE, false);
                     //后台尝试登录
                     if(!isRunningApp(getApplicationContext())){
-                        //正在执行
+                        //程序在后台执行,不需要进行登录操作
                         return;
                     }
                     List localUsers = DuduDriverApplication.getInstance().
