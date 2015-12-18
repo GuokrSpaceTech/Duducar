@@ -17,6 +17,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -108,6 +109,8 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -230,11 +233,12 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                         String orderDetail = (String) object.get("active_order");
                         if (status.equals("1")) {//发送放弃接单消息给服务器
                             //TODO
-                        } else if (status.equals("5")) {//订单已经取消
+                        } else if (status.equals("6")) {//订单已经取消
                             //TODO
                         } else if (status.equals("2")) {//接单去接乘客
-                            ProgressDialog dialog = new ProgressDialog(MainActivity.this, "检测到上次异常退出,正在进入未完成订单");
+                            ProgressDialog dialog = new ProgressDialog(MainActivity.this, "检测到异常退出");
                             VoiceUtil.startSpeaking(VoiceCommand.LAST_TIME_EXIT_EXCEPTION);
+                            dialog.setCanceledOnTouchOutside(false);
                             dialog.show();
                             OrderItem orderItem = FastJsonTools.getObject(orderDetail, OrderItem.class);
                             Intent intent = new Intent(MainActivity.this, PickUpPassengerActivity.class);
@@ -245,18 +249,35 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                             //选择界面不听单
                             CommonUtil.changeCurStatus(Constants.STATUS_GET);
                         } else if (status.equals("3")) {//去送乘客的路上
-                            ProgressDialog dialog = new ProgressDialog(MainActivity.this, "还有未完结的订单");
-                            VoiceUtil.startSpeaking(VoiceCommand.LAST_TIME_ORDER_NOT_END);
-                            dialog.show();
-                            OrderItem orderItem = FastJsonTools.getObject(orderDetail, OrderItem.class);
-                            Intent intent = new Intent(MainActivity.this, PickUpPassengerActivity.class);
-                            intent.putExtra("orderItem", orderItem);
-                            intent.putExtra("isRecover", true);
-                            intent.putExtra("lastCharge", (String) object.get("last_charge"));
-                            startActivity(intent);
-                            CommonUtil.changeCurStatus(Constants.STATUS_RUN);
-                            dialog.dismiss();
-                        } else if (status.equals("4")) {//发送了账单
+                            if(SharedPreferencesUtils.getParam(MainActivity.this, Constants.PREFERENCE_KEY_ORDER_STATUS, Constants.STATUS_RUN).equals(Constants.STATUS_REACH)){
+                                ProgressDialog dialog = new ProgressDialog(MainActivity.this, "还有账单未发送");
+                                VoiceUtil.startSpeaking(VoiceCommand.LAST_TIME_BILL_NOT_SENT);
+                                dialog.show();
+                                dialog.setCanceledOnTouchOutside(false);
+                                OrderItem orderItem = FastJsonTools.getObject(orderDetail, OrderItem.class);
+                                Intent intent = new Intent(MainActivity.this, ConfirmBillActivity.class);
+                                JSONObject lastCharge = new JSONObject((String)object.get("last_charge"));
+                                intent.putExtra("orderItem", orderItem);
+                                intent.putExtra("lowspeed", Integer.parseInt((String) lastCharge.get("low_speed_time")));
+                                intent.putExtra("mileage", Double.parseDouble((String) lastCharge.get("current_mile")));
+                                startActivity(intent);
+                                CommonUtil.changeCurStatus(Constants.STATUS_RUN);
+                                dialog.dismiss();
+                            } else {
+                                ProgressDialog dialog = new ProgressDialog(MainActivity.this, "检测到未完结的订单");
+                                VoiceUtil.startSpeaking(VoiceCommand.LAST_TIME_ORDER_NOT_END);
+                                dialog.setCanceledOnTouchOutside(false);
+                                dialog.show();
+                                OrderItem orderItem = FastJsonTools.getObject(orderDetail, OrderItem.class);
+                                Intent intent = new Intent(MainActivity.this, PickUpPassengerActivity.class);
+                                intent.putExtra("orderItem", orderItem);
+                                intent.putExtra("isRecover", true);
+                                intent.putExtra("lastCharge", (String) object.get("last_charge"));
+                                startActivity(intent);
+                                CommonUtil.changeCurStatus(Constants.STATUS_RUN);
+                                dialog.dismiss();
+                            }
+                        } else if (status.equals("4")) {//已完成订单未支付
                             //TODO
                         }
                     }

@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -50,8 +51,6 @@ import com.baidu.navisdk.adapter.BNRouteGuideManager;
 import com.baidu.navisdk.adapter.BNRoutePlanNode;
 import com.baidu.navisdk.adapter.BaiduNaviManager;
 import com.baidu.navisdk.comapi.routeplan.RoutePlanParams;
-import com.baidu.navisdk.ui.routeguide.BNavigator;
-import com.gc.materialdesign.widgets.Dialog;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.common.VoiceCommand;
@@ -60,6 +59,7 @@ import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
 import com.guokrspace.dududriver.net.message.MessageTag;
 import com.guokrspace.dududriver.util.CommonUtil;
+import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 import com.guokrspace.dududriver.util.VoiceUtil;
 import com.guokrspace.dududriver.view.CircleImageView;
 
@@ -402,6 +402,8 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         setContentView(R.layout.activity_pickuppassenger);
         context = PickUpPassengerActivity.this;
         mHandler = new Handler(this);
@@ -559,6 +561,9 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        SharedPreferencesUtils.setParam(PickUpPassengerActivity.this, Constants.PREFERENCE_KEY_ORDER_STATUS, Constants.STATUS_RUN);
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -586,10 +591,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         timer = new Timer();
         timer.scheduleAtFixedRate(new DrawLineTimerTask(), 7000, 3 * 1000);
 
-        String price = CommonUtil.getStartPrice() + "";
-        if(baseCharge > CommonUtil.getStartPrice()){
-            price = baseCharge + "";
-        }
+        final String price = baseCharge > CommonUtil.getStartPrice() ? baseCharge + "" : CommonUtil.getStartPrice() + "";
 
         btnConfirm.setText(price + "元   到达目的地");
         btnConfirm.setOnClickListener(new View.OnClickListener() {
@@ -597,6 +599,9 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
             public void onClick(View v) {
                 //TODO:无论如何都要结束订单
                 stopCharging();
+                SharedPreferencesUtils.setParam(PickUpPassengerActivity.this, Constants.PREFERENCE_KEY_ORDER_STATUS, Constants.STATUS_REACH);
+//                SharedPreferencesUtils.setParam(PickUpPassengerActivity.this, Constants.TO, );
+
                 Intent intent = new Intent(PickUpPassengerActivity.this, ConfirmBillActivity.class);
                 intent.putExtra("orderItem", orderItem);
                 intent.putExtra("mileage", curDistance);
@@ -687,8 +692,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
             public void onSuccess(String messageBody) {
                 try {
                     JSONObject mCancel = new JSONObject(messageBody);
-                    if (orderItem == null){
-                            //|| mCancel.get("order_no") != orderItem.getOrder().getId()) {
+                    if (orderItem == null ) {
                         //订单已经取消或者已经接到乘客  无法取消订单
                         return;
                     }
@@ -721,6 +725,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+
         mBaiduMap.setMyLocationEnabled(false);
         if (mMapview != null) {
             mMapview.onDestroy();

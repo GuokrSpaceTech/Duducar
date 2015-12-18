@@ -178,7 +178,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
         if(bundle!=null)
         {
             tripOverOrderDetail = (OrderItem) bundle.get("orderItem");
-            price = bundle.getDouble("price");
+            price = bundle.getDouble("sumprice");
             mileage = bundle.getDouble("mileage");
             orderNum = bundle.getString("orderNum");
             feeTextView.setText(price+"");

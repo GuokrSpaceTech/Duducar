@@ -20,6 +20,9 @@ public class Constants {
     public static String STATUS_DEAL = "2";
     public static String STATUS_GET  = "3";
     public static String STATUS_RUN  = "4";
+    public static String STATUS_REACH = "5";
+    public static String STATUS_END = "6";
+    public static String STATUS_PAY = "7";
 
     public static final String SERVICE_BROADCAST = "SERVICE_BROADCAST";
     public static final String SERVICE_ACTION_RELOGIN = "LOG_IN_ERROR_TRY_AGAIN";
@@ -31,5 +34,24 @@ public class Constants {
     public static final int ORDER_PAGE_NUM = 10;
     public static final int MESSAGE_PER_PAGE = 40;
 
+    public static final String PREFERENCE_KEY_DRIVER_NAME = "DRIVER_NAME";
+    public static final String PREFERENCE_KEY_DRIVER_AVATAR = "DRIVER_AVATAR";
+    public static final String PREFERENCE_KEY_DRIVER_PLATE = "DRIVER_PLATE";
+    public static final String PREFERNECE_KEY_DRIVER_RATING = "DRIVER_RATING";
+    public static final String PREFERENCE_KEY_DRIVER_TOTAL_ORDER = "DRIVER_TOTAL_ORDER";
+    public static final String PREFERENCE_KEY_DRIVER_BALANCE = "DRIVER_BALANCE";
+    public static final String PREFERENCE_KEY_DRIVER_FAVORABLE_RATE = "DRIVER_FAVORABLE_RATE";
+    public static final String PREFERENCE_KEY_DRIVER_KM_PRICE = "DRIVER_KM_PRICE";
+    public static final String PREFERENCE_KEY_DRIVER_LOW_SPEED_PRICE = "DRIVER_LOW_SPEED_PRICE";
+    public static final String PREFERENCE_KEY_DRIVER_STARTING_DISTANCE = "DRIVER_STARTING_DISTANCE";
+    public static final String PREFERENCE_KEY_DRIVER_STARTING_PRICE = "DRIVER_STARTING_PRICE";
+    public static final String PREFERENCE_KEY_ORDER_STATUS = "ORDER_STATUS";
+
+    public static final String PREFERENCE_KEY_TODAY = "TODAY";
+    public static final String PREFERENCE_KEY_TODAY_DONE_WORK = "TODAY_DONE_WORK";
+    public static final String PREFERENCE_KEY_TODAY_ALL_WORK = "TODAY_ALL_WORK";
+    public static final String PREFERENCE_KEY_TODAY_CASH = "TODAY_CASH";
+
+    public static final String PACKAGE_NAME = "com.guokrspace.dududriver";
 
 }

@@ -129,7 +129,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
                             Toast.makeText(PayCostActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
 
                             Long timestamp = System.currentTimeMillis();
-                            SocketClient.getInstance().sendPayOverRequest(Integer.parseInt(tripOverOrderDetail.getId()), timestamp, tripOverOrderDetail.getOrg_price(), 1, new ResponseHandler(Looper.getMainLooper()) {
+                            SocketClient.getInstance().sendPayOverRequest(Integer.parseInt(tripOverOrderDetail.getId()), timestamp, tripOverOrderDetail.getSumprice(), 1, new ResponseHandler(Looper.getMainLooper()) {
                                 @Override
                                 public void onSuccess(String messageBody) {
                                     Log.i("", "");

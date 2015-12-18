@@ -14,7 +14,10 @@ public class DateUtil {
         if (TextUtils.isEmpty(date)) {
             return "刚刚";
         }
-        Date orderDate = new Date(Long.parseLong(date+"000"));
+        if(date.length() < 11){//s to ms
+            date += "000";
+        }
+        Date orderDate = new Date(Long.parseLong(date));
         SimpleDateFormat format = new SimpleDateFormat("MM月dd日 HH:mm");
         return format.format(orderDate);
     }

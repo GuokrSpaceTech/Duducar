@@ -40,7 +40,7 @@ public abstract class TagAdapter<T>
         notifyDataChanged();
     }
 
-    HashSet<Integer> getPreCheckedList()
+    public HashSet<Integer> getPreCheckedList()
     {
         return mCheckedPosList;
     }

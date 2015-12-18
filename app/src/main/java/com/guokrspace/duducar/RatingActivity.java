@@ -20,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.guokrspace.duducar.communication.ResponseHandler;
@@ -27,6 +29,9 @@ import com.guokrspace.duducar.communication.SocketClient;
 import com.guokrspace.duducar.communication.http.model.Driver;
 import com.guokrspace.duducar.communication.http.model.IdAndValueModel;
 import com.guokrspace.duducar.communication.http.model.Order;
+import com.guokrspace.duducar.communication.message.DriverDetail;
+import com.guokrspace.duducar.communication.message.OrderDetail;
+import com.guokrspace.duducar.database.OrderRecord;
 import com.guokrspace.duducar.ui.WinToast;
 import com.guokrspace.duducar.util.SharedPreferencesUtils;
 import com.squareup.picasso.Picasso;
@@ -36,14 +41,15 @@ import com.zhy.view.flowlayout.TagFlowLayout;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 public class RatingActivity extends ActionBarActivity {
 
-    private String[] mVals = new String[]
-            {"神准时", "态度好有礼貌", "主动打电话联系", "车况良好"};
+    private HashMap<String, Integer>mVals = new HashMap<String, Integer>();
+
 
     List<IdAndValueModel> commentModels = new ArrayList<>();
 
@@ -64,10 +70,14 @@ public class RatingActivity extends ActionBarActivity {
     private Button payButton;
     private TextView statusTextView;
     
-    private Order mOrder;
+//    private Order mOrder;
     private Button commentButton;
+
+    private OrderDetail mOrder;
+    private OrderRecord orderRecord;
     private int status;
-    private Driver mDriver;
+    private DriverDetail mDriver;
+    private boolean isOk;
 
     private Set<IdAndValueModel> selectedTags = new HashSet<>();
 
@@ -110,6 +120,17 @@ public class RatingActivity extends ActionBarActivity {
         List<IdAndValueModel> commentModels1 = new Gson().fromJson(comments, new TypeToken<ArrayList<IdAndValueModel>>() {}.getType());
         commentModels.addAll(commentModels1);
 
+        String commentsStr = (String)SharedPreferencesUtils.getParam(RatingActivity.this, SharedPreferencesUtils.BASEINFO_COMMENTS, "");
+        JSONArray jsonArray = JSON.parseArray(commentsStr);
+        if(jsonArray.size() > 0){
+            for(int i=0;i<jsonArray.size();i++){
+               com.alibaba.fastjson.JSONObject comment = (com.alibaba.fastjson.JSONObject)jsonArray.get(i);
+                mVals.put((String)comment.get("value"), Integer.parseInt((String)comment.get("id")));
+            }
+        }
+
+        String[] commentArray = new String[] {"神准时", "态度好有礼貌", "主动打电话联系", "车况良好"};
+
         final LayoutInflater mInflater = LayoutInflater.from(context);
         final TagAdapter<IdAndValueModel> tagAdapter = new TagAdapter<IdAndValueModel>(commentModels) {
             @Override
@@ -130,26 +151,6 @@ public class RatingActivity extends ActionBarActivity {
                 return tv;
             }
         };
-        /*final TagAdapter<String> tagAdapter = new TagAdapter<String>(mVals) {
-
-            @Override
-            public View getView(FlowLayout parent, int position, final String s) {
-                TextView tv = (TextView) mInflater.inflate(R.layout.flowlayout_tag,
-                        mTagFlowLayout, false);
-                Drawable drawable = null;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    drawable = context.getResources().getDrawable(R.mipmap.praise, context.getTheme());
-                } else {
-                    drawable = context.getResources().getDrawable(R.mipmap.praise);
-                }
-                drawable.setBounds(0, 0, dp2px(17), dp2px(17));
-                tv.setCompoundDrawables(null, null, drawable, null);
-                tv.setCompoundDrawablePadding(10);
-                tv.setTextSize(sp2px(5));
-                tv.setText(s);
-                return tv;
-            }
-        };*/
         mTagFlowLayout.setAdapter(tagAdapter);
         mTagFlowLayout.setOnSelectListener(new TagFlowLayout.OnSelectListener() {
             @Override
@@ -165,14 +166,14 @@ public class RatingActivity extends ActionBarActivity {
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null)
         {
-            mOrder = (Order)bundle.getSerializable("order");
-            status = mOrder.getStatus();
-//            mDriver = new Gson().fromJson(mOrder.getDriver(), DriverDetail.class);
-            mDriver = mOrder.getDriver();
-//            ratingBarBig.setRating(mDriver.getRating());
+            if(bundle.getSerializable("order") instanceof  OrderDetail){
+                isOk = true;
+                mOrder = (OrderDetail)bundle.getSerializable("order");
+                status = Integer.parseInt(mOrder.getStatus());
+                mDriver = new Gson().fromJson(mOrder.getDriver(), DriverDetail.class);
+                ratingBarBig.setRating(Float.parseFloat(mDriver.getRating()));
+            }
         }
-//        mDriver = ((DuduApplication)getApplicationContext()).mDriverDetail;
-
         //Update UI
 
         if (mDriver != null) {
@@ -195,11 +196,10 @@ public class RatingActivity extends ActionBarActivity {
         if(mOrder!=null) {
             startTextView.setText(mOrder.getStart());
             destinationTextView.setText(mOrder.getDestination());
-            priceTextView.setText(mOrder.getOrg_price());
+            priceTextView.setText(mOrder.getSumprice());
         }
 
-        if(mOrder.getStatus() == 4){//未支付
-            statusTextView.setText("待支付");
+        if(mOrder.getStatus().equals("4")){//未支付
             findViewById(R.id.evaluate_layout).setVisibility(View.GONE);
             payButton.setVisibility(View.VISIBLE);
             payButton.setOnClickListener(new View.OnClickListener() {

@@ -111,9 +111,7 @@ public class DuduDriverApplication extends Application{
             mPersonalInformation = (PersonalInformation) persons.get(0);
             retCode = true;
         }
-
         return retCode;
     }
-
 
 }

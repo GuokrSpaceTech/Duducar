@@ -14,12 +14,21 @@ public class Driver implements Serializable {
     private String plate;
     private String picture;
     private String description;
+    private float rating;
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
 
     public Driver() {
         super();
     }
 
-    public Driver(Long id, String name, String mobile, String avatar, String plate, String picture, String description) {
+    public Driver(Long id, String name, String mobile, String avatar, String plate, String picture, String description, float rating) {
         super();
         this.id = id;
         this.name = name;
@@ -28,6 +37,7 @@ public class Driver implements Serializable {
         this.plate = plate;
         this.picture = picture;
         this.description = description;
+        this.rating = rating;
     }
 
     public Long getId() {

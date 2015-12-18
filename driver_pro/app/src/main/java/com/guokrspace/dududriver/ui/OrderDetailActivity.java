@@ -4,12 +4,10 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -26,7 +24,6 @@ import com.gc.materialdesign.views.ButtonFlat;
 import com.gc.materialdesign.views.ButtonRectangle;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
-import com.guokrspace.dududriver.common.NewOrderReceiver;
 import com.guokrspace.dududriver.common.VoiceCommand;
 import com.guokrspace.dududriver.model.OrderItem;
 import com.guokrspace.dududriver.net.ResponseHandler;
@@ -94,7 +91,7 @@ public class OrderDetailActivity extends BaseActivity{
             public void onClick(DialogInterface dialog, int which) {
                 VoiceUtil.startSpeaking(VoiceCommand.DRIVER_PAY);
                 //向服务器发起代付请求,无论成功失败都跳转到代付页面.
-                SocketClient.getInstance().endOrderSelfPay(Integer.parseInt(orderItem.getOrder().getId()), cash + "", curDistance + "", new ResponseHandler(Looper.myLooper()) {
+                SocketClient.getInstance().endOrderSelfPay(Integer.parseInt(orderItem.getOrder().getId()), sumprice + "", curDistance + "", new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
                     }
@@ -111,6 +108,7 @@ public class OrderDetailActivity extends BaseActivity{
                 Intent intent = new Intent(context, PayCostActivity.class);
                 intent.putExtra("orderItem", orderItem);
                 intent.putExtra("price", cash);
+                intent.putExtra("sumprice", sumprice);
                 intent.putExtra("orderNum", orderNum);
                 intent.putExtra("mileage", curDistance);
                 startActivity(intent);
@@ -130,6 +128,7 @@ public class OrderDetailActivity extends BaseActivity{
     private Context context;
 
     private double cash;
+    private double sumprice;
     private OrderItem orderItem;
     private double curDistance;
     private String orderNum;
@@ -147,6 +146,10 @@ public class OrderDetailActivity extends BaseActivity{
         curDistance = bundle.getDouble("mileage");
         lowSpeedTime= bundle.getInt("lowspeed");
         cash = bundle.getDouble("price");
+        sumprice = bundle.getDouble("sumprice");
+//        cash += bundle.getDouble("addPrice1");
+//        cash += bundle.getDouble("addPrice2");
+//        cash += bundle.getDouble("addPrice3");
         orderNum = bundle.getString("orderNum");
 
         initView();
@@ -163,7 +166,7 @@ public class OrderDetailActivity extends BaseActivity{
 
         tvMyPosition.setText(orderItem.getOrder().getStart());
         tvPassengerPosition.setText(orderItem.getOrder().getDestination());
-        tvBillSum.setText(cash + "");
+        tvBillSum.setText(sumprice + "");
 
         btnOverOrderAcccept.setButtonText("收车");
         btnOverOrderAcccept.setOnClickListener(new View.OnClickListener() {
@@ -172,7 +175,7 @@ public class OrderDetailActivity extends BaseActivity{
                 CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
                 VoiceUtil.startSpeaking(VoiceCommand.HOLD_CAR);
                 CommonUtil.addTodayDoneWork();
-                CommonUtil.addTodayCash(Float.parseFloat(String.valueOf(cash)));
+                CommonUtil.addTodayCash(Float.parseFloat(String.valueOf(sumprice)));
                 finish();
             }
         });
@@ -183,7 +186,7 @@ public class OrderDetailActivity extends BaseActivity{
                 CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
                 VoiceUtil.startSpeaking(VoiceCommand.CONTINUE_WAIT);
                 CommonUtil.addTodayDoneWork();
-                CommonUtil.addTodayCash(Float.parseFloat(String.valueOf(cash)));
+                CommonUtil.addTodayCash(Float.parseFloat(String.valueOf(sumprice)));
                 finish();
             }
         });

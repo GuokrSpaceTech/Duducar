@@ -40,6 +40,7 @@ import java.math.BigDecimal;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by hyman on 15/11/3.
@@ -70,22 +71,46 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
     TextView tvLowSpeedCost;
     @Bind(R.id.height_speed_cost_minus)
     ImageButton ibHeightSpeedCostMinus;
+    @OnClick(R.id.height_speed_cost_minus)
+    public void minusSpeed(){
+        addAdditionalCost(0, 0);
+    }
     @Bind(R.id.height_speed_cost)
     TextView tvHeightSpeedCost;
     @Bind(R.id.height_speed_cost_add)
     ImageButton ibHeightSpeedCostAdd;
+    @OnClick(R.id.height_speed_cost_add)
+    public void addSpeed(){
+        addAdditionalCost(0, 1);
+    }
     @Bind(R.id.bridge_cost_minus)
     ImageButton ibBridgeCostMinus;
+    @OnClick(R.id.bridge_cost_minus)
+    public void minusBridge(){
+        addAdditionalCost(1, 0);
+    }
     @Bind(R.id.bridge_cost)
     TextView tvBridgeCost;
     @Bind(R.id.bridge_cost_add)
     ImageButton ibBridgeCostAdd;
+    @OnClick(R.id.bridge_cost_add)
+    public void addBridge(){
+        addAdditionalCost(1, 1);
+    }
     @Bind(R.id.park_cost_minus)
     ImageButton ibParkCostMinus;
+    @OnClick(R.id.park_cost_minus)
+    public void minusPark(){
+        addAdditionalCost(2, 0);
+    }
     @Bind(R.id.park_cost)
     TextView tvParkCost;
     @Bind(R.id.park_cost_add)
     ImageButton ibParkCostAdd;
+    @OnClick(R.id.park_cost_add)
+    public void addPark(){
+        addAdditionalCost(2, 1);
+    }
     @Bind(R.id.confirm_button)
     ButtonRectangle btnConfirm;
     private Context context;
@@ -98,6 +123,8 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
     private float lowcost;
     private float milecost;
     private double curDistance;
+
+    private int[] addPrice = new int[]{0,0,0};
 
     private final int PAY_OVER = 0X001;
 
@@ -125,9 +152,9 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
         orderItem = (OrderItem) bundle.get("orderItem");
         curDistance = bundle.getDouble("mileage");
         final int lowSpeedTime= bundle.getInt("lowspeed");
-        final float lowSpeedPrice = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), "low_speed_price", "0.55"));
-        final float startPrice = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), "starting_price", "6.5"));
-        final float startDistance = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), "starting_distance", "6.0"));
+        final float lowSpeedPrice = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), Constants.PREFERENCE_KEY_DRIVER_LOW_SPEED_PRICE, "0.55"));
+        final float startPrice = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), Constants.PREFERENCE_KEY_DRIVER_STARTING_PRICE, "6.5"));
+        final float startDistance = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), Constants.PREFERENCE_KEY_DRIVER_STARTING_DISTANCE, "6.0"));
 
         price = CommonUtil.countPrice(curDistance, lowSpeedTime);
         price = new BigDecimal(price).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
@@ -166,20 +193,25 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
 //                        CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
 //                        VoiceUtil.startSpeaking(VoiceCommand.CONTINUE_WAIT);
 
-                        SocketClient.getInstance().endOrder(price + "", curDistance + "", lowSpeedTime + "", new ResponseHandler(Looper.myLooper()) {
+                        SocketClient.getInstance().endOrder(price + "", curDistance + "", lowSpeedTime + "", addPrice[0] + "", addPrice[1] + "", addPrice[2] + "", new ResponseHandler(Looper.myLooper()) {
                             @Override
                             public void onSuccess(String messageBody) {
                                 Log.e("PickUpPassengerAct", "success " + messageBody);
                                 try {
                                     JSONObject object = new JSONObject(messageBody);
                                     String orderNum = object.getString("orderNum");
+                                    double sumPrice = object.getDouble("sumprice");
                                     Intent intent = new Intent(context, OrderDetailActivity.class);
                                     intent.putExtra("orderItem", orderItem);
                                     intent.putExtra("mileage", curDistance);
                                     intent.putExtra("lowspeed", lowSpeedTime);
                                     intent.putExtra("price", price);
+                                    intent.putExtra("sumprice", sumPrice);
                                     intent.putExtra("orderNum", orderNum);
                                     intent.putExtra("lowcost", lowcost);
+                                    intent.putExtra("addPrice1", addPrice[0]/100d);
+                                    intent.putExtra("addPrice2", addPrice[1]/100d);
+                                    intent.putExtra("addPrice3", addPrice[2]/100d);
                                     startActivity(intent);
                                     finish();
                                     dialog.dismiss();
@@ -321,7 +353,25 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
         return true;
     }
 
-    private void askforSelfPay(){
+    public void addAdditionalCost(int feeType, int type){
+        TextView[] addPriceText = new TextView[]{tvHeightSpeedCost, tvBridgeCost, tvParkCost};
 
+        switch (type){
+            case 1://+
+                addPrice[feeType] += 1;
+                break;
+            case 0://-
+                if(addPrice[feeType] >= 1){
+                    addPrice[feeType] -= 1;
+                }
+                break;
+            default:break;
+        }
+
+        if(addPrice[feeType] < 10){
+            addPriceText[feeType].setText(addPrice[feeType] + ".0元");
+        } else {
+            addPriceText[feeType].setText(addPrice[feeType] + "元");
+        }
     }
 }

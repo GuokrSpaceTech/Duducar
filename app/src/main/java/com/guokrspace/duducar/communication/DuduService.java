@@ -227,7 +227,16 @@ public class DuduService extends Service {
                     //将登陆状态置为false
                     Log.e("daddy", "login eror in success");
                     sendBroadCast(Constants.SERVICE_ACTION_RELOGIN);
+                }
+            }
 
+            @Override
+            public void onFailure(String error) {
+                Log.i("HeartBeat Response", error);
+                if(error.contains("login")){//登陆出现问题
+                    //将登陆状态置为false
+                    Log.e("daddy", "login eror in error");
+                    sendBroadCast(Constants.SERVICE_ACTION_RELOGIN);
                     List persons = mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().limit(1).list();
                     if(persons.size() > 0){ // 重新登陆连接
                         PersonalInformation person = (PersonalInformation)persons.get(0);
@@ -248,16 +257,6 @@ public class DuduService extends Service {
                             }
                         });
                     }
-                }
-            }
-
-            @Override
-            public void onFailure(String error) {
-                Log.i("HeartBeat Response", error);
-                if(error.contains("login")){//登陆出现问题
-                    //将登陆状态置为false
-                    Log.e("daddy", "login eror in error");
-                    sendBroadCast(Constants.SERVICE_ACTION_RELOGIN);
                 }
             }
 

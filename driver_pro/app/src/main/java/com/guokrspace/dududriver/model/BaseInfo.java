@@ -1,5 +1,7 @@
 package com.guokrspace.dududriver.model;
 
+import com.guokrspace.dududriver.common.Constants;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,18 +13,18 @@ public class BaseInfo {
     public Map<String, Object> getBaseInfo(){
         Map<String, Object> info = new HashMap<String, Object>();
 
-        info.put("name", driver.getName() == null ? "" : driver.getName());
-        info.put("avatar", driver.getAvatar() == null ? "" : driver.getAvatar() );
-        info.put("plate", driver.getPlate() == null ? "0000" : driver.getPlate());
-        info.put("rating", driver.getRating() == null ? "0.0" : driver.getRating());
-        info.put("total_order", driver.getTotal_order() == null ? "0" : driver.getTotal_order());
-        info.put("balance", driver.getBalance() == null ? "0.0" : driver.getBalance());
-        info.put("favorable_rate", driver.getFavorable_rate() == null ? "0.0" : driver.getFavorable_rate());
+        info.put(Constants.PREFERENCE_KEY_DRIVER_NAME, driver.getName() == null ? "" : driver.getName());
+        info.put(Constants.PREFERENCE_KEY_DRIVER_AVATAR, driver.getAvatar() == null ? "" : driver.getAvatar() );
+        info.put(Constants.PREFERENCE_KEY_DRIVER_PLATE, driver.getPlate() == null ? "0000" : driver.getPlate());
+        info.put(Constants.PREFERNECE_KEY_DRIVER_RATING, driver.getRating() == null ? "0.0" : driver.getRating());
+        info.put(Constants.PREFERENCE_KEY_DRIVER_TOTAL_ORDER, driver.getTotal_order() == null ? "0" : driver.getTotal_order());
+        info.put(Constants.PREFERENCE_KEY_DRIVER_BALANCE, driver.getBalance() == null ? "0.0" : driver.getBalance());
+        info.put(Constants.PREFERENCE_KEY_DRIVER_FAVORABLE_RATE, driver.getFavorable_rate() == null ? "0.0" : driver.getFavorable_rate());
 
-        info.put("km_price", charge_rule.getKm_price() == null ? "5" : charge_rule.getKm_price());
-        info.put("low_speed_price", charge_rule.getLow_speed_price() == null ? "0.5" : charge_rule.getLow_speed_price());
-        info.put("starting_distance", charge_rule.getStarting_distance() == null ? "10" : charge_rule.getStarting_distance());
-        info.put("starting_price", charge_rule.getStarting_price() == null ? "8" : charge_rule.getStarting_price());
+        info.put(Constants.PREFERENCE_KEY_DRIVER_KM_PRICE, charge_rule.getKm_price() == null ? "5" : charge_rule.getKm_price());
+        info.put(Constants.PREFERENCE_KEY_DRIVER_LOW_SPEED_PRICE, charge_rule.getLow_speed_price() == null ? "0.5" : charge_rule.getLow_speed_price());
+        info.put(Constants.PREFERENCE_KEY_DRIVER_STARTING_DISTANCE, charge_rule.getStarting_distance() == null ? "10" : charge_rule.getStarting_distance());
+        info.put(Constants.PREFERENCE_KEY_DRIVER_STARTING_PRICE, charge_rule.getStarting_price() == null ? "8" : charge_rule.getStarting_price());
 
         return info;
     }

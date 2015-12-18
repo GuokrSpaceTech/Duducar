@@ -29,8 +29,8 @@ import com.guokrspace.dududriver.model.HistoryOrderResponseModel;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
-import com.guokrspace.dududriver.view.CircleImageView;
 import com.guokrspace.dududriver.view.DividerItemDecoration;
+import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -49,7 +49,7 @@ import butterknife.OnClick;
 public class MeFragment extends BaseFragment implements Handler.Callback{
 
     @Bind(R.id.avatar_civ)
-    CircleImageView civAvatar;
+    ImageView civAvatar;
     @Bind(R.id.name_tv)
     TextView tvName;
     @Bind(R.id.me_ratingbar)
@@ -364,17 +364,24 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
     }
 
     private void updateDriverInfo(){
-        String name = (String) SharedPreferencesUtils.getParam(getActivity(), "name", "阿方师傅");
-        float stars = Float.parseFloat((String) SharedPreferencesUtils.getParam(getActivity(), "rating", "5"));
-        int total_order = Integer.parseInt((String) SharedPreferencesUtils.getParam(getActivity(), "total_order", "0"));
-        float favorable_rate = Float.parseFloat((String) SharedPreferencesUtils.getParam(getActivity(), "favorable_rate", "0.0"));
-        String balance = (String) SharedPreferencesUtils.getParam(getActivity(), "balance", "0.00");
+        String name = (String) SharedPreferencesUtils.getParam(getActivity(), Constants.PREFERENCE_KEY_DRIVER_NAME, "阿方师傅");
+        float stars = Float.parseFloat((String) SharedPreferencesUtils.getParam(getActivity(), Constants.PREFERNECE_KEY_DRIVER_RATING, "5"));
+        int total_order = Integer.parseInt((String) SharedPreferencesUtils.getParam(getActivity(), Constants.PREFERENCE_KEY_DRIVER_TOTAL_ORDER, "0"));
+        float favorable_rate = Float.parseFloat((String) SharedPreferencesUtils.getParam(getActivity(), Constants.PREFERENCE_KEY_DRIVER_FAVORABLE_RATE, "0.0"));
+        String balance = (String) SharedPreferencesUtils.getParam(getActivity(), Constants.PREFERENCE_KEY_DRIVER_BALANCE, "0.00");
+        String avatar = (String)SharedPreferencesUtils.getParam(getActivity(), Constants.PREFERENCE_KEY_DRIVER_AVATAR, "");
 
         tvName.setText(name);
         mRatingbar.setRating(stars);
-        tvRating.setText(stars +  " 星");
+        tvRating.setText(stars + " 星");
         tvOderNum.setText(String.format(getResources().getString(R.string.my_order_num), total_order));
         tvPraiseRate.setText("好评率 " + favorable_rate + "%");
         tvBanlance.setText(" " + balance);
+        if(avatar.length() > 1){
+            Picasso.with(getContext())
+                    .load(avatar).centerCrop()
+                    .fit().into(civAvatar);
+        }
+
     }
 }
