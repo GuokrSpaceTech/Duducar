@@ -229,7 +229,7 @@
                 <constraint firstItem="BDs-tX-5b4" firstAttribute="leading" secondItem="7fy-Na-zOC" secondAttribute="leading" constant="8" id="rzO-ht-hd7"/>
                 <constraint firstAttribute="trailing" secondItem="1eT-BL-Pps" secondAttribute="trailing" constant="8" id="xNo-ST-s09"/>
             </constraints>
-            <point key="canvasLocation" x="117" y="47"/>
+            <point key="canvasLocation" x="-122" y="62"/>
         </view>
     </objects>
 </document>

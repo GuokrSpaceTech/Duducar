@@ -6,12 +6,11 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.guokrspace.duducar.R;
 import com.guokrspace.duducar.communication.http.model.Order;
-import com.guokrspace.duducar.database.OrderRecord;
+import com.guokrspace.duducar.util.DisplayUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,10 +46,10 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.RecordView
     @Override
     public void onBindViewHolder(final RecordViewHolder holder, int position) {
         if (mItems != null) {
-            holder.tvTime.setText(mItems.get(position).getEnd_time() + "");
+            holder.tvTime.setText(DisplayUtils.getShortDate(mItems.get(position).getEnd_time() + ""));
             holder.tvStart.setText(mItems.get(position).getStart());
             holder.tvDestination.setText(mItems.get(position).getDestination());
-            holder.tvStatus.setText("已完成");
+            holder.tvStatus.setText("已支付");
             if (mOnItemClickListener != null) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override

@@ -9,6 +9,7 @@
 #import "PaymentViewController.h"
 #import "RatingViewController.h"
 #import <AlipaySDK/AlipaySDK.h>
+#import "WXApiRequestHandler.h"
 #import "Order.h"
 #import "DataSigner.h"
 
@@ -30,9 +31,15 @@ static NSString *privateKey =
 "KckyXpEIFhCeIbx5blSZ2OTcDzqm++GsjP9eFxDxluqSolglnaQpJEwg6PeoWhiw"
 "kYSGL5z3CmCjQCI=";
 
+enum Paymethod{
+    ALIPAY,
+    WECHATPAY
+};
 
 @interface PaymentViewController ()
-
+{
+    enum Paymethod paymenthod;
+}
 @end
 
 @implementation PaymentViewController
@@ -52,7 +59,26 @@ static NSString *privateKey =
 }
 
 - (IBAction)paymentAction:(id)sender {
+    if(paymenthod == ALIPAY)
+    {
+        [self alipay];
+    } else if(paymenthod == WECHATPAY)
+    {
+        [self wechatpay];
+    }
+    
+}
 
+- (IBAction)aliPaySelected:(id)sender {
+    paymenthod = ALIPAY;
+}
+
+- (IBAction)WechatPaySelected:(id)sender {
+    paymenthod = WECHATPAY;
+}
+
+-(void) alipay
+{
     Order *order = [[Order alloc] init];
     order.partner = partner;
     order.seller = seller;
@@ -92,10 +118,14 @@ static NSString *privateKey =
     }
 }
 
-- (IBAction)aliPaySelected:(id)sender {
-}
-
-- (IBAction)WechatPaySelected:(id)sender {
+-(void)wechatpay
+{
+    NSString *res = [WXApiRequestHandler jumpToBizPay];
+    if( ![@"" isEqual:res] ){
+        UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"支付失败" message:res delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        
+        [alter show];
+    }
 }
 
 #pragma mark -

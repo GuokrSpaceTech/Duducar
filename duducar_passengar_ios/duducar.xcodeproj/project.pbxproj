@@ -15,7 +15,6 @@
 		2AAFDC6E1C186DA600A5AEBD /* DDSearchTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2AAFDC6C1C186DA600A5AEBD /* DDSearchTableViewController.xib */; };
 		2AAFDC731C186DCE00A5AEBD /* SearchResultTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AAFDC711C186DCE00A5AEBD /* SearchResultTableViewCell.m */; };
 		2AAFDC771C196C4700A5AEBD /* DDDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AAFDC761C196C4700A5AEBD /* DDDatabase.m */; };
-		2AAFDC7A1C1A546600A5AEBD /* PostOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AAFDC791C1A546600A5AEBD /* PostOrderViewController.m */; };
 		2AAFDC7E1C1A7DC700A5AEBD /* CostEstimationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AAFDC7C1C1A7DC700A5AEBD /* CostEstimationViewController.m */; };
 		2AAFDC7F1C1A7DC700A5AEBD /* CostEstimationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2AAFDC7D1C1A7DC700A5AEBD /* CostEstimationViewController.xib */; };
 		2AAFDC831C1AD36E00A5AEBD /* PaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AAFDC811C1AD36E00A5AEBD /* PaymentViewController.m */; };
@@ -69,6 +68,14 @@
 		F983BFE71C1C1F0D00E942E1 /* OrderInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = F983BFE61C1C1F0D00E942E1 /* OrderInfoView.m */; };
 		F9E1C96B1C172C330083F19B /* DDSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = F9E1C96A1C172C330083F19B /* DDSocket.m */; };
 		F9E1C96E1C172CB30083F19B /* DDMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9E1C96D1C172CB30083F19B /* DDMainViewController.m */; };
+		FA8892A81C22778800496200 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA8892A31C22778800496200 /* libWeChatSDK.a */; };
+		FA8892A91C22778800496200 /* read_me.txt in Resources */ = {isa = PBXBuildFile; fileRef = FA8892A41C22778800496200 /* read_me.txt */; };
+		FA8892AC1C228F5400496200 /* WXApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8892AB1C228F5400496200 /* WXApiManager.m */; };
+		FA8892B11C22906D00496200 /* WXApiRequestHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8892AE1C22906D00496200 /* WXApiRequestHandler.m */; };
+		FA8892B21C22906D00496200 /* WXApiResponseHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8892B01C22906D00496200 /* WXApiResponseHandler.m */; };
+		FA8892BA1C22909D00496200 /* GetMessageFromWXResp+responseWithTextOrMediaMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8892B51C22909D00496200 /* GetMessageFromWXResp+responseWithTextOrMediaMessage.m */; };
+		FA8892BB1C22909D00496200 /* SendMessageToWXReq+requestWithTextOrMediaMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8892B71C22909D00496200 /* SendMessageToWXReq+requestWithTextOrMediaMessage.m */; };
+		FA8892BC1C22909D00496200 /* WXMediaMessage+messageConstruct.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8892B91C22909D00496200 /* WXMediaMessage+messageConstruct.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,8 +110,6 @@
 		2AAFDC711C186DCE00A5AEBD /* SearchResultTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultTableViewCell.m; sourceTree = "<group>"; };
 		2AAFDC751C196C4700A5AEBD /* DDDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDDatabase.h; sourceTree = "<group>"; };
 		2AAFDC761C196C4700A5AEBD /* DDDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDDatabase.m; sourceTree = "<group>"; };
-		2AAFDC781C1A546600A5AEBD /* PostOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostOrderViewController.h; sourceTree = "<group>"; };
-		2AAFDC791C1A546600A5AEBD /* PostOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostOrderViewController.m; sourceTree = "<group>"; };
 		2AAFDC7B1C1A7DC700A5AEBD /* CostEstimationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CostEstimationViewController.h; sourceTree = "<group>"; };
 		2AAFDC7C1C1A7DC700A5AEBD /* CostEstimationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CostEstimationViewController.m; sourceTree = "<group>"; };
 		2AAFDC7D1C1A7DC700A5AEBD /* CostEstimationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CostEstimationViewController.xib; sourceTree = "<group>"; };
@@ -268,6 +273,24 @@
 		F9E1C96A1C172C330083F19B /* DDSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDSocket.m; sourceTree = "<group>"; };
 		F9E1C96C1C172CB30083F19B /* DDMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDMainViewController.h; sourceTree = "<group>"; };
 		F9E1C96D1C172CB30083F19B /* DDMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDMainViewController.m; sourceTree = "<group>"; };
+		FA8892A31C22778800496200 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
+		FA8892A41C22778800496200 /* read_me.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = read_me.txt; sourceTree = "<group>"; };
+		FA8892A51C22778800496200 /* WechatAuthSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WechatAuthSDK.h; sourceTree = "<group>"; };
+		FA8892A61C22778800496200 /* WXApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApi.h; sourceTree = "<group>"; };
+		FA8892A71C22778800496200 /* WXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiObject.h; sourceTree = "<group>"; };
+		FA8892AA1C228F5400496200 /* WXApiManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiManager.h; sourceTree = "<group>"; };
+		FA8892AB1C228F5400496200 /* WXApiManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXApiManager.m; sourceTree = "<group>"; };
+		FA8892AD1C22906D00496200 /* WXApiRequestHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiRequestHandler.h; sourceTree = "<group>"; };
+		FA8892AE1C22906D00496200 /* WXApiRequestHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXApiRequestHandler.m; sourceTree = "<group>"; };
+		FA8892AF1C22906D00496200 /* WXApiResponseHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiResponseHandler.h; sourceTree = "<group>"; };
+		FA8892B01C22906D00496200 /* WXApiResponseHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXApiResponseHandler.m; sourceTree = "<group>"; };
+		FA8892B31C22909D00496200 /* Constant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Constant.h; sourceTree = "<group>"; };
+		FA8892B41C22909D00496200 /* GetMessageFromWXResp+responseWithTextOrMediaMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GetMessageFromWXResp+responseWithTextOrMediaMessage.h"; sourceTree = "<group>"; };
+		FA8892B51C22909D00496200 /* GetMessageFromWXResp+responseWithTextOrMediaMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "GetMessageFromWXResp+responseWithTextOrMediaMessage.m"; sourceTree = "<group>"; };
+		FA8892B61C22909D00496200 /* SendMessageToWXReq+requestWithTextOrMediaMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SendMessageToWXReq+requestWithTextOrMediaMessage.h"; sourceTree = "<group>"; };
+		FA8892B71C22909D00496200 /* SendMessageToWXReq+requestWithTextOrMediaMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SendMessageToWXReq+requestWithTextOrMediaMessage.m"; sourceTree = "<group>"; };
+		FA8892B81C22909D00496200 /* WXMediaMessage+messageConstruct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WXMediaMessage+messageConstruct.h"; sourceTree = "<group>"; };
+		FA8892B91C22909D00496200 /* WXMediaMessage+messageConstruct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WXMediaMessage+messageConstruct.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -287,6 +310,7 @@
 				2AC664A51BF9ADF200DFDC2A /* libsqlite3.0.tbd in Frameworks */,
 				2AC664A31BF9ADC500DFDC2A /* Security.framework in Frameworks */,
 				2AC664A11BF9ADB900DFDC2A /* CoreGraphics.framework in Frameworks */,
+				FA8892A81C22778800496200 /* libWeChatSDK.a in Frameworks */,
 				2AC6649F1BF9ADA900DFDC2A /* OpenGLES.framework in Frameworks */,
 				2AB57EC71C1BE89D00BFC7C7 /* AlipaySDK.framework in Frameworks */,
 				2AC6649D1BF9ADA300DFDC2A /* SystemConfiguration.framework in Frameworks */,
@@ -517,6 +541,7 @@
 		2AC664431BF9A69200DFDC2A /* duducar */ = {
 			isa = PBXGroup;
 			children = (
+				FA8892A11C22771000496200 /* Wechat */,
 				2AB581701C1C287200BFC7C7 /* Alipay */,
 				81D8146B1C1AD0B700612B6E /* Model */,
 				2AAFDC6F1C186DB700A5AEBD /* view */,
@@ -535,8 +560,6 @@
 				2AAFDC6A1C186DA600A5AEBD /* DDSearchTableViewController.h */,
 				2AAFDC6B1C186DA600A5AEBD /* DDSearchTableViewController.m */,
 				2AAFDC6C1C186DA600A5AEBD /* DDSearchTableViewController.xib */,
-				2AAFDC781C1A546600A5AEBD /* PostOrderViewController.h */,
-				2AAFDC791C1A546600A5AEBD /* PostOrderViewController.m */,
 				2AAFDC7B1C1A7DC700A5AEBD /* CostEstimationViewController.h */,
 				2AAFDC7C1C1A7DC700A5AEBD /* CostEstimationViewController.m */,
 				2AAFDC7D1C1A7DC700A5AEBD /* CostEstimationViewController.xib */,
@@ -608,6 +631,39 @@
 				79A46CB94CB6EE86EFED9B23 /* Pods-duducar.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		FA8892A11C22771000496200 /* Wechat */ = {
+			isa = PBXGroup;
+			children = (
+				FA8892B31C22909D00496200 /* Constant.h */,
+				FA8892B41C22909D00496200 /* GetMessageFromWXResp+responseWithTextOrMediaMessage.h */,
+				FA8892B51C22909D00496200 /* GetMessageFromWXResp+responseWithTextOrMediaMessage.m */,
+				FA8892B61C22909D00496200 /* SendMessageToWXReq+requestWithTextOrMediaMessage.h */,
+				FA8892B71C22909D00496200 /* SendMessageToWXReq+requestWithTextOrMediaMessage.m */,
+				FA8892B81C22909D00496200 /* WXMediaMessage+messageConstruct.h */,
+				FA8892B91C22909D00496200 /* WXMediaMessage+messageConstruct.m */,
+				FA8892AD1C22906D00496200 /* WXApiRequestHandler.h */,
+				FA8892AE1C22906D00496200 /* WXApiRequestHandler.m */,
+				FA8892AF1C22906D00496200 /* WXApiResponseHandler.h */,
+				FA8892B01C22906D00496200 /* WXApiResponseHandler.m */,
+				FA8892AA1C228F5400496200 /* WXApiManager.h */,
+				FA8892AB1C228F5400496200 /* WXApiManager.m */,
+				FA8892A21C22778800496200 /* SDK1.6.2 */,
+			);
+			name = Wechat;
+			sourceTree = "<group>";
+		};
+		FA8892A21C22778800496200 /* SDK1.6.2 */ = {
+			isa = PBXGroup;
+			children = (
+				FA8892A31C22778800496200 /* libWeChatSDK.a */,
+				FA8892A41C22778800496200 /* read_me.txt */,
+				FA8892A51C22778800496200 /* WechatAuthSDK.h */,
+				FA8892A61C22778800496200 /* WXApi.h */,
+				FA8892A71C22778800496200 /* WXApiObject.h */,
+			);
+			path = SDK1.6.2;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -721,6 +777,7 @@
 				2AC664541BF9A69200DFDC2A /* LaunchScreen.storyboard in Resources */,
 				2AC664511BF9A69200DFDC2A /* Assets.xcassets in Resources */,
 				2AAFDC841C1AD36E00A5AEBD /* PaymentViewController.xib in Resources */,
+				FA8892A91C22778800496200 /* read_me.txt in Resources */,
 				2AAFDC7F1C1A7DC700A5AEBD /* CostEstimationViewController.xib in Resources */,
 				2AC6644F1BF9A69200DFDC2A /* Main.storyboard in Resources */,
 				2AAFDC891C1B04B800A5AEBD /* RatingViewController.xib in Resources */,
@@ -799,8 +856,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				2A9745181BF9B6C1008C8A7B /* UIColor+RCColor.m in Sources */,
-				2AAFDC7A1C1A546600A5AEBD /* PostOrderViewController.m in Sources */,
 				81D814611C1AB2CB00612B6E /* PersionInfoViewController.m in Sources */,
+				FA8892AC1C228F5400496200 /* WXApiManager.m in Sources */,
 				2AB5816E1C1C282900BFC7C7 /* RSADataSigner.m in Sources */,
 				81D8146A1C1AC65200612B6E /* CallCarViewController.m in Sources */,
 				2AB5816D1C1C282900BFC7C7 /* openssl_wrapper.m in Sources */,
@@ -808,24 +865,29 @@
 				F983BFE71C1C1F0D00E942E1 /* OrderInfoView.m in Sources */,
 				2AC6647A1BF9AA2100DFDC2A /* LoginViewController.m in Sources */,
 				2AAFDC881C1B04B800A5AEBD /* RatingViewController.m in Sources */,
+				FA8892B11C22906D00496200 /* WXApiRequestHandler.m in Sources */,
 				2AC664491BF9A69200DFDC2A /* AppDelegate.m in Sources */,
 				2AB5816F1C1C282900BFC7C7 /* RSADataVerifier.m in Sources */,
 				2AC664461BF9A69200DFDC2A /* main.m in Sources */,
 				2AB581691C1C282900BFC7C7 /* DataSigner.m in Sources */,
 				2AB5816A1C1C282900BFC7C7 /* DataVerifier.m in Sources */,
+				FA8892BB1C22909D00496200 /* SendMessageToWXReq+requestWithTextOrMediaMessage.m in Sources */,
 				2AAFDC831C1AD36E00A5AEBD /* PaymentViewController.m in Sources */,
 				81D8145E1C1A8EC500612B6E /* TravelDetailViewController.m in Sources */,
+				FA8892B21C22906D00496200 /* WXApiResponseHandler.m in Sources */,
 				2AAFDC7E1C1A7DC700A5AEBD /* CostEstimationViewController.m in Sources */,
 				2AB581681C1C282900BFC7C7 /* base64.m in Sources */,
 				2AAFDC731C186DCE00A5AEBD /* SearchResultTableViewCell.m in Sources */,
 				2AB5816B1C1C282900BFC7C7 /* MD5DataSigner.m in Sources */,
 				81D814581C1A8C3400612B6E /* DDLeftView.m in Sources */,
 				F983BFE41C1C1AF500E942E1 /* StartEndView.m in Sources */,
+				FA8892BA1C22909D00496200 /* GetMessageFromWXResp+responseWithTextOrMediaMessage.m in Sources */,
 				2AAFDC771C196C4700A5AEBD /* DDDatabase.m in Sources */,
 				F9E1C96B1C172C330083F19B /* DDSocket.m in Sources */,
 				2AB5816C1C1C282900BFC7C7 /* NSDataEx.m in Sources */,
 				F983BFE11C1C176B00E942E1 /* Driver.m in Sources */,
 				F9E1C96E1C172CB30083F19B /* DDMainViewController.m in Sources */,
+				FA8892BC1C22909D00496200 /* WXMediaMessage+messageConstruct.m in Sources */,
 				2AAFDC6D1C186DA600A5AEBD /* DDSearchTableViewController.m in Sources */,
 				2A97451B1BF9BEF6008C8A7B /* RCAnimatedImagesView.m in Sources */,
 				81D814641C1AB2DD00612B6E /* HisoryViewController.m in Sources */,
@@ -996,6 +1058,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/duducar/SDK1.6.2",
 				);
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.guokrspace.duducar;
@@ -1029,6 +1092,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/duducar/SDK1.6.2",
 				);
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.guokrspace.duducar;

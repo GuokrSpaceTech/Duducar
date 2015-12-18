@@ -1,8 +1,12 @@
 package com.guokrspace.duducar.util;
 
 import android.content.res.Resources;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class DisplayUtils {
 	
@@ -29,6 +33,18 @@ public class DisplayUtils {
 			return myView.getLeft();
 		else
 			return myView.getLeft() + getRelativeLeft((View) myView.getParent());
+	}
+
+	public static String getShortDate(String date){
+		if (TextUtils.isEmpty(date)) {
+			return "刚刚";
+		}
+		if(date.length() < 11){//s
+			date += "000";
+		}
+		Date orderDate = new Date(Long.parseLong(date));
+		SimpleDateFormat format = new SimpleDateFormat("MM月dd日 HH:mm");
+		return format.format(orderDate);
 	}
 	
 }
