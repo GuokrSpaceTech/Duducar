@@ -5,13 +5,12 @@ import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.text.TextUtils;
-import android.util.Log;
-import android.widget.TextView;
 
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
 import com.baidu.mapapi.model.LatLng;
 import com.guokrspace.dududriver.DuduDriverApplication;
+import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.model.OrderItem;
 
 import java.math.BigDecimal;
@@ -191,32 +190,32 @@ public class CommonUtil {
         Calendar mCalendar = Calendar.getInstance();
         String today =  mCalendar.get(Calendar.YEAR) + "-" + mCalendar.get(Calendar.DAY_OF_YEAR);
 
-        if(!today.equals(SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), "today", new String("20151")))){
+        if(!today.equals(SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_TODAY, new String("20151")))){
             initTodayAllWork();
             initTodayCash();
             initTodayDoneWork();
-            SharedPreferencesUtils.setParam(DuduDriverApplication.getInstance(), "today", today);
+            SharedPreferencesUtils.setParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_TODAY, today);
         }
     }
 
     public static int getTodayDoneWork(){
-        return (int) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), "todaydonework", new Integer(0));
+        return (int) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_TODAY_DONE_WORK, new Integer(0));
     }
 
     public static void addTodayDoneWork(){
-        SharedPreferencesUtils.setParam(DuduDriverApplication.getInstance(), "todaydonework", new Integer(getTodayDoneWork() + 1));
+        SharedPreferencesUtils.setParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_TODAY_DONE_WORK, new Integer(getTodayDoneWork() + 1));
     }
 
     private static void initTodayDoneWork(){
-        SharedPreferencesUtils.setParam(DuduDriverApplication.getInstance(), "todaydonework", new Integer(0));
+        SharedPreferencesUtils.setParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_TODAY_DONE_WORK, new Integer(0));
     }
 
     private static int getTodayAllWork(){
-        return (int) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), "todayallwork", new Integer(0));
+        return (int) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_TODAY_ALL_WORK, new Integer(0));
     }
 
     public static void addTodayAllWork(){
-        SharedPreferencesUtils.setParam(DuduDriverApplication.getInstance(), "todayallwork", new Integer(getTodayAllWork() + 1));
+        SharedPreferencesUtils.setParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_TODAY_ALL_WORK, new Integer(getTodayAllWork() + 1));
     }
 
     public static String getTodayWorkRate(){
@@ -228,19 +227,19 @@ public class CommonUtil {
     }
 
     private static void initTodayAllWork(){
-        SharedPreferencesUtils.setParam(DuduDriverApplication.getInstance(), "todayallwork", new Integer(0));
+        SharedPreferencesUtils.setParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_TODAY_ALL_WORK, new Integer(0));
     }
 
     public static float getTodayCash(){
-        return new BigDecimal((float)SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), "todaycash", new Float(0.0))).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
+        return new BigDecimal((float)SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_TODAY_CASH, new Float(0.0))).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
     }
 
     public static void addTodayCash(float cash){
-        SharedPreferencesUtils.setParam(DuduDriverApplication.getInstance(), "todaycash", new Float(getTodayCash() + cash));
+        SharedPreferencesUtils.setParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_TODAY_CASH, new Float(getTodayCash() + cash));
     }
 
     private static void initTodayCash(){
-        SharedPreferencesUtils.setParam(DuduDriverApplication.getInstance(), "todaycash", new Double(0));
+        SharedPreferencesUtils.setParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_TODAY_CASH, new Double(0));
     }
 
     public static boolean isServiceOn() {
@@ -255,10 +254,10 @@ public class CommonUtil {
 
     public static double countPrice(double mileage, int lowtime) {
 
-        float starting_price = Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), "starting_price", "5.5"));
-        float starting_distance = Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), "starting_distance", "6.0"));
-        float km_price = Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), "km_price", "2.0"));
-        float low_speed_price = Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), "low_speed_price", "2.0"));
+        float starting_price = Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_DRIVER_STARTING_PRICE, "5.5"));
+        float starting_distance = Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_DRIVER_STARTING_DISTANCE, "6.0"));
+        float km_price = Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_DRIVER_KM_PRICE, "2.0"));
+        float low_speed_price = Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_DRIVER_LOW_SPEED_PRICE, "2.0"));
         mileage = mileage/1000.0d;
         if(mileage <= starting_distance + 0.5){
             return starting_price + low_speed_price * lowtime;
@@ -269,7 +268,7 @@ public class CommonUtil {
     }
 
     public static float getStartPrice(){
-        return Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), "starting_price", "5.5"));
+        return Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_DRIVER_STARTING_PRICE, "5.5"));
     }
 
     //格式化日期

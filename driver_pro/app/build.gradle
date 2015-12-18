@@ -75,7 +75,7 @@ dependencies {
     compile project(':ToggleButtonLib')
     compile 'com.android.support:appcompat-v7:23.1.0'
     compile 'com.android.support:recyclerview-v7:23.1.0'
-    compile 'com.github.dexafree:materiallist:3.0.1'
+    compile 'com.github.dexafree:materiallist:3.1.2'
     compile 'de.greenrobot:greendao:1.3.7'
     compile 'de.greenrobot:greendao-generator:1.3.1'
     compile 'com.github.nkzawa:socket.io-client:0.3.0'
@@ -86,6 +86,10 @@ dependencies {
     provided 'com.google.code.gson:gson:2.2.2'
     compile 'me.drakeet.materialdialog:library:1.2.8'
     compile 'com.zhy:okhttputils:1.0.2'
+//    compile 'com.squareup.okhttp:okhttp:2.4.0'
+//    compile 'com.squareup.okhttp:okhttp-urlconnection:2.2.0'
+//    compile 'com.squareup.picasso:picasso:2.4.0'
+//    compile 'com.squareup.okhttp:okhttp:2.0.0'
     //    compile 'com.android.support:design:23.1.0'
     //    compile files('libs/BaiduNaviSDK_2.0.jar')
     //    compile files('libs/alipaySdk-20151103.jar')

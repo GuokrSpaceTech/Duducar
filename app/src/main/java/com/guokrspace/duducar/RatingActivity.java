@@ -171,7 +171,7 @@ public class RatingActivity extends ActionBarActivity {
         if(mOrder!=null) {
             startTextView.setText(mOrder.getStart());
             destinationTextView.setText(mOrder.getDestination());
-            priceTextView.setText(mOrder.getOrg_price());
+            priceTextView.setText(mOrder.getSumprice());
         }
 
         if(mOrder.getStatus().equals("4")){//未支付

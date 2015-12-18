@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -50,8 +51,6 @@ import com.baidu.navisdk.adapter.BNRouteGuideManager;
 import com.baidu.navisdk.adapter.BNRoutePlanNode;
 import com.baidu.navisdk.adapter.BaiduNaviManager;
 import com.baidu.navisdk.comapi.routeplan.RoutePlanParams;
-import com.baidu.navisdk.ui.routeguide.BNavigator;
-import com.gc.materialdesign.widgets.Dialog;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.common.VoiceCommand;
@@ -403,6 +402,8 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         setContentView(R.layout.activity_pickuppassenger);
         context = PickUpPassengerActivity.this;
         mHandler = new Handler(this);
@@ -599,6 +600,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                 //TODO:无论如何都要结束订单
                 stopCharging();
                 SharedPreferencesUtils.setParam(PickUpPassengerActivity.this, Constants.PREFERENCE_KEY_ORDER_STATUS, Constants.STATUS_REACH);
+//                SharedPreferencesUtils.setParam(PickUpPassengerActivity.this, Constants.TO, );
 
                 Intent intent = new Intent(PickUpPassengerActivity.this, ConfirmBillActivity.class);
                 intent.putExtra("orderItem", orderItem);
@@ -723,6 +725,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+
         mBaiduMap.setMyLocationEnabled(false);
         if (mMapview != null) {
             mMapview.onDestroy();

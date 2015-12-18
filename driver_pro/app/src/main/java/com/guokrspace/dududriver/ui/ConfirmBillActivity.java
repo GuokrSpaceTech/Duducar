@@ -152,9 +152,9 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
         orderItem = (OrderItem) bundle.get("orderItem");
         curDistance = bundle.getDouble("mileage");
         final int lowSpeedTime= bundle.getInt("lowspeed");
-        final float lowSpeedPrice = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), "low_speed_price", "0.55"));
-        final float startPrice = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), "starting_price", "6.5"));
-        final float startDistance = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), "starting_distance", "6.0"));
+        final float lowSpeedPrice = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), Constants.PREFERENCE_KEY_DRIVER_LOW_SPEED_PRICE, "0.55"));
+        final float startPrice = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), Constants.PREFERENCE_KEY_DRIVER_STARTING_PRICE, "6.5"));
+        final float startDistance = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), Constants.PREFERENCE_KEY_DRIVER_STARTING_DISTANCE, "6.0"));
 
         price = CommonUtil.countPrice(curDistance, lowSpeedTime);
         price = new BigDecimal(price).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
@@ -200,11 +200,13 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
                                 try {
                                     JSONObject object = new JSONObject(messageBody);
                                     String orderNum = object.getString("orderNum");
+                                    double sumPrice = object.getDouble("sumprice");
                                     Intent intent = new Intent(context, OrderDetailActivity.class);
                                     intent.putExtra("orderItem", orderItem);
                                     intent.putExtra("mileage", curDistance);
                                     intent.putExtra("lowspeed", lowSpeedTime);
                                     intent.putExtra("price", price);
+                                    intent.putExtra("sumprice", sumPrice);
                                     intent.putExtra("orderNum", orderNum);
                                     intent.putExtra("lowcost", lowcost);
                                     intent.putExtra("addPrice1", addPrice[0]/100d);
