@@ -102,7 +102,6 @@
     <orderEntry type="library" exported="" name="okio-1.6.0" level="project" />
     <orderEntry type="library" exported="" name="picasso-2.5.2" level="project" />
     <orderEntry type="library" exported="" name="alipaySdk-20151103" level="project" />
-    <orderEntry type="library" exported="" name="slf4j-simple-1.7.13" level="project" />
     <orderEntry type="library" exported="" name="greendao-1.3.7" level="project" />
     <orderEntry type="library" exported="" name="httpcore-4.3.2" level="project" />
     <orderEntry type="library" exported="" name="libammsdk" level="project" />

@@ -59,7 +59,7 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/PickUpPassengerActivity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="404" column="48" selection-start-line="404" selection-start-column="48" selection-end-line="404" selection-end-column="48" />
+              <caret line="406" column="48" selection-start-line="406" selection-start-column="48" selection-end-line="406" selection-end-column="48" />
               <folding />
             </state>
           </provider>
@@ -94,7 +94,7 @@
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7344173">
+            <state vertical-scroll-proportion="0.79941005">
               <caret line="210" column="16" selection-start-line="210" selection-start-column="16" selection-end-line="210" selection-end-column="16" />
               <folding />
             </state>
@@ -5468,8 +5468,8 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="510" column="36" selection-start-line="510" selection-start-column="36" selection-end-line="510" selection-end-column="36" />
           <folding>
-            <element signature="e#8652#8653#0" expanded="true" />
-            <element signature="e#8704#8705#0" expanded="true" />
+            <element signature="e#8652#8653#0" expanded="false" />
+            <element signature="e#8704#8705#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -5769,7 +5769,7 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/PickUpPassengerActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="404" column="48" selection-start-line="404" selection-start-column="48" selection-end-line="404" selection-end-column="48" />
+          <caret line="406" column="48" selection-start-line="406" selection-start-column="48" selection-end-line="406" selection-end-column="48" />
           <folding />
         </state>
       </provider>
@@ -5798,7 +5798,7 @@
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7344173">
+        <state vertical-scroll-proportion="0.79941005">
           <caret line="210" column="16" selection-start-line="210" selection-start-column="16" selection-end-line="210" selection-end-column="16" />
           <folding />
         </state>
