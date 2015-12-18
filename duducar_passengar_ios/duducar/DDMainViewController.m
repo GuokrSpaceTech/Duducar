@@ -49,6 +49,7 @@
     UIButton *stopLocButton;
     UIButton *callCabButton;
     UIButton *estCostButton;
+    UILabel *nearCarsPromptLabel;
     
     DDLeftView * leftView;
     BOOL leftViewShow;
@@ -85,7 +86,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     
     // 定位按钮
     UIButton *locButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [locButton setTitle:@"定位" forState:UIControlStateNormal];
+    [locButton setImage:[UIImage imageNamed:@"ic_my_location"] forState:UIControlStateNormal];
     [locButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [locButton addTarget:self action:@selector(locButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:locButton];
@@ -94,6 +95,17 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     UIView * backView = [[UIView alloc]initWithFrame:CGRectMake(10, self.view.frame.size.height - 170, self.view.frame.size.width-20, 100)];
     backView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:backView];
+    
+    UIImageView *startIndicator = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"startIndicator"]];
+    startIndicator.contentMode = UIViewContentModeScaleAspectFit;
+    UIImageView *endIndicator = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"endIndicator"]];
+    endIndicator.contentMode = UIViewContentModeScaleAspectFit;
+    UIView *line = [[UIView alloc]init];
+    line.backgroundColor = [UIColor lightGrayColor];
+    
+    [backView addSubview:line];
+    [backView addSubview:startIndicator];
+    [backView addSubview:endIndicator];
     
     startLocButton = [UIButton buttonWithType:UIButtonTypeCustom];
     startLocButton.frame = CGRectMake(0, 0, backView.frame.size.width, backView.frame.size.height/2.0);
@@ -109,9 +121,33 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     [stopLocButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [backView addSubview:stopLocButton];
     
+    [startIndicator mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(backView.mas_left).offset(16);
+        make.top.equalTo(startLocButton.mas_top).offset(8);
+        make.centerY.equalTo(startLocButton);
+        make.height.equalTo(startLocButton.mas_height);
+        make.width.mas_equalTo(@8);
+    }];
+    
+    [line mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(@1);
+        make.centerY.equalTo(backView.mas_centerY);
+        make.left.equalTo(backView.mas_left).offset(8);
+        make.right.equalTo(backView.mas_right).offset(-8);
+    }];
+    
+    [endIndicator mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(backView.mas_left).offset(16);
+        make.bottom.equalTo(stopLocButton.mas_bottom).offset(-8);
+        make.centerY.equalTo(stopLocButton);
+        make.height.equalTo(stopLocButton.mas_height);
+        make.width.mas_equalTo(@8);
+    }];
+    
+    
     // 费用估算按钮
     estCostButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [estCostButton setTitle:@"费用估算" forState:UIControlStateNormal];
+    [estCostButton setImage:[UIImage imageNamed:@"ic_attach_money"] forState:UIControlStateNormal];
     [estCostButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [estCostButton addTarget:self action:@selector(estimateButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     estCostButton.enabled = false;
@@ -127,11 +163,28 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     callCabButton.enabled = false;
     [self.view addSubview:callCabButton];
     
-    // 当前未知大头针
-    UIView * view1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 10, 10)];
-    view1.backgroundColor = [UIColor redColor];
-    view1.center = self.view.center;
-    [self.view addSubview:view1];
+    //中心指示
+    UIImageView * centerView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 24, 48)];
+    centerView.image = [UIImage imageNamed:@"center"];
+    [self.view addSubview:centerView];
+    [centerView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view.mas_centerX);
+        make.centerY.equalTo(self.view.mas_centerY).offset(-15);
+    }];
+    
+    nearCarsPromptLabel = [[UILabel alloc]init];
+    nearCarsPromptLabel.layer.cornerRadius = 5;
+    nearCarsPromptLabel.backgroundColor = [UIColor blackColor];
+    nearCarsPromptLabel.text = @"   附近有2辆车   ";
+    nearCarsPromptLabel.textColor = [UIColor whiteColor];
+    nearCarsPromptLabel.textAlignment = NSTextAlignmentCenter;
+    nearCarsPromptLabel.font = [UIFont systemFontOfSize:14.0];
+    [self.view addSubview:nearCarsPromptLabel];
+    
+    [nearCarsPromptLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view.mas_centerX);
+        make.bottom.equalTo(centerView.mas_top);
+    }];
     
     //Add Constrains
     [locButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -149,14 +202,16 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     }];
     
     // 左侧按钮
-    UIBarButtonItem * leftItem  = [[UIBarButtonItem alloc]initWithTitle:@"left" style:UIBarButtonItemStyleDone target:self action:@selector(leftCilck:)];
+    UIBarButtonItem * leftItem  = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_view_headline_white"] style:UIBarButtonItemStyleDone target:self action:@selector(leftCilck:)];
+    
     self.navigationItem.leftBarButtonItem = leftItem;
     leftView = [[DDLeftView alloc]initWithFrame:CGRectMake(-self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height)];
     leftView.backgroundColor = [UIColor clearColor];
+    
     leftView.delegate = self;
     [self.view addSubview:leftView];
     leftViewShow = NO;
-
+    
     /*
      * Init Data
      */
@@ -413,6 +468,8 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
                 } else {
                     NSDictionary *paramDict = @{@"cmd":@"login", @"role":@"2", @"mobile":phone, @"token":token};
                     [[DDSocket currentSocket] sendRequest:paramDict];
+                    
+                    [leftView setAvatarImage:@"http://img2.imgtn.bdimg.com/it/u=2160420705,2533030665&fm=21&gp=0.jpg" mobile:phone];
                 }
             }];
             
@@ -504,6 +561,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
                     
                     //添加标注
                     BMKPointAnnotation *pointAnnotation = [[BMKPointAnnotation alloc]init];
+                    
                     CLLocationCoordinate2D coor;
                     coor.latitude = lat;
                     coor.longitude = lng;
