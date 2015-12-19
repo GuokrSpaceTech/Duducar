@@ -220,7 +220,6 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 }
 -(void)callCar
 {
-    //启动进度条
     NSDictionary *param = @ {@"cmd": @"create_order", @"role": @"2", @"start":_startLocation.name, @"destination":_endLocation.name,
                             @"start_lat":@(_startLocation.coordinate2D.latitude), @"start_lng":@(_startLocation.coordinate2D.longitude),
                             @"destination_lat":@(_endLocation.coordinate2D.latitude), @"destination_lng":@(_endLocation.coordinate2D.longitude),
@@ -313,68 +312,24 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     }
     else if([command isEqualToString:@"current_charge"])
     {
-//        PaymentViewController *payVC = [[PaymentViewController alloc]initWithNibName:@"PaymentViewController" bundle:nil];
-//        payVC.mileage = [responseDict objectForKey:@"current_mile"];
-//        payVC.chargePrice = [responseDict objectForKey:@"current_charge"];
-//        payVC.lowSpeedTime = [responseDict objectForKey:@"low_speed_time"];
-//        [self.navigationController pushViewController:payVC animated:YES];
+        if([[responseDict objectForKey:@"current_charge"] isKindOfClass:[NSString class]])
+            NSLog(@"Current Charge is %@",[responseDict objectForKey:@"current_charge"]);
     }
     else if([command isEqualToString:@"order_end"])
     {
-        
-        //        (lldb) po responseDict
-        //        {
-        //            cmd = "order_end";
-        //            order =     {
-        //                "add_price1" = "<null>";
-        //                "add_price2" = "<null>";
-        //                "add_price3" = "<null>";
-        //                "additional_price" = "0.00";
-        //                "car_type" = 1;
-        //                "cityline_id" = 0;
-        //                "create_time" = 1449920275;
-        //                destination = "\U5317\U4eac\U5c55\U89c8\U9986";
-        //                "destination_lat" = "40.06377";
-        //                "destination_lng" = "116.32138";
-        //                "driver_id" = 3;
-        //                "end_time" = 1449920506;
-        //                id = 1154;
-        //                isCancel = 0;
-        //                isCityline = 0;
-        //                "low_speed_time" = "<null>";
-        //                mileage = "4.650858443200497";
-        //                orderNum = 2015121219414697995097;
-        //                "org_price" = "0.02";
-        //                "passenger_id" = 2;
-        //                "passenger_mobile" = 13700000002;
-        //                "pay_role" = 2;
-        //                "pay_time" = 0;
-        //                "pay_type" = 0;
-        //                "pre_mileage" = "12.00";
-        //                "pre_price" = "65.00";
-        //                rating = 0;
-        //                "rent_type" = 0;
-        //                start = "\U897f\U4e8c\U65d7\U5317\U8def";
-        //                "start_lat" = "40.063761";
-        //                "start_lng" = "116.321411";
-        //                "start_time" = 1449920378;
-        //                status = 4;
-        //                sumprice = "0.02";
-        //            };
-        
-        PaymentViewController *payVC = [[PaymentViewController alloc]initWithNibName:@"PaymentViewController" bundle:nil];
-        payVC.mileage = [responseDict objectForKey:@"current_mile"];
-        payVC.chargePrice = [responseDict objectForKey:@"current_charge"];
-        payVC.lowSpeedTime = [responseDict objectForKey:@"low_speed_time"];
-        [self.navigationController pushViewController:payVC animated:YES];
+        //防止重复调用支付界面
+        if(![[self.navigationController topViewController] isKindOfClass:[PaymentViewController class]])
+        {
+            PaymentViewController *payVC = [[PaymentViewController alloc]initWithNibName:@"PaymentViewController" bundle:nil];
+            payVC.mileage = [responseDict objectForKey:@"current_mile"];
+            payVC.chargePrice = [responseDict objectForKey:@"current_charge"];
+            payVC.lowSpeedTime = [responseDict objectForKey:@"low_speed_time"];
+            payVC.activeOrder = responseDict;
+            [self.navigationController pushViewController:payVC animated:YES];
+        }
     }
     else if([command isEqualToString:@"driver_pay"])//{"cmd":"driver_pay","order_id":1236,"status":1}
     {
-        
     }
-    
-    
 }
-
-
 @end

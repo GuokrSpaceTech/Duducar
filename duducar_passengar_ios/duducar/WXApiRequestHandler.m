@@ -61,7 +61,7 @@ static NSString *PAYMENTRESULT_REQ_URL = @"http://120.24.237.15:81/api/Pay/wxuni
             InScene:(enum WXScene)scene {
     WXWebpageObject *ext = [WXWebpageObject object];
     ext.webpageUrl = urlString;
-
+    
     WXMediaMessage *message = [WXMediaMessage messageWithTitle:title
                                                    Description:description
                                                         Object:ext
@@ -86,7 +86,7 @@ static NSString *PAYMENTRESULT_REQ_URL = @"http://120.24.237.15:81/api/Pay/wxuni
     WXMusicObject *ext = [WXMusicObject object];
     ext.musicUrl = musicURL;
     ext.musicDataUrl = dataURL;
-
+    
     WXMediaMessage *message = [WXMediaMessage messageWithTitle:title
                                                    Description:description
                                                         Object:ext
@@ -180,7 +180,7 @@ static NSString *PAYMENTRESULT_REQ_URL = @"http://120.24.237.15:81/api/Pay/wxuni
     ext.extInfo = info;
     ext.url = url;
     ext.fileData = data;
-
+    
     WXMediaMessage *message = [WXMediaMessage messageWithTitle:title
                                                    Description:description
                                                         Object:ext
@@ -194,7 +194,7 @@ static NSString *PAYMENTRESULT_REQ_URL = @"http://120.24.237.15:81/api/Pay/wxuni
                                                             bText:NO
                                                           InScene:scene];
     return [WXApi sendReq:req];
-
+    
 }
 
 + (BOOL)addCardsToCardPackage:(NSArray *)cardItems {
@@ -230,76 +230,69 @@ static NSString *PAYMENTRESULT_REQ_URL = @"http://120.24.237.15:81/api/Pay/wxuni
 }
 
 
-+ (NSString *)jumpToBizPay {
-
++ (NSString *)jumpToBizPay:(NSDictionary *)payParamDict {
+    
     //============================================================
     // V3&V4支付流程实现
     // 注意:参数配置请查看服务器端
     // 更新时间：2015年11月20日
-//    Map<String, String> params = new HashMap<>();
-//    params.put("orderNum", tradeNo);
-//    params.put("body", body);
-//    params.put("total_fee", totalFee);
-//    List persons = ((DuduApplication)getApplicationContext()).mDaoSession.getPersonalInformationDao().queryBuilder().limit(1).list();
-//    if(persons.size()==1) {
-//        person = (PersonalInformation) persons.get(0);
-//    }
-//    params.put("token", person.getToken());
-//    params.put("mobile", person.getMobile());
-//    params.put("role", "2");
+    //    Map<String, String> params = new HashMap<>();
+    //    params.put("orderNum", tradeNo);
+    //    params.put("body", body);
+    //    params.put("total_fee", totalFee);
+    //    List persons = ((DuduApplication)getApplicationContext()).mDaoSession.getPersonalInformationDao().queryBuilder().limit(1).list();
+    //    if(persons.size()==1) {
+    //        person = (PersonalInformation) persons.get(0);
+    //    }
+    //    params.put("token", person.getToken());
+    //    params.put("mobile", person.getMobile());
+    //    params.put("role", "2");
     //============================================================
     
-//    NSString *paramString = NS
-    __block NSString *mobile;
-    __block NSString *usertoken;
-    [[DDDatabase sharedDatabase]selectFromPersonInfo:^(NSString *token, NSString *phone) {
-        mobile = phone;
-        usertoken = token;
-    }];
-    NSDictionary *paramDict = @{@"orderNum":@"123", @"body":@"A-B", @"total_fee":@"0.01", @"token":usertoken, @"role":@"2", @"mobile":mobile };
     __block NSString *paramString = @"";
-    [paramDict enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+    [payParamDict enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
         paramString = [paramString stringByAppendingFormat:@"%@=%@&",key,obj];
     }];
     NSString *urlString = [PAYMENT_REQ_URL stringByAppendingFormat:@"?%@",paramString];
     
-        //解析服务端返回json数据
-        NSError *error;
-        //加载一个NSURL对象
-        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
-        //将请求的url数据放到NSData对象中
-        NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-        if ( response != nil) {
-            NSMutableDictionary *dict = NULL;
-            //IOS5自带解析类NSJSONSerialization从response中解析出数据放到字典中
-            dict = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:&error];
-            
-            NSLog(@"url:%@",urlString);
-            if(dict != nil){
-                NSMutableString *retcode = [dict objectForKey:@"retcode"];
-                if (retcode.intValue == 0){
-                    NSMutableString *stamp  = [dict objectForKey:@"timestamp"];
-                    
-                    //调起微信支付
-                    PayReq* req             = [[PayReq alloc] init];
-                    req.partnerId           = [dict objectForKey:@"partnerid"];
-                    req.prepayId            = [dict objectForKey:@"prepayid"];
-                    req.nonceStr            = [dict objectForKey:@"noncestr"];
-                    req.timeStamp           = stamp.intValue;
-                    req.package             = [dict objectForKey:@"package"];
-                    req.sign                = [dict objectForKey:@"sign"];
-                    [WXApi sendReq:req];
-                    //日志输出
-                    NSLog(@"appid=%@\npartid=%@\nprepayid=%@\nnoncestr=%@\ntimestamp=%ld\npackage=%@\nsign=%@",[dict objectForKey:@"appid"],req.partnerId,req.prepayId,req.nonceStr,(long)req.timeStamp,req.package,req.sign );
-                    return @"";
-                }else{
-                    return [dict objectForKey:@"retmsg"];
-                }
+    //解析服务端返回json数据
+    NSError *error;
+    //加载一个NSURL对象
+    urlString = [urlString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+    //将请求的url数据放到NSData对象中
+    NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+    if ( response != nil) {
+        NSMutableDictionary *dict = NULL;
+        //IOS5自带解析类NSJSONSerialization从response中解析出数据放到字典中
+        dict = [NSJSONSerialization JSONObjectWithData:response options:NSJSONReadingMutableLeaves error:&error];
+        
+        NSLog(@"url:%@",urlString);
+        if(dict != nil){
+            NSMutableString *retcode = [dict objectForKey:@"retcode"];
+            if (retcode.intValue == 0){
+                NSMutableString *stamp  = [dict objectForKey:@"timestamp"];
+                
+                //调起微信支付
+                PayReq* req             = [[PayReq alloc] init];
+                req.partnerId           = [dict objectForKey:@"partnerid"];
+                req.prepayId            = [dict objectForKey:@"prepayid"];
+                req.nonceStr            = [dict objectForKey:@"noncestr"];
+                req.timeStamp           = stamp.intValue;
+                req.package             = [dict objectForKey:@"package"];
+                req.sign                = [dict objectForKey:@"sign"];
+                [WXApi sendReq:req];
+                //日志输出
+                NSLog(@"appid=%@\npartid=%@\nprepayid=%@\nnoncestr=%@\ntimestamp=%ld\npackage=%@\nsign=%@",[dict objectForKey:@"appid"],req.partnerId,req.prepayId,req.nonceStr,(long)req.timeStamp,req.package,req.sign );
+                return @"";
             }else{
-                return @"服务器返回错误，未获取到json对象";
+                return [dict objectForKey:@"retmsg"];
             }
         }else{
-            return @"服务器返回错误";
+            return @"服务器返回错误，未获取到json对象";
         }
+    }else{
+        return @"服务器返回错误";
+    }
 }
 @end

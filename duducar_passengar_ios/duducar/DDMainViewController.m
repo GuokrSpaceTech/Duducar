@@ -55,6 +55,7 @@
     DDLeftView * leftView;
     BOOL leftViewShow;
 
+    BOOL isTimerRunning;
     NSTimer *_repeatingTimer;
     NSUInteger _timerCount;
 }
@@ -244,6 +245,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 
 -(void)viewWillAppear:(BOOL)animated {
     [_mapView viewWillAppear];
+    isTimerRunning = true; // 开启Timer
     _mapView.delegate = self; // 此处记得不用的时候需要置nil，否则影响内存的释放
     /*
      * 监听来自Socket的服务消息
@@ -254,6 +256,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 -(void)viewWillDisappear:(BOOL)animated {
     [_mapView viewWillDisappear];
     _mapView.delegate = nil; // 不用时，置nil
+    isTimerRunning = false; // 停止Timer
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -481,6 +484,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
             }];
             
             //Kick off the timer。 定期获得周边车辆信息。
+            isTimerRunning = true;
             _timerCount = 5;
             _repeatingTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countedTimerAction:) userInfo:nil repeats:YES];
         }
@@ -632,6 +636,9 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 
 -(void)countedTimerAction:(NSTimer *)timer
 {
+    if(!isTimerRunning)
+        return;
+    
     _timerCount --;
     
     if(_timerCount==0 && currMapCenterLocation!=nil)
