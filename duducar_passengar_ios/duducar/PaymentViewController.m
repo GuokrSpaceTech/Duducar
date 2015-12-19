@@ -58,6 +58,13 @@ enum Paymethod{
         NSString *paymentConfirmString = [NSString stringWithFormat:@"确认支付%@元",_chargePrice];
         _paymentConfirmButton.titleLabel.text = paymentConfirmString;
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(payResult:) name:@"WechatPayResultNotification" object:nil];
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 -(void)setActiveOrder:(NSDictionary *)activeOrder
@@ -134,6 +141,8 @@ enum Paymethod{
             //【callback处理支付结果】
             NSLog(@"reslut = %@",resultDic);
             RatingViewController *rateVC = [[RatingViewController alloc] initWithNibName:@"RatingViewController" bundle:nil];
+            
+            rateVC.driver = self.driver;
             [self.navigationController pushViewController:rateVC animated:YES];
         }];
     }
@@ -146,7 +155,7 @@ enum Paymethod{
     id orderNum = [_activeOrder objectForKey:@"orderNum"];
     NSString *startStr = [_activeOrder objectForKey:@"start"];
     NSString *destStr  = [_activeOrder objectForKey:@"destination"];
-    NSString *body = [NSString stringWithFormat:@"%@ - %@", startStr, destStr];
+    NSString *body = [NSString stringWithFormat:@"%@-%@", startStr, destStr];
     NSString *price = _chargePrice;
     
     [[DDDatabase sharedDatabase]selectFromPersonInfo:^(NSString *token, NSString *phone) {
@@ -180,6 +189,26 @@ enum Paymethod{
         [resultStr appendString:oneStr];
     }
     return resultStr;
+}
+
+#pragma mark -
+#pragma mark   ==============通知处理==============
+-(void)payResult:(NSNotification *)notification
+{
+    NSDictionary *result = notification.userInfo;
+    if(result)
+    {
+        if([[result objectForKey:@"errCode"] intValue]  == WXSuccess)
+        {
+            RatingViewController *rateVC = [[RatingViewController alloc] initWithNibName:@"RatingViewController" bundle:nil];
+            rateVC.activeOrder = _activeOrder;
+            rateVC.driver = _driver;
+            [self.navigationController pushViewController:rateVC animated:YES];
+        } else {
+            //Do nothing
+        }
+    }
+    
 }
 
 @end

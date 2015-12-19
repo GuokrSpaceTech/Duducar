@@ -58,8 +58,6 @@
 		2AC664A91BF9AE1300DFDC2A /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AC664A81BF9AE1300DFDC2A /* libstdc++.6.0.9.tbd */; };
 		653A0C754452B0E8CC7C7931 /* Pods_duducar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C650C89CC0782424F97C23A7 /* Pods_duducar.framework */; };
 		81D814581C1A8C3400612B6E /* DDLeftView.m in Sources */ = {isa = PBXBuildFile; fileRef = 81D814571C1A8C3400612B6E /* DDLeftView.m */; };
-		81D8145E1C1A8EC500612B6E /* TravelDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81D8145D1C1A8EC500612B6E /* TravelDetailViewController.m */; };
-		81D814611C1AB2CB00612B6E /* PersionInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81D814601C1AB2CB00612B6E /* PersionInfoViewController.m */; };
 		81D8146A1C1AC65200612B6E /* CallCarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81D814691C1AC65200612B6E /* CallCarViewController.m */; };
 		81D8146E1C1AD0CA00612B6E /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 81D8146D1C1AD0CA00612B6E /* Location.m */; };
 		F983BFE11C1C176B00E942E1 /* Driver.m in Sources */ = {isa = PBXBuildFile; fileRef = F983BFE01C1C176B00E942E1 /* Driver.m */; };
@@ -254,10 +252,6 @@
 		79A46CB94CB6EE86EFED9B23 /* Pods-duducar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-duducar.release.xcconfig"; path = "Pods/Target Support Files/Pods-duducar/Pods-duducar.release.xcconfig"; sourceTree = "<group>"; };
 		81D814561C1A8C3400612B6E /* DDLeftView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDLeftView.h; sourceTree = "<group>"; };
 		81D814571C1A8C3400612B6E /* DDLeftView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDLeftView.m; sourceTree = "<group>"; };
-		81D8145C1C1A8EC500612B6E /* TravelDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TravelDetailViewController.h; sourceTree = "<group>"; };
-		81D8145D1C1A8EC500612B6E /* TravelDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TravelDetailViewController.m; sourceTree = "<group>"; };
-		81D8145F1C1AB2CB00612B6E /* PersionInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersionInfoViewController.h; sourceTree = "<group>"; };
-		81D814601C1AB2CB00612B6E /* PersionInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersionInfoViewController.m; sourceTree = "<group>"; };
 		81D814681C1AC65200612B6E /* CallCarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallCarViewController.h; sourceTree = "<group>"; };
 		81D814691C1AC65200612B6E /* CallCarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallCarViewController.m; sourceTree = "<group>"; };
 		81D8146C1C1AD0CA00612B6E /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
@@ -581,10 +575,6 @@
 				2AAFDC871C1B04B800A5AEBD /* RatingViewController.xib */,
 				81D814561C1A8C3400612B6E /* DDLeftView.h */,
 				81D814571C1A8C3400612B6E /* DDLeftView.m */,
-				81D8145C1C1A8EC500612B6E /* TravelDetailViewController.h */,
-				81D8145D1C1A8EC500612B6E /* TravelDetailViewController.m */,
-				81D8145F1C1AB2CB00612B6E /* PersionInfoViewController.h */,
-				81D814601C1AB2CB00612B6E /* PersionInfoViewController.m */,
 				FA8892BD1C22E13B00496200 /* HistoryViewController.h */,
 				FA8892BE1C22E13B00496200 /* HistoryViewController.m */,
 				FA8892BF1C22E13B00496200 /* HistoryViewController.xib */,
@@ -869,7 +859,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2A9745181BF9B6C1008C8A7B /* UIColor+RCColor.m in Sources */,
-				81D814611C1AB2CB00612B6E /* PersionInfoViewController.m in Sources */,
 				FA8892AC1C228F5400496200 /* WXApiManager.m in Sources */,
 				2AB5816E1C1C282900BFC7C7 /* RSADataSigner.m in Sources */,
 				81D8146A1C1AC65200612B6E /* CallCarViewController.m in Sources */,
@@ -887,7 +876,6 @@
 				2AB5816A1C1C282900BFC7C7 /* DataVerifier.m in Sources */,
 				FA8892BB1C22909D00496200 /* SendMessageToWXReq+requestWithTextOrMediaMessage.m in Sources */,
 				2AAFDC831C1AD36E00A5AEBD /* PaymentViewController.m in Sources */,
-				81D8145E1C1A8EC500612B6E /* TravelDetailViewController.m in Sources */,
 				FA8892B21C22906D00496200 /* WXApiResponseHandler.m in Sources */,
 				2AAFDC7E1C1A7DC700A5AEBD /* CostEstimationViewController.m in Sources */,
 				2AB581681C1C282900BFC7C7 /* base64.m in Sources */,

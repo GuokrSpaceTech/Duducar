@@ -325,6 +325,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
             payVC.chargePrice = [responseDict objectForKey:@"current_charge"];
             payVC.lowSpeedTime = [responseDict objectForKey:@"low_speed_time"];
             payVC.activeOrder = responseDict;
+            payVC.driver = self.orderDriver;
             [self.navigationController pushViewController:payVC animated:YES];
         }
     }

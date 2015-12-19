@@ -25,7 +25,6 @@
 #import "DDLeftView.h"
 #import "Masonry.h"
 
-#import "PersionInfoViewController.h"
 #import "HistoryViewController.h"
 #import "Location.h"
 
@@ -614,8 +613,6 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
      [self leftViewDisappear];
     if(index == 0)
     {
-        PersionInfoViewController * persionVC = [[PersionInfoViewController alloc]init];
-        [self.navigationController pushViewController:persionVC animated:YES];
     }
     else
     {

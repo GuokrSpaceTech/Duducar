@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9060" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
@@ -9,6 +9,14 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RatingViewController">
             <connections>
+                <outlet property="carDescLabel" destination="RbX-9y-RRg" id="lFa-H5-Wkz"/>
+                <outlet property="carPlateNumberLabel" destination="eD7-eT-gzN" id="AHL-o8-VS4"/>
+                <outlet property="chargeLabel" destination="U6K-OD-4oi" id="s1w-cb-3m6"/>
+                <outlet property="driverAvatarImageView" destination="EDJ-og-UnK" id="kGC-9B-RSF"/>
+                <outlet property="driverNameLabel" destination="VhV-sK-thS" id="eu9-ND-l3K"/>
+                <outlet property="rateLabel" destination="XlH-L1-Vh4" id="L4p-fK-FP7"/>
+                <outlet property="rateingView" destination="OtJ-Uc-uve" id="ROb-bQ-ZPy"/>
+                <outlet property="ratingViewUserRate" destination="GEe-1V-Z3e" id="67b-yP-6O1"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -20,7 +28,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sLx-dg-3e8" userLabel="topView">
                     <rect key="frame" x="8" y="8" width="584" height="128"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Z0h-L0-k0F">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="phoneicon" translatesAutoresizingMaskIntoConstraints="NO" id="Z0h-L0-k0F">
                             <rect key="frame" x="546" y="49" width="30" height="30"/>
                             <animations/>
                             <constraints>
@@ -35,19 +43,17 @@
                                 <constraint firstAttribute="width" secondItem="EDJ-og-UnK" secondAttribute="height" multiplier="29:28" id="3jb-Xf-AZy" userLabel="aspect = 1:1"/>
                                 <constraint firstAttribute="height" constant="48" id="vYv-Pz-gFN" userLabel="height = 60"/>
                             </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="25"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
                         </imageView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="icA-fg-Aod">
                             <rect key="frame" x="66" y="8" width="460" height="112"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="湘A•ER998" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eD7-eT-gzN">
                                     <rect key="frame" x="137" y="8" width="89" height="21"/>
-                                    <animations/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="黑色本田雅阁" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RbX-9y-RRg">
-                                    <rect key="frame" x="15" y="37" width="102" height="21"/>
                                     <animations/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -75,6 +81,13 @@
                                         <constraint firstAttribute="width" constant="100" id="ieh-SL-aKH"/>
                                     </constraints>
                                 </view>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="黑色本田雅阁" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RbX-9y-RRg">
+                                    <rect key="frame" x="15" y="37" width="102" height="21"/>
+                                    <animations/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -197,6 +210,9 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="1JQ-GF-xDy"/>
                     </constraints>
+                    <connections>
+                        <action selector="rateValueChanged:" destination="-1" eventType="valueChanged" id="GHN-m7-cO5"/>
+                    </connections>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nYd-Uw-CqW" userLabel="CostDetail">
                     <rect key="frame" x="8" y="190" width="584" height="88"/>
@@ -255,6 +271,10 @@
                 <constraint firstItem="Wel-BQ-vlf" firstAttribute="top" secondItem="nYd-Uw-CqW" secondAttribute="bottom" constant="8" id="rCf-Ie-uVn"/>
                 <constraint firstItem="sLx-dg-3e8" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="8" id="y6e-bk-mKW"/>
             </constraints>
+            <point key="canvasLocation" x="243" y="260"/>
         </view>
     </objects>
+    <resources>
+        <image name="phoneicon" width="27" height="27"/>
+    </resources>
 </document>

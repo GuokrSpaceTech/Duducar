@@ -21,6 +21,7 @@
 }
 
 - (void)dealloc {
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
     self.delegate = nil;
 }
 
@@ -47,18 +48,21 @@
     }else if([resp isKindOfClass:[PayResp class]]){
         //支付返回结果，实际支付结果需要去微信服务器端查询
         NSString *strMsg,*strTitle = [NSString stringWithFormat:@"支付结果"];
+        if(!resp.errStr)
+            resp.errStr = @"";
+        NSDictionary *errorDict = @{@"errCode":@(resp.errCode), @"errStr":resp.errStr};
         
         switch (resp.errCode) {
             case WXSuccess:
-                strMsg = @"支付结果：成功！";
+                strMsg = @"支付成功！";
                 NSLog(@"支付成功－PaySuccess，retcode = %d", resp.errCode);
                 break;
-                
             default:
                 strMsg = [NSString stringWithFormat:@"支付结果：失败！retcode = %d, retstr = %@", resp.errCode,resp.errStr];
                 NSLog(@"错误，retcode = %d, retstr = %@", resp.errCode,resp.errStr);
                 break;
         }
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"WechatPayResultNotification" object:self userInfo:errorDict];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:strTitle message:strMsg delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
         [alert show];
     }
