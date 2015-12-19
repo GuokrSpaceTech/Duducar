@@ -44,8 +44,9 @@ public class WealthNotice implements BaseNoticeItem {
     public int status;
     public int rating;
     public String low_speed_time;
+    public int message_notice_id;
 
-    public WealthNotice(String message){
+    public WealthNotice(String message, int noticeId){
         try{
             JSONObject object = new JSONObject(message);
             Log.e("daddy message", message);
@@ -71,7 +72,7 @@ public class WealthNotice implements BaseNoticeItem {
             }
             mileage = object.get("mileage") == null ? "1" : (String) object.get("mileage");
             low_speed_time = object.get("low_speed_time") == null ? "0" : (String) object.get("low_speed_time");
-
+            message_notice_id = noticeId;
         } catch (JSONException e) {
             e.printStackTrace();
         }
