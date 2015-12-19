@@ -50,6 +50,7 @@
     UIButton *callCabButton;
     UIButton *estCostButton;
     UILabel *nearCarsPromptLabel;
+    UIImageView *nearCarPromtBackView;
     
     DDLeftView * leftView;
     BOOL leftViewShow;
@@ -138,6 +139,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     
     [endIndicator mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(backView.mas_left).offset(16);
+        make.top.equalTo(startIndicator.mas_bottom);
         make.bottom.equalTo(stopLocButton.mas_bottom).offset(-8);
         make.centerY.equalTo(stopLocButton);
         make.height.equalTo(stopLocButton.mas_height);
@@ -172,18 +174,24 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         make.centerY.equalTo(self.view.mas_centerY).offset(-15);
     }];
     
+    nearCarPromtBackView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"prompt"]];
+    [self.view addSubview:nearCarPromtBackView];
+    nearCarPromtBackView.contentMode = UIViewContentModeScaleAspectFit;
     nearCarsPromptLabel = [[UILabel alloc]init];
-    nearCarsPromptLabel.layer.cornerRadius = 5;
-    nearCarsPromptLabel.backgroundColor = [UIColor blackColor];
-    nearCarsPromptLabel.text = @"   附近有2辆车   ";
     nearCarsPromptLabel.textColor = [UIColor whiteColor];
     nearCarsPromptLabel.textAlignment = NSTextAlignmentCenter;
     nearCarsPromptLabel.font = [UIFont systemFontOfSize:14.0];
-    [self.view addSubview:nearCarsPromptLabel];
+    [nearCarPromtBackView addSubview:nearCarsPromptLabel];
+    
+    [nearCarPromtBackView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view.mas_centerX);
+        make.bottom.equalTo(centerView.mas_top).offset(-2);
+    }];
     
     [nearCarsPromptLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.view.mas_centerX);
-        make.bottom.equalTo(centerView.mas_top);
+        make.top.equalTo(nearCarPromtBackView.mas_top).offset(2);
+        make.bottom.equalTo(nearCarPromtBackView.mas_bottom).offset(-2);
+        make.centerX.equalTo(nearCarPromtBackView.mas_centerX);
     }];
     
     //Add Constrains
@@ -306,25 +314,24 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 {
 }
 
-// 根据anntation生成对应的View
-- (BMKAnnotationView *)mapView:(BMKMapView *)mapView viewForAnnotation:(id <BMKAnnotation>)annotation
+-(BMKAnnotationView *)mapView:(BMKMapView *)mapView viewForAnnotation:(id<BMKAnnotation>)annotation
 {
-    //普通annotation
-    
-    NSString *AnnotationViewID = @"renameMark";
-    BMKPinAnnotationView *annotationView = (BMKPinAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:AnnotationViewID];
-    if (annotationView == nil) {
-        annotationView = [[BMKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationViewID];
-        // 设置颜色
-        annotationView.pinColor = BMKPinAnnotationColorPurple;
-        // 从天上掉下效果
-        annotationView.animatesDrop = NO;
-        // 设置可拖拽
-        annotationView.draggable = NO;
+    if ([annotation isKindOfClass:[BMKPointAnnotation class]]) {
+        
+        BMKPinAnnotationView *newAnnotationView = [[BMKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"car"];
+        
+        newAnnotationView.pinColor = BMKPinAnnotationColorPurple;
+        
+        newAnnotationView.animatesDrop = NO;// 设置该标注点动画显示
+        
+        newAnnotationView.annotation=annotation;
+        
+        newAnnotationView.image = [UIImage imageNamed:@"car_icon"];   //把大头针换成别的图片
+        
+        return newAnnotationView;
     }
-    return annotationView;
-
-    //动画annotation
+    
+    return nil;
 }
 
 #pragma mark
@@ -552,6 +559,25 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
             //获取附近车辆信息
             [_mapView removeAnnotations:_mapView.annotations];
             NSArray * arr = responseDict[@"cars"];
+            
+            if(arr.count>0)
+            {
+                NSString *nearCarStr= [NSString stringWithFormat:@"附近有%d辆车",(int)arr.count];
+                
+                CGRect labelRect = [nearCarStr
+                                    boundingRectWithSize:CGSizeMake(200, 0)
+                                    options:NSStringDrawingUsesLineFragmentOrigin
+                                    attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14.0]}
+                                    context:nil];
+                
+                [nearCarPromtBackView mas_updateConstraints:^(MASConstraintMaker *make) {
+                    make.width.mas_equalTo(labelRect.size.width + 12);
+                    make.height.mas_equalTo(labelRect.size.height + 4);
+                }];
+                
+                nearCarsPromptLabel.text = nearCarStr;
+            }
+            
             if([arr isKindOfClass:[NSArray class]])
             {
                 for (int i = 0; i < arr.count ; i++) {

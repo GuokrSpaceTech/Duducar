@@ -38,7 +38,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     /*
      * Init UI
      */
-    UIBarButtonItem * leftItem = [[UIBarButtonItem alloc]initWithTitle:@"返回" style:UIBarButtonItemStyleDone target:self action:@selector(back:)];
+    UIBarButtonItem * leftItem = [[UIBarButtonItem alloc]initWithTitle:@"取消叫车" style:UIBarButtonItemStyleDone target:self action:@selector(back:)];
     self.navigationItem.leftBarButtonItem = leftItem;
     
     _mapView = [[BMKMapView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
