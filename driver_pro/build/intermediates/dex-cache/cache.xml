@@ -2,25 +2,11 @@
 <items version="2" >
 
     <item
-        jar="/Users/daddyfang/.gradle/caches/modules-2/files-2.1/com.squareup.picasso/picasso/2.5.2/7446d06ec8d4f7ffcc53f1da37c95f200dcb9387/picasso-2.5.2.jar"
+        jar="/Users/hyman/Duducar/driver_pro/app/build/intermediates/exploded-aar/driver_pro/indicator_library/unspecified/jars/classes.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="7446d06ec8d4f7ffcc53f1da37c95f200dcb9387">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/picasso-2.5.2-07bd94a4a2ad56a157a53ce2d509e57339622080.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/23.1.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="d96886efea7cc74fbb3abd0e3b51d5638fc57be0">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/classes-05862b21f9bda0bedd9834f12dd5e1cac1743cb1.jar" />
-    </item>
-    <item
-        jar="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/exploded-aar/com.github.dexafree/materiallist/3.1.2/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="07cb37d60b2949131813d532fea644b2cd7d9a63">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/classes-8c2685359054aac9380f01ecd99fb2caf42ba429.jar" />
+        sha1="4531608ac5c69ab70925dcdc15141ed6789fb6e7">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/classes-126997302508e8af4fee96f5bfe593a08900bacf.jar" />
     </item>
 
 </items>

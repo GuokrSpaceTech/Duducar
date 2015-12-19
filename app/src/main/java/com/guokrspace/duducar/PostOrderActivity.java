@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -470,6 +471,7 @@ public class PostOrderActivity extends AppCompatActivity {
     private void initToolBar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle("正在预约中...");
+        mToolbar.setTitleTextColor(Color.WHITE);
         mToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back));
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);

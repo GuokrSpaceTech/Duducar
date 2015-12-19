@@ -49,7 +49,12 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.RecordView
             holder.tvTime.setText(DisplayUtils.getShortDate(mItems.get(position).getEnd_time() + ""));
             holder.tvStart.setText(mItems.get(position).getStart());
             holder.tvDestination.setText(mItems.get(position).getDestination());
-            holder.tvStatus.setText("已支付");
+            // TODO: 这个数据当RecyclerView滚动的时候数据会发生变化
+            if (mItems.get(position).getStatus() == 5) {
+                holder.tvStatus.setText("已完成");
+            } else if (mItems.get(position).getStatus() == 4) {
+                holder.tvStatus.setText("待支付");
+            }
             if (mOnItemClickListener != null) {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override

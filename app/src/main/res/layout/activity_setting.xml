@@ -258,7 +258,7 @@
             </RelativeLayout>
 
             <Button
-                android:id="@+id/confirm_button"
+                android:id="@+id/quit_button"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginBottom="6dp"

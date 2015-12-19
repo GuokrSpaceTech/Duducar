@@ -1,6 +1,7 @@
 package com.guokrspace.dududriver.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,9 +9,11 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.guokrspace.dududriver.R;
-import com.guokrspace.dududriver.model.BillInfo;
+import com.guokrspace.dududriver.model.BillItem;
 import com.guokrspace.dududriver.util.CommonUtil;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,9 +25,9 @@ public class BillListAdapter extends BaseAdapter {
 
     private LayoutInflater inflater;
 
-    private List<BillInfo> items;
+    private List<BillItem> items;
 
-    public BillListAdapter(Context context, List<BillInfo> items) {
+    public BillListAdapter(Context context, List<BillItem> items) {
         this.context = context;
         this.items = items;
         inflater = LayoutInflater.from(context);
@@ -60,10 +63,29 @@ public class BillListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.tvSum.setText(items.get(position).sum);
-        holder.tvAccount.setText(CommonUtil.phoneNumFormat(items.get(position).account));
-        holder.tvDescription.setText(items.get(position).desctiption);
-        holder.tvTime.setText(CommonUtil.dateFormat(items.get(position).tradeTime, CommonUtil.YEAR_MONTH_DAY));
+        holder.tvAccount.setText(CommonUtil.phoneNumFormat(items.get(position).getOpposite()));
+        holder.tvDescription.setText(items.get(position).getDescription());
+        holder.tvTime.setText(CommonUtil.dateFormat(items.get(position).getTime(), CommonUtil.YEAR_MONTH_DAY));
+        String money = items.get(position).getMoney();
+        int moneyColor = -1;
+        switch (items.get(position).getType()) {
+            case 1:
+                moneyColor = context.getResources().getColor(R.color.holo_red_light);
+                money = "+" + money;
+                break;
+            case 2:
+                moneyColor = context.getResources().getColor(R.color.orange);
+                money = "+" + money;
+                break;
+            case 0:
+                moneyColor = context.getResources().getColor(R.color.sky_blue);
+                money = "-" + money;
+                break;
+            default:
+                break;
+        }
+        holder.tvSum.setText(money);
+        holder.tvSum.setTextColor(moneyColor);
 
         return convertView;
     }
@@ -78,4 +100,6 @@ public class BillListAdapter extends BaseAdapter {
 
         TextView tvTime;
     }
+
+
 }

@@ -1,5 +1,6 @@
 package com.guokrspace.duducar;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -16,18 +18,22 @@ import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
 import com.umeng.update.UpdateStatus;
 
+import java.util.List;
+
 /**
  * Created by hyman on 15/12/3.
  */
 public class SettingActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Context context;
+    private DuduApplication mApplication;
 
     private Toolbar mToolbar;
     private ShSwitchView switchView;
     private RelativeLayout soundSettingLayout;
     private RelativeLayout updateApkLayout;
     private RelativeLayout feedbackLayout;
+    private Button quitButton;
 
 
     @Override
@@ -35,6 +41,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         context = this;
+        mApplication = (DuduApplication) getApplication();
         initView();
     }
 
@@ -47,9 +54,11 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         soundSettingLayout = (RelativeLayout) findViewById(R.id.sound_setting_layout);
         updateApkLayout = (RelativeLayout) findViewById(R.id.apk_update_layout);
         feedbackLayout = (RelativeLayout) findViewById(R.id.feedback_layout);
+        quitButton = (Button) findViewById(R.id.quit_button);
         soundSettingLayout.setOnClickListener(this);
         updateApkLayout.setOnClickListener(this);
         feedbackLayout.setOnClickListener(this);
+        quitButton.setOnClickListener(this);
 
     }
 
@@ -102,6 +111,18 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.feedback_layout:
                 startActivity(new Intent(this, FeedBackActivity.class));
+                break;
+            case R.id.quit_button:
+                List<Activity> activities = AppExitUtil.getInstance().getActivityList();
+                for (Activity activity : activities) {
+                    activity.finish();
+
+                }
+                //清空用户数据
+                mApplication.mDaoSession.getPersonalInformationDao().deleteAll();
+                //退出，跳到新的主界面
+                startActivity(new Intent(context, PreOrderActivity.class));
+                finish();
                 break;
             default:
                 break;

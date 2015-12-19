@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/de_actionbar_bg</item>
         <item name="colorAccent">@color/lite_blue</item>
         <item name="colorPrimaryDark">@color/black_de</item>
-        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorPrimary">@android:color/black</item>
     </style>
 
     <style name="WinDialog" parent="@android:style/Theme.Dialog">

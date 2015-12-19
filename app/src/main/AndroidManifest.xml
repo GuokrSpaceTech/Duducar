@@ -60,7 +60,9 @@
             android:label=""></activity>
         <activity
             android:name=".SearchActivity"
-            android:label="@string/title_activity_search"></activity>
+            android:label="@string/title_activity_search">
+
+        </activity>
 
         <service
             android:name="com.baidu.location.f"

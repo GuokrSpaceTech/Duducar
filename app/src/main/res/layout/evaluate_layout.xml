@@ -49,7 +49,7 @@
         android:layout_marginTop="10dp"
         android:numStars="5"
         android:rating="5"
-        android:stepSize="0.5" />
+        android:stepSize="1" />
 
 
     <com.zhy.view.flowlayout.TagFlowLayout

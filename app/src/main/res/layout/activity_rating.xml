@@ -206,6 +206,7 @@
                     android:background="@android:color/darker_gray" />
 
                 <TextView
+                    android:id="@+id/order_status_textview"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="30"

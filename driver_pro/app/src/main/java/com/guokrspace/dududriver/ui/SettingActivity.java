@@ -195,7 +195,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 UmengUpdateAgent.forceUpdate(context);
                 break;
             case R.id.feedback_layout:
-                showToast("意见反馈");
+                startActivity(new Intent(this, FeedBackActivity.class));
                 break;
             case R.id.cantact_us_layout:
                 showToast("联系我们");

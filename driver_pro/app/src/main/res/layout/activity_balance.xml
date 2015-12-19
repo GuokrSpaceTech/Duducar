@@ -29,13 +29,14 @@
         android:layout_weight="1">
 
         <com.guokrspace.dududriver.view.HymanScrollView
+            android:id="@+id/scrollview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -53,7 +54,7 @@
                         android:layout_centerHorizontal="true"
                         android:paddingRight="6dp"
                         android:paddingTop="10dp"
-                        android:text="199.9"
+                        android:text="0.00"
                         android:textColor="@android:color/black"
                         android:textSize="40sp"
                         android:textStyle="bold" />
@@ -113,7 +114,8 @@
                     android:id="@+id/noscrolllistview"
                     class="com.guokrspace.dududriver.view.NoScrollListView"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:cacheColorHint="#00000000"
                     android:divider="@color/light_gray"
                     android:dividerHeight="1dip"

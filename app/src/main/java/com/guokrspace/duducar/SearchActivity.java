@@ -2,6 +2,7 @@ package com.guokrspace.duducar;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -169,6 +170,7 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
     private void initToolBar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setTitle("搜索地点");
+        mToolbar.setTitleTextColor(Color.WHITE);
         mToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back));
         setSupportActionBar(mToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
