@@ -258,7 +258,8 @@ static NSString *PAYMENTRESULT_REQ_URL = @"http://120.24.237.15:81/api/Pay/wxuni
     //解析服务端返回json数据
     NSError *error;
     //加载一个NSURL对象
-    urlString = [urlString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+//    urlString = [urlString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    urlString = [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
     //将请求的url数据放到NSData对象中
     NSData *response = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];

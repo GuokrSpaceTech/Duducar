@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "title_logo_small.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "dudlogo-ios-1.png",
       "scale" : "2x"
     },
     {

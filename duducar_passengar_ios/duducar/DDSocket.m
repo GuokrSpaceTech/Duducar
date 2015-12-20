@@ -231,6 +231,8 @@ completionHandler:(void (^)(BOOL shouldTrustPeer))completionHandler
     NSMutableString *jsonString = [[NSMutableString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     [jsonString appendString:@"\n"];
     
+    DDLogInfo(@"Request:%@", jsonString);
+    
     NSData *outStr = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
     
     [asyncSocket writeData:outStr withTimeout:-1.0 tag:0];

@@ -117,11 +117,11 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
     userNameTextField.delegate=self;
     //_account.placeholder=[NSString stringWithFormat:@"Email"];
     UIColor* color = [UIColor whiteColor];
-    userNameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"邮箱" attributes:@{ NSForegroundColorAttributeName : color }];
+    userNameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"手机号" attributes:@{ NSForegroundColorAttributeName : color }];
     userNameTextField.textColor = [UIColor whiteColor];
     userNameTextField.text = [self getDefaultUserName];
     if (userNameTextField.text.length > 0) {
-        [userNameTextField setFont:[UIFont fontWithName:@"Heiti SC" size:16.0]];
+        [userNameTextField setFont:[UIFont systemFontOfSize:12.0f]];
     }
     userNameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     userNameTextField.adjustsFontSizeToFitWidth = YES;
@@ -133,7 +133,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
     //    [loginButton setBackgroundImage:[UIImage imageNamed:@"login_button"] forState:UIControlStateNormal];
     verifyCodeButton.backgroundColor = [UIColor colorWithHexString:@"0195ff" alpha:1.0f];
     verifyCodeButton.imageView.contentMode = UIViewContentModeCenter;
-    [verifyCodeButton setTitle:@"获取验证码" forState:UIControlStateNormal];
+    [verifyCodeButton setTitle:@" 获取验证码 " forState:UIControlStateNormal];
     [verifyCodeButton.titleLabel setFont:[UIFont systemFontOfSize:10]];
     verifyCodeButton.translatesAutoresizingMaskIntoConstraints = NO;
     [_inputBackground addSubview:verifyCodeButton];
@@ -208,7 +208,6 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
 -(void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -238,12 +237,12 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
 //用户名输入时改变字体大小
 - (void)textFieldDidChange:(UITextField*)textField
 {
-    if (textField.text.length == 0) {
-        [textField setFont:[UIFont fontWithName:@"Heiti SC" size:18.0]];
-    }
-    else {
-        [textField setFont:[UIFont fontWithName:@"Heiti SC" size:25.0]];
-    }
+//    if (textField.text.length == 0) {
+//        [textField setFont:[UIFont fontWithName:@"Heiti SC" size:12.0]];
+//    }
+//    else {
+//        [textField setFont:[UIFont fontWithName:@"Heiti SC" size:12.0]];
+//    }
 }
 
 /*获取用户密码*/
@@ -344,14 +343,17 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
         }
         else
         {
-            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@""
-                                                                           message:@"手机未登记"
-                                                                    preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleDefault
-                                                                  handler:^(UIAlertAction * action) {}];
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"手机未登记" delegate:self cancelButtonTitle:@"我知道了" otherButtonTitles:nil, nil];
+            [alert show];
             
-            [alert addAction:defaultAction];
-            [self presentViewController:alert animated:YES completion:nil];
+//            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@""
+//                                                                           message:@"手机未登记"
+//                                                                    preferredStyle:UIAlertControllerStyleAlert];
+//            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleDefault
+//                                                                  handler:^(UIAlertAction * action) {}];
+//            
+//            [alert addAction:defaultAction];
+//            [self presentViewController:alert animated:YES completion:nil];
         }
     }
     else if([command isEqualToString:@"verify_resp"])
@@ -375,14 +377,16 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
             }
         } else
         {
-            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@""
-                                                                           message:@"验证码错误"
-                                                                    preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleDefault
-                                                                  handler:^(UIAlertAction * action) {}];
-            
-            [alert addAction:defaultAction];
-            [self presentViewController:alert animated:YES completion:nil];
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"验证码错误" delegate:self cancelButtonTitle:@"我知道了" otherButtonTitles:nil, nil];
+            [alert show];
+//            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@""
+//                                                                           message:@"验证码错误"
+//                                                                    preferredStyle:UIAlertControllerStyleAlert];
+//            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleDefault
+//                                                                  handler:^(UIAlertAction * action) {}];
+//            
+//            [alert addAction:defaultAction];
+//            [self presentViewController:alert animated:YES completion:nil];
         }
         
     }
@@ -393,20 +397,24 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
             //保存Token
             [[DDDatabase sharedDatabase] insertDataToPersonInfoTableToken:token phone:mobile];
             
+            [self.navigationController setNavigationBarHidden:NO animated:YES];
+
             //进入主界面
             DDMainViewController *mainVC = [[DDMainViewController alloc]init];
             [self.navigationController pushViewController:mainVC animated:YES];
         }
         else
         {
-            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@""
-                                                                       message:@"登陆失败"
-                                                                 preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleDefault
-                                                                  handler:^(UIAlertAction * action) {}];
+//            UIAlertController* alert = [UIAlertController alertControllerWithTitle:@""
+//                                                                       message:@"登陆失败"
+//                                                                 preferredStyle:UIAlertControllerStyleAlert];
+//            UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleDefault
+//                                                                  handler:^(UIAlertAction * action) {}];
             
-            [alert addAction:defaultAction];
-            [self presentViewController:alert animated:YES completion:nil];
+//            [alert addAction:defaultAction];
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"登陆失败" delegate:self cancelButtonTitle:@"我知道了" otherButtonTitles:nil, nil];
+            [alert show];
+//            [self presentViewController:alert animated:YES completion:nil];
         }
     }
 

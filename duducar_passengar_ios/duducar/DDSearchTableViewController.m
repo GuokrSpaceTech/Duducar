@@ -30,6 +30,9 @@ static NSString *cellidentify = @"resultItem";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    //导航条
+    self.navigationItem.title = @"搜索地址";
+    
     //SearchBar is initialised by XIB
     
     //Tableview
