@@ -47,7 +47,7 @@
       <file leaf-file-name="PickUpPassengerActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/PickUpPassengerActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.012019231">
+            <state vertical-scroll-proportion="0.057692308">
               <caret line="1017" column="41" selection-start-line="1017" selection-start-column="41" selection-end-line="1017" selection-end-column="41" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -63,7 +63,7 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/net/SocketClient.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="328" column="109" selection-start-line="328" selection-start-column="109" selection-end-line="328" selection-end-column="109" />
+              <caret line="372" column="45" selection-start-line="372" selection-start-column="45" selection-end-line="372" selection-end-column="45" />
               <folding />
             </state>
           </provider>
@@ -4996,8 +4996,8 @@
         <state vertical-scroll-proportion="0.33333334">
           <caret line="504" column="25" selection-start-line="504" selection-start-column="25" selection-end-line="504" selection-end-column="25" />
           <folding>
-            <element signature="e#21088#21089#0" expanded="true" />
-            <element signature="e#21137#21138#0" expanded="true" />
+            <element signature="e#21088#21089#0" expanded="false" />
+            <element signature="e#21137#21138#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -5170,7 +5170,7 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/net/SocketClient.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="328" column="109" selection-start-line="328" selection-start-column="109" selection-end-line="328" selection-end-column="109" />
+          <caret line="372" column="45" selection-start-line="372" selection-start-column="45" selection-end-line="372" selection-end-column="45" />
           <folding />
         </state>
       </provider>
@@ -5185,7 +5185,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/PickUpPassengerActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.012019231">
+        <state vertical-scroll-proportion="0.057692308">
           <caret line="1017" column="41" selection-start-line="1017" selection-start-column="41" selection-end-line="1017" selection-end-column="41" />
           <folding>
             <element signature="imports" expanded="true" />

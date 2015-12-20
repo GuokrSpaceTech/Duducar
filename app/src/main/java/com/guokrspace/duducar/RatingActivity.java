@@ -197,26 +197,6 @@ public class RatingActivity extends ActionBarActivity {
             priceTextView.setText(mOrder.getSumprice());
         }
 
-        statusTextView.setText("已完成");
-        if(mOrder.getStatus().equals("4")){//未支付
-            findViewById(R.id.evaluate_layout).setVisibility(View.GONE);
-            payButton.setVisibility(View.VISIBLE);
-            payButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(RatingActivity.this, PayCostActivity.class);
-                    intent.putExtra("order", mOrder);
-                    startActivity(intent);
-                    finish();
-                }
-            });
-            statusTextView.setText("未支付");
-        }
-
-        if(!"0".equals(mOrder.getRating())){// 已支付 已评价
-            findViewById(R.id.evaluate_layout).setVisibility(View.GONE);
-        }
-
         commentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -264,6 +244,30 @@ public class RatingActivity extends ActionBarActivity {
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        statusTextView.setText("已完成");
+        if(mOrder.getStatus().equals("4")){//未支付
+            findViewById(R.id.evaluate_layout).setVisibility(View.GONE);
+            payButton.setVisibility(View.VISIBLE);
+            payButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(RatingActivity.this, PayCostActivity.class);
+                    intent.putExtra("order", mOrder);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+            statusTextView.setText("未支付");
+        }
+
+        if(!"0".equals(mOrder.getRating())){// 已支付 已评价
+            findViewById(R.id.evaluate_layout).setVisibility(View.GONE);
+        }
     }
 
     private void initToolBar() {
