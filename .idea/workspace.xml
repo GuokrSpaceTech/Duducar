@@ -27,8 +27,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6eadb00b-9a86-4395-a889-d9e05388a082" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/build/intermediates/gradle_project_sync_data.bin" afterPath="$PROJECT_DIR$/driver_pro/build/intermediates/gradle_project_sync_data.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/RatingActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/RatingActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/.idea/workspace.xml" afterPath="$PROJECT_DIR$/driver_pro/.idea/workspace.xml" />
     </list>
     <ignored path="Duducar.iws" />
@@ -119,9 +118,23 @@
       <file leaf-file-name="RatingActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/RatingActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.231214">
-              <caret line="45" column="21" selection-start-line="45" selection-start-column="21" selection-end-line="45" selection-end-column="21" />
-              <folding />
+            <state vertical-scroll-proportion="0.25680932">
+              <caret line="269" column="9" selection-start-line="269" selection-start-column="9" selection-end-line="269" selection-end-column="9" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#8085#9474#0" expanded="true" />
+                <element signature="e#8936#8937#0" expanded="true" />
+                <element signature="e#9017#9018#0" expanded="true" />
+                <element signature="e#9106#9107#0" expanded="true" />
+                <element signature="e#9184#9185#0" expanded="true" />
+                <element signature="e#9261#9262#0" expanded="true" />
+                <element signature="e#9340#9341#0" expanded="true" />
+                <element signature="e#9473#9474#0" expanded="true" />
+                <element signature="e#9528#9740#0" expanded="true" />
+                <element signature="e#9739#9740#0" expanded="true" />
+                <element signature="e#10265#10616#0" expanded="true" />
+                <element signature="e#10615#10616#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -3386,10 +3399,10 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32793018" sideWeight="0.49425286" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32907802" sideWeight="0.49676377" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31421447" sideWeight="0.48922414" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31421447" sideWeight="0.48922414" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2579023" sideWeight="0.45876288" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2579023" sideWeight="0.45876288" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3297414" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
@@ -3411,7 +3424,7 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25862068" sideWeight="0.5412371" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4201995" sideWeight="0.5079023" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31421447" sideWeight="0.51077586" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Android Monitor" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32907802" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
@@ -3431,9 +3444,9 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32793018" sideWeight="0.49425286" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32907802" sideWeight="0.49676377" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.6047382" sideWeight="0.4920977" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31421447" sideWeight="0.48922414" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2579023" sideWeight="0.45876288" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2579023" sideWeight="0.45876288" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3297414" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
@@ -3527,9 +3540,23 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/RatingActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.231214">
-          <caret line="45" column="21" selection-start-line="45" selection-start-column="21" selection-end-line="45" selection-end-column="21" />
-          <folding />
+        <state vertical-scroll-proportion="0.25680932">
+          <caret line="269" column="9" selection-start-line="269" selection-start-column="9" selection-end-line="269" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#8085#9474#0" expanded="true" />
+            <element signature="e#8936#8937#0" expanded="true" />
+            <element signature="e#9017#9018#0" expanded="true" />
+            <element signature="e#9106#9107#0" expanded="true" />
+            <element signature="e#9184#9185#0" expanded="true" />
+            <element signature="e#9261#9262#0" expanded="true" />
+            <element signature="e#9340#9341#0" expanded="true" />
+            <element signature="e#9473#9474#0" expanded="true" />
+            <element signature="e#9528#9740#0" expanded="true" />
+            <element signature="e#9739#9740#0" expanded="true" />
+            <element signature="e#10265#10616#0" expanded="true" />
+            <element signature="e#10615#10616#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

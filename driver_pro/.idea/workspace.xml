@@ -21,9 +21,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d7e7038b-5395-4a19-b059-ad2307aa981b" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/gradle_project_sync_data.bin" afterPath="$PROJECT_DIR$/build/intermediates/gradle_project_sync_data.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.idea/workspace.xml" afterPath="$PROJECT_DIR$/../.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../app/src/main/java/com/guokrspace/duducar/RatingActivity.java" afterPath="$PROJECT_DIR$/../app/src/main/java/com/guokrspace/duducar/RatingActivity.java" />
     </list>
     <ignored path="driver_pro.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -58,7 +56,7 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/PickUpPassengerActivity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="687" column="65" selection-start-line="687" selection-start-column="54" selection-end-line="687" selection-end-column="65" />
+              <caret line="689" column="38" selection-start-line="687" selection-start-column="54" selection-end-line="687" selection-end-column="65" />
               <folding>
                 <element signature="imports" expanded="false" />
                 <element signature="e#11412#11413#0" expanded="false" />
@@ -115,8 +113,8 @@
       <file leaf-file-name="build.gradle" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5062344">
-              <caret line="80" column="54" selection-start-line="80" selection-start-column="12" selection-end-line="80" selection-end-column="54" />
+            <state vertical-scroll-proportion="0.46134663">
+              <caret line="79" column="52" selection-start-line="79" selection-start-column="52" selection-end-line="79" selection-end-column="52" />
               <folding />
             </state>
           </provider>
@@ -5286,7 +5284,7 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/PickUpPassengerActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="687" column="65" selection-start-line="687" selection-start-column="54" selection-end-line="687" selection-end-column="65" />
+          <caret line="689" column="38" selection-start-line="687" selection-start-column="54" selection-end-line="687" selection-end-column="65" />
           <folding>
             <element signature="imports" expanded="false" />
             <element signature="e#11412#11413#0" expanded="false" />
@@ -5329,8 +5327,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5062344">
-          <caret line="80" column="54" selection-start-line="80" selection-start-column="12" selection-end-line="80" selection-end-column="54" />
+        <state vertical-scroll-proportion="0.46134663">
+          <caret line="79" column="52" selection-start-line="79" selection-start-column="52" selection-end-line="79" selection-end-column="52" />
           <folding />
         </state>
       </provider>

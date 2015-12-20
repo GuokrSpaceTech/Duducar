@@ -47,7 +47,7 @@ import java.util.Set;
 
 public class RatingActivity extends ActionBarActivity {
 
-    private HashMap<String, Integer>mVals = new HashMap<String, Integer>();
+    private HashMap<String, Integer> mVals = new HashMap<String, Integer>();
 
 
     List<IdAndValueModel> commentModels = new ArrayList<>();
@@ -56,20 +56,20 @@ public class RatingActivity extends ActionBarActivity {
     private Context context;
 
     private ImageView avatarImageView;
-    private TextView  driverNameTextView;
-    private TextView  carPlateNumberTextView;
-    private TextView  carDescriptionTextView;
+    private TextView driverNameTextView;
+    private TextView carPlateNumberTextView;
+    private TextView carDescriptionTextView;
     private RatingBar ratingBarBig;
     private ImageView phoneImageView;
-    private TextView  startTextView;
-    private TextView  destinationTextView;
-    private TextView  priceTextView;
+    private TextView startTextView;
+    private TextView destinationTextView;
+    private TextView priceTextView;
     private Toolbar mToolbar;
     private TagFlowLayout mTagFlowLayout;
     private Button payButton;
     private TextView statusTextView;
-    
-//    private Order mOrder;
+
+    //    private Order mOrder;
     private Button commentButton;
 
     private OrderDetail mOrder;
@@ -80,14 +80,14 @@ public class RatingActivity extends ActionBarActivity {
 
     private Set<IdAndValueModel> selectedTags = new HashSet<>();
 
-    private Handler mHandler= new Handler() {
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
-                    default:
-                        break;
-                }
+    private Handler mHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                default:
+                    break;
             }
-        };
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,35 +100,36 @@ public class RatingActivity extends ActionBarActivity {
         //init toolbar
         initToolBar();
 
-        avatarImageView = (ImageView)findViewById(R.id.driverAvatar);
-        driverNameTextView = (TextView)findViewById(R.id.driverName);
-        carPlateNumberTextView = (TextView)findViewById(R.id.carPlateNumber);
-        carDescriptionTextView = (TextView)findViewById(R.id.carDescription);
-        ratingBarBig = (RatingBar)findViewById(R.id.ratingBarBig);
-        phoneImageView = (ImageView)findViewById(R.id.phone);
-        startTextView = (TextView)findViewById(R.id.start_textview);
-        destinationTextView = (TextView)findViewById(R.id.destination_textview);
-        priceTextView = (TextView)findViewById(R.id.price);
+        avatarImageView = (ImageView) findViewById(R.id.driverAvatar);
+        driverNameTextView = (TextView) findViewById(R.id.driverName);
+        carPlateNumberTextView = (TextView) findViewById(R.id.carPlateNumber);
+        carDescriptionTextView = (TextView) findViewById(R.id.carDescription);
+        ratingBarBig = (RatingBar) findViewById(R.id.ratingBarBig);
+        phoneImageView = (ImageView) findViewById(R.id.phone);
+        startTextView = (TextView) findViewById(R.id.start_textview);
+        destinationTextView = (TextView) findViewById(R.id.destination_textview);
+        priceTextView = (TextView) findViewById(R.id.price);
         mTagFlowLayout = (TagFlowLayout) findViewById(R.id.flowlayout);
-        payButton = (Button)findViewById(R.id.pay_button);
-        commentButton = (Button)findViewById(R.id.evalute_button);
+        payButton = (Button) findViewById(R.id.pay_button);
+        commentButton = (Button) findViewById(R.id.evalute_button);
         statusTextView = (TextView) findViewById(R.id.order_status_textview);
 
         String comments = (String) SharedPreferencesUtils.getParam(context, SharedPreferencesUtils.BASEINFO_COMMENTS, "");
 //        Log.e("hyman_raing", comments);
-        List<IdAndValueModel> commentModels1 = new Gson().fromJson(comments, new TypeToken<ArrayList<IdAndValueModel>>() {}.getType());
+        List<IdAndValueModel> commentModels1 = new Gson().fromJson(comments, new TypeToken<ArrayList<IdAndValueModel>>() {
+        }.getType());
         commentModels.addAll(commentModels1);
 
-        String commentsStr = (String)SharedPreferencesUtils.getParam(RatingActivity.this, SharedPreferencesUtils.BASEINFO_COMMENTS, "");
+        String commentsStr = (String) SharedPreferencesUtils.getParam(RatingActivity.this, SharedPreferencesUtils.BASEINFO_COMMENTS, "");
         JSONArray jsonArray = JSON.parseArray(commentsStr);
-        if(jsonArray.size() > 0){
-            for(int i=0;i<jsonArray.size();i++){
-               com.alibaba.fastjson.JSONObject comment = (com.alibaba.fastjson.JSONObject)jsonArray.get(i);
-                mVals.put((String)comment.get("value"), Integer.parseInt((String)comment.get("id")));
+        if (jsonArray.size() > 0) {
+            for (int i = 0; i < jsonArray.size(); i++) {
+                com.alibaba.fastjson.JSONObject comment = (com.alibaba.fastjson.JSONObject) jsonArray.get(i);
+                mVals.put((String) comment.get("value"), Integer.parseInt((String) comment.get("id")));
             }
         }
 
-        String[] commentArray = new String[] {"神准时", "态度好有礼貌", "主动打电话联系", "车况良好"};
+        String[] commentArray = new String[]{"神准时", "态度好有礼貌", "主动打电话联系", "车况良好"};
 
         final LayoutInflater mInflater = LayoutInflater.from(context);
         final TagAdapter<IdAndValueModel> tagAdapter = new TagAdapter<IdAndValueModel>(commentModels) {
@@ -163,11 +164,10 @@ public class RatingActivity extends ActionBarActivity {
 
         //get Arg
         Bundle bundle = getIntent().getExtras();
-        if(bundle!=null)
-        {
-            if(bundle.getSerializable("order") instanceof  OrderDetail){
+        if (bundle != null) {
+            if (bundle.getSerializable("order") instanceof OrderDetail) {
                 isOk = true;
-                mOrder = (OrderDetail)bundle.getSerializable("order");
+                mOrder = (OrderDetail) bundle.getSerializable("order");
                 status = Integer.parseInt(mOrder.getStatus());
                 mDriver = new Gson().fromJson(mOrder.getDriver(), DriverDetail.class);
                 ratingBarBig.setRating(Float.parseFloat(mDriver.getRating()));
@@ -176,8 +176,7 @@ public class RatingActivity extends ActionBarActivity {
         //Update UI
 
         if (mDriver != null) {
-            if(mDriver.getAvatar()!=null)
-            {
+            if (mDriver.getAvatar() != null) {
                 Picasso.with(this).load(mDriver.getAvatar()).fit().centerCrop().into(avatarImageView);
             }
             driverNameTextView.setText(mDriver.getName());
@@ -192,7 +191,7 @@ public class RatingActivity extends ActionBarActivity {
             });
         }
 
-        if(mOrder!=null) {
+        if (mOrder != null) {
             startTextView.setText(mOrder.getStart());
             destinationTextView.setText(mOrder.getDestination());
             priceTextView.setText(mOrder.getSumprice());
@@ -212,7 +211,7 @@ public class RatingActivity extends ActionBarActivity {
                 comment = comment.substring(0, comment.length() - 1);
                 Log.e("hyman_rating", comment);
 
-                SocketClient.getInstance().sendRatingRequest(Integer.parseInt(mOrder.getId()), (int)ratingBarBig.getRating(), comment, new ResponseHandler(Looper.getMainLooper()) {
+                SocketClient.getInstance().sendRatingRequest(Integer.parseInt(mOrder.getId()), (int) ratingBarBig.getRating(), comment, new ResponseHandler(Looper.getMainLooper()) {
 
                     @Override
                     public void onSuccess(String messageBody) {
@@ -250,44 +249,25 @@ public class RatingActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
-statusTextView.setText("已完成");
-if(mOrder.getStatus().equals("4") && TextUtils.equals(mOrder.getPay_role(), "2")){//未支付
-findViewById(R.id.evaluate_layout).setVisibility(View.GONE);
-payButton.setVisibility(View.VISIBLE);
-payButton.setOnClickListener(new View.OnClickListener() {
-@Override
-public void onClick(View v) {
-Intent intent = new Intent(RatingActivity.this, PayCostActivity.class);
-intent.putExtra("order", mOrder);
-startActivity(intent);
-finish();
-}
-});
-statusTextView.setText("未支付");
-}
+        statusTextView.setText("已完成");
+        if (mOrder.getStatus().equals("4") && TextUtils.equals(mOrder.getPay_role(), "2")) {//未支付
+            findViewById(R.id.evaluate_layout).setVisibility(View.GONE);
+            payButton.setVisibility(View.VISIBLE);
+            payButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(RatingActivity.this, PayCostActivity.class);
+                    intent.putExtra("order", mOrder);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+            statusTextView.setText("未支付");
+        }
 
-if(!"0".equals(mOrder.getRating())){// 已支付 已评价
-findViewById(R.id.evaluate_layout).setVisibility(View.GONE);
-}
-//        statusTextView.setText("已完成");
-//        if(mOrder.getStatus().equals("4")){//未支付
-//            findViewById(R.id.evaluate_layout).setVisibility(View.GONE);
-//            payButton.setVisibility(View.VISIBLE);
-//            payButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(RatingActivity.this, PayCostActivity.class);
-//                    intent.putExtra("order", mOrder);
-//                    startActivity(intent);
-//                    finish();
-//                }
-//            });
-//            statusTextView.setText("未支付");
-//        }
-//
-//        if(!"0".equals(mOrder.getRating())){// 已支付 已评价
-//            findViewById(R.id.evaluate_layout).setVisibility(View.GONE);
-//        }
+        if (!"0".equals(mOrder.getRating())) {// 已支付 已评价
+            findViewById(R.id.evaluate_layout).setVisibility(View.GONE);
+        }
     }
 
     private void initToolBar() {
@@ -325,8 +305,7 @@ findViewById(R.id.evaluate_layout).setVisibility(View.GONE);
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == android.R.id.home)
-        {
+        if (id == android.R.id.home) {
             finish();
         }
 
