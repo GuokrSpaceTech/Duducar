@@ -440,7 +440,6 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     BMKReverseGeoCodeOption *reverseGeocodeSearchOption = [[BMKReverseGeoCodeOption alloc]init];
     reverseGeocodeSearchOption.reverseGeoPoint = currentLoc.location.coordinate;;
     [_geocodesearch reverseGeoCode:reverseGeocodeSearchOption];
-    
 }
 
 -(void)estimateButtonClick:(id)sender
@@ -495,7 +494,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
                     NSDictionary *paramDict = @{@"cmd":@"login", @"role":@"2", @"mobile":phone, @"token":token};
                     [[DDSocket currentSocket] sendRequest:paramDict];
                     
-                    [leftView setAvatarImage:@"http://img2.imgtn.bdimg.com/it/u=2160420705,2533030665&fm=21&gp=0.jpg" mobile:phone];
+                    [leftView setAvatarImage:@"" mobile:phone];
                 }
             }];
             
@@ -511,6 +510,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         {
             isLoginSuccess = true;
             NSString *activeOrderJson;
+            NSString *driverJson;
             
             //Get Baseinfo
             NSDictionary *paramDict = @{@"cmd":@"baseinfo",@"role":@"2"};
@@ -529,6 +529,14 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
                 NSDictionary *activeOrder = [NSJSONSerialization JSONObjectWithData:objectData
                                                                         options:NSJSONReadingMutableContainers
                                                                           error:&jsonError];
+                driverJson = [activeOrder objectForKey:@"driver"];
+                
+                //Deserialastion a Json String into Dictionary
+                objectData = [driverJson dataUsingEncoding:NSUTF8StringEncoding];
+                NSDictionary *driverDict = [NSJSONSerialization JSONObjectWithData:objectData
+                                                                           options:NSJSONReadingMutableContainers
+                                                                             error:&jsonError];
+                Driver *driver = [[Driver alloc]initWithDic:driverDict];
                 
                 //如果订单未结束
                 /*
@@ -566,6 +574,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
                     {
                         PaymentViewController *payVC = [[PaymentViewController alloc]initWithNibName:@"PaymentViewController" bundle:nil];
                         [payVC setActiveOrder:activeOrder];
+                        [payVC setDriver:driver];
                         [self.navigationController pushViewController:payVC animated:YES];
                     }
                 }
@@ -575,13 +584,14 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
             isLoginSuccess = false;
         }
     }
-    else if([command isEqualToString:@"baseinfo_resp"])
-    {
-        if([status intValue] == 1)
-        {
-            baseinfo = responseDict;
-        }
-    }
+    //Socket直接存baseinfo到数据库
+//    else if([command isEqualToString:@"baseinfo_resp"])
+//    {
+//        if([status intValue] == 1)
+//        {
+//            baseinfo = responseDict;
+//        }
+//    }
     else if([command isEqualToString:@"get_near_car_resp"])
     {
         if([status intValue] == 1)
@@ -609,7 +619,6 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
             
             nearCarsPromptLabel.text = nearCarStr;
 
-            
             if([arr isKindOfClass:[NSArray class]])
             {
                 for (int i = 0; i < arr.count ; i++) {
@@ -639,7 +648,19 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 }
 -(void)leftView:(DDLeftView *)leftView index:(NSInteger)index
 {
-     [self leftViewDisappear];
+    [self leftViewDisappear];
+    
+    //读出baseinfo
+    [[DDDatabase sharedDatabase]selectBaseinfo:^(NSString *baseinfostring) {
+        
+        //Deserialastion a Json String into Dictionary
+        NSError *jsonError;
+        NSData  *objectData = [baseinfostring dataUsingEncoding:NSUTF8StringEncoding];
+        baseinfo = [NSJSONSerialization JSONObjectWithData:objectData
+                                                   options:NSJSONReadingMutableContainers
+                                                     error:&jsonError];
+    }];
+    
     if(index == 0)
     {
         HistoryViewController * histroyVC = [[HistoryViewController alloc]initWithNibName:@"HistoryViewController" bundle:nil];
@@ -668,6 +689,12 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         webVC.titleStr = @"帮助";
         webVC.urlStr = helpUrl;
         [self.navigationController pushViewController:webVC animated:YES];
+    }
+    else if(index == 4)
+    {
+        [[DDDatabase sharedDatabase]clearTable];
+        LoginViewController *loginVC = [[LoginViewController alloc]init];
+        [self.navigationController pushViewController:loginVC animated:YES];
     }
 }
 -(void)leftViewDisappear

@@ -7,9 +7,11 @@
 //
 
 #import "DDSocket.h"
+#import "DDDatabase.h"
 #import "DDLog.h"
 #import "DDTTYLogger.h"
 #import "DDDispatchQueueLogFormatter.h"
+#import "DDSocket.h"
 static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 #define  SERVER_PORT 8282  // 0 => automatic
 #define  SERVER_HOST @"120.24.237.15"
@@ -205,7 +207,17 @@ completionHandler:(void (^)(BOOL shouldTrustPeer))completionHandler
         _responseDict = [NSJSONSerialization JSONObjectWithData:objectData
                                                         options:NSJSONReadingMutableContainers
                                                           error:&jsonError];
-        [[NSNotificationCenter defaultCenter] postNotificationName:responseNotificationName object:self userInfo:_responseDict];
+        
+        //Baseinfo 消息可能在MainVC和paymentVC都收到，直接存入数据库
+        NSString *cmd = [_responseDict objectForKey:@"cmd"];
+        if([cmd isEqualToString:@"baseinfo_resp"])
+        {
+            [[DDDatabase sharedDatabase]insertBaseinfo:response];
+        }
+        else
+        {
+            [[NSNotificationCenter defaultCenter] postNotificationName:responseNotificationName object:self userInfo:_responseDict];
+        }
         
         DDLogInfo(@"Response:\n%@", response);
     }

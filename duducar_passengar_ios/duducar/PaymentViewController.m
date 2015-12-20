@@ -141,8 +141,8 @@ enum Paymethod{
             //【callback处理支付结果】
             NSLog(@"reslut = %@",resultDic);
             RatingViewController *rateVC = [[RatingViewController alloc] initWithNibName:@"RatingViewController" bundle:nil];
-            
-            rateVC.driver = self.driver;
+            rateVC.activeOrder = _activeOrder;
+            rateVC.driver = _driver;
             [self.navigationController pushViewController:rateVC animated:YES];
         }];
     }
@@ -168,7 +168,6 @@ enum Paymethod{
     NSString *res = [WXApiRequestHandler jumpToBizPay:paramDict];
     if( ![@"" isEqual:res] ){
         UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"支付失败" message:res delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        
         [alter show];
     }
 }
