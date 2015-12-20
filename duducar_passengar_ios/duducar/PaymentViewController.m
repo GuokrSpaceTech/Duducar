@@ -70,8 +70,7 @@ enum Paymethod{
 
 -(void)setActiveOrder:(NSDictionary *)activeOrder
 {
-    _activeOrder = [NSDictionary dictionaryWithDictionary:[activeOrder objectForKey:@"order"]];
-    
+    _activeOrder = activeOrder;
     if(_activeOrder)
     {
         NSNumber *sumprice = [_activeOrder objectForKey:@"sumprice"];

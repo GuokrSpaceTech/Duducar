@@ -130,7 +130,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 
 -(void)makePhoneCall:(id)sender
 {
-    NSString *phoneNumber = _driver.mobile;
+    NSString *phoneNumber = [@"tel://" stringByAppendingString:_driver.mobile];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneNumber]];
 }
 @end

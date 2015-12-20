@@ -17,13 +17,10 @@
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2015-10-18" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kvk-Zb-99c">
                         <rect key="frame" x="8" y="8" width="85" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="Wkg-xb-tX1"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="已完成" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Spj-eo-EFG">
-                        <rect key="frame" x="209" y="160" width="42" height="17"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -48,9 +45,16 @@
                             <constraint firstItem="oti-HY-Bpo" firstAttribute="centerY" secondItem="KWB-kn-b1y" secondAttribute="centerY" id="GS7-Wn-r0T"/>
                             <constraint firstItem="tNm-e9-Bdn" firstAttribute="top" secondItem="KWB-kn-b1y" secondAttribute="top" id="PRB-5k-ldj"/>
                             <constraint firstItem="oti-HY-Bpo" firstAttribute="leading" secondItem="tNm-e9-Bdn" secondAttribute="trailing" constant="8" id="ZHc-De-50x"/>
+                            <constraint firstAttribute="bottom" secondItem="tNm-e9-Bdn" secondAttribute="bottom" constant="8" id="eYN-2x-uJt"/>
                             <constraint firstAttribute="height" constant="44" id="eap-o6-mlO"/>
-                            <constraint firstAttribute="bottom" secondItem="tNm-e9-Bdn" secondAttribute="bottom" constant="8" id="o2z-cq-HYT" userLabel="bottom = endIndicator.bottom + 12"/>
                             <constraint firstItem="tNm-e9-Bdn" firstAttribute="leading" secondItem="KWB-kn-b1y" secondAttribute="leading" id="piN-oP-FaP"/>
+                        </constraints>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="84V-82-AKs" userLabel="line">
+                        <rect key="frame" x="16" y="76" width="428" height="1"/>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="RXv-O6-aS2"/>
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fvf-Ke-AMz" userLabel="start">
@@ -79,13 +83,26 @@
                             <constraint firstItem="g9j-1L-eta" firstAttribute="centerY" secondItem="Fvf-Ke-AMz" secondAttribute="centerY" id="xDw-3f-Nkw"/>
                         </constraints>
                     </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="已完成" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Spj-eo-EFG">
+                        <rect key="frame" x="195" y="153" width="71" height="17"/>
+                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="71" id="Z0f-cR-N34"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="84V-82-AKs" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="8" id="3Jw-kC-rbT"/>
                     <constraint firstAttribute="leadingMargin" secondItem="kvk-Zb-99c" secondAttribute="leading" id="7G9-ZW-106"/>
                     <constraint firstAttribute="trailingMargin" secondItem="KWB-kn-b1y" secondAttribute="trailing" id="EFD-Mi-500"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="84V-82-AKs" secondAttribute="trailing" constant="8" id="ORT-n3-KJb"/>
                     <constraint firstAttribute="leadingMargin" secondItem="KWB-kn-b1y" secondAttribute="leading" id="Tez-4n-vEn"/>
                     <constraint firstItem="Fvf-Ke-AMz" firstAttribute="top" secondItem="kvk-Zb-99c" secondAttribute="bottom" constant="4" id="dMZ-8k-LvQ"/>
                     <constraint firstAttribute="leadingMargin" secondItem="Fvf-Ke-AMz" secondAttribute="leading" id="heg-6B-PUB"/>
+                    <constraint firstItem="84V-82-AKs" firstAttribute="top" secondItem="Fvf-Ke-AMz" secondAttribute="bottom" id="lWO-ha-t9b"/>
                     <constraint firstAttribute="topMargin" secondItem="kvk-Zb-99c" secondAttribute="top" id="nRp-uQ-3t2"/>
                     <constraint firstAttribute="trailingMargin" secondItem="Fvf-Ke-AMz" secondAttribute="trailing" id="rey-qc-ykS"/>
                     <constraint firstItem="Spj-eo-EFG" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="xno-rq-Ow0"/>
@@ -93,7 +110,7 @@
                 </constraints>
             </tableViewCellContentView>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="Spj-eo-EFG" secondAttribute="bottom" constant="1" id="QrR-xC-H3z"/>
+                <constraint firstAttribute="bottom" secondItem="Spj-eo-EFG" secondAttribute="bottom" constant="8" id="ODP-Yh-AlG"/>
             </constraints>
             <connections>
                 <outlet property="dateLabel" destination="kvk-Zb-99c" id="N5T-Li-qOW"/>
@@ -101,7 +118,7 @@
                 <outlet property="orderStatusLabel" destination="Spj-eo-EFG" id="mjd-sL-VLu"/>
                 <outlet property="startLabel" destination="g9j-1L-eta" id="Vl3-Eq-ATb"/>
             </connections>
-            <point key="canvasLocation" x="216" y="323"/>
+            <point key="canvasLocation" x="450" y="347"/>
         </tableViewCell>
     </objects>
     <resources>

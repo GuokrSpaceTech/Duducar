@@ -77,6 +77,7 @@
 		FA8892C51C22E18A00496200 /* HistoryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8892C31C22E18A00496200 /* HistoryTableViewCell.m */; };
 		FA8892C61C22E18A00496200 /* HistoryTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA8892C41C22E18A00496200 /* HistoryTableViewCell.xib */; };
 		FA97363B1C2644900030243C /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA97363A1C2644900030243C /* WebViewController.m */; };
+		FA97363E1C26C83F0030243C /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = FA97363D1C26C83F0030243C /* Reachability.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -293,6 +294,8 @@
 		FA8892C41C22E18A00496200 /* HistoryTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HistoryTableViewCell.xib; sourceTree = "<group>"; };
 		FA9736391C2644900030243C /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		FA97363A1C2644900030243C /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
+		FA97363C1C26C83F0030243C /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		FA97363D1C26C83F0030243C /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -375,6 +378,8 @@
 		2A9745151BF9B692008C8A7B /* utils */ = {
 			isa = PBXGroup;
 			children = (
+				FA97363C1C26C83F0030243C /* Reachability.h */,
+				FA97363D1C26C83F0030243C /* Reachability.m */,
 				2A97451E1BF9CEF3008C8A7B /* RCUnderlineTextField.h */,
 				2A97451F1BF9CEF3008C8A7B /* RCUnderlineTextField.m */,
 				2A9745191BF9BEF6008C8A7B /* RCAnimatedImagesView.h */,
@@ -872,6 +877,7 @@
 				FA8892C51C22E18A00496200 /* HistoryTableViewCell.m in Sources */,
 				2AC664491BF9A69200DFDC2A /* AppDelegate.m in Sources */,
 				2AB5816F1C1C282900BFC7C7 /* RSADataVerifier.m in Sources */,
+				FA97363E1C26C83F0030243C /* Reachability.m in Sources */,
 				2AC664461BF9A69200DFDC2A /* main.m in Sources */,
 				2AB581691C1C282900BFC7C7 /* DataSigner.m in Sources */,
 				2AB5816A1C1C282900BFC7C7 /* DataVerifier.m in Sources */,

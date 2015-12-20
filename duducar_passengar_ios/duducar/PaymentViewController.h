@@ -20,10 +20,8 @@
 @property (strong, nonatomic) NSDictionary *activeOrder;
 
 @property (nonatomic, strong) NSString *chargePrice;
-
 @property (nonatomic, strong) Driver   *driver;
-@property (nonatomic, strong) NSString *mileage;
-@property (nonatomic, strong) NSString *lowSpeedTime;
+
 @property (weak, nonatomic) IBOutlet UIButton *alipayButton;
 @property (weak, nonatomic) IBOutlet UIButton *weichatpayButton;
 @property (weak, nonatomic) IBOutlet UIButton *paymentConfirmButton;
