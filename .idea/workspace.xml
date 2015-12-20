@@ -27,23 +27,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6eadb00b-9a86-4395-a889-d9e05388a082" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/cache.properties.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileHashes.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileSnapshots.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/gradle_project_sync_data.bin" afterPath="$PROJECT_DIR$/build/intermediates/gradle_project_sync_data.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/taskArtifacts.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dependancies/DaoDBGenerator/DaoDBGenerator.iml" afterPath="$PROJECT_DIR$/dependancies/DaoDBGenerator/DaoDBGenerator.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/adapter/OrdersAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/adapter/OrdersAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/RatingActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/RatingActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/circleimageview_1_3_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/circleimageview_1_3_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gradle.properties" afterPath="$PROJECT_DIR$/gradle.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/gradle.properties" afterPath="$PROJECT_DIR$/driver_pro/gradle.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/gradle.xml" afterPath="$PROJECT_DIR$/.idea/gradle.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/local.properties" afterPath="$PROJECT_DIR$/local.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/local.properties" afterPath="$PROJECT_DIR$/driver_pro/local.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/materiallist_3_1_2.xml" afterPath="$PROJECT_DIR$/.idea/libraries/materiallist_3_1_2.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/.idea/modules.xml" afterPath="$PROJECT_DIR$/driver_pro/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/app/signing.properties" afterPath="$PROJECT_DIR$/driver_pro/app/signing.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/build/intermediates/gradle_project_sync_data.bin" afterPath="$PROJECT_DIR$/driver_pro/build/intermediates/gradle_project_sync_data.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/.idea/workspace.xml" afterPath="$PROJECT_DIR$/driver_pro/.idea/workspace.xml" />
     </list>
@@ -135,8 +119,8 @@
       <file leaf-file-name="RatingActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/RatingActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="4.0924854">
-              <caret line="251" column="0" selection-start-line="251" selection-start-column="0" selection-end-line="251" selection-end-column="0" />
+            <state vertical-scroll-proportion="-4.231214">
+              <caret line="45" column="21" selection-start-line="45" selection-start-column="21" selection-end-line="45" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -3543,8 +3527,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/RatingActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="4.0924854">
-          <caret line="251" column="0" selection-start-line="251" selection-start-column="0" selection-end-line="251" selection-end-column="0" />
+        <state vertical-scroll-proportion="-4.231214">
+          <caret line="45" column="21" selection-start-line="45" selection-start-column="21" selection-end-line="45" selection-end-column="21" />
           <folding />
         </state>
       </provider>
