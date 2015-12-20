@@ -27,6 +27,7 @@ import android.widget.Button;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
 import com.gc.materialdesign.widgets.ProgressDialog;
+import com.google.gson.Gson;
 import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.adapter.TabPagerAdapter;
@@ -334,8 +335,8 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             @Override
             public void onSuccess(String messageBody) {
                 Log.e("daddy ", "base info " + messageBody);
-                baseInfo = (BaseInfo) FastJsonTools.getObject(messageBody, BaseInfo.class);
-                Log.e("daddy", "base" + baseInfo.getWebivew().getAbout().length());
+                baseInfo = (BaseInfo) new Gson().fromJson(messageBody, BaseInfo.class);
+//                Log.e("daddy", "base" + baseInfo.getWebivew().getAbout().length());
                 mHandler.sendEmptyMessage(HANDLE_BASEINFO);
                 Log.e("daddy", "send message");
             }
