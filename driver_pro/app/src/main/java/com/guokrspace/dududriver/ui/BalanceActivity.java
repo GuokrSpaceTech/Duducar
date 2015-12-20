@@ -1,5 +1,6 @@
 package com.guokrspace.dududriver.ui;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -10,19 +11,26 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.gc.materialdesign.views.ButtonFlat;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.adapter.BillListAdapter;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.database.BillRecord;
 import com.guokrspace.dududriver.model.BillItem;
+import com.guokrspace.dududriver.model.GetBalanceResponse;
 import com.guokrspace.dududriver.model.GetBillsResponse;
+import com.guokrspace.dududriver.model.WithdrawResponse;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
+import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.FastJsonTools;
 import com.guokrspace.dududriver.view.HymanScrollView;
 import com.guokrspace.dududriver.view.NoScrollListView;
@@ -37,6 +45,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.drakeet.materialdialog.MaterialDialog;
 
 /**
  * Created by hyman on 15/12/9.
@@ -57,19 +66,74 @@ public class BalanceActivity extends BaseActivity implements Handler.Callback{
     @Bind(R.id.scrollview)
     HymanScrollView mScrollView;
 
+    TextView availableTextView;
+    EditText inputCash;
+    ButtonFlat totalButton;
+
     @OnClick(R.id.substitute_pay)
     void doWithdraw() {
+        if (!isNetworkAvailable()) {
+            showToast("网络不可用");
+            return;
+        }
+        progressDialog = new ProgressDialog(context, ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
         //进行体现请求
+        SocketClient.getInstance().sendGetBalanceRequest("1", new ResponseHandler(Looper.myLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                GetBalanceResponse response = null;
+                if (!TextUtils.isEmpty(messageBody)) {
+//                    Log.e("hyman_balance", "加载成功：" + messageBody);
+                    response = JSON.parseObject(messageBody, GetBalanceResponse.class);
+                }
+                if (response != null && !TextUtils.isEmpty(response.getAvailable())) {
+                    availableBalance = Double.parseDouble(response.getAvailable());
+                }
+                if (confirmBalanceDialog != null) {
+                    availableTextView.setText(availableBalance + "");
+                    confirmBalanceDialog.show();
+                }
+            }
+
+            @Override
+            public void onFailure(String error) {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                if (!TextUtils.isEmpty(error)) {
+//                    Log.e("hyman_balance", "加载失败：" + error);
+                    showToast("加载失败: " + error);
+                }
+            }
+
+            @Override
+            public void onTimeout() {
+                if (progressDialog != null) {
+                    progressDialog.dismiss();
+                }
+                showToast("请求超时...");
+            }
+        });
     }
 
     private static final int HANDLE_REFRESH_SUCCESS = 1;
     private static final int HANLDE_LOADMORE_OVER = 2;
 
+
     private Context context;
+
+    private MaterialDialog confirmBalanceDialog = null;
+    private ProgressDialog progressDialog = null;
 
     private BillListAdapter mAdapter;
     private List<BillItem> mDatas = new ArrayList<>();
 
+    private double availableBalance = 0;
+    private double withdrawBalance = 0.0;
     private Long currentBillId = Long.MAX_VALUE;
     private boolean isRefreshing = false;
     private boolean isLoading = false;
@@ -269,6 +333,115 @@ public class BalanceActivity extends BaseActivity implements Handler.Callback{
                 resources.getColor(R.color.materialGreen));
         //下拉刷新
         mRefreshLayout.setOnRefreshListener(refreshListener);
+
+        initConfirmBalanceDialog();
+    }
+
+    private void initConfirmBalanceDialog() {
+        confirmBalanceDialog = new MaterialDialog(context);
+        confirmBalanceDialog.setTitle("确认提现金额");
+        LayoutInflater _inflater = LayoutInflater.from(context);
+        RelativeLayout dialogView = (RelativeLayout) _inflater.inflate(R.layout.confirm_balance_dialog, null, false);
+        availableTextView = (TextView) dialogView.findViewById(R.id.available_balance);
+        inputCash = (EditText) dialogView.findViewById(R.id.input_cash);
+        totalButton = (ButtonFlat) dialogView.findViewById(R.id.total_btn);
+        totalButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (inputCash != null) {
+                    inputCash.setText(availableBalance + "");
+                }
+            }
+        });
+        confirmBalanceDialog.setContentView(dialogView);
+        confirmBalanceDialog.setCanceledOnTouchOutside(false);
+        confirmBalanceDialog.setNegativeButton("放弃", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                inputCash.setText("");
+                confirmBalanceDialog.dismiss();
+            }
+        });
+        confirmBalanceDialog.setPositiveButton("确认", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String inputBalance = inputCash.getText().toString();
+                if (TextUtils.isEmpty(inputBalance)) {
+                    showToast("请输入提现金额！");
+                    return;
+                }
+                if (!CommonUtil.checkBalanceFormat(inputBalance)) {
+                    showToast("输入格式不合法，请重新输入");
+                    inputCash.setText("");
+                    return;
+                }
+                if (Double.parseDouble(inputBalance) > availableBalance) {
+                    showToast("余额不足");
+                    inputCash.setText("");
+                    return;
+                }
+                if (!isNetworkAvailable()) {
+                    showToast("网络无法访问...");
+                    return;
+                }
+                inputCash.setText("");
+                confirmBalanceDialog.dismiss();
+                if (progressDialog != null) {
+                    progressDialog.show();
+                }
+                SocketClient.getInstance().sendWithdrawRequest("1", Double.parseDouble(inputBalance), new ResponseHandler(Looper.myLooper()) {
+                    @Override
+                    public void onSuccess(String messageBody) {
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                        }
+                        WithdrawResponse response = null;
+                        if (!TextUtils.isEmpty(messageBody)) {
+                            response = JSON.parseObject(messageBody, WithdrawResponse.class);
+//                            Log.e("hyman_widthdraw", "请求成功：" + messageBody);
+                        }
+                        if (response != null) {
+                            showToast("您成功提现 " + response.getCash() + " 元。");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                        }
+                        if (!TextUtils.isEmpty(error)) {
+                            JSONObject jsonObject = JSON.parseObject(error);
+                            if (jsonObject == null) {
+                                showToast("请求失败");
+                                return;
+                            }
+                            int status = jsonObject.getIntValue("status");
+                            switch (status) {
+                                case -1:
+                                    showToast("非提现日");
+                                    break;
+                                case -2:
+                                    showToast("余额不够");
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onTimeout() {
+                        if (progressDialog != null) {
+                            progressDialog.dismiss();
+                        }
+                        showToast("请求超时，请稍后再试...");
+                    }
+                });
+            }
+        });
+
+
     }
 
     private void loadMoreData() {
@@ -364,6 +537,7 @@ public class BalanceActivity extends BaseActivity implements Handler.Callback{
             case HANLDE_LOADMORE_OVER:
                 mScrollView.getMoreComplete();
                 break;
+
             default:
                 break;
         }

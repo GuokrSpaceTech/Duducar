@@ -524,5 +524,49 @@ public class SocketClient {
         return ret;
     }
 
+    /*
+     * 获取可提现额度
+     * @author hyman
+     *
+     * @param role
+     * @param handler
+     * @return
+     */
+    public int sendGetBalanceRequest(String role, ResponseHandler handler) {
+        int ret = -1;
+        JSONObject carmsg = new JSONObject();
+        try {
+            carmsg.put("cmd", MessageTag.getInstance().Command(MessageTag.GET_BALANCE));
+            carmsg.put("role", role);
+            ret = sendMessage(carmsg, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
+    /*
+     * 发起提现请求
+     * @author hyman
+     *
+     * @param role
+     * @param cash
+     * @param handler
+     * @return
+     */
+    public int sendWithdrawRequest(String role, double cash, ResponseHandler handler ) {
+        int ret = -1;
+        JSONObject carmsg = new JSONObject();
+        try {
+            carmsg.put("cmd", MessageTag.getInstance().Command(MessageTag.WITHDRAW_CASH));
+            carmsg.put("role", role);
+            carmsg.put("cash", cash);
+            ret = sendMessage(carmsg, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
 
 }
