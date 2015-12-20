@@ -24,6 +24,10 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    //导航条
+    self.navigationItem.title = @"评价";
+    
     if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
         self.edgesForExtendedLayout = UIRectEdgeNone;
     

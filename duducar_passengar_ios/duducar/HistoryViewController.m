@@ -25,6 +25,9 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 -(void)viewDidLoad {
     [super viewDidLoad];
     
+    //导航条
+    self.navigationItem.title = @"历史订单";
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveResponseHandles:) name:responseNotificationName object:nil];
     
     //从数据库里读取数据

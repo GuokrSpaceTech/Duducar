@@ -49,14 +49,15 @@ enum Paymethod{
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    //导航条
+    self.navigationItem.title = @"支付";
+    
     if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
         self.edgesForExtendedLayout = UIRectEdgeNone;
     
     if(_chargePrice)
     {
         self.chargeLabel.text = _chargePrice;
-        NSString *paymentConfirmString = [NSString stringWithFormat:@"确认支付%@元",_chargePrice];
-        _paymentConfirmButton.titleLabel.text = paymentConfirmString;
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(payResult:) name:@"WechatPayResultNotification" object:nil];

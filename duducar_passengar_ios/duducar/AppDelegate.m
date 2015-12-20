@@ -53,7 +53,7 @@ BMKMapManager* _mapManager;
                                      };
     [[UINavigationBar appearance] setTitleTextAttributes:textAttributes];
     [[UINavigationBar appearance] setTintColor:[UIColor whiteColor]];
-    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithHexString:@"0195ff" alpha:1.0f]];
+    [[UINavigationBar appearance] setBarTintColor:[UIColor colorWithHexString:@"212B37" alpha:1.0f]];
     
     [self.window makeKeyAndVisible];
     

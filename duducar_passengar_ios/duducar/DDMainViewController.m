@@ -79,6 +79,9 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
      */
     self.view.backgroundColor = [UIColor whiteColor];
     
+    //导航条
+    self.navigationItem.title = @"嘟嘟专车";
+
     //Map View
     _mapView = [[BMKMapView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     _mapView.zoomLevel = 14;
@@ -535,8 +538,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
                 //已经支付
                 else if([orderStatus isEqualToString:@"5"])
                 {
-                    //存入历史订单库
-                    [[DDDatabase sharedDatabase]insertOrder:activeOrderJson];
+                    //查看历史订单库
                 }
                 //未支付或者司机代付订单
                 else if([orderStatus isEqualToString:@"4"])

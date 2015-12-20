@@ -40,8 +40,10 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     /*
      * Init UI
      */
+    //导航条
     UIBarButtonItem * leftItem = [[UIBarButtonItem alloc]initWithTitle:@"取消叫车" style:UIBarButtonItemStyleDone target:self action:@selector(back:)];
     self.navigationItem.leftBarButtonItem = leftItem;
+    self.navigationItem.title = @"正在叫车......";
     
     _mapView = [[BMKMapView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     _mapView.zoomLevel = 14;
@@ -124,7 +126,18 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         
         //处理订单状态 '1-订单初始化 2-接单 3-开始 4-结束 5-取消’,
         orderStatus = [self.activeOrder objectForKey:@"order_status"];
-        
+        if([orderStatus isEqualToString:@"2"])
+        {
+            self.navigationItem.title = @"司机已经接单";
+        }
+        else if([orderStatus isEqualToString:@"3"])
+        {
+            self.navigationItem.title = @"乘客已经上车";
+        }
+        else if([orderStatus isEqualToString:@"3"])
+        {
+            self.navigationItem.title = @"已经到达目的地";
+        }
     }
     else if(_startLocation!=nil && _endLocation!=nil)
     {

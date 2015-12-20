@@ -45,7 +45,7 @@
         WKWebViewConfiguration * configuration = [[WKWebViewConfiguration alloc]init];
         configuration.allowsInlineMediaPlayback = YES;
         configuration.mediaPlaybackRequiresUserAction = NO;
-        _wkWebview  = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT-64) configuration:configuration];
+        _wkWebview  = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT) configuration:configuration];
         _wkWebview.navigationDelegate = self;
         _wkWebview.UIDelegate = self;
         [self.view addSubview:_wkWebview];
@@ -56,7 +56,7 @@
     else
 #endif
     {
-        _webview = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT-64)];
+        _webview = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT)];
         _webview.delegate =self;
         [self.view addSubview:_webview];
         _webview.allowsInlineMediaPlayback = YES;
@@ -100,7 +100,7 @@
 {
     // _kwWebView.configuration = configuration;
     [_wkWebview removeObserver:self forKeyPath:@"estimatedProgress" context:NULL];
-    _wkWebview = [[WKWebView alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT-64 - 49) configuration:configuration];
+    _wkWebview = [[WKWebView alloc]initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT - 49) configuration:configuration];
     _wkWebview.UIDelegate =self;
     _wkWebview.navigationDelegate = self;
     NSURL *url = navigationAction.request.URL;
