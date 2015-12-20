@@ -43,7 +43,6 @@
 		2AC664491BF9A69200DFDC2A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC664481BF9A69200DFDC2A /* AppDelegate.m */; };
 		2AC6644F1BF9A69200DFDC2A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2AC6644D1BF9A69200DFDC2A /* Main.storyboard */; };
 		2AC664511BF9A69200DFDC2A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2AC664501BF9A69200DFDC2A /* Assets.xcassets */; };
-		2AC664541BF9A69200DFDC2A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2AC664521BF9A69200DFDC2A /* LaunchScreen.storyboard */; };
 		2AC6645F1BF9A69200DFDC2A /* duducarTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC6645E1BF9A69200DFDC2A /* duducarTests.m */; };
 		2AC6646A1BF9A69200DFDC2A /* duducarUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC664691BF9A69200DFDC2A /* duducarUITests.m */; };
 		2AC6647A1BF9AA2100DFDC2A /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC664781BF9AA2100DFDC2A /* LoginViewController.m */; };
@@ -231,7 +230,6 @@
 		2AC664481BF9A69200DFDC2A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		2AC6644E1BF9A69200DFDC2A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2AC664501BF9A69200DFDC2A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		2AC664531BF9A69200DFDC2A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2AC664551BF9A69200DFDC2A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2AC6645A1BF9A69200DFDC2A /* duducarTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = duducarTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AC6645E1BF9A69200DFDC2A /* duducarTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = duducarTests.m; sourceTree = "<group>"; };
@@ -557,7 +555,6 @@
 				2AC664481BF9A69200DFDC2A /* AppDelegate.m */,
 				2AC6644D1BF9A69200DFDC2A /* Main.storyboard */,
 				2AC664501BF9A69200DFDC2A /* Assets.xcassets */,
-				2AC664521BF9A69200DFDC2A /* LaunchScreen.storyboard */,
 				2AC664551BF9A69200DFDC2A /* Info.plist */,
 				2AC664441BF9A69200DFDC2A /* Supporting Files */,
 				2AC664771BF9AA2100DFDC2A /* LoginViewController.h */,
@@ -780,7 +777,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2AB57EC51C1BE87200BFC7C7 /* AlipaySDK.bundle in Resources */,
-				2AC664541BF9A69200DFDC2A /* LaunchScreen.storyboard in Resources */,
 				2AC664511BF9A69200DFDC2A /* Assets.xcassets in Resources */,
 				2AAFDC841C1AD36E00A5AEBD /* PaymentViewController.xib in Resources */,
 				FA8892A91C22778800496200 /* read_me.txt in Resources */,
@@ -944,14 +940,6 @@
 			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
-		2AC664521BF9A69200DFDC2A /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				2AC664531BF9A69200DFDC2A /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -1046,6 +1034,7 @@
 			baseConfigurationReference = 8EDAA3157DD50EAB7226DB83 /* Pods-duducar.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1080,6 +1069,7 @@
 			baseConfigurationReference = 79A46CB94CB6EE86EFED9B23 /* Pods-duducar.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (

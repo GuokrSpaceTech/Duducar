@@ -14,6 +14,7 @@
                 <outlet property="chargeLabel" destination="U6K-OD-4oi" id="s1w-cb-3m6"/>
                 <outlet property="driverAvatarImageView" destination="EDJ-og-UnK" id="kGC-9B-RSF"/>
                 <outlet property="driverNameLabel" destination="VhV-sK-thS" id="eu9-ND-l3K"/>
+                <outlet property="phoneImageView" destination="Z0h-L0-k0F" id="k7p-LP-kli"/>
                 <outlet property="rateLabel" destination="XlH-L1-Vh4" id="L4p-fK-FP7"/>
                 <outlet property="rateingView" destination="OtJ-Uc-uve" id="ROb-bQ-ZPy"/>
                 <outlet property="ratingViewUserRate" destination="GEe-1V-Z3e" id="67b-yP-6O1"/>
@@ -28,7 +29,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sLx-dg-3e8" userLabel="topView">
                     <rect key="frame" x="8" y="8" width="584" height="128"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="phoneicon" translatesAutoresizingMaskIntoConstraints="NO" id="Z0h-L0-k0F">
+                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="phoneicon" translatesAutoresizingMaskIntoConstraints="NO" id="Z0h-L0-k0F">
                             <rect key="frame" x="546" y="49" width="30" height="30"/>
                             <animations/>
                             <constraints>

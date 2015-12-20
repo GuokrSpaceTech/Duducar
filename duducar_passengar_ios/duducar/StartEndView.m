@@ -32,15 +32,15 @@
         
         [greenImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.mas_left).offset(8);
-            make.top.equalTo(self.mas_top).offset(12);
-            make.height.mas_equalTo(self.frame.size.height/2-12);
+            make.top.equalTo(self.mas_top).offset(16);
+            make.height.mas_equalTo(self.frame.size.height/2-16);
             make.width.mas_equalTo(6);
         }];
         
         [redImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.mas_left).offset(8);
             make.top.equalTo(greenImageView.mas_bottom);
-            make.height.mas_equalTo(self.frame.size.height/2-12);
+            make.height.mas_equalTo(self.frame.size.height/2-16);
             make.width.mas_equalTo(6);
         }];
         

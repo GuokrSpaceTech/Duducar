@@ -49,6 +49,9 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         _rateLabel.text = [NSString stringWithFormat:@"%@星",_driver.rating];
     }
     
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(makePhoneCall:)];
+    [_phoneImageView addGestureRecognizer:tap];
+    
     /*
      * 监听来自Socket的服务消息
      */
@@ -123,5 +126,11 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 -(void)backtoMainController:(id)sender
 {
     [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+-(void)makePhoneCall:(id)sender
+{
+    NSString *phoneNumber = _driver.mobile;
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneNumber]];
 }
 @end
