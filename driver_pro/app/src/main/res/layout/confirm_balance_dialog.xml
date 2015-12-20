@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/subtitle_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="您的可用余额"
+        android:textColor="@color/black_textview"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:id="@+id/center_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/subtitle_textview"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:padding="6dp">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1px"
+            android:layout_gravity="center"
+            android:layout_weight="30"
+            android:background="@android:color/darker_gray" />
+
+        <!--<TextView
+            android:id="@+id/order_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="50"
+            android:text="未支付"
+            android:textColor="@color/sky_blue"
+            android:textSize="20sp" />-->
+        <RelativeLayout
+            android:id="@+id/total_bill"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/available_balance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:text="34.4"
+                android:textColor="#212B36"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/available_balance"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@id/available_balance"
+                android:text="元"
+                android:textColor="@color/black_textview"
+                android:textStyle="normal" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1px"
+            android:layout_gravity="center"
+            android:layout_weight="30"
+            android:background="@android:color/darker_gray" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/advice_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/center_layout"
+        android:text="请输入提现金额："
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_below="@id/advice_textview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/input_cash"
+            android:layout_width="0dp"
+            android:layout_weight="50"
+            android:layout_height="wrap_content"
+            android:maxWidth="80dp"
+            android:singleLine="true"
+            android:inputType="numberDecimal"
+            android:theme="@style/AppInputTheme"
+            android:layout_marginRight="10dp"
+            android:gravity="center"/>
+        <com.gc.materialdesign.views.ButtonFlat
+            android:id="@+id/total_btn"
+            android:layout_width="0dp"
+            android:layout_weight="30"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="提取全部"
+            android:textSize="4sp" />
+    </LinearLayout>
+
+</RelativeLayout>

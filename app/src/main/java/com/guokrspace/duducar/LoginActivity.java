@@ -112,6 +112,14 @@ public class LoginActivity extends AppCompatActivity implements
     private EditTextHolder mEditUserNameEt;
     private EditTextHolder mEditPassWordEt;
 
+    private Runnable animRunnable = new Runnable() {
+        @Override
+        public void run() {
+            Animation animation = AnimationUtils.loadAnimation(LoginActivity.this, R.anim.translate_anim);
+            mImgBackgroud.startAnimation(animation);
+        }
+    };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +152,13 @@ public class LoginActivity extends AppCompatActivity implements
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        mHandler.removeCallbacks(animRunnable);
+        mImgBackgroud.clearAnimation();
+        super.onDestroy();
+    }
+
     protected void initView() {
 
         mSoftManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -165,13 +180,7 @@ public class LoginActivity extends AppCompatActivity implements
         mEditUserNameEt = new EditTextHolder(mUserNameEt, mFrUserNameDelete, null);
         mEditPassWordEt = new EditTextHolder(mPassWordEt, mFrPasswordDelete, null);
 
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                Animation animation = AnimationUtils.loadAnimation(LoginActivity.this, R.anim.translate_anim);
-                mImgBackgroud.startAnimation(animation);
-            }
-        });
+        mHandler.post(animRunnable);
     }
 
     @Override

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +34,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     private RelativeLayout soundSettingLayout;
     private RelativeLayout updateApkLayout;
     private RelativeLayout feedbackLayout;
+    private RelativeLayout aboutUsLayout;
+    private RelativeLayout passengerGuideLayout;
+    private RelativeLayout legalItemLayout;
     private Button quitButton;
 
 
@@ -54,10 +58,16 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         soundSettingLayout = (RelativeLayout) findViewById(R.id.sound_setting_layout);
         updateApkLayout = (RelativeLayout) findViewById(R.id.apk_update_layout);
         feedbackLayout = (RelativeLayout) findViewById(R.id.feedback_layout);
+        aboutUsLayout = (RelativeLayout) findViewById(R.id.about_us_layout);
+        passengerGuideLayout = (RelativeLayout) findViewById(R.id.passenger_guide_layout);
+        legalItemLayout = (RelativeLayout) findViewById(R.id.legal_items_layout);
         quitButton = (Button) findViewById(R.id.quit_button);
         soundSettingLayout.setOnClickListener(this);
         updateApkLayout.setOnClickListener(this);
         feedbackLayout.setOnClickListener(this);
+        aboutUsLayout.setOnClickListener(this);
+        passengerGuideLayout.setOnClickListener(this);
+        legalItemLayout.setOnClickListener(this);
         quitButton.setOnClickListener(this);
 
     }
@@ -109,12 +119,28 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 });
                 UmengUpdateAgent.forceUpdate(context);
                 break;
+            case R.id.passenger_guide_layout:
+                Intent guideIntent = new Intent(this, WebViewActivity.class);
+                guideIntent.putExtra(WebViewActivity.WEBVIEW_TYPE, WebViewActivity.WEBVIEW_HELP);
+                startActivity(guideIntent);
+                break;
             case R.id.feedback_layout:
                 startActivity(new Intent(this, FeedBackActivity.class));
+                break;
+            case R.id.legal_items_layout:
+                Intent clauseIntent = new Intent(this, WebViewActivity.class);
+                clauseIntent.putExtra(WebViewActivity.WEBVIEW_TYPE, WebViewActivity.WEBVIEW_CLAUSE);
+                startActivity(clauseIntent);
+                break;
+            case R.id.about_us_layout:
+                Intent aboutIntent = new Intent(this, WebViewActivity.class);
+                aboutIntent.putExtra(WebViewActivity.WEBVIEW_TYPE, WebViewActivity.WEBVIEW_ABOUT);
+                startActivity(aboutIntent);
                 break;
             case R.id.quit_button:
                 List<Activity> activities = AppExitUtil.getInstance().getActivityList();
                 for (Activity activity : activities) {
+                    if (activity instanceof PreOrderActivity) continue;
                     activity.finish();
 
                 }
