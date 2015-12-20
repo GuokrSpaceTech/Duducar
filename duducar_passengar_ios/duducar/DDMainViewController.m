@@ -24,7 +24,7 @@
 #import "DDTTYLogger.h"
 #import "DDLeftView.h"
 #import "Masonry.h"
-
+#import "WebViewController.h"
 #import "HistoryViewController.h"
 #import "Location.h"
 
@@ -57,6 +57,8 @@
     BOOL isTimerRunning;
     NSTimer *_repeatingTimer;
     NSUInteger _timerCount;
+    
+    NSDictionary *baseinfo;
 }
 
 -(void)countedTimerAction:(NSTimer*)theTimer;
@@ -495,6 +497,10 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
             isLoginSuccess = true;
             NSString *activeOrderJson;
             
+            //Get Baseinfo
+            NSDictionary *paramDict = @{@"cmd":@"baseinfo",@"role":@"2"};
+            [[DDSocket currentSocket]sendRequest:paramDict];
+            
             int activeOrderNum = [[responseDict objectForKey:@"has_active_order"] intValue];
             
             //如果有当前活跃订单
@@ -511,7 +517,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
                 
                 //如果订单未结束
                 /*
-                const STATUS_INITATION 	=1 ;
+                const STATUS_INITATION 	    =1 ;
                 const STATUS_ACCEPT 		=2 ;
                 const STATUS_START 			=3 ;
                 const STATUS_END 			=4 ;
@@ -553,6 +559,13 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         } else {
             //自动登录出现错误
             isLoginSuccess = false;
+        }
+    }
+    else if([command isEqualToString:@"baseinfo_resp"])
+    {
+        if([status intValue] == 1)
+        {
+            baseinfo = responseDict;
         }
     }
     else if([command isEqualToString:@"get_near_car_resp"])
@@ -613,11 +626,32 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
      [self leftViewDisappear];
     if(index == 0)
     {
-    }
-    else
-    {
         HistoryViewController * histroyVC = [[HistoryViewController alloc]initWithNibName:@"HistoryViewController" bundle:nil];
         [self.navigationController pushViewController:histroyVC animated:YES];
+    }
+    else if(index == 1)
+    {
+        NSString *aboutusUrl = [[baseinfo objectForKey:@"webview"] objectForKey:@"about"];
+        WebViewController *webVC = [[WebViewController alloc]init];
+        webVC.urlStr = aboutusUrl;
+        webVC.titleStr = @"关于我们";
+        [self.navigationController pushViewController:webVC animated:YES];
+    }
+    else if(index == 2)
+    {
+        NSString *clauseUrl = [[baseinfo objectForKey:@"webview"] objectForKey:@"clause"];
+        WebViewController *webVC = [[WebViewController alloc]init];
+        webVC.titleStr = @"使用条款";
+        webVC.urlStr = clauseUrl;
+        [self.navigationController pushViewController:webVC animated:YES];
+    }
+    else if(index == 3)
+    {
+        NSString *helpUrl = [[baseinfo objectForKey:@"webview"] objectForKey:@"help"];
+        WebViewController *webVC = [[WebViewController alloc]init];
+        webVC.titleStr = @"帮助";
+        webVC.urlStr = helpUrl;
+        [self.navigationController pushViewController:webVC animated:YES];
     }
 }
 -(void)leftViewDisappear

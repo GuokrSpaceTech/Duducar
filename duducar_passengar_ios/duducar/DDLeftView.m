@@ -7,8 +7,8 @@
 //
 
 #import "DDLeftView.h"
-#import "Masonry.h"
 #import "UIImageView+WebCache.h"
+#import "Masonry.h"
 
 @interface DDLeftView()
 {
@@ -78,29 +78,43 @@
 //        [contentView addSubview:button1];
         UIButton * button2 = [UIButton buttonWithType:UIButtonTypeCustom];
         [button2 setTitle:@"历史订单" forState:UIControlStateNormal];
-        button2.tag = 101;
+        button2.tag = 100;
         button2.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         [button2 addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
-        button2.frame = CGRectMake(10, 155+40, 200-20, 40);
+        button2.frame = CGRectMake(10, 155, 200-20, 40);
         [button2 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [contentView addSubview:button2];
         
+        UIButton * button3 = [UIButton buttonWithType:UIButtonTypeCustom];
+        [button3 setTitle:@"关于我们" forState:UIControlStateNormal];
+        button3.tag = 101;
+        button3.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        [button3 addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+        button3.frame = CGRectMake(10, 155+40, 200-20, 40);
+        [button3 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [contentView addSubview:button3];
+        
+        UIButton * button4 = [UIButton buttonWithType:UIButtonTypeCustom];
+        [button4 setTitle:@"使用条款" forState:UIControlStateNormal];
+        button4.tag = 102;
+        button4.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        [button4 addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+        button4.frame = CGRectMake(10, 155+(40*2), 200-20, 40);
+        [button4 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [contentView addSubview:button4];
+        
+        UIButton * button5 = [UIButton buttonWithType:UIButtonTypeCustom];
+        [button5 setTitle:@"帮助" forState:UIControlStateNormal];
+        button5.tag = 103;
+        button5.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        [button5 addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+        button5.frame = CGRectMake(10, 155+(40*3), 200-20, 40);
+        [button5 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [contentView addSubview:button5];
     }
     return self;
 }
--(void)buttonClick:(UIButton *)but
-{
-    NSInteger tag = but.tag;
-    if(tag == 100)
-    {
-       // 个人信息
-        [_delegate leftView:self index:0];
-    }
-    else
-    {
-        [_delegate leftView:self index:1];
-    }
-}
+
 -(void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [_delegate leftViewClose:self];
@@ -114,4 +128,31 @@
     
     mobileLabel.text = mobile;
 }
+
+-(void)buttonClick:(UIButton *)but
+{
+    NSInteger tag = but.tag;
+    if(     tag == 100)
+    {
+        // 历史订单
+        [_delegate leftView:self index:0];
+    }
+    else if(tag == 101)
+    {
+        // 关于我们
+        [_delegate leftView:self index:1];
+        
+    }
+    else if(tag == 102)
+    {
+        // 使用条款
+        [_delegate leftView:self index:2];
+    }
+    else if(tag == 103)
+    {
+        // 帮助
+        [_delegate leftView:self index:3];
+    }
+}
+
 @end

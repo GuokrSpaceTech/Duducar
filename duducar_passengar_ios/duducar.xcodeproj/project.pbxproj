@@ -77,6 +77,7 @@
 		FA8892C11C22E13B00496200 /* HistoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA8892BF1C22E13B00496200 /* HistoryViewController.xib */; };
 		FA8892C51C22E18A00496200 /* HistoryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8892C31C22E18A00496200 /* HistoryTableViewCell.m */; };
 		FA8892C61C22E18A00496200 /* HistoryTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA8892C41C22E18A00496200 /* HistoryTableViewCell.xib */; };
+		FA97363B1C2644900030243C /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA97363A1C2644900030243C /* WebViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -292,6 +293,8 @@
 		FA8892C21C22E18A00496200 /* HistoryTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryTableViewCell.h; sourceTree = "<group>"; };
 		FA8892C31C22E18A00496200 /* HistoryTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryTableViewCell.m; sourceTree = "<group>"; };
 		FA8892C41C22E18A00496200 /* HistoryTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HistoryTableViewCell.xib; sourceTree = "<group>"; };
+		FA9736391C2644900030243C /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		FA97363A1C2644900030243C /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -580,6 +583,8 @@
 				FA8892BF1C22E13B00496200 /* HistoryViewController.xib */,
 				81D814681C1AC65200612B6E /* CallCarViewController.h */,
 				81D814691C1AC65200612B6E /* CallCarViewController.m */,
+				FA9736391C2644900030243C /* WebViewController.h */,
+				FA97363A1C2644900030243C /* WebViewController.m */,
 			);
 			path = duducar;
 			sourceTree = "<group>";
@@ -879,6 +884,7 @@
 				FA8892B21C22906D00496200 /* WXApiResponseHandler.m in Sources */,
 				2AAFDC7E1C1A7DC700A5AEBD /* CostEstimationViewController.m in Sources */,
 				2AB581681C1C282900BFC7C7 /* base64.m in Sources */,
+				FA97363B1C2644900030243C /* WebViewController.m in Sources */,
 				2AAFDC731C186DCE00A5AEBD /* SearchResultTableViewCell.m in Sources */,
 				2AB5816B1C1C282900BFC7C7 /* MD5DataSigner.m in Sources */,
 				81D814581C1A8C3400612B6E /* DDLeftView.m in Sources */,
