@@ -158,6 +158,7 @@ public class BalanceActivity extends BaseActivity implements Handler.Callback{
                 showToast("正在刷新，请稍后...");
                 return;
             }
+            isRefreshing = true;
             if (isNetworkAvailable()) {
                 currentBillId = Long.MAX_VALUE;
 //                mHandler.sendEmptyMessageDelayed(HANDLE_REFRESH_OVER, 1000l);
