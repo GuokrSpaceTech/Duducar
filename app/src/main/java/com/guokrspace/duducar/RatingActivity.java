@@ -10,6 +10,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -198,7 +199,7 @@ public class RatingActivity extends ActionBarActivity {
         }
 
         statusTextView.setText("已完成");
-        if(mOrder.getStatus().equals("4")){//未支付
+        if(mOrder.getStatus().equals("4") && TextUtils.equals(mOrder.getPay_role(), "2")){//未支付
             findViewById(R.id.evaluate_layout).setVisibility(View.GONE);
             payButton.setVisibility(View.VISIBLE);
             payButton.setOnClickListener(new View.OnClickListener() {
