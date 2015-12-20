@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "login_logo.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "dudulogo-ios-120.png",
       "scale" : "2x"
     },
     {

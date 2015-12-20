@@ -204,7 +204,7 @@
                         <constraint firstAttribute="height" constant="50" id="u4u-JO-3qS"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="22"/>
-                    <state key="normal" title="支付宝支付39.9元">
+                    <state key="normal" title="确认支付">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <userDefinedRuntimeAttributes>

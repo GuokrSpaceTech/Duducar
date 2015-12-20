@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Driver.h"
 
 @interface PaymentViewController : UIViewController
 
@@ -19,6 +20,8 @@
 @property (strong, nonatomic) NSDictionary *activeOrder;
 
 @property (nonatomic, strong) NSString *chargePrice;
+
+@property (nonatomic, strong) Driver   *driver;
 @property (nonatomic, strong) NSString *mileage;
 @property (nonatomic, strong) NSString *lowSpeedTime;
 @property (weak, nonatomic) IBOutlet UIButton *alipayButton;

@@ -25,6 +25,9 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 -(void)viewDidLoad {
     [super viewDidLoad];
     
+    //导航条
+    self.navigationItem.title = @"历史订单";
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveResponseHandles:) name:responseNotificationName object:nil];
     
     //从数据库里读取数据
@@ -89,8 +92,27 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     
     cell.startLabel.text = [orderDict objectForKey:@"start"];
     cell.destLabel.text = [orderDict objectForKey:@"destination"];
-    cell.dateLabel.text = [NSString stringWithFormat:@"%ld",(long)[orderDict objectForKey:@"start_time"]];
-    cell.orderStatusLabel.text = [NSString stringWithFormat:@"%d",(int)[orderDict objectForKey:@"status"]];
+    
+   
+    NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateStyle:NSDateFormatterMediumStyle];
+    [formatter setTimeStyle:NSDateFormatterShortStyle];
+    [formatter setDateFormat:@"yyyy-MM-dd HH:MM"];
+    NSTimeInterval timestamp = [[orderDict objectForKey:@"start_time"] doubleValue];
+    NSDate *confromTimesp = [NSDate dateWithTimeIntervalSince1970:timestamp];
+    NSString *confromTimespStr = [formatter stringFromDate:confromTimesp];
+    cell.dateLabel.text = confromTimespStr;
+    
+    NSString *orderStatus = [NSString stringWithFormat:@"%d",[[orderDict objectForKey:@"status"] intValue] ];
+    
+    if([orderStatus isEqualToString:@"4"])
+    {
+        cell.orderStatusLabel.text = @"未支付订单";
+    }
+    else if([orderStatus isEqualToString:@"5"])
+    {
+        cell.orderStatusLabel.text = @"已完成";
+    }
     
     return cell;
 }

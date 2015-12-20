@@ -132,6 +132,11 @@
             android:configChanges="keyboardHidden|orientation"
             android:label="意见反馈"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".ui.WebViewActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:exported="false"
+            android:label="关于嘟嘟" />
 
         <service
             android:name=".net.DuduService"

@@ -198,7 +198,19 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 startActivity(new Intent(this, FeedBackActivity.class));
                 break;
             case R.id.cantact_us_layout:
-                showToast("联系我们");
+                Intent contactIntent = new Intent(this, WebViewActivity.class);
+                contactIntent.putExtra(WebViewActivity.WEBVIEW_TYPE, WebViewActivity.WEBVIEW_CONTACT);
+                startActivity(contactIntent);
+                break;
+            case R.id.about_us_layout:
+                Intent aboutIntent = new Intent(this, WebViewActivity.class);
+                aboutIntent.putExtra(WebViewActivity.WEBVIEW_TYPE, WebViewActivity.WEBVIEW_ABOUT);
+                startActivity(aboutIntent);
+                break;
+            case R.id.legal_items_layout:
+                Intent legalIntent = new Intent(this, WebViewActivity.class);
+                legalIntent.putExtra(WebViewActivity.WEBVIEW_TYPE, WebViewActivity.WEBVIEW_CLAUSE);
+                startActivity(legalIntent);
                 break;
             case R.id.confirm_button:
                 //清空用户数据

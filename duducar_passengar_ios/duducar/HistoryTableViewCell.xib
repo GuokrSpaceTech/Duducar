@@ -36,27 +36,22 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tNm-e9-Bdn">
-                                <rect key="frame" x="0.0" y="2" width="44" height="39"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="endIndicator" translatesAutoresizingMaskIntoConstraints="NO" id="tNm-e9-Bdn">
+                                <rect key="frame" x="0.0" y="0.0" width="44" height="36"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="44" id="DSa-ai-9Jo"/>
-                                    <constraint firstAttribute="height" constant="39" id="TTa-Fx-mb0"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="tNm-e9-Bdn" firstAttribute="leading" secondItem="KWB-kn-b1y" secondAttribute="leading" constant="8" id="1XO-58-VvG"/>
                             <constraint firstItem="oti-HY-Bpo" firstAttribute="centerY" secondItem="KWB-kn-b1y" secondAttribute="centerY" id="GS7-Wn-r0T"/>
-                            <constraint firstItem="tNm-e9-Bdn" firstAttribute="centerY" secondItem="KWB-kn-b1y" secondAttribute="centerY" id="ORM-4a-VF0"/>
+                            <constraint firstItem="tNm-e9-Bdn" firstAttribute="top" secondItem="KWB-kn-b1y" secondAttribute="top" id="PRB-5k-ldj"/>
                             <constraint firstItem="oti-HY-Bpo" firstAttribute="leading" secondItem="tNm-e9-Bdn" secondAttribute="trailing" constant="8" id="ZHc-De-50x"/>
                             <constraint firstAttribute="height" constant="44" id="eap-o6-mlO"/>
+                            <constraint firstAttribute="bottom" secondItem="tNm-e9-Bdn" secondAttribute="bottom" constant="8" id="o2z-cq-HYT" userLabel="bottom = endIndicator.bottom + 12"/>
+                            <constraint firstItem="tNm-e9-Bdn" firstAttribute="leading" secondItem="KWB-kn-b1y" secondAttribute="leading" id="piN-oP-FaP"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="1XO-58-VvG"/>
-                            </mask>
-                        </variation>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fvf-Ke-AMz" userLabel="start">
                         <rect key="frame" x="8" y="32" width="444" height="44"/>
@@ -67,41 +62,34 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="W5B-pY-EkL">
-                                <rect key="frame" x="0.0" y="3" width="44" height="39"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="startIndicator" translatesAutoresizingMaskIntoConstraints="NO" id="W5B-pY-EkL">
+                                <rect key="frame" x="0.0" y="8" width="44" height="36"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="44" id="1JJ-1F-OdH"/>
-                                    <constraint firstAttribute="height" constant="39" id="C8I-yY-s2h"/>
                                 </constraints>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="W5B-pY-EkL" firstAttribute="centerY" secondItem="Fvf-Ke-AMz" secondAttribute="centerY" id="Y3B-pg-TIB"/>
+                            <constraint firstItem="W5B-pY-EkL" firstAttribute="leading" secondItem="Fvf-Ke-AMz" secondAttribute="leading" id="FMG-B2-bIq"/>
+                            <constraint firstItem="W5B-pY-EkL" firstAttribute="top" secondItem="Fvf-Ke-AMz" secondAttribute="top" constant="8" id="Q3c-Rn-6H9" userLabel="startIndicator.top = top + 12"/>
+                            <constraint firstAttribute="bottom" secondItem="W5B-pY-EkL" secondAttribute="bottom" id="dnV-ci-kla"/>
                             <constraint firstAttribute="height" constant="44" id="m11-fs-zaL"/>
-                            <constraint firstItem="W5B-pY-EkL" firstAttribute="leading" secondItem="Fvf-Ke-AMz" secondAttribute="leading" constant="8" id="piw-RU-rB1"/>
                             <constraint firstItem="g9j-1L-eta" firstAttribute="leading" secondItem="W5B-pY-EkL" secondAttribute="trailing" constant="8" id="qph-YR-JgG"/>
                             <constraint firstItem="g9j-1L-eta" firstAttribute="centerY" secondItem="Fvf-Ke-AMz" secondAttribute="centerY" id="xDw-3f-Nkw"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="piw-RU-rB1"/>
-                            </mask>
-                        </variation>
                     </view>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="leadingMargin" secondItem="kvk-Zb-99c" secondAttribute="leading" id="7G9-ZW-106"/>
                     <constraint firstAttribute="trailingMargin" secondItem="KWB-kn-b1y" secondAttribute="trailing" id="EFD-Mi-500"/>
                     <constraint firstAttribute="leadingMargin" secondItem="KWB-kn-b1y" secondAttribute="leading" id="Tez-4n-vEn"/>
-                    <constraint firstAttribute="leadingMargin" secondItem="W5B-pY-EkL" secondAttribute="leading" id="UbF-R4-cSk"/>
-                    <constraint firstAttribute="leadingMargin" secondItem="tNm-e9-Bdn" secondAttribute="leading" id="blG-i0-Ppb"/>
                     <constraint firstItem="Fvf-Ke-AMz" firstAttribute="top" secondItem="kvk-Zb-99c" secondAttribute="bottom" constant="4" id="dMZ-8k-LvQ"/>
                     <constraint firstAttribute="leadingMargin" secondItem="Fvf-Ke-AMz" secondAttribute="leading" id="heg-6B-PUB"/>
                     <constraint firstAttribute="topMargin" secondItem="kvk-Zb-99c" secondAttribute="top" id="nRp-uQ-3t2"/>
                     <constraint firstAttribute="trailingMargin" secondItem="Fvf-Ke-AMz" secondAttribute="trailing" id="rey-qc-ykS"/>
                     <constraint firstItem="Spj-eo-EFG" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="xno-rq-Ow0"/>
-                    <constraint firstItem="KWB-kn-b1y" firstAttribute="top" secondItem="Fvf-Ke-AMz" secondAttribute="bottom" constant="4" id="yWv-6n-AZM"/>
+                    <constraint firstItem="KWB-kn-b1y" firstAttribute="top" secondItem="Fvf-Ke-AMz" secondAttribute="bottom" constant="4" id="yWv-6n-AZM" userLabel="dest.top = start.bottom"/>
                 </constraints>
             </tableViewCellContentView>
             <constraints>
@@ -116,4 +104,8 @@
             <point key="canvasLocation" x="216" y="323"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="endIndicator" width="35" height="139"/>
+        <image name="startIndicator" width="31" height="137"/>
+    </resources>
 </document>

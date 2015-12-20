@@ -25,6 +25,8 @@
 
     BOOL isDown; //是否是向下滑
     
+    BMKUserLocation *currentUserLocation;
+    
     NSString *orderStatus;
 }
 @end
@@ -38,8 +40,10 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     /*
      * Init UI
      */
+    //导航条
     UIBarButtonItem * leftItem = [[UIBarButtonItem alloc]initWithTitle:@"取消叫车" style:UIBarButtonItemStyleDone target:self action:@selector(back:)];
     self.navigationItem.leftBarButtonItem = leftItem;
+    self.navigationItem.title = @"正在叫车......";
     
     _mapView = [[BMKMapView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
     _mapView.zoomLevel = 14;
@@ -122,7 +126,18 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         
         //处理订单状态 '1-订单初始化 2-接单 3-开始 4-结束 5-取消’,
         orderStatus = [self.activeOrder objectForKey:@"order_status"];
-        
+        if([orderStatus isEqualToString:@"2"])
+        {
+            self.navigationItem.title = @"司机已经接单";
+        }
+        else if([orderStatus isEqualToString:@"3"])
+        {
+            self.navigationItem.title = @"乘客已经上车";
+        }
+        else if([orderStatus isEqualToString:@"3"])
+        {
+            self.navigationItem.title = @"已经到达目的地";
+        }
     }
     else if(_startLocation!=nil && _endLocation!=nil)
     {
@@ -227,12 +242,34 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     
     [[DDSocket currentSocket] sendRequest:param];
 }
-
+#pragma mark
+#pragma mark == MapView Delegate
+-(BMKAnnotationView *)mapView:(BMKMapView *)mapView viewForAnnotation:(id<BMKAnnotation>)annotation
+{
+    if ([annotation isKindOfClass:[BMKPointAnnotation class]]) {
+        
+        BMKPinAnnotationView *newAnnotationView = [[BMKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"car"];
+        
+        newAnnotationView.pinColor = BMKPinAnnotationColorPurple;
+        
+        newAnnotationView.animatesDrop = NO;// 设置该标注点动画显示
+        
+        newAnnotationView.annotation=annotation;
+        
+        newAnnotationView.image = [UIImage imageNamed:@"car_icon"];   //把大头针换成别的图片
+        
+        return newAnnotationView;
+    }
+    
+    return nil;
+}
 - (void)mapViewDidFinishLoading:(BMKMapView *)mapView
 {
     CLLocationCoordinate2D  coord =_locService.userLocation.location.coordinate;
     _mapView.centerCoordinate = coord;
 }
+
+#pragma mark
 #pragma mark == Location Service Delegate
 
 - (void)didUpdateUserHeading:(BMKUserLocation *)userLocation
@@ -250,6 +287,9 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     [_mapView updateLocationData:userLocation];
     CLLocationCoordinate2D  coord =_locService.userLocation.location.coordinate;
     [_mapView setCenterCoordinate:coord animated:YES];
+    
+    //保存全局变量
+    currentUserLocation = userLocation;
 }
 
 
@@ -312,8 +352,25 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     }
     else if([command isEqualToString:@"current_charge"])
     {
+        NSString *currentCharge;
+        NSString *currentMileage;
         if([[responseDict objectForKey:@"current_charge"] isKindOfClass:[NSString class]])
-            NSLog(@"Current Charge is %@",[responseDict objectForKey:@"current_charge"]);
+        {
+            currentCharge = [responseDict objectForKey:@"current_charge"];
+        }
+        if([[responseDict objectForKey:@"current_mile"] isKindOfClass:[NSString class]])
+        {
+            currentMileage = [responseDict objectForKey:@"current_mile"];
+        }
+        //添加标注
+        if(currentUserLocation)
+        {
+            BMKPointAnnotation *pointAnnotation = [[BMKPointAnnotation alloc]init];
+            pointAnnotation.coordinate = currentUserLocation.location.coordinate;
+            pointAnnotation.title = [NSString stringWithFormat:@"当前里程%@, 当前金额:%@", currentMileage, currentCharge];
+            [_mapView addAnnotation:pointAnnotation];
+        }
+        
     }
     else if([command isEqualToString:@"order_end"])
     {
@@ -325,6 +382,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
             payVC.chargePrice = [responseDict objectForKey:@"current_charge"];
             payVC.lowSpeedTime = [responseDict objectForKey:@"low_speed_time"];
             payVC.activeOrder = responseDict;
+            payVC.driver = self.orderDriver;
             [self.navigationController pushViewController:payVC animated:YES];
         }
     }
