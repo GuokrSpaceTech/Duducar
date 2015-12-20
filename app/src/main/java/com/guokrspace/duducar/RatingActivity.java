@@ -116,7 +116,7 @@ public class RatingActivity extends ActionBarActivity {
         statusTextView = (TextView) findViewById(R.id.order_status_textview);
 
         String comments = (String) SharedPreferencesUtils.getParam(context, SharedPreferencesUtils.BASEINFO_COMMENTS, "");
-        Log.e("hyman_raing", comments);
+//        Log.e("hyman_raing", comments);
         List<IdAndValueModel> commentModels1 = new Gson().fromJson(comments, new TypeToken<ArrayList<IdAndValueModel>>() {}.getType());
         commentModels.addAll(commentModels1);
 
@@ -199,6 +199,7 @@ public class RatingActivity extends ActionBarActivity {
             priceTextView.setText(mOrder.getSumprice());
         }
 
+        statusTextView.setText("已完成");
         if(mOrder.getStatus().equals("4")){//未支付
             findViewById(R.id.evaluate_layout).setVisibility(View.GONE);
             payButton.setVisibility(View.VISIBLE);
@@ -211,9 +212,10 @@ public class RatingActivity extends ActionBarActivity {
                     finish();
                 }
             });
+            statusTextView.setText("未支付");
         }
 
-        if(mOrder.getRating() != 0){// 已支付 已评价
+        if(!"0".equals(mOrder.getRating())){// 已支付 已评价
             findViewById(R.id.evaluate_layout).setVisibility(View.GONE);
         }
 
@@ -221,7 +223,7 @@ public class RatingActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 //TODO  添加点击了的评论到ARRAYLIST
-                String comment ="";
+                String comment = "";
                 if (selectedTags.size() > 0) {
                     Iterator<IdAndValueModel> iterator = selectedTags.iterator();
                     while (iterator.hasNext()) {
@@ -231,7 +233,7 @@ public class RatingActivity extends ActionBarActivity {
                 comment = comment.substring(0, comment.length() - 1);
                 Log.e("hyman_rating", comment);
 
-                SocketClient.getInstance().sendRatingRequest(mOrder.getId().intValue(), (int)ratingBarBig.getRating(), comment, new ResponseHandler(Looper.getMainLooper()) {
+                SocketClient.getInstance().sendRatingRequest(Integer.parseInt(mOrder.getId()), (int) ratingBarBig.getRating(), comment, new ResponseHandler(Looper.getMainLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
                         WinToast.toast(context, "谢谢您的评价");

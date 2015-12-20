@@ -35,6 +35,12 @@ public class SharedPreferencesUtils {
 
 	public static final String BASEINFO_CANCEL_REASONS = "cancel_reasons";
 
+	public static final String URL_ABOUT = "webview_about";
+
+	public static final String URL_HELP = "webview_help";
+
+	public static final String URL_CLAUSE = "webview_clause";
+
 	/**
 	 * 保存单个数据的方法，我们需要拿到保存数据的具体类型，然后根据类型调用不同的保存方法
 	 * 

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.guokrspace.duducar.AppExitUtil;
 import com.guokrspace.duducar.PayCostActivity;
@@ -86,7 +87,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 					Map<String, String> params = new HashMap<>();
 					final String orderNum = (String) SharedPreferencesUtils.getParam(this, SharedPreferencesUtils.OUT_TRADE_NO, "");
 					params.put("orderNum", orderNum);
-					Log.e("hyman_sid12", (String) SharedPreferencesUtils.getParam(this, SharedPreferencesUtils.COMFIRM_TRADE_RESULT_SID, ""));
+//					Log.e("hyman_sid12", (String) SharedPreferencesUtils.getParam(this, SharedPreferencesUtils.COMFIRM_TRADE_RESULT_SID, ""));
 					params.put("sid", (String) SharedPreferencesUtils.getParam(this, SharedPreferencesUtils.COMFIRM_TRADE_RESULT_SID, ""));
 					final String finalMsg = msg;
 					new OkHttpRequest.Builder().url(HttpUrls.getUrl(HttpUrls.WX_PAY_GETWXPAYRESULT)).params(params).post(new ResultCallback<TradeResult>() {
@@ -133,7 +134,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 							dialog.show();
 						}
 					});
-					break;
+					return;
 				case -1:
 					msg = "支付失败！";
 					break;
@@ -144,7 +145,8 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 					msg = "支付失败！";
 					break;
 			}
-
+			Toast.makeText(WXPayEntryActivity.this, msg, Toast.LENGTH_SHORT).show();
+			finish();
 		}
 	}
 

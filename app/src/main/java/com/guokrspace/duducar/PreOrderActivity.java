@@ -61,6 +61,7 @@ import com.guokrspace.duducar.communication.DuduService;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
 import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
+import com.guokrspace.duducar.communication.http.model.WebViewUrls;
 import com.guokrspace.duducar.communication.message.NearByCars;
 import com.guokrspace.duducar.communication.message.OrderDetail;
 import com.guokrspace.duducar.communication.message.SearchLocation;
@@ -397,8 +398,8 @@ public class PreOrderActivity extends AppCompatActivity
                     public void onSuccess(String messageBody) {
 
                         JSONObject noPaid = JSONObject.parseObject(messageBody);
-                        if(((String)noPaid.get("order_status")).equals("1")){//存在未支付的账单
-                            final OrderDetail notPaidOrder = new Gson().fromJson((String)noPaid.get("order"), OrderDetail.class);
+                        if (((String) noPaid.get("order_status")).equals("1")) {//存在未支付的账单
+                            final OrderDetail notPaidOrder = new Gson().fromJson((String) noPaid.get("order"), OrderDetail.class);
                             final MaterialDialog dialog = new MaterialDialog(PreOrderActivity.this);
                             dialog.setTitle("账单欠费").setMessage("您还有支付的订单, 请尽快完成支付, 否则将无法继续为您提供服务!")
                                     .setCanceledOnTouchOutside(false).setNegativeButton("稍后支付", new View.OnClickListener() {
@@ -474,10 +475,10 @@ public class PreOrderActivity extends AppCompatActivity
             public void onSuccess(String messageBody) {
 
                 JSONObject noPaid = JSONObject.parseObject(messageBody);
-                if(((String)noPaid.get("order_status")).equals("1")){//存在未支付的账单
+                if (((String) noPaid.get("order_status")).equals("1")) {//存在未支付的账单
 //                        final OrderDetail notPaidOrder = FastJsonTools.getObject((String)noPaid.get("order"), OrderDetail.class);
-                    Log.e("daddy fang", (String)noPaid.get("order"));
-                    final OrderDetail notPaidOrder = new Gson().fromJson((String)noPaid.get("order"), OrderDetail.class);
+                    Log.e("daddy fang", (String) noPaid.get("order"));
+                    final OrderDetail notPaidOrder = new Gson().fromJson((String) noPaid.get("order"), OrderDetail.class);
 //                        Log.e("daddy order", notPaidOrder.toString());
                     final MaterialDialog dialog = new MaterialDialog(PreOrderActivity.this);
                     dialog.setCanceledOnTouchOutside(false);
@@ -685,6 +686,9 @@ public class PreOrderActivity extends AppCompatActivity
         if (mCurrentMarker != null) mCurrentMarker.recycle();
         mLocClient.stop();
 
+//        sidingMenu.
+        ViewGroup viewGroup = (ViewGroup) getWindow().getDecorView();
+        viewGroup.removeView(sidingMenu);
         super.onDestroy();
     }
 
@@ -732,6 +736,9 @@ public class PreOrderActivity extends AppCompatActivity
                             String comments = "";
                             String complaints = "";
                             String cancel_reasons = "";
+                            String help_url = "";
+                            String about_url = "";
+                            String clause_url = "";
                             if (!TextUtils.isEmpty(messageBody)) {
                                 JSONObject responseObj = JSON.parseObject(messageBody);
                                 if (responseObj != null) {
@@ -747,10 +754,23 @@ public class PreOrderActivity extends AppCompatActivity
                                         JSONArray reasonList = responseObj.getJSONArray("cancel_order_reason");
                                         cancel_reasons = reasonList.toJSONString();
                                     }
+                                    JSONObject webviewObj = null;
+                                    if (responseObj.containsKey("webview")) {
+                                        webviewObj = responseObj.getJSONObject("webview");
+                                    }
+                                    if (webviewObj != null) {
+                                        help_url = webviewObj.getString("help");
+                                        about_url = webviewObj.getString("about");
+                                        clause_url = webviewObj.getString("clause");
+                                    }
+
                                     Map<String, Object> baseinfo = new HashMap<>();
                                     baseinfo.put(SharedPreferencesUtils.BASEINFO_COMMENTS, comments);
                                     baseinfo.put(SharedPreferencesUtils.BASEINFO_COMPLAINTS, complaints);
                                     baseinfo.put(SharedPreferencesUtils.BASEINFO_CANCEL_REASONS, cancel_reasons);
+                                    baseinfo.put(SharedPreferencesUtils.URL_HELP, help_url);
+                                    baseinfo.put(SharedPreferencesUtils.URL_ABOUT, about_url);
+                                    baseinfo.put(SharedPreferencesUtils.URL_CLAUSE, clause_url);
                                     SharedPreferencesUtils.setParams(mContext, baseinfo);
                                 }
                             }

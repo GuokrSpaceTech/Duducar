@@ -2,6 +2,27 @@
 <items version="2" >
 
     <item
+        jar="/Users/hyman/Duducar/driver_pro/app/build/intermediates/exploded-aar/com.github.dexafree/materiallist/3.1.2/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="07cb37d60b2949131813d532fea644b2cd7d9a63">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/classes-4f7a386a6f771270571ee2608af4bc8997645ba3.jar" />
+    </item>
+    <item
+        jar="/Users/hyman/Duducar/driver_pro/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/23.1.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d96886efea7cc74fbb3abd0e3b51d5638fc57be0">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/classes-ee09126eba3a810033488c801492b4acddf8113d.jar" />
+    </item>
+    <item
+        jar="/Users/hyman/.gradle/caches/modules-2/files-2.1/com.squareup.picasso/picasso/2.5.2/7446d06ec8d4f7ffcc53f1da37c95f200dcb9387/picasso-2.5.2.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="7446d06ec8d4f7ffcc53f1da37c95f200dcb9387">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/picasso-2.5.2-ff84f03a2dd52e64be7e86c0258591593bf4b012.jar" />
+    </item>
+    <item
         jar="/Users/hyman/Duducar/driver_pro/app/build/intermediates/exploded-aar/driver_pro/indicator_library/unspecified/jars/classes.jar"
         jumboMode="false"
         revision="23.0.1"

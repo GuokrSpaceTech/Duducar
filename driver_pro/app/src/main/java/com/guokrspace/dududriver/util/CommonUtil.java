@@ -304,4 +304,19 @@ public class CommonUtil {
         return mobiles;
     }
 
+    /*
+     * 检验输入的金额是否符合格式要求，小数点后最多两位
+     * @param balance
+     * @return
+     */
+    public static boolean checkBalanceFormat(String balance) {
+        String reg = "^(([1-9]\\d*)|0)(\\.\\d{1,2})?$";
+        Pattern p = Pattern.compile(reg);
+        Matcher matcher = p.matcher(balance);
+        if (matcher.matches()) {
+            return true;
+        }
+        return false;
+    }
+
 }
