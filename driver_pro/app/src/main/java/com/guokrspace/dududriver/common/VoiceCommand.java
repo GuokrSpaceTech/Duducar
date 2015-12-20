@@ -34,4 +34,6 @@ public class VoiceCommand {
     public static final String LAST_TIME_EXIT_EXCEPTION = "检测到异常退出,正在进入未完成订单";
     public static final String LAST_TIME_ORDER_NOT_END = "检测到非正常结束的订单,正在进入";
     public static final String LAST_TIME_BILL_NOT_SENT = "检测到异常退出, 账单未发送";
+
+    public static final String ORDER_STATUS_EXCEPTION = "订单状态异常, 请联系客服";
 }

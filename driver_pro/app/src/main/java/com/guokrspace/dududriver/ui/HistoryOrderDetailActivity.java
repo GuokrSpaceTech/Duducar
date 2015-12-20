@@ -58,8 +58,7 @@ public class HistoryOrderDetailActivity extends BaseActivity implements Handler.
     LinearLayout checkDetailLayout;
     @Bind(R.id.substitute_pay)
     ButtonFlat substitutePayButton;
-    @OnClick(R.id.substitute_pay)
-    public void substittePay(){
+    @OnClick(R.id.substitute_pay)  void substittePay(){
         //向服务器发起代付请求,无论成功失败都跳转到代付页面.
         SocketClient.getInstance().checkIfPaid(orderDetail.getId().intValue(), new ResponseHandler(Looper.myLooper()) {
             @Override

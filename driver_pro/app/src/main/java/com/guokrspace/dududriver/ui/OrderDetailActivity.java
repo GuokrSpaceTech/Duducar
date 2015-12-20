@@ -99,6 +99,10 @@ public class OrderDetailActivity extends BaseActivity{
 
                     @Override
                     public void onFailure(String error) {
+                        if(error.contains("not Order")){ // 订单异常
+                            VoiceUtil.startSpeaking(VoiceCommand.ORDER_STATUS_EXCEPTION);
+                            finish();
+                        }
                     }
 
                     @Override

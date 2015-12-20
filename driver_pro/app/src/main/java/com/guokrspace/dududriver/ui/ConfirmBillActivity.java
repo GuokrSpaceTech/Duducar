@@ -38,6 +38,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -194,9 +195,13 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
                     @Override
                     public void onClick(View v) {
 //                        CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
-//                        VoiceUtil.startSpeaking(VoiceCommand.CONTINUE_WAIT);
+//                        VoiceUtil.startSpeaking(VoiceCommand.CONTINUE_WAIT)
+                        final double addPriced[] = new double[]{
+                                new BigDecimal(addPrice[0] / 100d).setScale(2, RoundingMode.HALF_UP).doubleValue(),
+                                new BigDecimal(addPrice[1] / 100d).setScale(2, RoundingMode.HALF_UP).doubleValue(),
+                                new BigDecimal(addPrice[2] / 100d).setScale(2, RoundingMode.HALF_UP).doubleValue()};
 
-                        SocketClient.getInstance().endOrder(price + "", curDistance + "", lowSpeedTime + "", addPrice[0] + "", addPrice[1] + "", addPrice[2] + "", new ResponseHandler(Looper.myLooper()) {
+                        SocketClient.getInstance().endOrder(price + "", curDistance + "", lowSpeedTime + "", addPriced[0] + "", addPriced[1] + "", addPriced[2] + "", new ResponseHandler(Looper.myLooper()) {
                             @Override
                             public void onSuccess(String messageBody) {
                                 Log.e("PickUpPassengerAct", "success " + messageBody);
@@ -212,9 +217,9 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
                                     intent.putExtra("sumprice", sumPrice);
                                     intent.putExtra("orderNum", orderNum);
                                     intent.putExtra("lowcost", lowcost);
-                                    intent.putExtra("addPrice1", addPrice[0]/100d);
-                                    intent.putExtra("addPrice2", addPrice[1]/100d);
-                                    intent.putExtra("addPrice3", addPrice[2]/100d);
+                                    intent.putExtra("addPrice1", addPriced[0]);
+                                    intent.putExtra("addPrice2", addPriced[1]);
+                                    intent.putExtra("addPrice3", addPriced[2]);
                                     startActivity(intent);
                                     finish();
                                     dialog.dismiss();
@@ -229,6 +234,10 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
                             @Override
                             public void onFailure(String error) {
                                 Log.e("PickUpPassengerAct", "end order failure" + error);
+                                if(error.contains("not Order")){ // 订单异常
+                                    VoiceUtil.startSpeaking(VoiceCommand.ORDER_STATUS_EXCEPTION);
+                                    finish();
+                                }
                                 Toast.makeText(context, "正在发送账单...", Toast.LENGTH_SHORT);
                                 btnConfirm.callOnClick();
                             }

@@ -357,6 +357,8 @@ public class SocketClient {
             check.put("cmd", "pay_check");
             check.put("order_id", orderid);
             check.put("role", "1");
+
+            ret = sendMessage(check, handler, 5);
         } catch (JSONException e){
             e.printStackTrace();
         }
