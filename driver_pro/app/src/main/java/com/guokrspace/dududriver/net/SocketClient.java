@@ -326,7 +326,7 @@ public class SocketClient {
         return ret;
     }
 
-    public int endOrder(String price, String add1, String add2, String add3, String mileage, String lowSpeed, ResponseHandler handler){
+    public int endOrder(String price, String mileage, String lowSpeed, String add1, String add2, String add3, ResponseHandler handler){
         int ret = -1;
         JSONObject edOrder = new JSONObject();
         try {
@@ -357,6 +357,8 @@ public class SocketClient {
             check.put("cmd", "pay_check");
             check.put("order_id", orderid);
             check.put("role", "1");
+
+            ret = sendMessage(check, handler, 5);
         } catch (JSONException e){
             e.printStackTrace();
         }

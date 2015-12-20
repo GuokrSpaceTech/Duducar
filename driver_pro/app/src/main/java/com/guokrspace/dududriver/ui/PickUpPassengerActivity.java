@@ -2,14 +2,21 @@ package com.guokrspace.dududriver.ui;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.net.Uri;
+import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v7.widget.Toolbar;
@@ -55,6 +62,7 @@ import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.common.VoiceCommand;
 import com.guokrspace.dududriver.model.OrderItem;
+import com.guokrspace.dududriver.net.ChargeService;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
 import com.guokrspace.dududriver.net.message.MessageTag;
@@ -138,7 +146,21 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
 
             @Override
             public void onFailure(String error) {
-
+                if(error.contains("not Order")){ // 订单异常
+                    VoiceUtil.startSpeaking(VoiceCommand.ORDER_STATUS_EXCEPTION);
+                    mBaiduMap.setMyLocationEnabled(false);
+                    if (mMapview != null) {
+                        mMapview.onDestroy();
+                        mMapview = null;
+                    }
+                    if(isNavigationNow){
+                        BNRouteGuideManager.getInstance().onDestroy();
+                    }
+                    if(timer != null){
+                        timer.cancel();
+                    }
+                    finish();
+                }
             }
 
             @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
@@ -153,10 +175,11 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
 
     }
     private Context context;
-    private Handler mHandler;
+    public Handler mHandler;
 
     private double curCharge = 0;
-    private final int UPDATE_CHARGE = 0x101;
+    public final int UPDATE_CHARGE = 0x101;
+    public final int ORDER_NOT_EXIST = 0x102;
 
     private OrderItem orderItem;
     private BDLocation mLoaction;
@@ -222,23 +245,33 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
 
             case UPDATE_CHARGE:
                 Log.e("daddy", "current charge");
-                double price = (double)msg.getData().get("charge");
+                double price = CommonUtil.curPrice;
                 if(curCharge <= price) {
                     curCharge = new BigDecimal(price).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
                     btnConfirm.setText(curCharge + "元   到达目的地");
-                    SocketClient.getInstance().sendCurrentChargeDetail(curCharge, curDistance/1000, lowSpeedTime, new ResponseHandler(Looper.myLooper()) {
-                        @Override
-                        public void onSuccess(String messageBody) {
-                        }
-                        @Override
-                        public void onFailure(String error) {
-                        }
-                        @Override
-                        public void onTimeout() {
-                        }
-                    });
+//                    SocketClient.getInstance().sendCurrentChargeDetail(curCharge, curDistance/1000, lowSpeedTime, new ResponseHandler(Looper.myLooper()) {
+//                        @Override
+//                        public void onSuccess(String messageBody) {
+//                        }
+//                        @Override
+//                        public void onFailure(String error) {
+//                            if(error.contains("not Order")){ // 订单异常
+//                                VoiceUtil.startSpeaking(VoiceCommand.ORDER_STATUS_EXCEPTION);
+//                                unbindService(connCharge);
+//                                finish();
+//                            }
+//                        }
+//                        @Override
+//                        public void onTimeout() {
+//                        }
+//                    });
                 }
                 Log.e("daddy", "current charge");
+                break;
+            case ORDER_NOT_EXIST://订单出现异常
+                VoiceUtil.startSpeaking(VoiceCommand.ORDER_STATUS_EXCEPTION);
+                stopService(chargeService);
+                finish();
                 break;
             case MessageTag.MESSAGE_UPDATE_TRACK:
                 Log.e("daddy", "start track");
@@ -289,21 +322,21 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
     }
 
     private MyLocationConfiguration.LocationMode mCurrentMode;
-    private double preLat;
-    private double preLng;
-    private double preDis;
-    private double curDistance;
-    private int lowSpeedTime;
-    private int minutes;
-    private int times;
-    private double secDistance;
-    private double tmpDistance;
-    private double LOWSPEEDDISTANACE = 333.3; // m/min
-    private double STRANGEDISTANCE = 33.3; // m/s
-    private Message msg;
-    private Bundle bundle;
-    private Timer calTimer;
-    private TimerTask calTimerTask;
+//    private double preLat;
+//    private double preLng;
+//    private double preDis;
+//    private double curDistance;
+//    private int lowSpeedTime;
+//    private int minutes;
+//    private int times;
+//    private double secDistance;
+//    private double tmpDistance;
+//    private double LOWSPEEDDISTANACE = 333.3; // m/min
+//    private double STRANGEDISTANCE = 33.3; // m/s
+//    private Message msg;
+//    private Bundle bundle;
+//    private Timer calTimer;
+//    private TimerTask calTimerTask;
 
 //    private void startRanging(){
 //        curDistance = 100000.0d;
@@ -318,85 +351,123 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
 //        }
 //    }
 
+    private Intent chargeService ;
+
     private void startCharging(){
             //TODO: to charge
-        curDistance = 0.0d + baseDistance;
-        lowSpeedTime = 0 + baseLowTime;
-        minutes = 0;
-        preLat = CommonUtil.getCurLat();
-        preLng = CommonUtil.getCurLng();
+//        curDistance = 0.0d + baseDistance;
+//        lowSpeedTime = 0 + baseLowTime;
+//        minutes = 0;
+//        preLat = CommonUtil.getCurLat();
+//        preLng = CommonUtil.getCurLng();
+        Log.e("daddy", "start to charge");
+        chargeService = new Intent(PickUpPassengerActivity.this, ChargeService.class);
+        CommonUtil.curBaseDistance = baseDistance;
+        CommonUtil.curBaseLowTime = baseLowTime;
+        startService(chargeService);
+        Log.e("daddy", "end to charge");
 
-
-
-        times = 0;
-        preDis = 0;
-        secDistance=0d;
-        tmpDistance=0d;
-        calTimer = new Timer();
-        calTimerTask = new TimerTask() {
-            @Override
-            public void run() {
-                Log.e("daddy", "task is runnin as " + CommonUtil.getCurrentStatus());
-
-                secDistance = DistanceUtil.getDistance(new LatLng(preLat, preLng), new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng()));
-                if ((secDistance * 1000 / (System.currentTimeMillis() - CommonUtil.getCurTime())) >= STRANGEDISTANCE) { //这一次的距离跳转异常
-                    //drop it
-//                    tmpDistance += preDis;
-                    tmpDistance += secDistance;
-                    preDis = secDistance;
-                } else {
-                    tmpDistance += secDistance;
-                    preDis = secDistance;
-                }
-
-                if (CommonUtil.getCurrentStatus() == Constants.STATUS_RUN) {//开车中
-                    if (++times == 12) {//1 min
-                        minutes++;
-                        if (tmpDistance <= LOWSPEEDDISTANACE) {//这一分钟内是低速行驶
-                            lowSpeedTime++;
-                        }
-
-                        curDistance += tmpDistance;
-                        tmpDistance = 0;
-                        times = 0;
-                    }
-
-                    preLat = CommonUtil.getCurLat();
-                    preLng = CommonUtil.getCurLng();
-                    //TODO:通知界面更新,发送到乘客端
-                    double price = CommonUtil.countPrice(curDistance, lowSpeedTime);
-//                    if(price > curCharge){
-                        Bundle bundle = new Bundle();
-                        bundle.putDouble("charge", price);
-                        Message msg = new Message();
-                        msg.what = UPDATE_CHARGE;
-                        msg.setData(bundle);
-                        Log.e("daddy", "send message update");
-                        mHandler.sendMessage(msg);
+//        times = 0;
+//        preDis = 0;
+//        secDistance=0d;
+//        tmpDistance=0d;
+//        calTimer = new Timer();
+//        calTimerTask = new TimerTask() {
+//            @Override
+//            public void run() {
+//                Log.e("daddy", "task is runnin as " + CommonUtil.getCurrentStatus());
+//
+//                secDistance = DistanceUtil.getDistance(new LatLng(preLat, preLng), new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng()));
+//                if ((secDistance * 1000 / (System.currentTimeMillis() - CommonUtil.getCurTime())) >= STRANGEDISTANCE) { //这一次的距离跳转异常
+//                    //drop it
+//                    tmpDistance += secDistance;
+//                    preDis = secDistance;
+//                } else {
+//                    tmpDistance += secDistance;
+//                    preDis = secDistance;
+//                }
+//
+//                if (CommonUtil.getCurrentStatus() == Constants.STATUS_RUN) {//开车中
+//                    if (++times == 12) {//1 min
+//                        minutes++;
+//                        if (tmpDistance <= LOWSPEEDDISTANACE) {//这一分钟内是低速行驶
+//                            lowSpeedTime++;
+//                        }
+//
+//                        curDistance += tmpDistance;
+//                        tmpDistance = 0;
+//                        times = 0;
 //                    }
-                } else { //非法状态下停止
-                    Log.e("daddy", "stop charge");
-                    stopCharging();
-                }
-            }
-        };
-        calTimer.schedule(calTimerTask, 1000, 5000);
+//
+//                    preLat = CommonUtil.getCurLat();
+//                    preLng = CommonUtil.getCurLng();
+//                    //TODO:通知界面更新,发送到乘客端
+//                    double price = CommonUtil.countPrice(curDistance, lowSpeedTime);
+////                    if(price > curCharge){
+//                        Bundle bundle = new Bundle();
+//                        bundle.putDouble("charge", price);
+//                        Message msg = new Message();
+//                        msg.what = UPDATE_CHARGE;
+//                        msg.setData(bundle);
+//                        Log.e("daddy", "send message update");
+//                        mHandler.sendMessage(msg);
+////                    }
+//                } else { //非法状态下停止
+//                    Log.e("daddy", "stop charge");
+//                    stopCharging();
+//                }
+//            }
+//        };
+//        calTimer.schedule(calTimerTask, 1000, 5000);
     }
 
-    private void stopCharging(){
-        Log.e("daddy", "start to stop");
-        if(calTimer != null){
-            calTimer.cancel();
-            calTimer = null;
+//    private void stopCharging(){
+//        Log.e("daddy", "start to stop");
+//        if(calTimer != null){
+//            calTimer.cancel();
+//            calTimer = null;
+//        }
+//        if(calTimerTask != null){
+//            calTimerTask.cancel();
+//            calTimerTask = null;
+//        }
+//        if(isNavigationNow){
+//            BNRouteGuideManager.getInstance().forceQuitNaviWithoutDialog();
+//            isNavigationNow = false;
+//        }
+//    }
+
+    ChargeServiceReceiver receiver = new ChargeServiceReceiver();
+
+    public class ChargeServiceReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            switch (action) {
+                case Constants.SERVICE_ACTION_UPDATE_CHARGE:
+                    // 更新收费消息,
+                    mHandler.sendEmptyMessage(UPDATE_CHARGE);
+                    break;
+                case Constants.SERVICE_ACTION_ORDER_NOT_EXISTS:
+                    //订单不存在
+                    mHandler.sendEmptyMessage(ORDER_NOT_EXIST);
+//                    abortBroadcast();
+                    break;
+                default:
+                    return;
+            }
         }
-        if(calTimerTask != null){
-            calTimerTask.cancel();
-            calTimerTask = null;
-        }
-        if(isNavigationNow){
-            BNRouteGuideManager.getInstance().forceQuitNaviWithoutDialog();
-            isNavigationNow = false;
-        }
+    }
+
+    private void registerBroadcastReceiver(){
+        receiver = new ChargeServiceReceiver();
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constants.SERVICE_ACTION_UPDATE_CHARGE);
+        filter.addAction(Constants.SERVICE_ACTION_ORDER_NOT_EXISTS);
+        filter.setPriority(1000);
+        registerReceiver(receiver, filter);
     }
 
     @Override
@@ -433,9 +504,9 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                         //之前走过的距离
                         double midDistance = DistanceUtil.getDistance(new LatLng(baseLat, baseLng), new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng()));
 
-                        if ((midDistance * 1000 / (System.currentTimeMillis() - baseTime)) >= STRANGEDISTANCE) { //这一次的距离跳转异常
+                        if ((midDistance * 1000 / (System.currentTimeMillis() - baseTime)) >= Constants.STRANGEDISTANCE) { //这一次的距离跳转异常
                             //drop it, use max distance
-                            baseDistance += STRANGEDISTANCE * (System.currentTimeMillis() - baseTime) / 1000;
+                            baseDistance += Constants.STRANGEDISTANCE * (System.currentTimeMillis() - baseTime) / 1000;
                         } else {
                             baseDistance += midDistance;
                         }
@@ -525,6 +596,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
     private void initBaiduMap(){
 
         mBaiduMap = mMapview.getMap();
+
         mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);//普通地图
         // 隐藏缩放控件
         int childCount = mMapview.getChildCount();
@@ -563,6 +635,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         SharedPreferencesUtils.setParam(PickUpPassengerActivity.this, Constants.PREFERENCE_KEY_ORDER_STATUS, Constants.STATUS_RUN);
+        registerBroadcastReceiver();
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -598,14 +671,22 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
             @Override
             public void onClick(View v) {
                 //TODO:无论如何都要结束订单
-                stopCharging();
+                unregisterReceiver(receiver);
+                if(chargeService != null) {
+                    stopService(chargeService);
+                }
+                if(isNavigationNow){
+//                    BNRouteGuideManager.getInstance().forceQuitNaviWithoutDialog();
+                    isNavigationNow = false;
+                }
                 SharedPreferencesUtils.setParam(PickUpPassengerActivity.this, Constants.PREFERENCE_KEY_ORDER_STATUS, Constants.STATUS_REACH);
-//                SharedPreferencesUtils.setParam(PickUpPassengerActivity.this, Constants.TO, );
+
+                SharedPreferencesUtils.setParam(PickUpPassengerActivity.this, Constants.PREFERENCE_KEY_DRIVER_TOTAL_ORDER, (Integer.parseInt((String)SharedPreferencesUtils.getParam(PickUpPassengerActivity.this, Constants.PREFERENCE_KEY_DRIVER_TOTAL_ORDER, "0")) + 1) + "");
 
                 Intent intent = new Intent(PickUpPassengerActivity.this, ConfirmBillActivity.class);
                 intent.putExtra("orderItem", orderItem);
-                intent.putExtra("mileage", curDistance);
-                intent.putExtra("lowspeed", lowSpeedTime);
+                intent.putExtra("mileage", CommonUtil.curDistance);
+                intent.putExtra("lowspeed", CommonUtil.curLowSpeedTime);
                 startActivity(intent);
                 CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
                 finish();
@@ -671,7 +752,9 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
     @Override
     protected void onPause() {
         super.onPause();
-        mMapview.onPause();
+        if(mMapview != null){
+            mMapview.onPause();
+        }
         if(isNavigationNow){
             BNRouteGuideManager.getInstance().onPause();
         }
@@ -724,8 +807,6 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ButterKnife.unbind(this);
-
         mBaiduMap.setMyLocationEnabled(false);
         if (mMapview != null) {
             mMapview.onDestroy();
@@ -734,6 +815,8 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         if(isNavigationNow){
             BNRouteGuideManager.getInstance().onDestroy();
         }
+
+        ButterKnife.unbind(this);
     }
 
     @Override
@@ -752,7 +835,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
 
 
     private boolean isNavigationOk = false;
-    private boolean isNavigationNow = false;
+    public boolean isNavigationNow = false;
 
     private void initNavi() {
 //        BaiduNaviManager.getInstance().setNativeLibraryPath(mSDCardPath + "/BaiduNaviSDK_SO");

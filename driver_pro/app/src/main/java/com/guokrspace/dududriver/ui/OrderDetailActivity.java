@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -98,6 +99,10 @@ public class OrderDetailActivity extends BaseActivity{
 
                     @Override
                     public void onFailure(String error) {
+                        if(error.contains("not Order")){ // 订单异常
+                            VoiceUtil.startSpeaking(VoiceCommand.ORDER_STATUS_EXCEPTION);
+                            finish();
+                        }
                     }
 
                     @Override
@@ -137,6 +142,8 @@ public class OrderDetailActivity extends BaseActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         setContentView(R.layout.activity_orderdetail);
         context = OrderDetailActivity.this;
         ButterKnife.bind(this);

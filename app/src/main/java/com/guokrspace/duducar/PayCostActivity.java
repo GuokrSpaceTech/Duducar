@@ -221,7 +221,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
             tripOverOrderDetail = (OrderDetail) bundle.get("order");
             CommonUtil.tripOverOrderDetail = tripOverOrderDetail;
             driver = new Gson().fromJson(tripOverOrderDetail.getDriver(), DriverDetail.class);
-            feeTextView.setText(tripOverOrderDetail.getOrg_price());
+            feeTextView.setText(tripOverOrderDetail.getSumprice());
         }
 
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);

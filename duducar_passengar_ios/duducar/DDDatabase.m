@@ -32,12 +32,16 @@
     [queue inDatabase:^(FMDatabase *db) {
         NSString *sqlStr = @"CREATE TABLE IF NOT EXISTS personInfo('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,'token' text,'phone' text);";
         [db executeUpdate:sqlStr];
+        sqlStr = @"CREATE TABLE IF NOT EXISTS orderHistory('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,'order' text)";
+        [db executeUpdate:sqlStr];
     }];
 }
 -(void)clearTable
 {
     [queue inDatabase:^(FMDatabase *db) {
         NSString *sqlStr = @"delete from personInfo;";
+        [db executeUpdate:sqlStr];
+        sqlStr = @"delete from orderHistory;";
         [db executeUpdate:sqlStr];
     }];
 }
@@ -58,6 +62,23 @@
             phone = [set stringForColumn:@"phone"];
         }
         completionHandler(token,phone);
+    }];
+}
+-(void)insertOrder:(NSString *)order
+{
+    [queue inDatabase:^(FMDatabase *db) {
+        [db executeUpdate:@"insert into orderHistory('order') values(?)",order];
+    }];
+}
+-(void)selectOrderHistory:(void (^)(NSArray *))completionHandler
+{
+    [queue inDatabase:^(FMDatabase *db) {
+        FMResultSet *set = [db executeQuery:@"select * from orderHistory"];
+        NSMutableArray *orderArray = [[NSMutableArray alloc] init];
+        while ([set next]) {
+            [orderArray addObject:[set stringForColumn:@"order"]];
+        }
+        completionHandler(orderArray);
     }];
 }
 

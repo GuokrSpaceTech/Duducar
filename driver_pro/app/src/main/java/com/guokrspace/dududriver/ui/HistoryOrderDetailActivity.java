@@ -11,6 +11,7 @@ import android.os.Message;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -57,8 +58,7 @@ public class HistoryOrderDetailActivity extends BaseActivity implements Handler.
     LinearLayout checkDetailLayout;
     @Bind(R.id.substitute_pay)
     ButtonFlat substitutePayButton;
-    @OnClick(R.id.substitute_pay)
-    public void substittePay(){
+    @OnClick(R.id.substitute_pay)  void substittePay(){
         //向服务器发起代付请求,无论成功失败都跳转到代付页面.
         SocketClient.getInstance().checkIfPaid(orderDetail.getId().intValue(), new ResponseHandler(Looper.myLooper()) {
             @Override
@@ -116,6 +116,8 @@ public class HistoryOrderDetailActivity extends BaseActivity implements Handler.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON, WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         setContentView(R.layout.activity_historyorderdetail);
         ButterKnife.bind(this);
         context = this;

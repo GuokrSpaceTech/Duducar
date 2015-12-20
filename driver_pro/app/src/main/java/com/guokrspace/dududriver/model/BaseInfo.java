@@ -26,6 +26,11 @@ public class BaseInfo {
         info.put(Constants.PREFERENCE_KEY_DRIVER_STARTING_DISTANCE, charge_rule.getStarting_distance() == null ? "10" : charge_rule.getStarting_distance());
         info.put(Constants.PREFERENCE_KEY_DRIVER_STARTING_PRICE, charge_rule.getStarting_price() == null ? "8" : charge_rule.getStarting_price());
 
+        info.put(Constants.PREFERENCE_KEY_WEBVIEW_ABOUT, webivew.getAbout() == null ? "" : webivew.getAbout());
+        info.put(Constants.PREFERENCE_KEY_WEBVIEW_JOIN, webivew.getJoin() == null ? "" : webivew.getJoin());
+        info.put(Constants.PREFERENCE_KEY_WEBVIEW_CONTACT, webivew.getContact() == null ? "" : webivew.getContact());
+        info.put(Constants.PREFERENCE_KEY_WEBVIEW_CLAUSE, webivew.getClause() == null ? "" : webivew.getClause());
+
         return info;
     }
 
@@ -82,6 +87,16 @@ public class BaseInfo {
     }
 
     private String status;
+
+    public WebView getWebivew() {
+        return webivew;
+    }
+
+    public void setWebivew(WebView webivew) {
+        this.webivew = webivew;
+    }
+
+    private WebView webivew;
 
     public class Driver{
         public String getName() {
@@ -150,6 +165,45 @@ public class BaseInfo {
         private String total_order;
         private String balance;
         private String favorable_rate;
+    }
+
+    public class WebView{
+        public String getAbout() {
+            return about;
+        }
+
+        public void setAbout(String about) {
+            this.about = about;
+        }
+
+        public String getJoin() {
+            return join;
+        }
+
+        public void setJoin(String join) {
+            this.join = join;
+        }
+
+        public String getContact() {
+            return contact;
+        }
+
+        public void setContact(String contact) {
+            this.contact = contact;
+        }
+
+        public String getClause() {
+            return clause;
+        }
+
+        public void setClause(String clause) {
+            this.clause = clause;
+        }
+
+        private String about;
+        private String join;
+        private String contact;
+        private String clause;
     }
 
     public class Charge_rule{

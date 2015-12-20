@@ -26,9 +26,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
-import com.guokrspace.duducar.communication.http.model.Driver;
 import com.guokrspace.duducar.communication.http.model.IdAndValueModel;
-import com.guokrspace.duducar.communication.http.model.Order;
 import com.guokrspace.duducar.communication.message.DriverDetail;
 import com.guokrspace.duducar.communication.message.OrderDetail;
 import com.guokrspace.duducar.database.OrderRecord;
@@ -40,8 +38,8 @@ import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -233,7 +231,7 @@ public class RatingActivity extends ActionBarActivity {
                 comment = comment.substring(0, comment.length() - 1);
                 Log.e("hyman_rating", comment);
 
-                SocketClient.getInstance().sendRatingRequest(Integer.parseInt(mOrder.getId()), (int) ratingBarBig.getRating(), comment, new ResponseHandler(Looper.getMainLooper()) {
+                SocketClient.getInstance().sendRatingRequest(Integer.parseInt(mOrder.getId()), (int)ratingBarBig.getRating(), comment, new ResponseHandler(Looper.getMainLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
                         WinToast.toast(context, "谢谢您的评价");

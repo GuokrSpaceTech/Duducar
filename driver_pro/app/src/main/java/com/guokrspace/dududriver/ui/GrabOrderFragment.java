@@ -135,7 +135,7 @@ public class GrabOrderFragment extends BaseFragment implements Handler.Callback{
 
     private List<BaseNoticeItem> initData() {
         List<BaseNoticeItem> notices = new ArrayList<>();
-        List<BaseNotice> data = DuduDriverApplication.getInstance().mDaoSession.getBaseNoticeDao().queryBuilder().orderDesc(BaseNoticeDao.Properties.NoticeId).list();
+        List<BaseNotice> data = DuduDriverApplication.getInstance().mDaoSession.getBaseNoticeDao().queryBuilder().where(BaseNoticeDao.Properties.OutOfTime.eq(false)).orderDesc(BaseNoticeDao.Properties.NoticeId).list();
         Log.e("daddy message", " " + data.size() + " ");
 
         for (BaseNotice notice : data) {
@@ -147,11 +147,12 @@ public class GrabOrderFragment extends BaseFragment implements Handler.Callback{
             Log.e("daddy map", "notice id " + notice.getNoticeId());
             Log.e("daddy map ", "body" + body);
             if(type.equals("PayOver")){//支付通知
-                notices.add(new WealthNotice(body));
+                notices.add(new WealthNotice(body, notice.getNoticeId()));
             } else if(type.equals("Notice")){//系统通知
-                notices.add(new DuduNotice(body));
+                //TODO 根据有效时间修改outoftime
+                notices.add(new DuduNotice(body, notice.getNoticeId()));
             } else if(type.equals("HotMap")){//热力地图
-                notices.add(new DenseOrderNotice(body));
+                notices.add(new DenseOrderNotice(body, notice.getNoticeId()));
             }
         }
         return notices;

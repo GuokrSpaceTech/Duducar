@@ -398,32 +398,35 @@ public class PreOrderActivity extends AppCompatActivity
                     public void onSuccess(String messageBody) {
 
                         JSONObject noPaid = JSONObject.parseObject(messageBody);
-                        if (((String) noPaid.get("order_status")).equals("1")) {//存在未支付的账单
-                            final OrderDetail notPaidOrder = new Gson().fromJson((String) noPaid.get("order"), OrderDetail.class);
-                            final MaterialDialog dialog = new MaterialDialog(PreOrderActivity.this);
-                            dialog.setTitle("账单欠费").setMessage("您还有支付的订单, 请尽快完成支付, 否则将无法继续为您提供服务!")
-                                    .setCanceledOnTouchOutside(false).setNegativeButton("稍后支付", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    dialog.dismiss();
-                                }
-                            }).setPositiveButton("立即支付", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    Intent intent = new Intent(PreOrderActivity.this, RatingActivity.class);
-                                    intent.putExtra("order", notPaidOrder);
-                                    startActivity(intent);
-                                    dialog.dismiss();
+                        if(((String)noPaid.get("order_status")).equals("1")){//存在未支付的账单
+                            final OrderDetail notPaidOrder = new Gson().fromJson((String)noPaid.get("order"), OrderDetail.class);
+                            if("1".equals(notPaidOrder.getPay_role())){ //司机代付
+                                //;
+                            } else {
+                                final MaterialDialog dialog = new MaterialDialog(PreOrderActivity.this);
+                                dialog.setTitle("账单欠费").setMessage("您还有支付的订单, 请尽快完成支付, 否则将无法继续为您提供服务!")
+                                        .setCanceledOnTouchOutside(false).setNegativeButton("稍后支付", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialog.dismiss();
+                                    }
+                                }).setPositiveButton("立即支付", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Intent intent = new Intent(PreOrderActivity.this, RatingActivity.class);
+                                        intent.putExtra("order", notPaidOrder);
+                                        startActivity(intent);
+                                        dialog.dismiss();
 
-                                }
-                            }).show();
-
-                        } else { //正常跳转
-                            Intent intent = new Intent(mContext, SearchActivity.class);
-                            intent.putExtra("location", start); //Search nearby from the start
-                            intent.putExtra("city", city);
-                            startActivityForResult(intent, ACTIVITY_SEARCH_DEST_REQUEST);
-                        }
+                                    }
+                                }).show();
+                                return;
+                            }
+                        }  //正常跳转
+                        Intent intent = new Intent(mContext, SearchActivity.class);
+                        intent.putExtra("location", start); //Search nearby from the start
+                        intent.putExtra("city", city);
+                        startActivityForResult(intent, ACTIVITY_SEARCH_DEST_REQUEST);
                     }
 
                     @Override
@@ -477,9 +480,11 @@ public class PreOrderActivity extends AppCompatActivity
                 JSONObject noPaid = JSONObject.parseObject(messageBody);
                 if (((String) noPaid.get("order_status")).equals("1")) {//存在未支付的账单
 //                        final OrderDetail notPaidOrder = FastJsonTools.getObject((String)noPaid.get("order"), OrderDetail.class);
-                    Log.e("daddy fang", (String) noPaid.get("order"));
-                    final OrderDetail notPaidOrder = new Gson().fromJson((String) noPaid.get("order"), OrderDetail.class);
-//                        Log.e("daddy order", notPaidOrder.toString());
+                    Log.e("daddy fang", (String)noPaid.get("order"));
+                    final OrderDetail notPaidOrder = new Gson().fromJson((String)noPaid.get("order"), OrderDetail.class);
+                    if("1".equals(notPaidOrder.getPay_role())){ //司机代付
+                        return;
+                    }
                     final MaterialDialog dialog = new MaterialDialog(PreOrderActivity.this);
                     dialog.setCanceledOnTouchOutside(false);
                     dialog.setTitle("账单欠费").setMessage("您还有支付的订单, 请尽快完成支付, 否则将无法继续为您提供服务!")

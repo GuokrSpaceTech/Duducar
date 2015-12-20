@@ -29,10 +29,16 @@ public class Constants {
     public static final String SERVICE_ACTION_MESAGE = "GOT_A_NEW_MESSAGE";
 
     public static final String ACTION_NEW_ORDER = "GOT_A_NEW_ORDER";
+    public static final String SERVICE_ACTION_UPDATE_CHARGE = "UPDATE_CHARGE";
+    public static final String SERVICE_ACTION_ORDER_NOT_EXISTS = "ORDER_NOT_EXISTS";
+
     public static final int MESSAGE_NEW_ORDER = 0x5009;
 
     public static final int ORDER_PAGE_NUM = 10;
     public static final int MESSAGE_PER_PAGE = 40;
+
+    public static final double LOWSPEEDDISTANACE = 333.3; // m/min
+    public static final double STRANGEDISTANCE = 33.3; // m/s
 
     public static final String PREFERENCE_KEY_DRIVER_NAME = "DRIVER_NAME";
     public static final String PREFERENCE_KEY_DRIVER_AVATAR = "DRIVER_AVATAR";
@@ -46,6 +52,11 @@ public class Constants {
     public static final String PREFERENCE_KEY_DRIVER_STARTING_DISTANCE = "DRIVER_STARTING_DISTANCE";
     public static final String PREFERENCE_KEY_DRIVER_STARTING_PRICE = "DRIVER_STARTING_PRICE";
     public static final String PREFERENCE_KEY_ORDER_STATUS = "ORDER_STATUS";
+
+    public static final String PREFERENCE_KEY_WEBVIEW_ABOUT = "WEB_ABOUT";
+    public static final String PREFERENCE_KEY_WEBVIEW_JOIN = "WEB_JOIN";
+    public static final String PREFERENCE_KEY_WEBVIEW_CONTACT = "WEB_CONTACT";
+    public static final String PREFERENCE_KEY_WEBVIEW_CLAUSE = "WEB_CLAUSE";
 
     public static final String PREFERENCE_KEY_TODAY = "TODAY";
     public static final String PREFERENCE_KEY_TODAY_DONE_WORK = "TODAY_DONE_WORK";

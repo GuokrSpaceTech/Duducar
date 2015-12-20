@@ -149,6 +149,12 @@ public class CommonUtil {
     private static double curLng;
     private static LatLng curLatLng;
 
+    public static double curBaseDistance;
+    public static int curBaseLowTime;
+    public static double curPrice;
+    public static double curDistance;
+    public static int curLowSpeedTime;
+
     public static LatLng getCurLatLng() {
         return curLatLng;
     }
@@ -190,7 +196,7 @@ public class CommonUtil {
         Calendar mCalendar = Calendar.getInstance();
         String today =  mCalendar.get(Calendar.YEAR) + "-" + mCalendar.get(Calendar.DAY_OF_YEAR);
 
-        if(!today.equals(SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_TODAY, new String("20151")))){
+        if(!today.equals(SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_TODAY, new String("20151218")))){
             initTodayAllWork();
             initTodayCash();
             initTodayDoneWork();

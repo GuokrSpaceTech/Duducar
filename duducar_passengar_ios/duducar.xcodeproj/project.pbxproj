@@ -60,7 +60,6 @@
 		81D814581C1A8C3400612B6E /* DDLeftView.m in Sources */ = {isa = PBXBuildFile; fileRef = 81D814571C1A8C3400612B6E /* DDLeftView.m */; };
 		81D8145E1C1A8EC500612B6E /* TravelDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81D8145D1C1A8EC500612B6E /* TravelDetailViewController.m */; };
 		81D814611C1AB2CB00612B6E /* PersionInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81D814601C1AB2CB00612B6E /* PersionInfoViewController.m */; };
-		81D814641C1AB2DD00612B6E /* HisoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81D814631C1AB2DD00612B6E /* HisoryViewController.m */; };
 		81D8146A1C1AC65200612B6E /* CallCarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81D814691C1AC65200612B6E /* CallCarViewController.m */; };
 		81D8146E1C1AD0CA00612B6E /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 81D8146D1C1AD0CA00612B6E /* Location.m */; };
 		F983BFE11C1C176B00E942E1 /* Driver.m in Sources */ = {isa = PBXBuildFile; fileRef = F983BFE01C1C176B00E942E1 /* Driver.m */; };
@@ -76,6 +75,10 @@
 		FA8892BA1C22909D00496200 /* GetMessageFromWXResp+responseWithTextOrMediaMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8892B51C22909D00496200 /* GetMessageFromWXResp+responseWithTextOrMediaMessage.m */; };
 		FA8892BB1C22909D00496200 /* SendMessageToWXReq+requestWithTextOrMediaMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8892B71C22909D00496200 /* SendMessageToWXReq+requestWithTextOrMediaMessage.m */; };
 		FA8892BC1C22909D00496200 /* WXMediaMessage+messageConstruct.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8892B91C22909D00496200 /* WXMediaMessage+messageConstruct.m */; };
+		FA8892C01C22E13B00496200 /* HistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8892BE1C22E13B00496200 /* HistoryViewController.m */; };
+		FA8892C11C22E13B00496200 /* HistoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA8892BF1C22E13B00496200 /* HistoryViewController.xib */; };
+		FA8892C51C22E18A00496200 /* HistoryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8892C31C22E18A00496200 /* HistoryTableViewCell.m */; };
+		FA8892C61C22E18A00496200 /* HistoryTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA8892C41C22E18A00496200 /* HistoryTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -255,8 +258,6 @@
 		81D8145D1C1A8EC500612B6E /* TravelDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TravelDetailViewController.m; sourceTree = "<group>"; };
 		81D8145F1C1AB2CB00612B6E /* PersionInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersionInfoViewController.h; sourceTree = "<group>"; };
 		81D814601C1AB2CB00612B6E /* PersionInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersionInfoViewController.m; sourceTree = "<group>"; };
-		81D814621C1AB2DD00612B6E /* HisoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HisoryViewController.h; sourceTree = "<group>"; };
-		81D814631C1AB2DD00612B6E /* HisoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HisoryViewController.m; sourceTree = "<group>"; };
 		81D814681C1AC65200612B6E /* CallCarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallCarViewController.h; sourceTree = "<group>"; };
 		81D814691C1AC65200612B6E /* CallCarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallCarViewController.m; sourceTree = "<group>"; };
 		81D8146C1C1AD0CA00612B6E /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
@@ -291,6 +292,12 @@
 		FA8892B71C22909D00496200 /* SendMessageToWXReq+requestWithTextOrMediaMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SendMessageToWXReq+requestWithTextOrMediaMessage.m"; sourceTree = "<group>"; };
 		FA8892B81C22909D00496200 /* WXMediaMessage+messageConstruct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WXMediaMessage+messageConstruct.h"; sourceTree = "<group>"; };
 		FA8892B91C22909D00496200 /* WXMediaMessage+messageConstruct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WXMediaMessage+messageConstruct.m"; sourceTree = "<group>"; };
+		FA8892BD1C22E13B00496200 /* HistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryViewController.h; sourceTree = "<group>"; };
+		FA8892BE1C22E13B00496200 /* HistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryViewController.m; sourceTree = "<group>"; };
+		FA8892BF1C22E13B00496200 /* HistoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HistoryViewController.xib; sourceTree = "<group>"; };
+		FA8892C21C22E18A00496200 /* HistoryTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryTableViewCell.h; sourceTree = "<group>"; };
+		FA8892C31C22E18A00496200 /* HistoryTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryTableViewCell.m; sourceTree = "<group>"; };
+		FA8892C41C22E18A00496200 /* HistoryTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HistoryTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -396,6 +403,9 @@
 				F983BFE31C1C1AF500E942E1 /* StartEndView.m */,
 				F983BFE51C1C1F0D00E942E1 /* OrderInfoView.h */,
 				F983BFE61C1C1F0D00E942E1 /* OrderInfoView.m */,
+				FA8892C41C22E18A00496200 /* HistoryTableViewCell.xib */,
+				FA8892C21C22E18A00496200 /* HistoryTableViewCell.h */,
+				FA8892C31C22E18A00496200 /* HistoryTableViewCell.m */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -575,8 +585,9 @@
 				81D8145D1C1A8EC500612B6E /* TravelDetailViewController.m */,
 				81D8145F1C1AB2CB00612B6E /* PersionInfoViewController.h */,
 				81D814601C1AB2CB00612B6E /* PersionInfoViewController.m */,
-				81D814621C1AB2DD00612B6E /* HisoryViewController.h */,
-				81D814631C1AB2DD00612B6E /* HisoryViewController.m */,
+				FA8892BD1C22E13B00496200 /* HistoryViewController.h */,
+				FA8892BE1C22E13B00496200 /* HistoryViewController.m */,
+				FA8892BF1C22E13B00496200 /* HistoryViewController.xib */,
 				81D814681C1AC65200612B6E /* CallCarViewController.h */,
 				81D814691C1AC65200612B6E /* CallCarViewController.m */,
 			);
@@ -778,10 +789,12 @@
 				2AC664511BF9A69200DFDC2A /* Assets.xcassets in Resources */,
 				2AAFDC841C1AD36E00A5AEBD /* PaymentViewController.xib in Resources */,
 				FA8892A91C22778800496200 /* read_me.txt in Resources */,
+				FA8892C11C22E13B00496200 /* HistoryViewController.xib in Resources */,
 				2AAFDC7F1C1A7DC700A5AEBD /* CostEstimationViewController.xib in Resources */,
 				2AC6644F1BF9A69200DFDC2A /* Main.storyboard in Resources */,
 				2AAFDC891C1B04B800A5AEBD /* RatingViewController.xib in Resources */,
 				2A97451D1BF9C442008C8A7B /* images.xcassets in Resources */,
+				FA8892C61C22E18A00496200 /* HistoryTableViewCell.xib in Resources */,
 				2AAFDC6E1C186DA600A5AEBD /* DDSearchTableViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -866,6 +879,7 @@
 				2AC6647A1BF9AA2100DFDC2A /* LoginViewController.m in Sources */,
 				2AAFDC881C1B04B800A5AEBD /* RatingViewController.m in Sources */,
 				FA8892B11C22906D00496200 /* WXApiRequestHandler.m in Sources */,
+				FA8892C51C22E18A00496200 /* HistoryTableViewCell.m in Sources */,
 				2AC664491BF9A69200DFDC2A /* AppDelegate.m in Sources */,
 				2AB5816F1C1C282900BFC7C7 /* RSADataVerifier.m in Sources */,
 				2AC664461BF9A69200DFDC2A /* main.m in Sources */,
@@ -890,7 +904,7 @@
 				FA8892BC1C22909D00496200 /* WXMediaMessage+messageConstruct.m in Sources */,
 				2AAFDC6D1C186DA600A5AEBD /* DDSearchTableViewController.m in Sources */,
 				2A97451B1BF9BEF6008C8A7B /* RCAnimatedImagesView.m in Sources */,
-				81D814641C1AB2DD00612B6E /* HisoryViewController.m in Sources */,
+				FA8892C01C22E13B00496200 /* HistoryViewController.m in Sources */,
 				2AB57ED01C1C099D00BFC7C7 /* Order.m in Sources */,
 				2A9745201BF9CEF3008C8A7B /* RCUnderlineTextField.m in Sources */,
 			);

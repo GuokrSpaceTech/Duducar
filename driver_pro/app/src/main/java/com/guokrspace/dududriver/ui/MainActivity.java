@@ -333,8 +333,9 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         SocketClient.getInstance().pullBaseInfo(new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
+                Log.e("daddy ", "base info " + messageBody);
                 baseInfo = (BaseInfo) FastJsonTools.getObject(messageBody, BaseInfo.class);
-                Log.e("daddy", "base" + baseInfo.getDriver().getName());
+                Log.e("daddy", "base" + baseInfo.getWebivew().getAbout().length());
                 mHandler.sendEmptyMessage(HANDLE_BASEINFO);
                 Log.e("daddy", "send message");
             }

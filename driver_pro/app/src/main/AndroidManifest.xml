@@ -112,16 +112,17 @@
             android:label="订单地图" />
         <activity
             android:name=".ui.PayCostActivity"
+            android:configChanges="keyboardHidden|orientation"
             android:label="账单支付"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
-            android:configChanges="keyboardHidden|orientation"/>
- 
-        <activity android:name=".ui.HistoryOrderDetailActivity"
-            android:label="历史订单详情"
-            android:configChanges="keyboardHidden|orientation"/>
-        <activity android:name=".ui.ComplainActivity"
-            android:label="投诉"
-            android:configChanges="keyboardHidden|orientation"/>
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+        <activity
+            android:name=".ui.HistoryOrderDetailActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="历史订单详情" />
+        <activity
+            android:name=".ui.ComplainActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="投诉" />
         <activity
             android:name=".ui.BalanceActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -130,7 +131,7 @@
             android:name=".ui.FeedBackActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="意见反馈"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <service
             android:name=".net.DuduService"
@@ -163,6 +164,12 @@
 
         <activity android:name=".ui.NaviActivity" >
         </activity>
+
+        <service
+            android:name=".net.ChargeService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
     </application>
 
 </manifest>

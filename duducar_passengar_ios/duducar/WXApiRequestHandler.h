@@ -74,6 +74,6 @@
                         tousrname:(NSString *)tousrname
                            ExtMsg:(NSString *)extMsg;
 
-+ (NSString *)jumpToBizPay;
++ (NSString *)jumpToBizPay:(NSDictionary *)payParamDict;
 
 @end
