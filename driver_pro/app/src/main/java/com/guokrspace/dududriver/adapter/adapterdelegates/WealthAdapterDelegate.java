@@ -71,7 +71,7 @@ public class WealthAdapterDelegate extends AbsAdapterDelegate<List<BaseNoticeIte
             @Override
             public void onClick(View v) {
                 QueryBuilder query = DuduDriverApplication.getInstance().mDaoSession.getBaseNoticeDao().queryBuilder().where(BaseNoticeDao.Properties.NoticeId.eq(((WealthNotice) items.get(position)).message_notice_id)).limit(1);
-                if(query.list().get(0) != null){
+                if(query.list().size() > 0 && query.list().get(0) != null){
                     BaseNotice notice = (BaseNotice)query.list().get(0);
                     notice.setOutOfTime(true);
                     DuduDriverApplication.getInstance().mDaoSession.getBaseNoticeDao().update(notice);

@@ -23,9 +23,11 @@ import com.baidu.mapapi.model.LatLng;
 import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.database.PersonalInformation;
+import com.guokrspace.dududriver.model.OrderItem;
 import com.guokrspace.dududriver.net.message.HeartBeatMessage;
 import com.guokrspace.dududriver.net.message.MessageTag;
 import com.guokrspace.dududriver.util.CommonUtil;
+import com.guokrspace.dududriver.util.FastJsonTools;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 
 import java.util.List;
@@ -79,6 +81,7 @@ public class DuduService extends Service {
             conctTask = new connectTask(); //Connect to server
             conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
+        pullOrder();
         return START_STICKY;
     }
 
@@ -163,6 +166,31 @@ public class DuduService extends Service {
 
             sendHeartBeat(curLocaData);
         }
+    }
+
+    private void pullOrder() {
+        //注册派单监听
+        SocketClient.getInstance().registerServerMessageHandler(MessageTag.PATCH_ORDER, new ResponseHandler(Looper.myLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                Log.e("Mainactivity", "confirm order handler");
+                CommonUtil.setCurOrderItem(FastJsonTools.getObject(messageBody, OrderItem.class));
+//                Log.e("Daddy ", messageBody + "  " + orderItem.getCMD() + " " + orderItem.getOrder().getDestination_lat() + "::" + orderItem.getOrder().getDestination_lng());
+                //向主界面发送广播
+                sendBroadCast(Constants.SERVICE_ACTION_NEW_ORDER);
+            }
+
+            @Override
+            public void onFailure(String error) {
+                Log.e("Mainactivity", "register order handler error");
+            }
+
+            @Override
+            public void onTimeout() {
+                Log.e("Mainactivity", "register order handler time out");
+            }
+        });
+
     }
 
     //后台不断发送心跳包

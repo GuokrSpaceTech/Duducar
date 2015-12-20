@@ -392,7 +392,7 @@ public class PreOrderActivity extends AppCompatActivity
         destLocButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                destLocButton.setClickable(false);
                 SocketClient.getInstance().pullNotPaidOrder(Constants.PASSENGER_ROLE, new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
@@ -420,6 +420,7 @@ public class PreOrderActivity extends AppCompatActivity
 
                                     }
                                 }).show();
+                                destLocButton.setClickable(true);
                                 return;
                             }
                         }  //正常跳转
@@ -427,20 +428,23 @@ public class PreOrderActivity extends AppCompatActivity
                         intent.putExtra("location", start); //Search nearby from the start
                         intent.putExtra("city", city);
                         startActivityForResult(intent, ACTIVITY_SEARCH_DEST_REQUEST);
+                        destLocButton.setClickable(true);
                     }
 
                     @Override
                     public void onFailure(String error) {
                         Toast.makeText(PreOrderActivity.this, "状态异常, 请稍后尝试", Toast.LENGTH_SHORT).show();
+                        destLocButton.setClickable(true);
                     }
 
                     @Override
                     public void onTimeout() {
                         //TODO
-                        Intent intent = new Intent(mContext, SearchActivity.class);
-                        intent.putExtra("location", start); //Search nearby from the start
-                        intent.putExtra("city", city);
-                        startActivityForResult(intent, ACTIVITY_SEARCH_DEST_REQUEST);
+//                        Intent intent = new Intent(mContext, SearchActivity.class);
+//                        intent.putExtra("location", start); //Search nearby from the start
+//                        intent.putExtra("city", city);
+//                        startActivityForResult(intent, ACTIVITY_SEARCH_DEST_REQUEST);
+                        destLocButton.setClickable(true);
                     }
                 });
 //                Intent intent = new Intent(mContext, SearchActivity.class);

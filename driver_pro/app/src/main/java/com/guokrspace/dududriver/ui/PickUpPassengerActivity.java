@@ -564,7 +564,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
 
         //3秒一次  更新界面
         timer = new Timer();
-        timer.scheduleAtFixedRate(new DrawLineTimerTask(), 2000, 3 * 1000);
+        timer.scheduleAtFixedRate(new DrawLineTimerTask(), 3000, 3 * 1000);
 
         btnNavi.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1065,7 +1065,11 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         lineList.add(second);
         OverlayOptions ooPolyline = new PolylineOptions().width(10).color(0xAAFF0000).points(lineList);
         if(baiduMap != null){
-            baiduMap.addOverlay(ooPolyline);
+            try {
+                baiduMap.addOverlay(ooPolyline);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 

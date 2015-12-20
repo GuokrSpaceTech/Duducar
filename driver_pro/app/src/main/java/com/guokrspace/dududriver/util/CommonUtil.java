@@ -154,6 +154,7 @@ public class CommonUtil {
     public static double curPrice;
     public static double curDistance;
     public static int curLowSpeedTime;
+//    public static OrderItem curOrderItem;
 
     public static LatLng getCurLatLng() {
         return curLatLng;
