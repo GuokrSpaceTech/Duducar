@@ -9,7 +9,6 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CostEstimationViewController">
             <connections>
                 <outlet property="CostEstLabel" destination="xsG-lp-vOO" id="cA9-ev-jmg"/>
-                <outlet property="confirmButton" destination="tNw-k3-zgy" id="6zq-2W-1gs"/>
                 <outlet property="endLocLabel" destination="Mse-Ca-d43" id="i84-XZ-mpN"/>
                 <outlet property="startLocLabel" destination="wO6-kd-LU1" id="WUq-kW-9RV"/>
                 <outlet property="topView" destination="f7g-5h-b9y" id="K2J-ik-oHW"/>
@@ -97,7 +96,7 @@
                         <constraint firstAttribute="height" constant="3" id="mug-dA-Kv4"/>
                     </constraints>
                 </view>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="248" text="39.9" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xsG-lp-vOO">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="248" misplaced="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xsG-lp-vOO">
                     <rect key="frame" x="257" y="226" width="87" height="192"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="Q8S-uR-I5N"/>
@@ -106,23 +105,13 @@
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="元" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eyQ-7q-2YI">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="元" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eyQ-7q-2YI">
                     <rect key="frame" x="352" y="391" width="17" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tNw-k3-zgy">
-                    <rect key="frame" x="60" y="548" width="480" height="32"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                    <state key="normal" title="确认叫车">
-                        <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="confirmAction:" destination="-1" eventType="touchUpInside" id="5vG-8v-R2b"/>
-                    </connections>
-                </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="此费用仅为估算，实际费用按照交通状况或者折扣计算，可能有少许偏差" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eTS-Lq-kAK">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="此费用仅为估算，实际费用按照交通状况或者折扣计算，可能有少许偏差" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eTS-Lq-kAK">
                     <rect key="frame" x="45" y="438" width="525" height="50"/>
                     <constraints>
                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="qOQ-EG-Eev"/>
@@ -135,18 +124,13 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="eyQ-7q-2YI" firstAttribute="baseline" secondItem="xsG-lp-vOO" secondAttribute="baseline" id="72k-BB-nzx"/>
-                <constraint firstItem="tNw-k3-zgy" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="60" id="Bxi-wJ-6Iw"/>
-                <constraint firstItem="tNw-k3-zgy" firstAttribute="top" secondItem="eTS-Lq-kAK" secondAttribute="bottom" constant="60" id="D7P-2a-eRG"/>
-                <constraint firstItem="tNw-k3-zgy" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="EqW-BM-3u3"/>
                 <constraint firstItem="eyQ-7q-2YI" firstAttribute="leading" secondItem="xsG-lp-vOO" secondAttribute="trailing" constant="8" id="HaT-RV-s4K"/>
                 <constraint firstItem="A49-XG-mZM" firstAttribute="top" secondItem="dNZ-0u-2al" secondAttribute="bottom" constant="8" id="O9L-V2-6cZ"/>
                 <constraint firstItem="f7g-5h-b9y" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="topMargin" constant="8" id="RHX-ek-S3d"/>
                 <constraint firstAttribute="trailing" secondItem="eTS-Lq-kAK" secondAttribute="trailing" constant="30" id="WwT-Tk-vM1"/>
-                <constraint firstAttribute="trailing" secondItem="tNw-k3-zgy" secondAttribute="trailing" constant="60" id="XWM-lh-1jz"/>
                 <constraint firstAttribute="trailing" secondItem="f7g-5h-b9y" secondAttribute="trailing" constant="8" id="XsS-Ja-Vjd"/>
                 <constraint firstItem="A49-XG-mZM" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="8" id="Xx7-8P-K4u"/>
                 <constraint firstItem="eTS-Lq-kAK" firstAttribute="top" secondItem="xsG-lp-vOO" secondAttribute="bottom" constant="20" id="YSn-6e-sWZ"/>
-                <constraint firstAttribute="bottom" secondItem="tNw-k3-zgy" secondAttribute="bottom" constant="20" id="a5W-Sv-7GN"/>
                 <constraint firstItem="eTS-Lq-kAK" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="45" id="d0E-DM-YHr"/>
                 <constraint firstAttribute="trailing" secondItem="A49-XG-mZM" secondAttribute="trailing" constant="8" id="dbv-g9-5wm"/>
                 <constraint firstItem="dNZ-0u-2al" firstAttribute="top" secondItem="f7g-5h-b9y" secondAttribute="bottom" constant="20" id="fe0-wW-mUR"/>

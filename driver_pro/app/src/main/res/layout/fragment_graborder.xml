@@ -96,7 +96,7 @@
             android:layout_height="wrap_content"
             android:text="今日流水："
             android:textColor="@color/light_gray"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
@@ -114,7 +114,7 @@
             android:layout_marginLeft="10dp"
             android:text="指派成交率："
             android:textColor="@color/light_gray"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView

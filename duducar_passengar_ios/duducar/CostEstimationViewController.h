@@ -21,11 +21,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *startLocLabel;
 @property (weak, nonatomic) IBOutlet UILabel *endLocLabel;
 @property (weak, nonatomic) IBOutlet UILabel *CostEstLabel;
-@property (weak, nonatomic) IBOutlet UIButton *confirmButton;
 @property (nonatomic,strong) Location *startLoc;
 @property (nonatomic,strong) Location *endLoc;
 @property (nonatomic,strong) NSString *city;
-- (IBAction)confirmAction:(id)sender;
 
 @property (nonatomic,weak)   id<CostEstimateDelegate> delegate;
 

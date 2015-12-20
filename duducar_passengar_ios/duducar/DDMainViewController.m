@@ -15,6 +15,7 @@
 #import "DDSearchTableViewController.h"
 #import "LoginViewController.h"
 #import "CostEstimationViewController.h"
+#import "PaymentViewController.h"
 #import "DDSocket.h"
 #import "DDDatabase.h"
 #import "UIColor+RCColor.h"
@@ -25,7 +26,7 @@
 #import "Masonry.h"
 
 #import "PersionInfoViewController.h"
-#import "HisoryViewController.h"
+#import "HistoryViewController.h"
 #import "Location.h"
 
 #import "CallCarViewController.h"
@@ -48,10 +49,13 @@
     UIButton *stopLocButton;
     UIButton *callCabButton;
     UIButton *estCostButton;
+    UILabel *nearCarsPromptLabel;
+    UIImageView *nearCarPromtBackView;
     
     DDLeftView * leftView;
     BOOL leftViewShow;
 
+    BOOL isTimerRunning;
     NSTimer *_repeatingTimer;
     NSUInteger _timerCount;
 }
@@ -76,7 +80,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     
     //Map View
     _mapView = [[BMKMapView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    _mapView.zoomLevel = 15;
+    _mapView.zoomLevel = 14;
     _mapView.showsUserLocation = NO;//先关闭显示的定位图层
     _mapView.userTrackingMode = BMKUserTrackingModeFollow;//设置定位的状态
     _mapView.showsUserLocation = YES;//显示定位图层
@@ -84,7 +88,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     
     // 定位按钮
     UIButton *locButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [locButton setTitle:@"定位" forState:UIControlStateNormal];
+    [locButton setImage:[UIImage imageNamed:@"ic_my_location"] forState:UIControlStateNormal];
     [locButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [locButton addTarget:self action:@selector(locButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:locButton];
@@ -93,6 +97,17 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     UIView * backView = [[UIView alloc]initWithFrame:CGRectMake(10, self.view.frame.size.height - 170, self.view.frame.size.width-20, 100)];
     backView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:backView];
+    
+    UIImageView *startIndicator = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"startIndicator"]];
+    startIndicator.contentMode = UIViewContentModeScaleAspectFit;
+    UIImageView *endIndicator = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"endIndicator"]];
+    endIndicator.contentMode = UIViewContentModeScaleAspectFit;
+    UIView *line = [[UIView alloc]init];
+    line.backgroundColor = [UIColor lightGrayColor];
+    
+    [backView addSubview:line];
+    [backView addSubview:startIndicator];
+    [backView addSubview:endIndicator];
     
     startLocButton = [UIButton buttonWithType:UIButtonTypeCustom];
     startLocButton.frame = CGRectMake(0, 0, backView.frame.size.width, backView.frame.size.height/2.0);
@@ -108,9 +123,34 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     [stopLocButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [backView addSubview:stopLocButton];
     
+    [startIndicator mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(backView.mas_left).offset(16);
+        make.top.equalTo(startLocButton.mas_top).offset(8);
+        make.centerY.equalTo(startLocButton);
+        make.height.equalTo(startLocButton.mas_height);
+        make.width.mas_equalTo(@8);
+    }];
+    
+    [line mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(@1);
+        make.centerY.equalTo(backView.mas_centerY);
+        make.left.equalTo(backView.mas_left).offset(8);
+        make.right.equalTo(backView.mas_right).offset(-8);
+    }];
+    
+    [endIndicator mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(backView.mas_left).offset(16);
+        make.top.equalTo(startIndicator.mas_bottom);
+        make.bottom.equalTo(stopLocButton.mas_bottom).offset(-8);
+        make.centerY.equalTo(stopLocButton);
+        make.height.equalTo(stopLocButton.mas_height);
+        make.width.mas_equalTo(@8);
+    }];
+    
+    
     // 费用估算按钮
     estCostButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [estCostButton setTitle:@"费用估算" forState:UIControlStateNormal];
+    [estCostButton setImage:[UIImage imageNamed:@"ic_attach_money"] forState:UIControlStateNormal];
     [estCostButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [estCostButton addTarget:self action:@selector(estimateButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     estCostButton.enabled = false;
@@ -123,14 +163,37 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     [callCabButton setTitle:@"呼叫专车" forState:UIControlStateNormal];
     [callCabButton addTarget:self action:@selector(callForCab:) forControlEvents:UIControlEventTouchUpInside];
     [callCabButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    callCabButton.userInteractionEnabled = NO;
+    callCabButton.enabled = false;
     [self.view addSubview:callCabButton];
     
-    // 当前未知大头针
-    UIView * view1 = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 10, 10)];
-    view1.backgroundColor = [UIColor redColor];
-    view1.center = self.view.center;
-    [self.view addSubview:view1];
+    //中心指示
+    UIImageView * centerView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 24, 48)];
+    centerView.image = [UIImage imageNamed:@"center"];
+    [self.view addSubview:centerView];
+    [centerView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view.mas_centerX);
+        make.centerY.equalTo(self.view.mas_centerY).offset(-15);
+    }];
+    
+    nearCarPromtBackView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"prompt"]];
+    [self.view addSubview:nearCarPromtBackView];
+    nearCarPromtBackView.contentMode = UIViewContentModeScaleAspectFit;
+    nearCarsPromptLabel = [[UILabel alloc]init];
+    nearCarsPromptLabel.textColor = [UIColor whiteColor];
+    nearCarsPromptLabel.textAlignment = NSTextAlignmentCenter;
+    nearCarsPromptLabel.font = [UIFont systemFontOfSize:14.0];
+    [nearCarPromtBackView addSubview:nearCarsPromptLabel];
+    
+    [nearCarPromtBackView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view.mas_centerX);
+        make.bottom.equalTo(centerView.mas_top).offset(-2);
+    }];
+    
+    [nearCarsPromptLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(nearCarPromtBackView.mas_top).offset(2);
+        make.bottom.equalTo(nearCarPromtBackView.mas_bottom).offset(-2);
+        make.centerX.equalTo(nearCarPromtBackView.mas_centerX);
+    }];
     
     //Add Constrains
     [locButton mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -148,14 +211,16 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     }];
     
     // 左侧按钮
-    UIBarButtonItem * leftItem  = [[UIBarButtonItem alloc]initWithTitle:@"left" style:UIBarButtonItemStyleDone target:self action:@selector(leftCilck:)];
+    UIBarButtonItem * leftItem  = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"ic_view_headline_white"] style:UIBarButtonItemStyleDone target:self action:@selector(leftCilck:)];
+    
     self.navigationItem.leftBarButtonItem = leftItem;
     leftView = [[DDLeftView alloc]initWithFrame:CGRectMake(-self.view.frame.size.width, 0, self.view.frame.size.width, self.view.frame.size.height)];
     leftView.backgroundColor = [UIColor clearColor];
+    
     leftView.delegate = self;
     [self.view addSubview:leftView];
     leftViewShow = NO;
-
+    
     /*
      * Init Data
      */
@@ -175,13 +240,12 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
      _locService = [[BMKLocationService alloc]init];
     _locService.delegate = self;
     [_locService startUserLocationService];
-    
-
 }
 
 
 -(void)viewWillAppear:(BOOL)animated {
     [_mapView viewWillAppear];
+    isTimerRunning = true; // 开启Timer
     _mapView.delegate = self; // 此处记得不用的时候需要置nil，否则影响内存的释放
     /*
      * 监听来自Socket的服务消息
@@ -192,6 +256,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 -(void)viewWillDisappear:(BOOL)animated {
     [_mapView viewWillDisappear];
     _mapView.delegate = nil; // 不用时，置nil
+    isTimerRunning = false; // 停止Timer
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -252,25 +317,24 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 {
 }
 
-// 根据anntation生成对应的View
-- (BMKAnnotationView *)mapView:(BMKMapView *)mapView viewForAnnotation:(id <BMKAnnotation>)annotation
+-(BMKAnnotationView *)mapView:(BMKMapView *)mapView viewForAnnotation:(id<BMKAnnotation>)annotation
 {
-    //普通annotation
-    
-    NSString *AnnotationViewID = @"renameMark";
-    BMKPinAnnotationView *annotationView = (BMKPinAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:AnnotationViewID];
-    if (annotationView == nil) {
-        annotationView = [[BMKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:AnnotationViewID];
-        // 设置颜色
-        annotationView.pinColor = BMKPinAnnotationColorPurple;
-        // 从天上掉下效果
-        annotationView.animatesDrop = NO;
-        // 设置可拖拽
-        annotationView.draggable = NO;
+    if ([annotation isKindOfClass:[BMKPointAnnotation class]]) {
+        
+        BMKPinAnnotationView *newAnnotationView = [[BMKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"car"];
+        
+        newAnnotationView.pinColor = BMKPinAnnotationColorPurple;
+        
+        newAnnotationView.animatesDrop = NO;// 设置该标注点动画显示
+        
+        newAnnotationView.annotation=annotation;
+        
+        newAnnotationView.image = [UIImage imageNamed:@"car_icon"];   //把大头针换成别的图片
+        
+        return newAnnotationView;
     }
-    return annotationView;
-
-    //动画annotation
+    
+    return nil;
 }
 
 #pragma mark
@@ -326,7 +390,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         endLocation.coordinate2D = endPoint.pt;
         endLocation.name = endPoint.name;
         stopLocButton.titleLabel.text = endLocation.name;
-        callCabButton.userInteractionEnabled = YES;
+        callCabButton.enabled = true;
         estCostButton.enabled = true;
     }];
     
@@ -414,10 +478,13 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
                 } else {
                     NSDictionary *paramDict = @{@"cmd":@"login", @"role":@"2", @"mobile":phone, @"token":token};
                     [[DDSocket currentSocket] sendRequest:paramDict];
+                    
+                    [leftView setAvatarImage:@"http://img2.imgtn.bdimg.com/it/u=2160420705,2533030665&fm=21&gp=0.jpg" mobile:phone];
                 }
             }];
             
             //Kick off the timer。 定期获得周边车辆信息。
+            isTimerRunning = true;
             _timerCount = 5;
             _repeatingTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(countedTimerAction:) userInfo:nil repeats:YES];
         }
@@ -427,11 +494,11 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         if([status intValue] == 1)
         {
             isLoginSuccess = true;
-            //如果有当前活跃订单，直接进入叫车界面。
             NSString *activeOrderJson;
             
             int activeOrderNum = [[responseDict objectForKey:@"has_active_order"] intValue];
             
+            //如果有当前活跃订单
             if(activeOrderNum > 0)
             {
                 activeOrderJson = [responseDict objectForKey:@"active_order"];
@@ -442,9 +509,47 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
                 NSDictionary *activeOrder = [NSJSONSerialization JSONObjectWithData:objectData
                                                                         options:NSJSONReadingMutableContainers
                                                                           error:&jsonError];
-                CallCarViewController *postVC = [[CallCarViewController alloc] init];
-                postVC.activeOrder = activeOrder;
-                [self.navigationController pushViewController:postVC animated:YES];
+                
+                //如果订单未结束
+                /*
+                const STATUS_INITATION 	=1 ;
+                const STATUS_ACCEPT 		=2 ;
+                const STATUS_START 			=3 ;
+                const STATUS_END 			=4 ;
+                const STATUS_PAID			=5 ;
+                const STATUS_CANCEL 		=-1 ;   //用户取消
+                 */
+                NSString *orderStatus = [activeOrder objectForKey:@"status"];
+                //进行中订单
+                if([orderStatus isEqualToString:@"1"] || [orderStatus isEqualToString:@"2"] || [orderStatus isEqualToString:@"3"])
+                {
+                    CallCarViewController *postVC = [[CallCarViewController alloc] init];
+                    postVC.activeOrder = activeOrder;
+                    [self.navigationController pushViewController:postVC animated:YES];
+                }
+                //已经支付
+                else if([orderStatus isEqualToString:@"5"])
+                {
+                    //存入历史订单库
+                    [[DDDatabase sharedDatabase]insertOrder:activeOrderJson];
+                }
+                //未支付或者司机代付订单
+                else if([orderStatus isEqualToString:@"4"])
+                {
+                    NSString *payrole = [activeOrder objectForKey:@"pay_role"];
+                    //如果司机代付
+                    if([payrole isEqualToString:@"1"])
+                    {
+                        //查看历史订单库
+                    }
+                    else
+                    //需要支付
+                    {
+                        PaymentViewController *payVC = [[PaymentViewController alloc]initWithNibName:@"" bundle:nil];
+                        [payVC setActiveOrder:activeOrder];
+                        [self.navigationController pushViewController:payVC animated:YES];
+                    }
+                }
             }
         } else {
             //自动登录出现错误
@@ -458,6 +563,25 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
             //获取附近车辆信息
             [_mapView removeAnnotations:_mapView.annotations];
             NSArray * arr = responseDict[@"cars"];
+            
+            if(arr.count>0)
+            {
+                NSString *nearCarStr= [NSString stringWithFormat:@"附近有%d辆车",(int)arr.count];
+                
+                CGRect labelRect = [nearCarStr
+                                    boundingRectWithSize:CGSizeMake(200, 0)
+                                    options:NSStringDrawingUsesLineFragmentOrigin
+                                    attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14.0]}
+                                    context:nil];
+                
+                [nearCarPromtBackView mas_updateConstraints:^(MASConstraintMaker *make) {
+                    make.width.mas_equalTo(labelRect.size.width + 12);
+                    make.height.mas_equalTo(labelRect.size.height + 4);
+                }];
+                
+                nearCarsPromptLabel.text = nearCarStr;
+            }
+            
             if([arr isKindOfClass:[NSArray class]])
             {
                 for (int i = 0; i < arr.count ; i++) {
@@ -467,6 +591,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
                     
                     //添加标注
                     BMKPointAnnotation *pointAnnotation = [[BMKPointAnnotation alloc]init];
+                    
                     CLLocationCoordinate2D coor;
                     coor.latitude = lat;
                     coor.longitude = lng;
@@ -494,8 +619,8 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     }
     else
     {
-        HisoryViewController * persionVC = [[HisoryViewController alloc]init];
-        [self.navigationController pushViewController:persionVC animated:YES];
+        HistoryViewController * histroyVC = [[HistoryViewController alloc]initWithNibName:@"HistoryViewController" bundle:nil];
+        [self.navigationController pushViewController:histroyVC animated:YES];
     }
 }
 -(void)leftViewDisappear
@@ -511,6 +636,9 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 
 -(void)countedTimerAction:(NSTimer *)timer
 {
+    if(!isTimerRunning)
+        return;
+    
     _timerCount --;
     
     if(_timerCount==0 && currMapCenterLocation!=nil)

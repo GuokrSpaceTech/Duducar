@@ -8,14 +8,15 @@
 
 #import <UIKit/UIKit.h>
 @protocol LeftViewDelegate;
-@interface DDLeftView : UIView
-@property (nonatomic,weak)id<LeftViewDelegate>delegate;
-@end
 
+@interface DDLeftView : UIView
+
+@property (nonatomic,weak)id<LeftViewDelegate>delegate;
+-(void)setAvatarImage:(NSString*)imageUrl mobile:(NSString *)mobile;
+@end
 
 @protocol LeftViewDelegate <NSObject>
 
 -(void)leftView:(DDLeftView *)leftView index:(NSInteger)index;
 -(void)leftViewClose:(DDLeftView *)leftView;
-
 @end

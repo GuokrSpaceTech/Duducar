@@ -10,9 +10,11 @@
 #import "RatingViewController.h"
 #import <AlipaySDK/AlipaySDK.h>
 #import "WXApiRequestHandler.h"
+#import "DDDatabase.h"
 #import "Order.h"
 #import "DataSigner.h"
 
+//Alipay Secrets
 static NSString *partner = @"2088121002293318";
 static NSString *seller = @"1946742250@qq.com";
 static NSString *privateKey =
@@ -50,7 +52,23 @@ enum Paymethod{
     if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
         self.edgesForExtendedLayout = UIRectEdgeNone;
     
-    self.chargeLabel.text = _chargePrice;
+    if(_chargePrice)
+    {
+        self.chargeLabel.text = _chargePrice;
+        NSString *paymentConfirmString = [NSString stringWithFormat:@"确认支付%@元",_chargePrice];
+        _paymentConfirmButton.titleLabel.text = paymentConfirmString;
+    }
+}
+
+-(void)setActiveOrder:(NSDictionary *)activeOrder
+{
+    _activeOrder = [NSDictionary dictionaryWithDictionary:[activeOrder objectForKey:@"order"]];
+    
+    if(_activeOrder)
+    {
+        NSNumber *sumprice = [_activeOrder objectForKey:@"sumprice"];
+        _chargePrice = [NSString stringWithFormat:@"%@", sumprice];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -66,15 +84,18 @@ enum Paymethod{
     {
         [self wechatpay];
     }
-    
 }
 
 - (IBAction)aliPaySelected:(id)sender {
+    [_alipayButton setImage:[UIImage imageNamed:@"checked"] forState:UIControlStateNormal];
+    [_weichatpayButton setImage:[UIImage imageNamed:@"unchecked"] forState:UIControlStateNormal];
     paymenthod = ALIPAY;
 }
 
 - (IBAction)WechatPaySelected:(id)sender {
     paymenthod = WECHATPAY;
+    [_alipayButton setImage:[UIImage imageNamed:@"unchecked"] forState:UIControlStateNormal];
+    [_weichatpayButton setImage:[UIImage imageNamed:@"checked"] forState:UIControlStateNormal];
 }
 
 -(void) alipay
@@ -82,10 +103,10 @@ enum Paymethod{
     Order *order = [[Order alloc] init];
     order.partner = partner;
     order.seller = seller;
-    order.tradeNO = [self generateTradeNO]; //订单ID（由商家?自?行制定）
+    order.tradeNO = [self generateTradeNO]; //订单ID（由商家自行制定）
     order.productName = @"嘟嘟专车"; //商品标题
     order.productDescription = @"支付车费"; //商品描述
-    order.amount = [NSString stringWithFormat:@"%.2f",[self.chargePrice floatValue]]; //商品价格
+    order.amount = _chargePrice; //商品价格
     order.notifyURL = @"http://120.24.237.15:81/api/Pay/getAlipayResult"; //回调URL
     order.service = @"mobile.securitypay.pay";
     order.paymentType = @"1";
@@ -120,7 +141,22 @@ enum Paymethod{
 
 -(void)wechatpay
 {
-    NSString *res = [WXApiRequestHandler jumpToBizPay];
+    __block NSString *mobile;
+    __block NSString *usertoken;
+    id orderNum = [_activeOrder objectForKey:@"orderNum"];
+    NSString *startStr = [_activeOrder objectForKey:@"start"];
+    NSString *destStr  = [_activeOrder objectForKey:@"destination"];
+    NSString *body = [NSString stringWithFormat:@"%@ - %@", startStr, destStr];
+    NSString *price = _chargePrice;
+    
+    [[DDDatabase sharedDatabase]selectFromPersonInfo:^(NSString *token, NSString *phone) {
+        mobile = phone;
+        usertoken = token;
+    }];
+    
+    NSDictionary *paramDict = @{@"orderNum":orderNum, @"body":body, @"total_fee":price, @"token":usertoken, @"role":@"2", @"mobile":mobile };
+
+    NSString *res = [WXApiRequestHandler jumpToBizPay:paramDict];
     if( ![@"" isEqual:res] ){
         UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"支付失败" message:res delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         

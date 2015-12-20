@@ -22,7 +22,7 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 @interface DDSocket ()
 {
-    NSString *trunctedResponse;
+    NSMutableArray *trunctedResponseArray;
 }
 @end
 
@@ -52,7 +52,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         [[DDTTYLogger sharedInstance] setLogFormatter:formatter];
         [DDLog addLogger:[DDTTYLogger sharedInstance]];
         
-        trunctedResponse = @"";
+        trunctedResponseArray = [[NSMutableArray alloc]init];
 
     }
     return self;
@@ -181,28 +181,34 @@ completionHandler:(void (^)(BOOL shouldTrustPeer))completionHandler
     [asyncSocket readDataWithTimeout:-1 tag:0];
     
     NSString *response = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    
+    [trunctedResponseArray addObject:response];
+
+    //找到回车符
     NSRange range = [response rangeOfString:@"\n"];
-    if(range.location==NSNotFound)
+    if(!(range.location==NSNotFound))
     {
-        trunctedResponse = response;
-    } else {
-        if(![trunctedResponse isEqualToString:@""])
+        //拼接字符串
+        response = @"";
+        for(NSString *trunctedString in trunctedResponseArray)
         {
-            response = [trunctedResponse stringByAppendingString:response];
-            trunctedResponse = @"";
+            response = [response stringByAppendingString:trunctedString];
         }
+        
+        //清空缓存
+        [trunctedResponseArray removeAllObjects];
+
+        //Deserialastion a Json String into Dictionary
+        NSError *jsonError;
+        NSData  *objectData = [response dataUsingEncoding:NSUTF8StringEncoding];
+        _responseDict = [[NSDictionary alloc]init];
+        _responseDict = [NSJSONSerialization JSONObjectWithData:objectData
+                                                        options:NSJSONReadingMutableContainers
+                                                          error:&jsonError];
+        [[NSNotificationCenter defaultCenter] postNotificationName:responseNotificationName object:self userInfo:_responseDict];
+        
+        DDLogInfo(@"Response:\n%@", response);
     }
-    
-    //Deserialastion a Json String into Dictionary
-    NSError *jsonError;
-    NSData  *objectData = [response dataUsingEncoding:NSUTF8StringEncoding];
-    _responseDict = [[NSDictionary alloc]init];
-    _responseDict = [NSJSONSerialization JSONObjectWithData:objectData
-                                                 options:NSJSONReadingMutableContainers
-                                                   error:&jsonError];
-    [[NSNotificationCenter defaultCenter] postNotificationName:responseNotificationName object:self userInfo:_responseDict];
-    
-    DDLogInfo(@"Response:\n%@", response);
     
 }
 
@@ -212,7 +218,7 @@ completionHandler:(void (^)(BOOL shouldTrustPeer))completionHandler
     
     DDLogVerbose(@"socketDidDisconnect:withError: \"%@\"", err);
     
-//    [self startSocket];
+    [self startSocket];
 }
 
 #pragma mark

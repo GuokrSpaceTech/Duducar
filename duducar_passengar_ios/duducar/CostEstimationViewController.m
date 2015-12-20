@@ -64,24 +64,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-#pragma mark
-#pragma mark == User Actions
-- (IBAction)confirmAction:(id)sender {
-    
-    [_delegate userConfirmCallCabFrom:_startLoc To:_endLoc];
-    
-    [self.navigationController popToRootViewControllerAnimated:YES];
-}
-
 #pragma mark
 #pragma mark == RoutPlan Delegate
 -(void)onGetDrivingRouteResult:(BMKRouteSearch *)searcher result:(BMKDrivingRouteResult *)result errorCode:(BMKSearchErrorCode)error
@@ -103,10 +85,17 @@
         }
     }
     
-    int max_price = distance_max/1000 * 1.2;
-    int min_price = distance_min/1000 * 1.2;
+    int max_price = distance_max/1000 * 1.5;
+    int min_price = distance_min/1000 * 1.5;
     
-    NSString *priceString = [NSString stringWithFormat:@"%d - %d", min_price, max_price];
+    NSString *priceString;
+    if(max_price == min_price)
+    {
+         priceString = [NSString stringWithFormat:@"%d", min_price];
+    } else {
+         priceString = [NSString stringWithFormat:@"%d - %d", min_price, max_price];
+    }
+    
     _CostEstLabel.text = priceString;
 }
 @end

@@ -6,17 +6,12 @@
     },
     {
       "idiom" : "iphone",
+      "filename" : "startindicator.png",
       "scale" : "2x"
     },
     {
       "idiom" : "iphone",
       "scale" : "3x"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "startindicator.png",
-      "unassigned" : true,
-      "scale" : "2x"
     }
   ],
   "info" : {
