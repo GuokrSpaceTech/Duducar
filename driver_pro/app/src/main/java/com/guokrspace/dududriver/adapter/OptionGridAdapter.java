@@ -19,6 +19,7 @@ import com.guokrspace.dududriver.common.MoreOptionType;
 import com.guokrspace.dududriver.ui.LoginActivity;
 import com.guokrspace.dududriver.ui.OrderMapActivity;
 import com.guokrspace.dududriver.ui.SettingActivity;
+import com.guokrspace.dududriver.ui.WebViewActivity;
 import com.guokrspace.dududriver.util.DisplayUtil;
 
 import java.util.ArrayList;
@@ -117,7 +118,9 @@ public class OptionGridAdapter extends RecyclerView.Adapter<OptionGridAdapter.It
 
                 break;
             case GUIDE:
-
+                Intent guideIntent = new Intent(context, WebViewActivity.class);
+                guideIntent.putExtra(WebViewActivity.WEBVIEW_TYPE, WebViewActivity.WEBVIEW_JOIN);
+                context.startActivity(guideIntent);
                 break;
             case SETTING:
                 context.startActivity(new Intent(context, SettingActivity.class));

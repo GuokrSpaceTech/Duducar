@@ -27,7 +27,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6eadb00b-9a86-4395-a889-d9e05388a082" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/RatingActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/RatingActivity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/WebViewActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/adapter/OptionGridAdapter.java" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/adapter/OptionGridAdapter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/SettingActivity.java" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/SettingActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/.idea/workspace.xml" afterPath="$PROJECT_DIR$/driver_pro/.idea/workspace.xml" />
     </list>
     <ignored path="Duducar.iws" />
@@ -115,11 +118,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="RatingActivity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="RatingActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/RatingActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.25680932">
-              <caret line="269" column="9" selection-start-line="269" selection-start-column="9" selection-end-line="269" selection-end-column="9" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="305" column="34" selection-start-line="305" selection-start-column="34" selection-end-line="305" selection-end-column="34" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#8085#9474#0" expanded="true" />
@@ -135,6 +138,49 @@
                 <element signature="e#10265#10616#0" expanded="true" />
                 <element signature="e#10615#10616#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WebViewActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/WebViewActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="47" column="38" selection-start-line="47" selection-start-column="38" selection-end-line="47" selection-end-column="38" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="activity_webview.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_webview.xml">
+          <provider selected="true" editor-type-id="android-designer">
+            <state />
+          </provider>
+          <provider editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SettingActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/SettingActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="135" column="16" selection-start-line="135" selection-start-column="16" selection-end-line="137" selection-end-column="43" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.44508672">
+              <caret line="144" column="8" selection-start-line="144" selection-start-column="8" selection-end-line="148" selection-end-column="35" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -3064,6 +3110,62 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="layout" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="java" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -3121,7 +3223,7 @@
     <property name="FullScreen" value="true" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="T7K6R14503003733" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="Nexus_5_API_23" />
-    <property name="SearchEverywhereHistoryKey" value="Order&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/OrderHistoryActivity.java&#10;Setting&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/SettingActivity.java&#10;bui&#9;FILE&#9;file:///Users/hyman/Duducar/app/build.gradle&#10;Comm&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/database/CommonUtil.java&#10;Pre&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/PreOrderActivity.java&#10;S&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/SearchActivity.java&#10;AndroidM&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/AndroidManifest.xml&#10;Searcha&#9;PSI&#9;JAVA://com.guokrspace.duducar.SearchActivity&#10;MessageTag&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/communication/message/MessageTag.java&#10;SocketClient&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/communication/SocketClient.java&#10;Post&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/PostOrderActivity.java&#10;Ra&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/RatingActivity.java&#10;Constan&#9;PSI&#9;JAVA://com.guokrspace.duducar.common.Constants&#10;Dudu&#9;PSI&#9;JAVA://com.guokrspace.duducar.DuduApplication&#10;colo&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/values/colors.xml&#10;Socket&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/communication/SocketClient.java&#10;Pos&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/PostOrderActivity.java&#10;Sh&#9;PSI&#9;JAVA://com.guokrspace.duducar.util.SharedPreferencesUtils&#10;Com&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/ComplainActivity.java&#10;com&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/layout/activity_complain.xml&#10;Settin&#9;PSI&#9;JAVA://com.guokrspace.duducar.SettingActivity&#10;Android&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/AndroidManifest.xml&#10;setting&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/layout/activity_setting.xml&#10;rating&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/layout/activity_rating.xml&#10;po&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/PostOrderActivity.java&#10;Rating&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/RatingActivity.java&#10;attrs&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/values/attrs.xml&#10;Po&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/PostOrderActivity.java&#10;n&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/drawable/complain_button_bg_pressed.xml&#10;his&#9;PSI&#9;JAVA://com.guokrspace.duducar.OrderHistoryActivity&#10;dimen&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/values/dimens.xml&#10;ra&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/layout/activity_rating.xml&#10;colors&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/values/colors.xml&#10;R&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/RatingActivity.java&#10;settin&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/SettingActivity.java&#10;OrderHi&#9;PSI&#9;JAVA://com.guokrspace.duducar.OrderHistoryActivity&#10;co&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/values/colors.xml&#10;strings&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/values/strings.xml&#10;attr&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/values/attrs.xml&#10;Sett&#9;PSI&#9;JAVA://com.guokrspace.duducar.SettingActivity&#10;Per&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/PersonalInfoActivity.java&#10;So&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/communication/SocketClient.java&#10;Message&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/communication/message/MessageTag.java&#10;style&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/values/styles.xml&#10;main&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/layout/activity_main.xml&#10;Dra&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/ui/DrawerView.java&#10;Login&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/LoginActivity.java&#10;menu&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/layout/drawer_left_menu.xml&#10;sear&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/layout/activity_search.xml" />
+    <property name="SearchEverywhereHistoryKey" value="Androidm&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/AndroidManifest.xml&#10;Android&#9;ACTION&#9;ActivateAndroidToolWindow&#10;Settin&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/SettingActivity.java&#10;Settings&#9;PSI&#9;JAVA://android.provider.Settings&#10;W&#9;PSI&#9;JAVA://com.guokrspace.duducar.WebViewActivity&#10;Order&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/OrderHistoryActivity.java&#10;Setting&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/SettingActivity.java&#10;bui&#9;FILE&#9;file:///Users/hyman/Duducar/app/build.gradle&#10;Comm&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/database/CommonUtil.java&#10;Pre&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/PreOrderActivity.java&#10;S&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/SearchActivity.java&#10;AndroidM&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/AndroidManifest.xml&#10;Searcha&#9;PSI&#9;JAVA://com.guokrspace.duducar.SearchActivity&#10;MessageTag&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/communication/message/MessageTag.java&#10;SocketClient&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/communication/SocketClient.java&#10;Post&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/PostOrderActivity.java&#10;Ra&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/RatingActivity.java&#10;Constan&#9;PSI&#9;JAVA://com.guokrspace.duducar.common.Constants&#10;Dudu&#9;PSI&#9;JAVA://com.guokrspace.duducar.DuduApplication&#10;colo&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/values/colors.xml&#10;Socket&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/communication/SocketClient.java&#10;Pos&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/PostOrderActivity.java&#10;Sh&#9;PSI&#9;JAVA://com.guokrspace.duducar.util.SharedPreferencesUtils&#10;Com&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/ComplainActivity.java&#10;com&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/layout/activity_complain.xml&#10;setting&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/layout/activity_setting.xml&#10;rating&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/layout/activity_rating.xml&#10;po&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/PostOrderActivity.java&#10;Rating&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/RatingActivity.java&#10;attrs&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/values/attrs.xml&#10;Po&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/PostOrderActivity.java&#10;n&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/drawable/complain_button_bg_pressed.xml&#10;his&#9;PSI&#9;JAVA://com.guokrspace.duducar.OrderHistoryActivity&#10;dimen&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/values/dimens.xml&#10;ra&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/layout/activity_rating.xml&#10;colors&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/values/colors.xml&#10;R&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/RatingActivity.java&#10;settin&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/SettingActivity.java&#10;OrderHi&#9;PSI&#9;JAVA://com.guokrspace.duducar.OrderHistoryActivity&#10;co&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/values/colors.xml&#10;strings&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/values/strings.xml&#10;attr&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/values/attrs.xml&#10;Sett&#9;PSI&#9;JAVA://com.guokrspace.duducar.SettingActivity&#10;Per&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/PersonalInfoActivity.java&#10;So&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/communication/SocketClient.java&#10;Message&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/communication/message/MessageTag.java&#10;style&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/values/styles.xml&#10;main&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/layout/activity_main.xml&#10;Dra&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/ui/DrawerView.java&#10;Login&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/LoginActivity.java" />
     <property name="last_opened_file_path" value="$USER_HOME$/Documents/AndroidDevelopment/guokrspace" />
     <property name="ExportApk.ApkPath" value="$PROJECT_DIR$/app" />
     <property name="ExportApk.Flavors" value="" />
@@ -3399,10 +3501,10 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32793018" sideWeight="0.49425286" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32907802" sideWeight="0.49676377" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31421447" sideWeight="0.48922414" order="13" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31421447" sideWeight="0.48922414" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2579023" sideWeight="0.45876288" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2579023" sideWeight="0.45876288" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3297414" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
@@ -3498,13 +3600,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/SettingActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_alipay.xml">
       <provider editor-type-id="android-designer">
         <state />
@@ -3540,8 +3635,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/RatingActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.25680932">
-          <caret line="269" column="9" selection-start-line="269" selection-start-column="9" selection-end-line="269" selection-end-column="9" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="305" column="34" selection-start-line="305" selection-start-column="34" selection-end-line="305" selection-end-column="34" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#8085#9474#0" expanded="true" />
@@ -3557,6 +3652,49 @@
             <element signature="e#10265#10616#0" expanded="true" />
             <element signature="e#10615#10616#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/WebViewActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="47" column="38" selection-start-line="47" selection-start-column="38" selection-end-line="47" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-23/android/provider/Settings.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.21011673">
+          <caret line="75" column="19" selection-start-line="75" selection-start-column="19" selection-end-line="75" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_webview.xml">
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
+      </provider>
+      <provider editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/SettingActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="135" column="16" selection-start-line="135" selection-start-column="16" selection-end-line="137" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.44508672">
+          <caret line="144" column="8" selection-start-line="144" selection-start-column="8" selection-end-line="148" selection-end-column="35" />
+          <folding />
         </state>
       </provider>
     </entry>
