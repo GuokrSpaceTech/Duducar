@@ -1066,7 +1066,9 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         lineList.add(first);
         lineList.add(second);
         OverlayOptions ooPolyline = new PolylineOptions().width(10).color(0xAAFF0000).points(lineList);
-        baiduMap.addOverlay(ooPolyline);
+        if(baiduMap != null){
+            baiduMap.addOverlay(ooPolyline);
+        }
     }
 
 }
