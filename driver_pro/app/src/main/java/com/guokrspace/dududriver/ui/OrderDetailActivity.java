@@ -111,6 +111,8 @@ public class OrderDetailActivity extends BaseActivity{
                 });
 
                 Intent intent = new Intent(context, PayCostActivity.class);
+                CommonUtil.curOrderId = Integer.parseInt(orderItem.getOrder().getId());
+                CommonUtil.curOrderStatus = 6;
                 intent.putExtra("orderItem", orderItem);
                 intent.putExtra("price", cash);
                 intent.putExtra("sumprice", sumprice);
@@ -158,6 +160,7 @@ public class OrderDetailActivity extends BaseActivity{
 //        cash += bundle.getDouble("addPrice2");
 //        cash += bundle.getDouble("addPrice3");
         orderNum = bundle.getString("orderNum");
+        CommonUtil.curOrderStatus = 4;
 
         initView();
     }
@@ -204,7 +207,7 @@ public class OrderDetailActivity extends BaseActivity{
     @Override
     protected void onResume() {
         super.onResume();
-        switch (payOver){
+        switch (CommonUtil.curOrderStatus){
             case WAIT_FOR_PASS_PAY:
                 tvOrderStatus.setText("未支付");
                 break;
@@ -253,13 +256,8 @@ public class OrderDetailActivity extends BaseActivity{
         return true;
     }
 
-    public static void setPayOver(int pay){
-        payOver = pay;
-    }
-
-    private static int payOver = 0;
-    public static final int WAIT_FOR_PASS_PAY = 0;
-    public static final int PASS_PAY_OVER = 1;
-    public static final int DRIVER_PAY_OVER = 2;
-    public static final int WAIT_FOR_DRIVER_PAY = 3;
+    public static final int WAIT_FOR_PASS_PAY = 4;
+    public static final int PASS_PAY_OVER = 7;
+    public static final int DRIVER_PAY_OVER = 5;
+    public static final int WAIT_FOR_DRIVER_PAY = 6;
 }

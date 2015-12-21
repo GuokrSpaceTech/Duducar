@@ -30,6 +30,7 @@ import com.guokrspace.dududriver.net.http.DuDuResultCallBack;
 import com.guokrspace.dududriver.net.http.HttpUrls;
 import com.guokrspace.dududriver.net.http.model.UnifiedorderResp;
 import com.guokrspace.dududriver.util.AppExitUtil;
+import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.wxapi.WePayUtil;
 import com.squareup.okhttp.Request;
 import com.tencent.mm.sdk.modelpay.PayReq;
@@ -118,6 +119,9 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
                     // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                     if (TextUtils.equals(resultStatus, "9000")) {
                         Toast.makeText(PayCostActivity.this, "代付成功", Toast.LENGTH_SHORT).show();
+                        if(CommonUtil.curOrderId == Integer.parseInt(tripOverOrderDetail.getOrder().getId())){
+                            CommonUtil.curOrderStatus = 5;
+                        }
                         finish();
                     } else {
 //                             判断resultStatus 为非“9000”则代表可能支付失败

@@ -70,10 +70,12 @@ public class WealthAdapterDelegate extends AbsAdapterDelegate<List<BaseNoticeIte
         holder.ibDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("daddy wealthnotic " , ((WealthNotice)items.get(position)).message_notice_id + "notice id");
                 QueryBuilder query = DuduDriverApplication.getInstance().mDaoSession.getBaseNoticeDao().queryBuilder().where(BaseNoticeDao.Properties.NoticeId.eq(((WealthNotice) items.get(position)).message_notice_id)).limit(1);
-                if(query.list().size() > 0 && query.list().get(0) != null){
+                if(query.list().size() > 0){
                     BaseNotice notice = (BaseNotice)query.list().get(0);
                     notice.setOutOfTime(true);
+                    Log.e("daddy wealth", notice.getNoticeId() + " " + notice.getOutOfTime());
                     DuduDriverApplication.getInstance().mDaoSession.getBaseNoticeDao().update(notice);
                 }
                 items.remove(position);

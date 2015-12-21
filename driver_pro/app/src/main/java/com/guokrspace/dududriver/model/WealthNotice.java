@@ -73,6 +73,7 @@ public class WealthNotice implements BaseNoticeItem {
             mileage = object.get("mileage") == null ? "1" : (String) object.get("mileage");
             low_speed_time = object.get("low_speed_time") == null ? "0" : (String) object.get("low_speed_time");
             message_notice_id = noticeId;
+            Log.e("daddy message" , message_notice_id+" message id " + noticeId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
