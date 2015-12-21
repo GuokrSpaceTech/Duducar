@@ -205,7 +205,7 @@ public class BalanceActivity extends BaseActivity implements Handler.Callback{
                             loadRefreshRecord(bills);
                             hasLoadLocalRecord = true;
                         }
-                        Log.e("hyman_bill_log", "加载成功" + error);
+//                        Log.e("hyman_bill_log", "加载成功" + error);
                         showToast("刷新失败...");
                     }
 

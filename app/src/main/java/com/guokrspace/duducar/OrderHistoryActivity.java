@@ -89,6 +89,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements Handler.C
                 showToast("正在刷新，请稍后...");
                 return;
             }
+            isRefreshing = true;
             if (isNetworkAvailable()) {
                 currentOrderId = Long.MAX_VALUE;
                 SocketClient.getInstance().getHistoryOrders("old", Constants.ORDER_PAGE_NUM, currentOrderId, new ResponseHandler(Looper.myLooper()) {
@@ -218,8 +219,6 @@ public class OrderHistoryActivity extends AppCompatActivity implements Handler.C
 
     private void transform2OrderRecords(List<OrderRecord> orderRecords, List<Order> orders) {
         for (Order order : orders) {
-            // 如果是司机代付，就不添加到列表中
-            if (order.getPay_role() == 1) continue;
             OrderRecord orderRecord = getOrderRecord(order);
             orderRecords.add(orderRecord);
         }
@@ -337,9 +336,9 @@ public class OrderHistoryActivity extends AppCompatActivity implements Handler.C
             @Override
             public void onItemLongClick(View view, int position) {
                 //长按删除
-                mAdapter.removeData(position);
                 OrderRecord orderRecord = getOrderRecord(orderRecords.get(position));
                 mApplication.mDaoSession.getOrderRecordDao().delete(orderRecord);
+                mAdapter.removeData(position);
             }
         });
         mRecyclerView.setAdapter(mAdapter);
@@ -358,7 +357,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements Handler.C
                 //lastVisibleItem >= totalItemCount - 3 表示剩下3个item自动加载
                 if (hasMore && lastVisibleItem >= totalItemCount - 3 && dy > 0) {
                     if (isRefreshing || isLoading) {
-                        Log.d("hyman_log", "cannot load more");
+                        showToast("cannot load more");
                     } else {
                         loadMoreData();
                     }

@@ -26,10 +26,10 @@ public class BaseInfo {
         info.put(Constants.PREFERENCE_KEY_DRIVER_STARTING_DISTANCE, charge_rule.getStarting_distance() == null ? "10" : charge_rule.getStarting_distance());
         info.put(Constants.PREFERENCE_KEY_DRIVER_STARTING_PRICE, charge_rule.getStarting_price() == null ? "8" : charge_rule.getStarting_price());
 
-        info.put(Constants.PREFERENCE_KEY_WEBVIEW_ABOUT, webivew.getAbout() == null ? "" : webivew.getAbout());
-        info.put(Constants.PREFERENCE_KEY_WEBVIEW_JOIN, webivew.getJoin() == null ? "" : webivew.getJoin());
-        info.put(Constants.PREFERENCE_KEY_WEBVIEW_CONTACT, webivew.getContact() == null ? "" : webivew.getContact());
-        info.put(Constants.PREFERENCE_KEY_WEBVIEW_CLAUSE, webivew.getClause() == null ? "" : webivew.getClause());
+        info.put(Constants.PREFERENCE_KEY_WEBVIEW_ABOUT, webview.getAbout() == null ? "" : webview.getAbout());
+        info.put(Constants.PREFERENCE_KEY_WEBVIEW_JOIN, webview.getJoin() == null ? "" : webview.getJoin());
+        info.put(Constants.PREFERENCE_KEY_WEBVIEW_CONTACT, webview.getContact() == null ? "" : webview.getContact());
+        info.put(Constants.PREFERENCE_KEY_WEBVIEW_CLAUSE, webview.getClause() == null ? "" : webview.getClause());
 
         return info;
     }
@@ -89,14 +89,14 @@ public class BaseInfo {
     private String status;
 
     public WebView getWebivew() {
-        return webivew;
+        return webview;
     }
 
     public void setWebivew(WebView webivew) {
-        this.webivew = webivew;
+        this.webview = webivew;
     }
 
-    private WebView webivew;
+    private WebView webview;
 
     public class Driver{
         public String getName() {

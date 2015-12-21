@@ -93,13 +93,13 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 					new OkHttpRequest.Builder().url(HttpUrls.getUrl(HttpUrls.WX_PAY_GETWXPAYRESULT)).params(params).post(new ResultCallback<TradeResult>() {
 						@Override
 						public void onError(Request request, Exception e) {
-							Log.e(TAG, "onError, e = " + e.getLocalizedMessage());
+//							Log.e(TAG, "onError, e = " + e.getLocalizedMessage());
 						}
 
 						@Override
 						public void onResponse(final TradeResult tradeResult) {
 							//对返回的数据进行判断，根据实际支付结果进行展示
-							Log.e("hyman_result", tradeResult.modelToString());
+//							Log.e("hyman_result", tradeResult.modelToString());
 							String trade_result = "";
 							if (tradeResult.status == 1) {
 								trade_result = "操作成功！已支付，请查看您的账单";
@@ -123,6 +123,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 									}
 									if (!TextUtils.isEmpty(orderNum) && orderNum.equals(CommonUtil.tripOverOrderDetail.getOrderNum())) {
 										Intent intent = new Intent(mContext, RatingActivity.class);
+										CommonUtil.tripOverOrderDetail.setStatus("5");
 										intent.putExtra("order", CommonUtil.tripOverOrderDetail);
 										startActivity(intent);
 									}

@@ -7,11 +7,13 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -30,6 +32,8 @@ public class FeedBackActivity extends AppCompatActivity {
     private ProgressBar mProgressBar;
     private Button publishButton;
 
+//    private boolean isEnable = true;
+
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -46,6 +50,7 @@ public class FeedBackActivity extends AppCompatActivity {
                         }
                     });
                     dialog.show();
+                    publishButton.setEnabled(true);
                     break;
                 default:
                     break;
@@ -103,9 +108,15 @@ public class FeedBackActivity extends AppCompatActivity {
      *  提交反馈
      */
     public void publishFeedBack(View view) {
+
         if (TextUtils.isEmpty(feedbackEditText.getText())) {
+            showToast("反馈内容不可为空哦~");
             return;
         }
+
+        publishButton.setEnabled(false);
+//        isEnable = false;
+
         mProgressBar.setVisibility(View.VISIBLE);
         new Thread(new Runnable() {
             int i = 0;
@@ -124,5 +135,13 @@ public class FeedBackActivity extends AppCompatActivity {
                 mHandler.sendEmptyMessage(1);
             }
         }).start();
+    }
+
+    private void showToast(String msg) {
+        Toast toast = new Toast(context);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.setText(msg);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.show();
     }
 }
