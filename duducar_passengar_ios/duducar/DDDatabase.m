@@ -34,6 +34,8 @@
         [db executeUpdate:sqlStr];
         sqlStr = @"CREATE TABLE IF NOT EXISTS orderHistory('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,'order' text)";
         [db executeUpdate:sqlStr];
+        sqlStr = @"CREATE TABLE IF NOT EXISTS baseinfo('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,'baseinfo' text)";
+        [db executeUpdate:sqlStr];
     }];
 }
 -(void)clearTable
@@ -43,6 +45,9 @@
         [db executeUpdate:sqlStr];
         sqlStr = @"delete from orderHistory;";
         [db executeUpdate:sqlStr];
+        sqlStr = @"delete from baseinfo;";
+        [db executeUpdate:sqlStr];
+        
     }];
 }
 -(void)insertDataToPersonInfoTableToken:(NSString *)token phone:(NSString *)phone
@@ -79,6 +84,24 @@
             [orderArray addObject:[set stringForColumn:@"order"]];
         }
         completionHandler(orderArray);
+    }];
+}
+-(void)insertBaseinfo:(NSString *)baseinfo
+{
+    [queue inDatabase:^(FMDatabase *db) {
+        [db executeUpdate:@"insert into baseinfo('baseinfo') values(?)",baseinfo];
+    }];
+}
+
+-(void)selectBaseinfo:(void (^)(NSString *))completionHandler
+{
+    [queue inDatabase:^(FMDatabase *db) {
+        FMResultSet *set = [db executeQuery:@"SELECT * from baseinfo LIMIT 1"];
+        NSString *baseinfo;
+        while ([set next]) {
+            baseinfo = [set stringForColumn:@"baseinfo"];
+        }
+        completionHandler(baseinfo);
     }];
 }
 

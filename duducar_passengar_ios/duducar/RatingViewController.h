@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet HCSStarRatingView *rateingView;
 @property (weak, nonatomic) IBOutlet HCSStarRatingView *ratingViewUserRate;
 @property (weak, nonatomic) IBOutlet UIImageView *driverAvatarImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *phoneImageView;
 @property (weak, nonatomic) IBOutlet UILabel *driverNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *carDescLabel;
 @property (weak, nonatomic) IBOutlet UILabel *carPlateNumberLabel;

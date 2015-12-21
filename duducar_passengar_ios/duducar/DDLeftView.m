@@ -60,7 +60,7 @@
         }];
         avatarImageView.layer.cornerRadius = 25;
         avatarImageView.clipsToBounds = YES;
-        avatarImageView.backgroundColor = [UIColor whiteColor];
+        avatarImageView.backgroundColor = [UIColor clearColor];
         avatarImageView.contentMode = UIViewContentModeScaleAspectFit;
         
         [mobileLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -111,6 +111,22 @@
         button5.frame = CGRectMake(10, 155+(40*3), 200-20, 40);
         [button5 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [contentView addSubview:button5];
+        
+        UIView *logoutBackView = [[UIView alloc]initWithFrame:CGRectMake(10, 155+(40*4), 200-20, 40)];
+        logoutBackView.backgroundColor = [UIColor redColor];
+        [contentView addSubview:logoutBackView];
+        
+        UIImageView *logoutIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"ic_power_settings_new_white"]];
+        logoutIcon.frame = CGRectMake(10, 5, 30, 30);
+        UIButton * button6 = [UIButton buttonWithType:UIButtonTypeCustom];
+        [button6 setTitle:@"退出登录" forState:UIControlStateNormal];
+        button6.tag = 104;
+        button6.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        [button6 addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+        button6.frame = CGRectMake(10+30+10, 0, 200-50-10, 40);
+        [button6 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [logoutBackView addSubview:button6];
+        [logoutBackView addSubview:logoutIcon];
     }
     return self;
 }
@@ -122,10 +138,11 @@
 
 -(void)setAvatarImage:(NSString*)imageUrl mobile:(NSString *)mobile
 {
-    [avatarImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-        NSLog(@"User Avatar load Completed.");
-    }];
+//    [avatarImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+//        NSLog(@"User Avatar load Completed.");
+//    }];
     
+    [avatarImageView setImage:[UIImage imageNamed:@"ic_account_circle_white"]];
     mobileLabel.text = mobile;
 }
 
@@ -152,6 +169,11 @@
     {
         // 帮助
         [_delegate leftView:self index:3];
+    }
+    else if(tag == 104)
+    {
+        // 帮助
+        [_delegate leftView:self index:4];
     }
 }
 

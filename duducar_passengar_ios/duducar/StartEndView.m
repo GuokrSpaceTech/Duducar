@@ -32,34 +32,30 @@
         
         [greenImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.mas_left).offset(8);
-            make.top.equalTo(self.mas_top).offset(12);
-            make.height.mas_equalTo(self.frame.size.height/2-12);
-            make.width.mas_equalTo(6);
+            make.top.equalTo(self.mas_top).offset(16);
+            make.height.mas_equalTo(self.frame.size.height/2-16);
+            make.width.mas_equalTo(8);
         }];
         
         [redImageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.mas_left).offset(8);
             make.top.equalTo(greenImageView.mas_bottom);
-            make.height.mas_equalTo(self.frame.size.height/2-12);
-            make.width.mas_equalTo(6);
+            make.height.mas_equalTo(self.frame.size.height/2-16);
+            make.width.mas_equalTo(8);
         }];
         
         _startLabel = [[UILabel alloc]initWithFrame:CGRectMake(40, 0, frame.size.width-50, frame.size.height/2.0)];
+        _startLabel.font = [UIFont systemFontOfSize:14.0f];
+        _startLabel.lineBreakMode = NSLineBreakByTruncatingTail;
         _startLabel.backgroundColor = [UIColor clearColor];
         [self addSubview:_startLabel];
         
         _endLabel = [[UILabel alloc]initWithFrame:CGRectMake(40, frame.size.height/2.0, frame.size.width-50, frame.size.height/2.0)];
         _endLabel.backgroundColor = [UIColor clearColor];
+        _startLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+        _endLabel.font = [UIFont systemFontOfSize:14.0f];
         [self addSubview:_endLabel];
     }
     return self;
 }
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code
-}
-*/
-
 @end

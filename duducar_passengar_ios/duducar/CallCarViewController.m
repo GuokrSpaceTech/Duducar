@@ -14,6 +14,7 @@
 #import "OrderInfoView.h"
 #import "CostEstimationViewController.h"
 #import "PaymentViewController.h"
+#import "RatingViewController.h"
 @interface CallCarViewController ()<BMKMapViewDelegate,BMKLocationServiceDelegate,UIAlertViewDelegate>
 {
     BMKLocationService *_locService;
@@ -79,12 +80,10 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     _locService = [[BMKLocationService alloc]init];
     [_locService startUserLocationService];
     
-    
     /*
      * 监听来自Socket的服务消息
      */
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(receiveResponseHandles:) name:responseNotificationName object:nil];
-    
     
     /*
      * 处理当前活跃订单
@@ -106,7 +105,6 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         double start_lng =[[self.activeOrder objectForKey:@"start_lng"] doubleValue];
         [_startLocation setCoordinate2D:CLLocationCoordinate2DMake(start_lat, start_lng)];
 
-        
         _endLocation = [[Location alloc]init];
         _endLocation.name = [self.activeOrder objectForKey:@"destination"];
         double end_lat = [[self.activeOrder objectForKey:@"destination_lat"] doubleValue];
@@ -143,7 +141,6 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     {
         [self callCar];
     }
-
 }
 
 - (void)dealloc {
@@ -167,6 +164,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     _mapView.delegate = self;
     [_mapView viewWillAppear];
 }
+
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -238,7 +236,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     NSDictionary *param = @ {@"cmd": @"create_order", @"role": @"2", @"start":_startLocation.name, @"destination":_endLocation.name,
                             @"start_lat":@(_startLocation.coordinate2D.latitude), @"start_lng":@(_startLocation.coordinate2D.longitude),
                             @"destination_lat":@(_endLocation.coordinate2D.latitude), @"destination_lng":@(_endLocation.coordinate2D.longitude),
-                            @"pre_mileage":@(12), @"pre_price":@(65), @"car_type":@(1)};
+                            @"pre_mileage":@(0), @"pre_price":@(65), @"car_type":@(1)};
     
     [[DDSocket currentSocket] sendRequest:param];
 }
@@ -292,17 +290,6 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     currentUserLocation = userLocation;
 }
 
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 #pragma mark
 #pragma mark == Socket Response handeling
 - (void)receiveResponseHandles:(NSNotification *)notification
@@ -337,7 +324,13 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
                 isDown = YES;
                 [driverInfoView smallViewFrame];
             }];
+
+            self.navigationItem.title = @"司机已经接单";
         }
+    }
+    else if([command isEqualToString:@"order_start"])
+    {
+        self.navigationItem.title = @"乘客已经上车";
     }
     else if([command isEqualToString:@"cancel_order_resp"])
     {
@@ -347,6 +340,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         }
         else if([status intValue] == -102)
         {
+            self.navigationItem.leftBarButtonItem.enabled = false;
             NSLog(@"不能取消");
         }
     }
@@ -370,24 +364,36 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
             pointAnnotation.title = [NSString stringWithFormat:@"当前里程%@, 当前金额:%@", currentMileage, currentCharge];
             [_mapView addAnnotation:pointAnnotation];
         }
-        
     }
     else if([command isEqualToString:@"order_end"])
     {
-        //防止重复调用支付界面
-        if(![[self.navigationController topViewController] isKindOfClass:[PaymentViewController class]])
+        self.navigationItem.title = @"到达目的地";
+        NSDictionary *order = [responseDict objectForKey:@"order"];
+        NSNumber *payrole = [order objectForKey:@"pay_role"];
+        
+        //司机代支付
+        if([payrole intValue] == 1)
         {
-            PaymentViewController *payVC = [[PaymentViewController alloc]initWithNibName:@"PaymentViewController" bundle:nil];
-            payVC.mileage = [responseDict objectForKey:@"current_mile"];
-            payVC.chargePrice = [responseDict objectForKey:@"current_charge"];
-            payVC.lowSpeedTime = [responseDict objectForKey:@"low_speed_time"];
-            payVC.activeOrder = responseDict;
-            payVC.driver = self.orderDriver;
-            [self.navigationController pushViewController:payVC animated:YES];
+            //防止重复调用评价界面
+            if(![[self.navigationController topViewController] isKindOfClass:[RatingViewController class]])
+            {
+                RatingViewController *rateVC = [[RatingViewController alloc]initWithNibName:@"RatingViewController" bundle:nil];
+                rateVC.activeOrder = order;
+                rateVC.driver = self.orderDriver;
+                [self.navigationController pushViewController:rateVC animated:YES];
+            }
         }
-    }
-    else if([command isEqualToString:@"driver_pay"])//{"cmd":"driver_pay","order_id":1236,"status":1}
-    {
+        else
+        {
+            //防止重复调用支付界面
+            if(![[self.navigationController topViewController] isKindOfClass:[PaymentViewController class]])
+            {
+                PaymentViewController *payVC = [[PaymentViewController alloc]initWithNibName:@"PaymentViewController" bundle:nil];
+                payVC.activeOrder = order;
+                payVC.driver = self.orderDriver;
+                [self.navigationController pushViewController:payVC animated:YES];
+            }
+        }
     }
 }
 @end

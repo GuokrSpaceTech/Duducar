@@ -208,6 +208,7 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
 -(void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self.animatedImagesView stopAnimating];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -397,11 +398,15 @@ static const CGFloat LANDSCAPE_KEYBOARD_HEIGHT = 162;
             //保存Token
             [[DDDatabase sharedDatabase] insertDataToPersonInfoTableToken:token phone:mobile];
             
+            //显示标题
             [self.navigationController setNavigationBarHidden:NO animated:YES];
-
+            
+            //数据库为空，再次请求Baseinfo
+            NSDictionary *paramDict = @{@"cmd":@"baseinfo",@"role":@"2"};
+            [[DDSocket currentSocket]sendRequest:paramDict];
+            
             //进入主界面
-            DDMainViewController *mainVC = [[DDMainViewController alloc]init];
-            [self.navigationController pushViewController:mainVC animated:YES];
+            [self.navigationController popViewControllerAnimated:YES];
         }
         else
         {

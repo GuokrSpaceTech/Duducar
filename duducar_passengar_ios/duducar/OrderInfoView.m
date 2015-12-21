@@ -58,6 +58,9 @@
         
         photoImageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"phoneicon"]];
         photoImageView.contentMode = UIViewContentModeScaleAspectFit;
+        [photoImageView setUserInteractionEnabled:YES];
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(makePhoneCall:)];
+        [photoImageView addGestureRecognizer:tapGesture];
         [self addSubview:photoImageView];
     }
     return self;
@@ -98,5 +101,10 @@
     _carNameLabel.text = _driver.carDescription;
     _carNumLabel.text = [NSString stringWithFormat:@"车牌号：%@",_driver.plate];
     _ratingView.value = [_driver.rating intValue];
+}
+-(void)makePhoneCall:(id)sender
+{
+    NSString *phoneNumber = [@"tel://" stringByAppendingString:_driver.mobile];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:phoneNumber]];
 }
 @end
