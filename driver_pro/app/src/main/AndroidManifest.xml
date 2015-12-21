@@ -114,7 +114,15 @@
             android:name=".ui.PayCostActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="账单支付"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            android:exported="true"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="wxa58560e44b455eca" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.HistoryOrderDetailActivity"
             android:configChanges="keyboardHidden|orientation"
