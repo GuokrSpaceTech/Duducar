@@ -10,4 +10,5 @@
 
 @interface DDMainViewController : UIViewController
 
+@property (assign,nonatomic) BOOL isLoginSuccess;
 @end

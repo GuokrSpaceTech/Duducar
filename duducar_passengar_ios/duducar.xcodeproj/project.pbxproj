@@ -64,6 +64,7 @@
 		F983BFE71C1C1F0D00E942E1 /* OrderInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = F983BFE61C1C1F0D00E942E1 /* OrderInfoView.m */; };
 		F9E1C96B1C172C330083F19B /* DDSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = F9E1C96A1C172C330083F19B /* DDSocket.m */; };
 		F9E1C96E1C172CB30083F19B /* DDMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9E1C96D1C172CB30083F19B /* DDMainViewController.m */; };
+		FA3DC3C71C27F0E6007140AD /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA3DC3C61C27F0E6007140AD /* WebKit.framework */; };
 		FA8892A81C22778800496200 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA8892A31C22778800496200 /* libWeChatSDK.a */; };
 		FA8892A91C22778800496200 /* read_me.txt in Resources */ = {isa = PBXBuildFile; fileRef = FA8892A41C22778800496200 /* read_me.txt */; };
 		FA8892AC1C228F5400496200 /* WXApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8892AB1C228F5400496200 /* WXApiManager.m */; };
@@ -268,6 +269,7 @@
 		F9E1C96A1C172C330083F19B /* DDSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDSocket.m; sourceTree = "<group>"; };
 		F9E1C96C1C172CB30083F19B /* DDMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDMainViewController.h; sourceTree = "<group>"; };
 		F9E1C96D1C172CB30083F19B /* DDMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDMainViewController.m; sourceTree = "<group>"; };
+		FA3DC3C61C27F0E6007140AD /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		FA8892A31C22778800496200 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
 		FA8892A41C22778800496200 /* read_me.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = read_me.txt; sourceTree = "<group>"; };
 		FA8892A51C22778800496200 /* WechatAuthSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WechatAuthSDK.h; sourceTree = "<group>"; };
@@ -303,6 +305,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA3DC3C71C27F0E6007140AD /* WebKit.framework in Frameworks */,
 				2AB57F8A1C1C1B0400BFC7C7 /* UIKit.framework in Frameworks */,
 				2AB57F881C1C1AEC00BFC7C7 /* Foundation.framework in Frameworks */,
 				2AB57ECD1C1C04A400BFC7C7 /* CoreMotion.framework in Frameworks */,
@@ -345,6 +348,7 @@
 		2A9745131BF9B246008C8A7B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FA3DC3C61C27F0E6007140AD /* WebKit.framework */,
 				2AB57F891C1C1B0400BFC7C7 /* UIKit.framework */,
 				2AB57F871C1C1AEC00BFC7C7 /* Foundation.framework */,
 				2AB57F831C1C19C000BFC7C7 /* libssl.a */,
@@ -970,6 +974,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1016,6 +1021,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1064,6 +1070,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/duducar/SDK1.6.2",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.guokrspace.duducar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1100,6 +1107,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/duducar/SDK1.6.2",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.guokrspace.duducar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
