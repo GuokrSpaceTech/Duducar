@@ -132,17 +132,17 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
                             SocketClient.getInstance().sendPayOverRequest(Integer.parseInt(tripOverOrderDetail.getId()), timestamp, tripOverOrderDetail.getSumprice(), 1, new ResponseHandler(Looper.getMainLooper()) {
                                 @Override
                                 public void onSuccess(String messageBody) {
-                                    Log.i("", "");
+//                                    Log.i("", "");
                                 }
 
                                 @Override
                                 public void onFailure(String error) {
-                                    Log.i("", "");
+//                                    Log.i("", "");
                                 }
 
                                 @Override
                                 public void onTimeout() {
-                                    Log.i("", "");
+//                                    Log.i("", "");
                                 }
                             });
                             Intent intent = new Intent(mContext, RatingActivity.class);
@@ -271,7 +271,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
                 * */
                 try {
                     JSONObject mDriverPay = new JSONObject(messageBody);
-                    Log.e("daddy detail", tripOverOrderDetail.toString());
+//                    Log.e("daddy detail", tripOverOrderDetail.toString());
                     if(tripOverOrderDetail == null){
                         finish();
                     }
@@ -364,7 +364,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
         params.put("token", person.getToken());
         params.put("mobile", person.getMobile());
         params.put("role", "2");
-        Log.e("weixinpay", tradeNo + " " + body + " " + totalFee + " " + person.getToken() + " " + person.getMobile());
+//        Log.e("weixinpay", tradeNo + " " + body + " " + totalFee + " " + person.getToken() + " " + person.getMobile());
         /*body = "长沙到北京，共1000公里";
         tradeNo = WePayUtil.genOutTradeNo();
         totalFee = "0.01";
@@ -377,13 +377,13 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
         new OkHttpRequest.Builder().url(HttpUrls.getUrl(HttpUrls.WX_PAY_WXUNIFIEDORDER)).params(params).post(new DuDuResultCallBack<UnifiedorderResp>(mContext) {
             @Override
             public void onError(Request request, Exception e) {
-                Log.e(TAG, "onError, e = " + e.getLocalizedMessage());
+//                Log.e(TAG, "onError, e = " + e.getLocalizedMessage());
             }
 
             @Override
             public void onResponse(UnifiedorderResp unifiedorderResp) {
                 //3、 发起支付请求
-                Log.e(TAG, "onResponse");
+//                Log.e(TAG, "onResponse");
                 if (unifiedorderResp == null) {
                     Toast.makeText(mContext, "数据位空", Toast.LENGTH_SHORT).show();
                     return;
@@ -392,11 +392,11 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
                     Toast.makeText(mContext, "用户信息验证失败或者微信请求失败；", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Log.e("hyman_sid", unifiedorderResp.sid);
+//                Log.e("hyman_sid", unifiedorderResp.sid);
                 //将sid保存
                 SharedPreferencesUtils.setParam(mContext, SharedPreferencesUtils.COMFIRM_TRADE_RESULT_SID, unifiedorderResp.sid);
 
-                Log.e("TAG", unifiedorderResp.toString());
+//                Log.e("TAG", unifiedorderResp.toString());
                 req.appId = WePayUtil.APP_ID;
                 req.partnerId = WePayUtil.MCH_ID;
                 req.prepayId = unifiedorderResp.prepayid;
@@ -406,7 +406,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
                 req.sign = unifiedorderResp.sign;
                 msgApi.registerApp(WePayUtil.APP_ID);
                 msgApi.sendReq(req);
-                Log.e("hyman123", "req=" + req.checkArgs());
+//                Log.e("hyman123", "req=" + req.checkArgs());
             }
         });
 

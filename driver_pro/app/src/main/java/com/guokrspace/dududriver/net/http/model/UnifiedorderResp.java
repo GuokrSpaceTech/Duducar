@@ -23,6 +23,7 @@ public class UnifiedorderResp {
                 + "msg: " + msg
                 + "sign: " + sign
                 + "nonceStr: " + noncestr
+                + "prepayid:" + prepayid
                 + "timestamp: " + timestamp;
     }
 }

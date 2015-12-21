@@ -398,9 +398,9 @@ public class PreOrderActivity extends AppCompatActivity
                     public void onSuccess(String messageBody) {
 
                         JSONObject noPaid = JSONObject.parseObject(messageBody);
-                        if(((String)noPaid.get("order_status")).equals("1")){//存在未支付的账单
-                            final OrderDetail notPaidOrder = new Gson().fromJson((String)noPaid.get("order"), OrderDetail.class);
-                            if("1".equals(notPaidOrder.getPay_role())){ //司机代付
+                        if (((String) noPaid.get("order_status")).equals("1")) {//存在未支付的账单
+                            final OrderDetail notPaidOrder = new Gson().fromJson((String) noPaid.get("order"), OrderDetail.class);
+                            if ("1".equals(notPaidOrder.getPay_role())) { //司机代付
                                 //;
                             } else {
                                 final MaterialDialog dialog = new MaterialDialog(PreOrderActivity.this);
@@ -534,25 +534,25 @@ public class PreOrderActivity extends AppCompatActivity
                 //TODO: init userinfo;
                 //检测是否存在正在进行的订单
                 JSONObject object = JSONObject.parseObject(messageBody);
-                String hasActive = (String)object.get("has_active_order");
-                if(hasActive.equals("1")){
+                String hasActive = (String) object.get("has_active_order");
+                if (hasActive.equals("1")) {
                     //存在正在执行的订单
-                    String status = (String)object.get("order_status");
-                    if(status.equals("5")){//订单已经取消
+                    String status = (String) object.get("order_status");
+                    if (status.equals("5")) {//订单已经取消
                         return;
                     }
                     mApplication.mPersonalInformation = person;
                     Log.e("daddy fang", (String) object.get("active_order"));
                     OrderDetail orderDetail = new Gson().fromJson((String) object.get("active_order"), OrderDetail.class);
-                    Log.e("daddy fang", orderDetail.getId()+"");
-                    if(status.equals("1")){
+                    Log.e("daddy fang", orderDetail.getId() + "");
+                    if (status.equals("1")) {
                         Toast.makeText(PreOrderActivity.this, "您有订单正在等待派发", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(PreOrderActivity.this, PostOrderActivity.class);
                         intent.putExtra("isRecover", true);
                         intent.putExtra("status", "1");
                         intent.putExtra("order_detail", orderDetail);
                         startActivityForResult(intent, 0x6002);
-                    } else if(status.equals("2")){
+                    } else if (status.equals("2")) {
                         Toast.makeText(PreOrderActivity.this, "我们已经为你指派司机", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(PreOrderActivity.this, PostOrderActivity.class);
                         intent.putExtra("isRecover", true);
@@ -560,7 +560,7 @@ public class PreOrderActivity extends AppCompatActivity
                         intent.putExtra("order_detail", orderDetail);
                         intent.putExtra("driver_detail", orderDetail.getDriver());
                         startActivityForResult(intent, 0x6002);
-                    } else if(status.equals("3")){
+                    } else if (status.equals("3")) {
                         Toast.makeText(PreOrderActivity.this, "您有正在执行的行程", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(PreOrderActivity.this, PostOrderActivity.class);
                         intent.putExtra("isRecover", true);
@@ -568,7 +568,7 @@ public class PreOrderActivity extends AppCompatActivity
                         intent.putExtra("order_detail", orderDetail);
                         intent.putExtra("driver_detail", orderDetail.getDriver());
                         startActivityForResult(intent, 0x6002);
-                    } else if(status.equals("4")){ //存在未支付的订单
+                    } else if (status.equals("4")) { //存在未支付的订单
                         checkNotPaid();
                     } else {
                         //订单已经取消
@@ -939,6 +939,10 @@ public class PreOrderActivity extends AppCompatActivity
 
         if (KeyEvent.KEYCODE_BACK == event.getKeyCode()) {
 
+            if (sidingMenu.isMenuShowing()) {
+                sidingMenu.showContent();
+                return true;
+            }
 
             /*if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 getSupportFragmentManager().popBackStack();

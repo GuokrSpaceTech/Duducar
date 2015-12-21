@@ -277,6 +277,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
             public void onResponse(UnifiedorderResp unifiedorderResp) {
                 //3、 发起支付请求
                 Log.e(TAG, "onResponse");
+                Log.e("TAG", unifiedorderResp.toString());
                 if (unifiedorderResp == null) {
                     Toast.makeText(mContext, "数据位空", Toast.LENGTH_SHORT).show();
                     return;

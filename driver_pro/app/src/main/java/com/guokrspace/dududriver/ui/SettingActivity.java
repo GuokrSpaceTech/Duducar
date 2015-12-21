@@ -38,8 +38,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     RelativeLayout accountInfoLayout;
     @Bind(R.id.sound_setting_layout)
     RelativeLayout soundSettingLayout;
-    @Bind(R.id.newest_version)
-    TextView newestVersionTextView;
+    @Bind(R.id.touch_update)
+    TextView tvTouchUpdate;
     @Bind(R.id.apk_update_layout)
     RelativeLayout apkUpdateLayout;
     @Bind(R.id.legal_items_layout)
@@ -54,6 +54,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     ButtonRectangle logoutButton;
     @Bind(R.id.togglebutton)
     ToggleButton mToggleButton;
+    @Bind(R.id.version_name)
+    TextView tvVersionName;
 
     private Context context;
     private DuduDriverApplication mApplication;
@@ -91,6 +93,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 finish();
             }
         });
+
+        tvVersionName.setText("(" + CommonUtil.getAPKVersion(context) + ")");
 
         accountInfoLayout.setOnClickListener(this);
         soundSettingLayout.setOnClickListener(this);

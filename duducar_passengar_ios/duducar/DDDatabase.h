@@ -22,4 +22,7 @@
 
 -(void)selectOrderHistory:(void (^)(NSArray *))completionHandler;
 -(void)insertOrder:(NSString *)order;
+
+-(void)selectBaseinfo:(void (^)(NSString *))completionHandler;
+-(void)insertBaseinfo:(NSString *)baseinfo;
 @end

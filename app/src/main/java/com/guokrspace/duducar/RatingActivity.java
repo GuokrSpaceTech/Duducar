@@ -120,7 +120,7 @@ public class RatingActivity extends ActionBarActivity {
         }.getType());
         commentModels.addAll(commentModels1);
 
-        String commentsStr = (String) SharedPreferencesUtils.getParam(RatingActivity.this, SharedPreferencesUtils.BASEINFO_COMMENTS, "");
+        final String commentsStr = (String) SharedPreferencesUtils.getParam(RatingActivity.this, SharedPreferencesUtils.BASEINFO_COMMENTS, "");
         JSONArray jsonArray = JSON.parseArray(commentsStr);
         if (jsonArray.size() > 0) {
             for (int i = 0; i < jsonArray.size(); i++) {
@@ -208,8 +208,10 @@ public class RatingActivity extends ActionBarActivity {
                         comment += iterator.next().getId() + ",";
                     }
                 }
-                comment = comment.substring(0, comment.length() - 1);
-                Log.e("hyman_rating", comment);
+//                Log.e("hyman_rating", comment);
+                if (!TextUtils.isEmpty(comment)) {
+                    comment = comment.substring(0, comment.length() - 1);
+                }
 
                 SocketClient.getInstance().sendRatingRequest(Integer.parseInt(mOrder.getId()), (int) ratingBarBig.getRating(), comment, new ResponseHandler(Looper.getMainLooper()) {
 

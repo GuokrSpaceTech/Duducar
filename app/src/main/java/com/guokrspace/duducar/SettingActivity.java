@@ -3,14 +3,16 @@ package com.guokrspace.duducar;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sevenheaven.iosswitch.ShSwitchView;
@@ -31,6 +33,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
     private Toolbar mToolbar;
     private ShSwitchView switchView;
+    private TextView tvVersionName;
     private RelativeLayout soundSettingLayout;
     private RelativeLayout updateApkLayout;
     private RelativeLayout feedbackLayout;
@@ -54,6 +57,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         initToolBar();
         switchView = (ShSwitchView) findViewById(R.id.switch_view);
         switchView.setOn(true, false);
+
+        tvVersionName = (TextView) findViewById(R.id.version_name);
+        tvVersionName.setText("(" + getAPKVersion(context) + ")");
 
         soundSettingLayout = (RelativeLayout) findViewById(R.id.sound_setting_layout);
         updateApkLayout = (RelativeLayout) findViewById(R.id.apk_update_layout);
@@ -161,5 +167,22 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.show();
+    }
+
+    /*
+     * 返回当前应用的版本名称
+     * @param context
+     * @return
+     */
+    public String getAPKVersion(Context context) {
+        try {
+            PackageManager manager = context.getPackageManager();
+            PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
+            String version = info.versionName;
+            return version;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 }

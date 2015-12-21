@@ -115,14 +115,14 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     
     startLocButton = [UIButton buttonWithType:UIButtonTypeCustom];
     startLocButton.frame = CGRectMake(0, 0, backView.frame.size.width, backView.frame.size.height/2.0);
-    [startLocButton setTitle:@"输入起点" forState:UIControlStateNormal];
+    [startLocButton setTitle:@"正在定位" forState:UIControlStateNormal];
     [startLocButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [startLocButton addTarget:self action:@selector(searchStartLocationButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [backView addSubview:startLocButton];
     
     stopLocButton = [UIButton buttonWithType:UIButtonTypeCustom];
     stopLocButton.frame = CGRectMake(0, backView.frame.size.height/2.0, backView.frame.size.width, backView.frame.size.height/2.0);
-    [stopLocButton setTitle:@"输入终点" forState:UIControlStateNormal];
+    [stopLocButton setTitle:@"搜索终点" forState:UIControlStateNormal];
     [stopLocButton addTarget:self action:@selector(searchEndLocationButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [stopLocButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [backView addSubview:stopLocButton];
@@ -150,7 +150,6 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         make.height.equalTo(stopLocButton.mas_height);
         make.width.mas_equalTo(@8);
     }];
-    
     
     // 费用估算按钮
     estCostButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -299,6 +298,11 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         
         currCity = result.addressDetail.city;
         NSLog(@"当前城市:%@, 当前地址:%@",currCity, address);
+    } else {
+        NSLog(@"ReverseGeoCodeResult 失败。");
+        BMKReverseGeoCodeOption *reverseGeocodeSearchOption = [[BMKReverseGeoCodeOption alloc]init];
+        reverseGeocodeSearchOption.reverseGeoPoint = currentLoc.location.coordinate;
+        [_geocodesearch reverseGeoCode:reverseGeocodeSearchOption];
     }
 }
 
@@ -319,6 +323,14 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 
 - (void)mapViewDidFinishLoading:(BMKMapView *)mapView
 {
+    CGPoint centerPosition = self.view.center;
+    CLLocationCoordinate2D  coord = [_mapView convertPoint:centerPosition toCoordinateFromView:self.view];
+    
+    startLocation.coordinate2D = coord;
+    
+    BMKReverseGeoCodeOption *reverseGeocodeSearchOption = [[BMKReverseGeoCodeOption alloc]init];
+    reverseGeocodeSearchOption.reverseGeoPoint = coord;
+    [_geocodesearch reverseGeoCode:reverseGeocodeSearchOption];
 }
 
 -(BMKAnnotationView *)mapView:(BMKMapView *)mapView viewForAnnotation:(id<BMKAnnotation>)annotation
@@ -359,7 +371,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
  */
 - (void)didUpdateBMKUserLocation:(BMKUserLocation *)userLocation
 {
-    //NSLog(@"didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude,userLocation.location.coordinate.longitude);
+    NSLog(@"didUpdateUserLocation lat %f,long %f",userLocation.location.coordinate.latitude,userLocation.location.coordinate.longitude);
     [_mapView updateLocationData:userLocation];
     currentLoc = userLocation;
     
@@ -428,7 +440,6 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     BMKReverseGeoCodeOption *reverseGeocodeSearchOption = [[BMKReverseGeoCodeOption alloc]init];
     reverseGeocodeSearchOption.reverseGeoPoint = currentLoc.location.coordinate;;
     [_geocodesearch reverseGeoCode:reverseGeocodeSearchOption];
-    
 }
 
 -(void)estimateButtonClick:(id)sender
@@ -483,7 +494,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
                     NSDictionary *paramDict = @{@"cmd":@"login", @"role":@"2", @"mobile":phone, @"token":token};
                     [[DDSocket currentSocket] sendRequest:paramDict];
                     
-                    [leftView setAvatarImage:@"http://img2.imgtn.bdimg.com/it/u=2160420705,2533030665&fm=21&gp=0.jpg" mobile:phone];
+                    [leftView setAvatarImage:@"" mobile:phone];
                 }
             }];
             
@@ -499,6 +510,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         {
             isLoginSuccess = true;
             NSString *activeOrderJson;
+            NSString *driverJson;
             
             //Get Baseinfo
             NSDictionary *paramDict = @{@"cmd":@"baseinfo",@"role":@"2"};
@@ -517,6 +529,14 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
                 NSDictionary *activeOrder = [NSJSONSerialization JSONObjectWithData:objectData
                                                                         options:NSJSONReadingMutableContainers
                                                                           error:&jsonError];
+                driverJson = [activeOrder objectForKey:@"driver"];
+                
+                //Deserialastion a Json String into Dictionary
+                objectData = [driverJson dataUsingEncoding:NSUTF8StringEncoding];
+                NSDictionary *driverDict = [NSJSONSerialization JSONObjectWithData:objectData
+                                                                           options:NSJSONReadingMutableContainers
+                                                                             error:&jsonError];
+                Driver *driver = [[Driver alloc]initWithDic:driverDict];
                 
                 //如果订单未结束
                 /*
@@ -552,8 +572,9 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
                     else
                     //需要支付
                     {
-                        PaymentViewController *payVC = [[PaymentViewController alloc]initWithNibName:@"" bundle:nil];
+                        PaymentViewController *payVC = [[PaymentViewController alloc]initWithNibName:@"PaymentViewController" bundle:nil];
                         [payVC setActiveOrder:activeOrder];
+                        [payVC setDriver:driver];
                         [self.navigationController pushViewController:payVC animated:YES];
                     }
                 }
@@ -563,13 +584,14 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
             isLoginSuccess = false;
         }
     }
-    else if([command isEqualToString:@"baseinfo_resp"])
-    {
-        if([status intValue] == 1)
-        {
-            baseinfo = responseDict;
-        }
-    }
+    //Socket直接存baseinfo到数据库
+//    else if([command isEqualToString:@"baseinfo_resp"])
+//    {
+//        if([status intValue] == 1)
+//        {
+//            baseinfo = responseDict;
+//        }
+//    }
     else if([command isEqualToString:@"get_near_car_resp"])
     {
         if([status intValue] == 1)
@@ -578,24 +600,25 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
             [_mapView removeAnnotations:_mapView.annotations];
             NSArray * arr = responseDict[@"cars"];
             
-            if(arr.count>0)
-            {
-                NSString *nearCarStr= [NSString stringWithFormat:@"附近有%d辆车",(int)arr.count];
-                
-                CGRect labelRect = [nearCarStr
-                                    boundingRectWithSize:CGSizeMake(200, 0)
-                                    options:NSStringDrawingUsesLineFragmentOrigin
-                                    attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14.0]}
-                                    context:nil];
-                
-                [nearCarPromtBackView mas_updateConstraints:^(MASConstraintMaker *make) {
-                    make.width.mas_equalTo(labelRect.size.width + 12);
-                    make.height.mas_equalTo(labelRect.size.height + 4);
-                }];
-                
-                nearCarsPromptLabel.text = nearCarStr;
-            }
+            NSString *nearCarStr;
+            if(arr.count == 0)
+                nearCarStr= [NSString stringWithFormat:@"附近没有辆车"];
+            else
+                nearCarStr= [NSString stringWithFormat:@"附近有%d辆车",(int)arr.count];
             
+            CGRect labelRect = [nearCarStr
+                                boundingRectWithSize:CGSizeMake(200, 0)
+                                options:NSStringDrawingUsesLineFragmentOrigin
+                                attributes:@{NSFontAttributeName : [UIFont systemFontOfSize:14.0]}
+                                context:nil];
+            
+            [nearCarPromtBackView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.width.mas_equalTo(labelRect.size.width + 12);
+                make.height.mas_equalTo(labelRect.size.height + 4);
+            }];
+            
+            nearCarsPromptLabel.text = nearCarStr;
+
             if([arr isKindOfClass:[NSArray class]])
             {
                 for (int i = 0; i < arr.count ; i++) {
@@ -625,7 +648,19 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 }
 -(void)leftView:(DDLeftView *)leftView index:(NSInteger)index
 {
-     [self leftViewDisappear];
+    [self leftViewDisappear];
+    
+    //读出baseinfo
+    [[DDDatabase sharedDatabase]selectBaseinfo:^(NSString *baseinfostring) {
+        
+        //Deserialastion a Json String into Dictionary
+        NSError *jsonError;
+        NSData  *objectData = [baseinfostring dataUsingEncoding:NSUTF8StringEncoding];
+        baseinfo = [NSJSONSerialization JSONObjectWithData:objectData
+                                                   options:NSJSONReadingMutableContainers
+                                                     error:&jsonError];
+    }];
+    
     if(index == 0)
     {
         HistoryViewController * histroyVC = [[HistoryViewController alloc]initWithNibName:@"HistoryViewController" bundle:nil];
@@ -654,6 +689,12 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         webVC.titleStr = @"帮助";
         webVC.urlStr = helpUrl;
         [self.navigationController pushViewController:webVC animated:YES];
+    }
+    else if(index == 4)
+    {
+        [[DDDatabase sharedDatabase]clearTable];
+        LoginViewController *loginVC = [[LoginViewController alloc]init];
+        [self.navigationController pushViewController:loginVC animated:YES];
     }
 }
 -(void)leftViewDisappear

@@ -1,6 +1,8 @@
 package com.guokrspace.dududriver.util;
 
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -326,6 +328,24 @@ public class CommonUtil {
             return true;
         }
         return false;
+    }
+
+
+    /*
+     * 返回当前应用的版本名称
+     * @param context
+     * @return
+     */
+    public static String getAPKVersion(Context context) {
+        try {
+            PackageManager manager = context.getPackageManager();
+            PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
+            String version = info.versionName;
+            return version;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
 }
