@@ -7,7 +7,6 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -138,10 +137,6 @@ public class FeedBackActivity extends AppCompatActivity {
     }
 
     private void showToast(String msg) {
-        Toast toast = new Toast(context);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.setText(msg);
-        toast.setDuration(Toast.LENGTH_SHORT);
-        toast.show();
+       Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 }

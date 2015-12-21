@@ -42,6 +42,9 @@ public class DuduService extends Service {
     private volatile SocketClient mTcpClient = null;
     private volatile connectTask conctTask = null;
     private volatile int connectDelay = 1;
+    // 记录上次超时的时间, 时间间隔超过1分钟重新计时
+    private volatile long preTime = 0;
+    private volatile int currTimeOut = 0;
 
     public DuduService() {
     }
@@ -59,7 +62,7 @@ public class DuduService extends Service {
         IntentFilter mFilter = new IntentFilter();
         mFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(mReceiver, mFilter);
-
+        preTime = System.currentTimeMillis();
         Log.e("daddy", "service create");
         CommonUtil.setIsServiceOn(true);
     }
@@ -234,6 +237,7 @@ public class DuduService extends Service {
                             @Override
                             public void onSuccess(String messageBody) {
                                 SharedPreferencesUtils.setParam(DuduService.this, SharedPreferencesUtils.LOGIN_STATE, true);
+                                pullOrder();
                             }
 
                             @Override
@@ -256,7 +260,16 @@ public class DuduService extends Service {
             @Override
             public void onTimeout() {
                 Log.i("HeartBeat", "Response Timeout");
-
+                if(System.currentTimeMillis() - preTime < 1000 * 10){ // 连续超时
+                    currTimeOut ++;
+                } else {
+                    currTimeOut = 0;
+                }
+                preTime = System.currentTimeMillis();
+                if(currTimeOut > 5){//5次心跳超时, 默认断开连接 ,尝试重连
+                    reConnectServer();
+                    currTimeOut = 0;
+                }
                 //将登陆状态置为false
                 SharedPreferencesUtils.setParam(DuduService.this, SharedPreferencesUtils.LOGIN_STATE, false);
             }
@@ -282,6 +295,7 @@ public class DuduService extends Service {
                 conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         }
+        pullOrder();
     }
 
     //注册监听网络状态改变的广播

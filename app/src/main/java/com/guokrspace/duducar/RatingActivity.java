@@ -3,6 +3,7 @@ package com.guokrspace.duducar;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,6 +21,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -187,6 +189,17 @@ public class RatingActivity extends ActionBarActivity {
                 @Override
                 public void onClick(View view) {
                     //Call the number
+                    if(!mOrder.getStatus().equals("5")){ // 未完成可以拨打
+                        String mobile = mOrder.getPassenger_mobile();
+                        if (mobile != null && mobile.length() == 11) {
+                            Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mobile));
+                            startActivity(callIntent);
+                        } else {
+                            Log.e("PickUpPassengerActivity", "乘客手机号码问题" + mobile);
+                        }
+                    } else {
+                        //TODO 没法继续拨打 提示联系客服
+                    }
                 }
             });
         }

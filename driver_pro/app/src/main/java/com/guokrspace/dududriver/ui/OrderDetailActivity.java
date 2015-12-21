@@ -59,13 +59,7 @@ public class OrderDetailActivity extends BaseActivity{
         if (mobile != null && mobile.length() == 11) {
             VoiceUtil.startSpeaking(VoiceCommand.CALL_PASSENEGER);
             Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mobile));
-            if (checkSelfPermission(Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                Toast.makeText(OrderDetailActivity.this, "未授权拨打电话,请在权限设置下进行修改", Toast.LENGTH_SHORT).show();
-                return;
-            } else {
-                startActivity(callIntent);
-            }
+            startActivity(callIntent);
         } else {
             Log.e("PickUpPassengerActivity", "乘客手机号码问题" + mobile);
         }
