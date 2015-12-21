@@ -27,6 +27,7 @@ import android.widget.Button;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
 import com.gc.materialdesign.widgets.ProgressDialog;
+import com.google.gson.Gson;
 import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.adapter.TabPagerAdapter;
@@ -101,7 +102,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 
     private PersonalInformation userInfo;
 
-    private OrderItem orderItem = null;
+//    private OrderItem orderItem = null;
     private BaseInfo baseInfo;
 
     //所有登录判断以及操作都将在Service中进行执行
@@ -174,9 +175,9 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 //        CommonUtil.updateToday();
         mHandler.sendEmptyMessage(UPDATE_GRABORDER);
 
-        if(isOnline){
-            pullOrder();
-        }
+//        if(isOnline){
+//            pullOrder();
+//        }
     }
 
     @Override
@@ -201,6 +202,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         messageReceiver = new ServiceReceiver();
         IntentFilter mFilter = new IntentFilter(Constants.SERVICE_BROADCAST);
         mFilter.addAction(Constants.SERVICE_ACTION_MESAGE);
+        mFilter.addAction(Constants.SERVICE_ACTION_NEW_ORDER);
         mFilter.setPriority(1000);
         registerReceiver(messageReceiver, mFilter);
     }
@@ -219,7 +221,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 SharedPreferencesUtils.setParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, true);
 
                 pullBaseInfo();
-                pullOrder();
+//                pullOrder();
                 mHandler.sendEmptyMessage(MessageTag.MESSAGE_UPDATE_MESSAGE);
                 isOnline = true;
                 if(!recover){
@@ -304,29 +306,29 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         });
     }
 
-    private void pullOrder() {
-        //注册派单监听
-        SocketClient.getInstance().registerServerMessageHandler(MessageTag.PATCH_ORDER, new ResponseHandler(Looper.myLooper()) {
-            @Override
-            public void onSuccess(String messageBody) {
-                Log.e("Mainactivity", "confirm order handler");
-                orderItem = FastJsonTools.getObject(messageBody, OrderItem.class);
-                Log.e("Daddy ", messageBody + "  " + orderItem.getCMD() + " " + orderItem.getOrder().getDestination_lat() + "::" + orderItem.getOrder().getDestination_lng());
-                mHandler.sendEmptyMessage(NEW_ORDER_ARRIVE);
-            }
-
-            @Override
-            public void onFailure(String error) {
-                Log.e("Mainactivity", "register order handler error");
-            }
-
-            @Override
-            public void onTimeout() {
-                Log.e("Mainactivity", "register order handler time out");
-            }
-        });
-
-    }
+//    private void pullOrder() {
+//        //注册派单监听
+//        SocketClient.getInstance().registerServerMessageHandler(MessageTag.PATCH_ORDER, new ResponseHandler(Looper.myLooper()) {
+//            @Override
+//            public void onSuccess(String messageBody) {
+//                Log.e("Mainactivity", "confirm order handler");
+//                orderItem = FastJsonTools.getObject(messageBody, OrderItem.class);
+//                Log.e("Daddy ", messageBody + "  " + orderItem.getCMD() + " " + orderItem.getOrder().getDestination_lat() + "::" + orderItem.getOrder().getDestination_lng());
+//                mHandler.sendEmptyMessage(NEW_ORDER_ARRIVE);
+//            }
+//
+//            @Override
+//            public void onFailure(String error) {
+//                Log.e("Mainactivity", "register order handler error");
+//            }
+//
+//            @Override
+//            public void onTimeout() {
+//                Log.e("Mainactivity", "register order handler time out");
+//            }
+//        });
+//
+//    }
 
     private void pullBaseInfo(){
 
@@ -334,8 +336,8 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             @Override
             public void onSuccess(String messageBody) {
                 Log.e("daddy ", "base info " + messageBody);
-                baseInfo = (BaseInfo) FastJsonTools.getObject(messageBody, BaseInfo.class);
-                Log.e("daddy", "base" + baseInfo.getWebivew().getAbout().length());
+                baseInfo = (BaseInfo) new Gson().fromJson(messageBody, BaseInfo.class);
+//                Log.e("daddy", "base" + baseInfo.getWebivew().getAbout().length());
                 mHandler.sendEmptyMessage(HANDLE_BASEINFO);
                 Log.e("daddy", "send message");
             }
@@ -499,7 +501,8 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 }
                 break;
             case NEW_ORDER_ARRIVE:
-                if (orderItem == null) {
+                OrderItem orderItem = CommonUtil.getCurOrderItem();
+                if (CommonUtil.getCurOrderItem() == null) {
                     Log.e("daddy", "orderItem fail ");
                     isListeneing = true;
                     break;
@@ -635,6 +638,10 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                         dialog.show(getSupportFragmentManager(), "mainorderdialog");
                     }
                     abortBroadcast();
+                    break;
+                case Constants.SERVICE_ACTION_NEW_ORDER: //收到新的订单  来自服务的消息
+                    Log.e("daddy", "got a new order");
+                    mHandler.sendEmptyMessage(NEW_ORDER_ARRIVE);
                     break;
                 default:
                     return;

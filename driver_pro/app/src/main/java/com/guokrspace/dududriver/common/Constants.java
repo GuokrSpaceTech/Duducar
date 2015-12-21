@@ -27,6 +27,7 @@ public class Constants {
     public static final String SERVICE_BROADCAST = "SERVICE_BROADCAST";
     public static final String SERVICE_ACTION_RELOGIN = "LOG_IN_ERROR_TRY_AGAIN";
     public static final String SERVICE_ACTION_MESAGE = "GOT_A_NEW_MESSAGE";
+    public static final String SERVICE_ACTION_NEW_ORDER = "SERVICE_GOT_A_NEW_ORDER";
 
     public static final String ACTION_NEW_ORDER = "GOT_A_NEW_ORDER";
     public static final String SERVICE_ACTION_UPDATE_CHARGE = "UPDATE_CHARGE";

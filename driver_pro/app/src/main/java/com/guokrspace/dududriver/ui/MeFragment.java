@@ -214,6 +214,8 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
     @Override
     public void onResume() {
         super.onResume();
+        //更新司机个人信息
+        updateDriverInfo();
         //进入页面自动刷新
         mHandler.postDelayed(new Runnable() {
             @Override
@@ -258,8 +260,6 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
         //下拉刷新
         refreshLayout.setOnRefreshListener(refreshListener);
 
-        //更新司机个人信息
-        updateDriverInfo();
     }
 
     private void loadMoreData() {

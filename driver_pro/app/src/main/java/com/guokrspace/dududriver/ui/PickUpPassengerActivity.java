@@ -11,12 +11,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.net.Uri;
-import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v7.widget.Toolbar;
@@ -566,7 +564,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
 
         //3秒一次  更新界面
         timer = new Timer();
-        timer.scheduleAtFixedRate(new DrawLineTimerTask(), 2000, 3 * 1000);
+        timer.scheduleAtFixedRate(new DrawLineTimerTask(), 3000, 3 * 1000);
 
         btnNavi.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1067,7 +1065,11 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         lineList.add(second);
         OverlayOptions ooPolyline = new PolylineOptions().width(10).color(0xAAFF0000).points(lineList);
         if(baiduMap != null){
-            baiduMap.addOverlay(ooPolyline);
+            try {
+                baiduMap.addOverlay(ooPolyline);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 

@@ -106,6 +106,15 @@ public class BaseInfo {
         public void setName(String name) {
             this.name = name;
         }
+        private String id;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
 
         private String name;
         private String plate;
@@ -243,5 +252,6 @@ public class BaseInfo {
         private String starting_distance;
         private String km_price;
         private String low_speed_price;
+
     }
 }
