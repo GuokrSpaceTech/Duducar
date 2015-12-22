@@ -136,7 +136,7 @@ public class GrabOrderFragment extends BaseFragment implements Handler.Callback{
     private List<BaseNoticeItem> initData() {
         List<BaseNoticeItem> notices = new ArrayList<>();
         List<BaseNotice> data = DuduDriverApplication.getInstance().mDaoSession.getBaseNoticeDao().queryBuilder().where(BaseNoticeDao.Properties.OutOfTime.eq(false)).orderDesc(BaseNoticeDao.Properties.NoticeId).list();
-        Log.e("daddy message", " " + data.size() + " ");
+//        Log.e("daddy message", " " + data.get(0).getNoticeId() + " " + data.get(0).getOutOfTime());
 
         for (BaseNotice notice : data) {
             String type = notice.getType();

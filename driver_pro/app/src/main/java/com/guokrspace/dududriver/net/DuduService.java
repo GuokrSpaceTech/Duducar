@@ -32,6 +32,8 @@ import com.guokrspace.dududriver.util.FastJsonTools;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /*
 * get baidu map location
@@ -43,6 +45,12 @@ public class DuduService extends Service {
     private volatile SocketClient mTcpClient = null;
     private volatile connectTask conctTask = null;
     private volatile int connectDelay = 1;
+    // 记录上次超时的时间, 时间间隔超过1分钟重新计时
+    private volatile long preTime = 0;
+    private volatile int currTimeOut = 0;
+
+    private Timer heartBeatTimer;
+    private TimerTask heartBeatTask;
 
     private StopServiceReceiver mStopReceiver;
 
@@ -57,9 +65,19 @@ public class DuduService extends Service {
         super.onCreate();
         //初始化百度定位
         initLocation();
-        //开始请求定位,发送心跳包
+        //开始请求定位
         mLocClient.start();
         mLocClient.requestLocation();
+        final Looper looper = Looper.myLooper();
+        heartBeatTimer = new Timer();
+        heartBeatTask = new TimerTask() {
+            @Override
+            public void run() {
+                sendHeartBeat(looper);
+            }
+        };
+        //,发送心跳包 5s一次
+        heartBeatTimer.schedule(heartBeatTask, 1000, 5000);
 
         //停止服务广播接收器
         mStopReceiver = new StopServiceReceiver();
@@ -73,7 +91,7 @@ public class DuduService extends Service {
         IntentFilter mFilter = new IntentFilter();
         mFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(mReceiver, mFilter);
-
+        preTime = System.currentTimeMillis();
         Log.e("daddy", "service create");
         CommonUtil.setIsServiceOn(true);
     }
@@ -124,6 +142,14 @@ public class DuduService extends Service {
             conctTask = null;
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        if(heartBeatTimer != null){
+            heartBeatTimer.cancel();
+            heartBeatTimer = null;
+        }
+        if(heartBeatTask != null){
+            heartBeatTask.cancel();
+            heartBeatTask = null;
         }
 
         CommonUtil.setIsServiceOn(false);
@@ -179,8 +205,10 @@ public class DuduService extends Service {
             CommonUtil.setCurAddress(location.getAddrStr());
             CommonUtil.setCurAddressDescription(location.getLocationDescribe());
             CommonUtil.setCurTime(System.currentTimeMillis());
+            CommonUtil.setCurSpeed(curLocaData.speed+"");
 
-            sendHeartBeat(curLocaData);
+
+
         }
     }
 
@@ -210,15 +238,15 @@ public class DuduService extends Service {
     }
 
     //后台不断发送心跳包
-    private void sendHeartBeat(MyLocationData locData) {
+    private void sendHeartBeat(Looper looper) {
         HeartBeatMessage msg = new HeartBeatMessage();
         msg.setCmd("heartbeat");
         msg.setStatus(CommonUtil.getCurrentStatus());
-        msg.setLat(String.valueOf(locData.latitude));
-        msg.setLng(String.valueOf(locData.longitude));
-        msg.setSpeed(String.valueOf(locData.speed));
+        msg.setLat(String.valueOf(CommonUtil.getCurLat()));
+        msg.setLng(String.valueOf(CommonUtil.getCurLng()));
+        msg.setSpeed(String.valueOf(CommonUtil.getCurSpeed()));
 
-        SocketClient.getInstance().sendHeartBeat(msg, new ResponseHandler(Looper.myLooper()) {
+        SocketClient.getInstance().sendHeartBeat(msg, new ResponseHandler(looper) {
             @Override
             public void onSuccess(String messageBody) {
                 Log.i("HeartBeat Response", messageBody);
@@ -250,6 +278,7 @@ public class DuduService extends Service {
                             @Override
                             public void onSuccess(String messageBody) {
                                 SharedPreferencesUtils.setParam(DuduService.this, SharedPreferencesUtils.LOGIN_STATE, true);
+                                pullOrder();
                             }
 
                             @Override
@@ -272,7 +301,18 @@ public class DuduService extends Service {
             @Override
             public void onTimeout() {
                 Log.i("HeartBeat", "Response Timeout");
-
+                if(System.currentTimeMillis() - preTime < 1000 * 10){ // 连续超时
+                    currTimeOut ++;
+                } else {
+                    currTimeOut = 0;
+                }
+                preTime = System.currentTimeMillis();
+                if(currTimeOut > 5){//5次心跳超时, 默认断开连接 ,尝试重连
+                    reConnectServer();
+                    currTimeOut = 0;
+                }
+                Log.e("daddy heart beat", "time out " + currTimeOut);
+//                if(SocketClient.getInstance().getSocket().)
                 //将登陆状态置为false
                 SharedPreferencesUtils.setParam(DuduService.this, SharedPreferencesUtils.LOGIN_STATE, false);
             }
@@ -298,6 +338,7 @@ public class DuduService extends Service {
                 conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         }
+        pullOrder();
     }
 
     //注册监听网络状态改变的广播
@@ -329,6 +370,7 @@ public class DuduService extends Service {
                 } else {
                     ////////网络断开
                     Toast.makeText(DuduService.this, "网络连接断开...", Toast.LENGTH_SHORT).show();
+                    sendBroadCast(Constants.SERVICE_ACTION_NETWORK_OUT);
                     //TODO 网络断开
                 }
             }

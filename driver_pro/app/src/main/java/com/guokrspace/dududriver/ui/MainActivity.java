@@ -179,6 +179,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 //        if(isOnline){
 //            pullOrder();
 //        }
+        pullBaseInfo();
     }
 
     @Override
@@ -195,15 +196,16 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     private void registerBroadcastReceiver(){
         receiver = new ServiceReceiver();
 
-        IntentFilter filter = new IntentFilter(Constants.SERVICE_BROADCAST);
+        IntentFilter filter = new IntentFilter();
         filter.addAction(Constants.SERVICE_ACTION_RELOGIN);
         filter.setPriority(1000);
         registerReceiver(receiver, filter);
 
         messageReceiver = new ServiceReceiver();
-        IntentFilter mFilter = new IntentFilter(Constants.SERVICE_BROADCAST);
+        IntentFilter mFilter = new IntentFilter();
         mFilter.addAction(Constants.SERVICE_ACTION_MESAGE);
         mFilter.addAction(Constants.SERVICE_ACTION_NEW_ORDER);
+        mFilter.addAction(Constants.SERVICE_ACTION_NETWORK_OUT);
         mFilter.setPriority(1000);
         registerReceiver(messageReceiver, mFilter);
     }
@@ -388,6 +390,19 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 }
 
                 if (isListeneing) {
+                    if (!CommonUtil.isNetworkAvailable(context)){
+                        CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
+                        VoiceUtil.startSpeaking(VoiceCommand.NETWORK_NOT_AVAILABLE);
+                        isListeneing = !isListeneing;
+                        return false;
+                    }
+                    if(!SocketClient.getInstance().getSocket().isConnected() || SocketClient.getInstance().getSocket().isClosed()){
+                        // socket 断网
+                        CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
+                        VoiceUtil.startSpeaking(VoiceCommand.CONNECT_SERVER);
+                        isListeneing = !isListeneing;
+                        return false;
+                    }
                     if (!isOnline && userInfo != null) {
                         CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
                         doLogin(userInfo, true);
@@ -502,9 +517,9 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 }
                 break;
             case NEW_ORDER_ARRIVE:
-                /*if(System.currentTimeMillis() - lastOrderTime < 6 * 1000) {
+                if(System.currentTimeMillis() - lastOrderTime < 6 * 1000){ // 连续的订单
                     break;
-                }*/
+                }
                 OrderItem orderItem = CommonUtil.getCurOrderItem();
                 if (CommonUtil.getCurOrderItem() == null) {
                     Log.e("daddy", "orderItem fail ");
@@ -518,7 +533,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 //                        Double.valueOf(orderItem.getOrder().getDestination_lat()), Double.valueOf(orderItem.getOrder().getDestination_lng()));
                 orderItem.setDistance(String.valueOf(DistanceUtil.getDistance(startLoaction, endLoaction)));
                 //显示派单dialog
-                if(CommonUtil.getCurrentStatus() == Constants.STATUS_WAIT) {
+                if(CommonUtil.getCurrentStatus() == Constants.STATUS_WAIT){
                     lastOrderTime = System.currentTimeMillis();
                     dialog = new MainOrderDialog(context, orderItem);
                     Log.e("Daddy m", "orderItem" + orderItem.getOrder().getStart() + " " + orderItem.getOrder().getDestination() + " ");
@@ -535,7 +550,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                     //选择界面不听单
                     CommonUtil.changeCurStatus(Constants.STATUS_DEAL);
                 } else {
-                    Log.e("MainActivity ", "wrong status to get new order!");
+                    Log.e("MainActivity ", "wrong status to get new order!"+ CommonUtil.getCurrentStatus());
                 }
 
                 break;
@@ -645,7 +660,16 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                     break;
                 case Constants.SERVICE_ACTION_NEW_ORDER: //收到新的订单  来自服务的消息
                     Log.e("daddy", "got a new order");
+
                     mHandler.sendEmptyMessage(NEW_ORDER_ARRIVE);
+                    abortBroadcast();
+                    break;
+                case Constants.SERVICE_ACTION_NETWORK_OUT: // 断开连接
+                    if(isListeneing){
+                        isListeneing = !isListeneing;
+                        mHandler.sendEmptyMessage(ADJUST_STATUS);
+                        VoiceUtil.startSpeaking(VoiceCommand.NETWORK_DISCONNECT);
+                    }
                     abortBroadcast();
                     break;
                 default:

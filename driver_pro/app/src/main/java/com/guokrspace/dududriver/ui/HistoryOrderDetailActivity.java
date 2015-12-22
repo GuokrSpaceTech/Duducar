@@ -97,6 +97,9 @@ public class HistoryOrderDetailActivity extends BaseActivity implements Handler.
     @OnClick(R.id.call_passenger_btn)
     public void callPassenger() {
         String mobile = orderDetail.getPassenger_mobile();
+        if(orderDetail.getStatus().equals("5")){//已支付  不拨号
+            return;
+        }
         if(mobile != null && mobile.length() == 11){
             VoiceUtil.startSpeaking(VoiceCommand.CALL_PASSENEGER);
             Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + mobile));
@@ -124,6 +127,7 @@ public class HistoryOrderDetailActivity extends BaseActivity implements Handler.
         Intent intent = getIntent();
         mHandler = new Handler(this);
         orderDetail = (OrderRecord) intent.getSerializableExtra("orderDetail");
+        CommonUtil.curOrderId = orderDetail.getId().intValue();
         initView();
     }
 
@@ -146,22 +150,8 @@ public class HistoryOrderDetailActivity extends BaseActivity implements Handler.
             if (orderDetail.getStatus() != null) {
                 status = Integer.parseInt(orderDetail.getStatus());
             }
-            String statusStr = "";
             // TODO: 确定status取值和账单支付情况的对应
-            switch (status) {
-                case 4:
-                    statusStr = "未支付";
-                    substitutePayButton.setVisibility(View.VISIBLE);
-                    break;
-                case 5:
-                    statusStr = "已支付";
-                    substitutePayButton.setVisibility(View.INVISIBLE);
-                    break;
-                default:
-                    statusStr = "未完成";
-                    break;
-            }
-            statusTextView.setText(statusStr);
+            CommonUtil.curOrderStatus = status;
             sumPriceTextView.setText(orderDetail.getOrg_price());
         }
     }
@@ -169,6 +159,22 @@ public class HistoryOrderDetailActivity extends BaseActivity implements Handler.
     @Override
     protected void onResume() {
         super.onResume();
+        String statusStr = "";
+        // TODO: 确定status取值和账单支付情况的对应
+        switch (CommonUtil.curOrderStatus) {
+            case 4:
+                statusStr = "未支付";
+                substitutePayButton.setVisibility(View.VISIBLE);
+                break;
+            case 5:
+                statusStr = "已支付";
+                substitutePayButton.setVisibility(View.INVISIBLE);
+                break;
+            default:
+                statusStr = "未完成";
+                break;
+        }
+        statusTextView.setText(statusStr);
         registerBroadcastReceiver();
     }
 

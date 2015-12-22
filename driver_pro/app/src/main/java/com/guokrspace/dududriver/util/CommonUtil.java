@@ -147,6 +147,15 @@ public class CommonUtil {
         CommonUtil.curTime = curTime;
     }
 
+    public static String getCurSpeed() {
+        return curSpeed;
+    }
+
+    public static void setCurSpeed(String curSpeed) {
+        CommonUtil.curSpeed = curSpeed;
+    }
+
+    private static String curSpeed;
     private static double curLat;
     private static double curLng;
     private static LatLng curLatLng;
@@ -156,6 +165,8 @@ public class CommonUtil {
     public static double curPrice;
     public static double curDistance;
     public static int curLowSpeedTime;
+    public static int curOrderId;
+    public static int curOrderStatus;
 //    public static OrderItem curOrderItem;
 
     public static LatLng getCurLatLng() {

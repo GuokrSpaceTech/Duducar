@@ -38,7 +38,7 @@ public class DuduNotice implements BaseNoticeItem {
     }
 
     public DuduNotice(){
-        title = "欢迎您成为一位嘟嘟合作司机";
+        title = "欢迎您成为嘟嘟的合作伙伴";
         url = "";
         content = "嘟嘟在你身边";
         time = System.currentTimeMillis()+"";

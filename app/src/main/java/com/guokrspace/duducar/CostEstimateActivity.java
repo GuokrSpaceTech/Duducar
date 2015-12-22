@@ -1,7 +1,6 @@
 package com.guokrspace.duducar;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -46,22 +45,6 @@ public class CostEstimateActivity extends AppCompatActivity {
         confirmButton = (Button) findViewById(R.id.confirmButton);
 
         context = this;
-
-        /*startTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent inent = new Intent(context, SearchActivity.class);
-                startActivityForResult(inent, PreOrderActivity.ACTIVITY_SEARCH_START_REQUEST);
-            }
-        });
-
-        endTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent inent = new Intent(context, SearchActivity.class);
-                startActivityForResult(inent, PreOrderActivity.ACTIVITY_SEARCH_DEST_REQUEST);
-            }
-        });*/
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,4 +107,6 @@ public class CostEstimateActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }

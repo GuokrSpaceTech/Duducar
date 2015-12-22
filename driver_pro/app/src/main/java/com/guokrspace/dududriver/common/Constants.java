@@ -15,12 +15,12 @@ public class Constants {
     public static String FIELD_MESSAGE = "message";
     public static String FIELD_TOKEN = "token";
 
-    public static String STATUS_HOLD = "0";
-    public static String STATUS_WAIT = "1";
-    public static String STATUS_DEAL = "2";
-    public static String STATUS_GET  = "3";
-    public static String STATUS_RUN  = "4";
-    public static String STATUS_REACH = "5";
+    public static String STATUS_HOLD = "100";
+    public static String STATUS_WAIT = "101";
+    public static String STATUS_DEAL = "102";
+    public static String STATUS_GET  = "103";
+    public static String STATUS_RUN  = "104";
+    public static String STATUS_REACH = "105";
     public static String STATUS_END = "6";
     public static String STATUS_PAY = "7";
 
@@ -28,6 +28,7 @@ public class Constants {
     public static final String SERVICE_ACTION_RELOGIN = "LOG_IN_ERROR_TRY_AGAIN";
     public static final String SERVICE_ACTION_MESAGE = "GOT_A_NEW_MESSAGE";
     public static final String SERVICE_ACTION_NEW_ORDER = "SERVICE_GOT_A_NEW_ORDER";
+    public static final String SERVICE_ACTION_NETWORK_OUT = "SERVICE_NETWORK_OUT";
 
     public static final String ACTION_NEW_ORDER = "GOT_A_NEW_ORDER";
     public static final String SERVICE_ACTION_UPDATE_CHARGE = "UPDATE_CHARGE";

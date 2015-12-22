@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -272,15 +273,17 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
                 try {
                     JSONObject mDriverPay = new JSONObject(messageBody);
 //                    Log.e("daddy detail", tripOverOrderDetail.toString());
-                    if(tripOverOrderDetail == null){
+                    if (tripOverOrderDetail == null) {
                         finish();
                     }
                     Intent intent = new Intent(mContext, RatingActivity.class);
+                    tripOverOrderDetail.setStatus("5");
+                    tripOverOrderDetail.setPay_role("2");
                     intent.putExtra("order", tripOverOrderDetail);
                     startActivity(intent);
                     Toast.makeText(mContext, "司机已代付!", Toast.LENGTH_LONG).show();
                     finish();
-                    if (Integer.parseInt((String)mDriverPay.get("order_id")) != Integer.parseInt(tripOverOrderDetail.getId())) {
+                    if (Integer.parseInt((String) mDriverPay.get("order_id")) != Integer.parseInt(tripOverOrderDetail.getId())) {
                         //异常情况,不是目前处理订单的消息
                         return;
                     }
@@ -289,9 +292,11 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
                     e.printStackTrace();
                 }
             }
+
             @Override
             public void onFailure(String error) {
             }
+
             @Override
             public void onTimeout() {
             }
@@ -571,5 +576,14 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
             default:
                 break;
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (KeyEvent.KEYCODE_BACK == event.getKeyCode()) { //直接返回
+            finish();
+        }
+        return false;
     }
 }
