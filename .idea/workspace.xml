@@ -25,46 +25,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6eadb00b-9a86-4395-a889-d9e05388a082" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/duducar_passengar_ios/duducar/images.xcassets/title_logo_small.imageset/title_logo_small.png" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/duducar_passengar_ios/duducar/Assets.xcassets/Brand Assets.launchimage/Contents.json" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/duducar_passengar_ios/duducar/images.xcassets/title_logo_small.imageset/dudlogo-ios-1.png" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/cache.properties.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/.gradle/2.4/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/driver_pro/.gradle/2.4/taskArtifacts/cache.properties.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileHashes.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/.gradle/2.4/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/driver_pro/.gradle/2.4/taskArtifacts/fileHashes.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileSnapshots.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/.gradle/2.4/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/driver_pro/.gradle/2.4/taskArtifacts/fileSnapshots.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/duducar_passengar_ios/duducar/images.xcassets/login_background.imageset/login_background.png" afterPath="$PROJECT_DIR$/duducar_passengar_ios/duducar/images.xcassets/login_background.imageset/login_background.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/outputFileStates.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/outputFileStates.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/.gradle/2.4/taskArtifacts/outputFileStates.bin" afterPath="$PROJECT_DIR$/driver_pro/.gradle/2.4/taskArtifacts/outputFileStates.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/taskArtifacts.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/.gradle/2.4/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/driver_pro/.gradle/2.4/taskArtifacts/taskArtifacts.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/BalanceActivity.java" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/BalanceActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/util/CommonUtil.java" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/util/CommonUtil.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/common/Constants.java" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/common/Constants.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/duducar_passengar_ios/duducar/Assets.xcassets/LaunchImage.launchimage/Contents.json" afterPath="$PROJECT_DIR$/duducar_passengar_ios/duducar/Assets.xcassets/LaunchImage.launchimage/Contents.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/duducar_passengar_ios/duducar/images.xcassets/title_logo_small.imageset/Contents.json" afterPath="$PROJECT_DIR$/duducar_passengar_ios/duducar/images.xcassets/title_logo_small.imageset/Contents.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/CostEstimateActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/CostEstimateActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/duducar_passengar_ios/duducar/CostEstimationViewController.xib" afterPath="$PROJECT_DIR$/duducar_passengar_ios/duducar/CostEstimationViewController.xib" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/duducar_passengar_ios/duducar/DDDatabase.m" afterPath="$PROJECT_DIR$/duducar_passengar_ios/duducar/DDDatabase.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/duducar_passengar_ios/duducar/DDMainViewController.h" afterPath="$PROJECT_DIR$/duducar_passengar_ios/duducar/DDMainViewController.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/duducar_passengar_ios/duducar/DDMainViewController.m" afterPath="$PROJECT_DIR$/duducar_passengar_ios/duducar/DDMainViewController.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dependancies/DaoDBGenerator/DaoDBGenerator.iml" afterPath="$PROJECT_DIR$/dependancies/DaoDBGenerator/DaoDBGenerator.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/net/DuduService.java" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/net/DuduService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MainActivity.java" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MainOrderDialog.java" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MainOrderDialog.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/PayCostActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/PayCostActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/duducar_passengar_ios/duducar/PaymentViewController.xib" afterPath="$PROJECT_DIR$/duducar_passengar_ios/duducar/PaymentViewController.xib" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/net/SocketClient.java" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/net/SocketClient.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/common/VoiceCommand.java" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/common/VoiceCommand.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/duducar_passengar_ios/duducar/WebViewController.h" afterPath="$PROJECT_DIR$/duducar_passengar_ios/duducar/WebViewController.h" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/duducar_passengar_ios/duducar/WebViewController.m" afterPath="$PROJECT_DIR$/duducar_passengar_ios/duducar/WebViewController.m" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/.idea/misc.xml" afterPath="$PROJECT_DIR$/driver_pro/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/duducar_passengar_ios/duducar.xcodeproj/project.pbxproj" afterPath="$PROJECT_DIR$/duducar_passengar_ios/duducar.xcodeproj/project.pbxproj" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/.idea/workspace.xml" afterPath="$PROJECT_DIR$/driver_pro/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="6eadb00b-9a86-4395-a889-d9e05388a082" name="Default" comment="" />
     <ignored path="Duducar.iws" />
     <ignored path=".idea/workspace.xml" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
