@@ -55,15 +55,16 @@
 		2AC664A51BF9ADF200DFDC2A /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AC664A41BF9ADF200DFDC2A /* libsqlite3.0.tbd */; };
 		2AC664A71BF9AE0000DFDC2A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AC664A61BF9AE0000DFDC2A /* CoreTelephony.framework */; };
 		2AC664A91BF9AE1300DFDC2A /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AC664A81BF9AE1300DFDC2A /* libstdc++.6.0.9.tbd */; };
-		653A0C754452B0E8CC7C7931 /* Pods_duducar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C650C89CC0782424F97C23A7 /* Pods_duducar.framework */; };
 		81D814581C1A8C3400612B6E /* DDLeftView.m in Sources */ = {isa = PBXBuildFile; fileRef = 81D814571C1A8C3400612B6E /* DDLeftView.m */; };
 		81D8146A1C1AC65200612B6E /* CallCarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81D814691C1AC65200612B6E /* CallCarViewController.m */; };
 		81D8146E1C1AD0CA00612B6E /* Location.m in Sources */ = {isa = PBXBuildFile; fileRef = 81D8146D1C1AD0CA00612B6E /* Location.m */; };
+		EB203FE0DAEA992CE9C6823D /* libPods-duducar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 505753A34F56A16E953EF054 /* libPods-duducar.a */; };
 		F983BFE11C1C176B00E942E1 /* Driver.m in Sources */ = {isa = PBXBuildFile; fileRef = F983BFE01C1C176B00E942E1 /* Driver.m */; };
 		F983BFE41C1C1AF500E942E1 /* StartEndView.m in Sources */ = {isa = PBXBuildFile; fileRef = F983BFE31C1C1AF500E942E1 /* StartEndView.m */; };
 		F983BFE71C1C1F0D00E942E1 /* OrderInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = F983BFE61C1C1F0D00E942E1 /* OrderInfoView.m */; };
 		F9E1C96B1C172C330083F19B /* DDSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = F9E1C96A1C172C330083F19B /* DDSocket.m */; };
 		F9E1C96E1C172CB30083F19B /* DDMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9E1C96D1C172CB30083F19B /* DDMainViewController.m */; };
+		FA3DC3C71C27F0E6007140AD /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA3DC3C61C27F0E6007140AD /* WebKit.framework */; };
 		FA8892A81C22778800496200 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA8892A31C22778800496200 /* libWeChatSDK.a */; };
 		FA8892A91C22778800496200 /* read_me.txt in Resources */ = {isa = PBXBuildFile; fileRef = FA8892A41C22778800496200 /* read_me.txt */; };
 		FA8892AC1C228F5400496200 /* WXApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FA8892AB1C228F5400496200 /* WXApiManager.m */; };
@@ -249,6 +250,7 @@
 		2AC664A41BF9ADF200DFDC2A /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		2AC664A61BF9AE0000DFDC2A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		2AC664A81BF9AE1300DFDC2A /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "usr/lib/libstdc++.6.0.9.tbd"; sourceTree = SDKROOT; };
+		505753A34F56A16E953EF054 /* libPods-duducar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-duducar.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		79A46CB94CB6EE86EFED9B23 /* Pods-duducar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-duducar.release.xcconfig"; path = "Pods/Target Support Files/Pods-duducar/Pods-duducar.release.xcconfig"; sourceTree = "<group>"; };
 		81D814561C1A8C3400612B6E /* DDLeftView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDLeftView.h; sourceTree = "<group>"; };
 		81D814571C1A8C3400612B6E /* DDLeftView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDLeftView.m; sourceTree = "<group>"; };
@@ -257,7 +259,6 @@
 		81D8146C1C1AD0CA00612B6E /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
 		81D8146D1C1AD0CA00612B6E /* Location.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Location.m; sourceTree = "<group>"; };
 		8EDAA3157DD50EAB7226DB83 /* Pods-duducar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-duducar.debug.xcconfig"; path = "Pods/Target Support Files/Pods-duducar/Pods-duducar.debug.xcconfig"; sourceTree = "<group>"; };
-		C650C89CC0782424F97C23A7 /* Pods_duducar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_duducar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F983BFDF1C1C176B00E942E1 /* Driver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Driver.h; sourceTree = "<group>"; };
 		F983BFE01C1C176B00E942E1 /* Driver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Driver.m; sourceTree = "<group>"; };
 		F983BFE21C1C1AF500E942E1 /* StartEndView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartEndView.h; sourceTree = "<group>"; };
@@ -268,6 +269,7 @@
 		F9E1C96A1C172C330083F19B /* DDSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDSocket.m; sourceTree = "<group>"; };
 		F9E1C96C1C172CB30083F19B /* DDMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DDMainViewController.h; sourceTree = "<group>"; };
 		F9E1C96D1C172CB30083F19B /* DDMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDMainViewController.m; sourceTree = "<group>"; };
+		FA3DC3C61C27F0E6007140AD /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		FA8892A31C22778800496200 /* libWeChatSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
 		FA8892A41C22778800496200 /* read_me.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = read_me.txt; sourceTree = "<group>"; };
 		FA8892A51C22778800496200 /* WechatAuthSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WechatAuthSDK.h; sourceTree = "<group>"; };
@@ -303,6 +305,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA3DC3C71C27F0E6007140AD /* WebKit.framework in Frameworks */,
 				2AB57F8A1C1C1B0400BFC7C7 /* UIKit.framework in Frameworks */,
 				2AB57F881C1C1AEC00BFC7C7 /* Foundation.framework in Frameworks */,
 				2AB57ECD1C1C04A400BFC7C7 /* CoreMotion.framework in Frameworks */,
@@ -321,7 +324,7 @@
 				2AC6649D1BF9ADA300DFDC2A /* SystemConfiguration.framework in Frameworks */,
 				2AC6649B1BF9AD9900DFDC2A /* QuartzCore.framework in Frameworks */,
 				2AC664991BF9AD9200DFDC2A /* CoreLocation.framework in Frameworks */,
-				653A0C754452B0E8CC7C7931 /* Pods_duducar.framework in Frameworks */,
+				EB203FE0DAEA992CE9C6823D /* libPods-duducar.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,6 +348,7 @@
 		2A9745131BF9B246008C8A7B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FA3DC3C61C27F0E6007140AD /* WebKit.framework */,
 				2AB57F891C1C1B0400BFC7C7 /* UIKit.framework */,
 				2AB57F871C1C1AEC00BFC7C7 /* Foundation.framework */,
 				2AB57F831C1C19C000BFC7C7 /* libssl.a */,
@@ -362,7 +366,7 @@
 				2AC6649C1BF9ADA300DFDC2A /* SystemConfiguration.framework */,
 				2AC6649A1BF9AD9900DFDC2A /* QuartzCore.framework */,
 				2AC664981BF9AD9200DFDC2A /* CoreLocation.framework */,
-				C650C89CC0782424F97C23A7 /* Pods_duducar.framework */,
+				505753A34F56A16E953EF054 /* libPods-duducar.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -970,6 +974,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1016,6 +1021,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1064,6 +1070,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/duducar/SDK1.6.2",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.guokrspace.duducar;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1100,6 +1107,7 @@
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/duducar/SDK1.6.2",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.guokrspace.duducar;
 				PRODUCT_NAME = "$(TARGET_NAME)";

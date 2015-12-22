@@ -42,8 +42,6 @@
     Location * currMapCenterLocation;
     BMKUserLocation *currentLoc;
     
-    BOOL isLoginSuccess;
-    
     UIButton *startLocButton;
     UIButton *stopLocButton;
     UIButton *callCabButton;
@@ -250,6 +248,32 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     [_mapView viewWillAppear];
     isTimerRunning = true; // 开启Timer
     _mapView.delegate = self; // 此处记得不用的时候需要置nil，否则影响内存的释放
+    
+    [[DDDatabase sharedDatabase]selectFromPersonInfo:^(NSString *token, NSString *phone) {
+        if(token!=nil && phone!=nil)
+        {
+            _isLoginSuccess = true;
+            [leftView setAvatarImage:@"" mobile:phone];
+        }
+        else
+            _isLoginSuccess = false;
+    }];
+    
+    /*
+     * 如果登录成功，从数据库获取baseinfo
+     */
+    if(_isLoginSuccess)
+    {
+        [[DDDatabase sharedDatabase]selectBaseinfo:^(NSString *baseinfostr) {
+            //Deserialastion a Json String into Dictionary
+            NSError *jsonError;
+            NSData  *objectData = [baseinfostr dataUsingEncoding:NSUTF8StringEncoding];
+            baseinfo = [NSJSONSerialization JSONObjectWithData:objectData
+                                                       options:NSJSONReadingMutableContainers
+                                                         error:&jsonError];
+        }];
+    }
+    
     /*
      * 监听来自Socket的服务消息
      */
@@ -417,7 +441,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 
 -(void)callForCab:(id)sender
 {
-    if(isLoginSuccess)
+    if(_isLoginSuccess)
     {
         CallCarViewController * carVC = [[CallCarViewController alloc]init] ;
         carVC.startLocation = startLocation;
@@ -489,7 +513,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
             [[DDDatabase sharedDatabase] selectFromPersonInfo:^(NSString *token, NSString *phone) {
                 if(token==nil || phone == nil)
                 {
-                    isLoginSuccess = false;
+                    _isLoginSuccess = false;
                 } else {
                     NSDictionary *paramDict = @{@"cmd":@"login", @"role":@"2", @"mobile":phone, @"token":token};
                     [[DDSocket currentSocket] sendRequest:paramDict];
@@ -497,6 +521,11 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
                     [leftView setAvatarImage:@"" mobile:phone];
                 }
             }];
+        
+            
+            BMKReverseGeoCodeOption *reverseGeocodeSearchOption = [[BMKReverseGeoCodeOption alloc]init];
+            reverseGeocodeSearchOption.reverseGeoPoint = currentLoc.location.coordinate;
+            [_geocodesearch reverseGeoCode:reverseGeocodeSearchOption];
             
             //Kick off the timer。 定期获得周边车辆信息。
             isTimerRunning = true;
@@ -508,7 +537,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     {
         if([status intValue] == 1)
         {
-            isLoginSuccess = true;
+            _isLoginSuccess = true;
             NSString *activeOrderJson;
             NSString *driverJson;
             
@@ -581,7 +610,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
             }
         } else {
             //自动登录出现错误
-            isLoginSuccess = false;
+            _isLoginSuccess = false;
         }
     }
     //Socket直接存baseinfo到数据库
@@ -650,17 +679,14 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 {
     [self leftViewDisappear];
     
-    //读出baseinfo
-    [[DDDatabase sharedDatabase]selectBaseinfo:^(NSString *baseinfostring) {
-        
-        //Deserialastion a Json String into Dictionary
-        NSError *jsonError;
-        NSData  *objectData = [baseinfostring dataUsingEncoding:NSUTF8StringEncoding];
-        baseinfo = [NSJSONSerialization JSONObjectWithData:objectData
-                                                   options:NSJSONReadingMutableContainers
-                                                     error:&jsonError];
-    }];
-    
+    //判断是否登录
+    if(!_isLoginSuccess)
+    {
+        LoginViewController *loginVC = [[LoginViewController alloc]init];
+        [self.navigationController pushViewController:loginVC animated:YES];
+        return;
+    }
+
     if(index == 0)
     {
         HistoryViewController * histroyVC = [[HistoryViewController alloc]initWithNibName:@"HistoryViewController" bundle:nil];
