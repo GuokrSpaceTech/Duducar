@@ -26,16 +26,201 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6eadb00b-9a86-4395-a889-d9e05388a082" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-hdpi/enter_gray.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/res/mipmap-xhdpi/ic_current_position_pin.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/mipmap-hdpi/meizhi.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/communication/http/model/News.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/NewsActivity.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/adapter/NewsAdapter.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_news.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/news_card_view.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/classes/release/com/viewpagerindicator/CirclePageIndicator.class" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/classes/release/com/viewpagerindicator/CirclePageIndicator.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/classes/release/com/viewpagerindicator/R.class" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/classes/release/com/viewpagerindicator/R.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/cache.properties.lock" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/.gradle/2.4/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/driver_pro/.gradle/2.4/taskArtifacts/cache.properties.lock" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/bundles/release/classes.jar" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/bundles/release/classes.jar" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileHashes.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/gradle_project_sync_data.bin" afterPath="$PROJECT_DIR$/build/intermediates/gradle_project_sync_data.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/build/intermediates/gradle_project_sync_data.bin" afterPath="$PROJECT_DIR$/driver_pro/build/intermediates/gradle_project_sync_data.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/.gradle/2.4/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/driver_pro/.gradle/2.4/taskArtifacts/fileHashes.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileSnapshots.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/.gradle/2.4/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/driver_pro/.gradle/2.4/taskArtifacts/fileSnapshots.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/outputs/aar/indicator_library-release.aar" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/outputs/aar/indicator_library-release.aar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/taskArtifacts.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/.gradle/2.4/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/driver_pro/.gradle/2.4/taskArtifacts/taskArtifacts.bin" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/util/AppExitUtil.java" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/util/AppExitUtil.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/CostEstimateActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/CostEstimateActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dependancies/DaoDBGenerator/DaoDBGenerator.iml" afterPath="$PROJECT_DIR$/dependancies/DaoDBGenerator/DaoDBGenerator.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/DaoDBGenerator/DaoDBGenerator.iml" afterPath="$PROJECT_DIR$/driver_pro/DaoDBGenerator/DaoDBGenerator.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/wxapi/WePayUtil.java" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/wxapi/WePayUtil.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/local.properties" afterPath="$PROJECT_DIR$/local.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/local.properties" afterPath="$PROJECT_DIR$/driver_pro/local.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/ui/DrawerView.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/ui/DrawerView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/net/DuduService.java" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/net/DuduService.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MainActivity.java" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MainActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MainOrderDialog.java" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MainOrderDialog.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/PayCostActivity.java" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/PayCostActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/SettingActivity.java" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/SettingActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/wxapi/WXPayEntryActivity.java" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/java/com/guokrspace/dududriver/wxapi/WXPayEntryActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_action_bar_title_item.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_action_bar_title_item.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_action_bar_up_container.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_action_bar_up_container.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_action_bar_view_list_nav_layout.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_action_bar_view_list_nav_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_action_menu_item_layout.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_action_menu_item_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_action_menu_layout.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_action_menu_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_action_mode_bar.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_action_mode_bar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_action_mode_close_item_material.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_action_mode_close_item_material.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_activity_chooser_view.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_activity_chooser_view.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_activity_chooser_view_list_item.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_activity_chooser_view_list_item.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/color/abc_background_cache_hint_selector_material_dark.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/color/abc_background_cache_hint_selector_material_dark.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/color/abc_background_cache_hint_selector_material_light.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/color/abc_background_cache_hint_selector_material_light.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_btn_check_material.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_btn_check_material.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_btn_default_mtrl_shape.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_btn_default_mtrl_shape.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_btn_radio_material.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_btn_radio_material.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_cab_background_internal_bg.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_cab_background_internal_bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_cab_background_top_material.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_cab_background_top_material.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_edit_text_material.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_edit_text_material.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_expanded_menu_layout.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_expanded_menu_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/anim/abc_fade_in.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/anim/abc_fade_in.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/anim/abc_fade_out.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/anim/abc_fade_out.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/anim/abc_grow_fade_in_from_bottom.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/anim/abc_grow_fade_in_from_bottom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_item_background_holo_dark.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_item_background_holo_dark.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_item_background_holo_light.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_item_background_holo_light.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_list_menu_item_checkbox.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_list_menu_item_checkbox.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_list_menu_item_icon.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_list_menu_item_icon.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_list_menu_item_layout.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_list_menu_item_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_list_menu_item_radio.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_list_menu_item_radio.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_list_selector_background_transition_holo_dark.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_list_selector_background_transition_holo_dark.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_list_selector_background_transition_holo_light.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_list_selector_background_transition_holo_light.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_list_selector_holo_dark.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_list_selector_holo_dark.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_list_selector_holo_light.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_list_selector_holo_light.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_popup_menu_item_layout.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_popup_menu_item_layout.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/color/abc_primary_text_disable_only_material_dark.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/color/abc_primary_text_disable_only_material_dark.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/color/abc_primary_text_disable_only_material_light.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/color/abc_primary_text_disable_only_material_light.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/color/abc_primary_text_material_dark.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/color/abc_primary_text_material_dark.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/color/abc_primary_text_material_light.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/color/abc_primary_text_material_light.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_ratingbar_full_material.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_ratingbar_full_material.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_screen_content_include.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_screen_content_include.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout-v11/abc_screen_content_include.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout-v11/abc_screen_content_include.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_screen_simple.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_screen_simple.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_screen_simple_overlay_action_mode.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_screen_simple_overlay_action_mode.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_screen_toolbar.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_screen_toolbar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_search_dropdown_item_icons_2line.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_search_dropdown_item_icons_2line.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/color/abc_search_url_text.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/color/abc_search_url_text.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_search_view.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_search_view.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/color/abc_secondary_text_material_dark.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/color/abc_secondary_text_material_dark.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/color/abc_secondary_text_material_light.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/color/abc_secondary_text_material_light.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/anim/abc_shrink_fade_out_from_bottom.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/anim/abc_shrink_fade_out_from_bottom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_simple_dropdown_hint.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/abc_simple_dropdown_hint.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/anim/abc_slide_in_bottom.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/anim/abc_slide_in_bottom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/anim/abc_slide_in_top.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/anim/abc_slide_in_top.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/anim/abc_slide_out_bottom.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/anim/abc_slide_out_bottom.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/anim/abc_slide_out_top.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/anim/abc_slide_out_top.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_spinner_textfield_background_material.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_spinner_textfield_background_material.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_switch_thumb_material.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_switch_thumb_material.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_tab_indicator_material.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_tab_indicator_material.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_textfield_search_material.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/abc_textfield_search_material.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/app/src/main/res/layout/activity_ordermap.xml" afterPath="$PROJECT_DIR$/driver_pro/app/src/main/res/layout/activity_ordermap.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/build/intermediates/dex-cache/cache.xml" afterPath="$PROJECT_DIR$/driver_pro/build/intermediates/dex-cache/cache.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/incremental/mergeAssets/release/merger.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/incremental/mergeAssets/release/merger.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/incremental/mergeResourcesrelease/merger.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/incremental/mergeResourcesrelease/merger.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/incremental/packageResourcesrelease/merger.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/incremental/packageResourcesrelease/merger.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/.idea/misc.xml" afterPath="$PROJECT_DIR$/driver_pro/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/signing.properties" afterPath="$PROJECT_DIR$/app/signing.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/app/signing.properties" afterPath="$PROJECT_DIR$/driver_pro/app/signing.properties" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/support_simple_spinner_dropdown_item.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/layout/support_simple_spinner_dropdown_item.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-af/values-af.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-af/values-af.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-am/values-am.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-am/values-am.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-ar/values-ar.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-ar/values-ar.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-bg/values-bg.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-bg/values-bg.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-bn-rBD/values-bn-rBD.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-bn-rBD/values-bn-rBD.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-ca/values-ca.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-ca/values-ca.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-cs/values-cs.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-cs/values-cs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-da/values-da.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-da/values-da.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-de/values-de.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-de/values-de.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-el/values-el.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-el/values-el.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-en-rGB/values-en-rGB.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-en-rGB/values-en-rGB.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-en-rIN/values-en-rIN.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-en-rIN/values-en-rIN.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-es-rUS/values-es-rUS.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-es-rUS/values-es-rUS.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-es/values-es.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-es/values-es.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-et-rEE/values-et-rEE.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-et-rEE/values-et-rEE.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-eu-rES/values-eu-rES.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-eu-rES/values-eu-rES.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-fa/values-fa.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-fa/values-fa.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-fi/values-fi.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-fi/values-fi.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-fr-rCA/values-fr-rCA.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-fr-rCA/values-fr-rCA.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-fr/values-fr.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-fr/values-fr.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-gl-rES/values-gl-rES.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-gl-rES/values-gl-rES.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-hdpi-v4/values-hdpi-v4.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-hdpi-v4/values-hdpi-v4.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-hi/values-hi.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-hi/values-hi.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-hr/values-hr.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-hr/values-hr.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-hu/values-hu.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-hu/values-hu.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-hy-rAM/values-hy-rAM.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-hy-rAM/values-hy-rAM.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-in/values-in.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-in/values-in.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-is-rIS/values-is-rIS.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-is-rIS/values-is-rIS.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-it/values-it.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-it/values-it.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-iw/values-iw.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-iw/values-iw.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-ja/values-ja.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-ja/values-ja.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-ka-rGE/values-ka-rGE.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-ka-rGE/values-ka-rGE.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-kk-rKZ/values-kk-rKZ.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-kk-rKZ/values-kk-rKZ.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-km-rKH/values-km-rKH.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-km-rKH/values-km-rKH.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-kn-rIN/values-kn-rIN.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-kn-rIN/values-kn-rIN.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-ko/values-ko.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-ko/values-ko.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-ky-rKG/values-ky-rKG.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-ky-rKG/values-ky-rKG.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-land/values-land.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-land/values-land.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-large-v4/values-large-v4.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-large-v4/values-large-v4.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-lo-rLA/values-lo-rLA.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-lo-rLA/values-lo-rLA.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-lt/values-lt.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-lt/values-lt.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-lv/values-lv.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-lv/values-lv.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-mk-rMK/values-mk-rMK.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-mk-rMK/values-mk-rMK.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-ml-rIN/values-ml-rIN.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-ml-rIN/values-ml-rIN.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-mn-rMN/values-mn-rMN.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-mn-rMN/values-mn-rMN.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-mr-rIN/values-mr-rIN.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-mr-rIN/values-mr-rIN.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-ms-rMY/values-ms-rMY.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-ms-rMY/values-ms-rMY.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-my-rMM/values-my-rMM.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-my-rMM/values-my-rMM.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-nb/values-nb.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-nb/values-nb.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-ne-rNP/values-ne-rNP.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-ne-rNP/values-ne-rNP.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-nl/values-nl.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-nl/values-nl.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-pl/values-pl.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-pl/values-pl.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-port/values-port.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-port/values-port.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-pt-rPT/values-pt-rPT.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-pt-rPT/values-pt-rPT.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-pt/values-pt.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-pt/values-pt.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-ro/values-ro.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-ro/values-ro.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-ru/values-ru.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-ru/values-ru.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-si-rLK/values-si-rLK.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-si-rLK/values-si-rLK.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-sk/values-sk.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-sk/values-sk.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-sl/values-sl.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-sl/values-sl.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-sr/values-sr.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-sr/values-sr.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-sv/values-sv.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-sv/values-sv.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-sw/values-sw.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-sw/values-sw.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-sw600dp-v13/values-sw600dp-v13.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-sw600dp-v13/values-sw600dp-v13.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-ta-rIN/values-ta-rIN.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-ta-rIN/values-ta-rIN.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-te-rIN/values-te-rIN.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-te-rIN/values-te-rIN.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-th/values-th.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-th/values-th.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-tl/values-tl.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-tl/values-tl.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-tr/values-tr.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-tr/values-tr.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-uk/values-uk.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-uk/values-uk.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-ur-rPK/values-ur-rPK.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-ur-rPK/values-ur-rPK.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-uz-rUZ/values-uz-rUZ.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-uz-rUZ/values-uz-rUZ.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-v11/values-v11.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-v11/values-v11.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-v14/values-v14.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-v14/values-v14.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-v17/values-v17.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-v17/values-v17.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-v21/values-v21.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-v21/values-v21.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-vi/values-vi.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-vi/values-vi.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-w360dp-v13/values-w360dp-v13.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-w360dp-v13/values-w360dp-v13.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-w480dp-v13/values-w480dp-v13.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-w480dp-v13/values-w480dp-v13.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-w500dp-v13/values-w500dp-v13.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-w500dp-v13/values-w500dp-v13.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-w600dp-v13/values-w600dp-v13.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-w600dp-v13/values-w600dp-v13.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-w720dp-v13/values-w720dp-v13.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-w720dp-v13/values-w720dp-v13.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-xlarge-land-v4/values-xlarge-land-v4.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-xlarge-land-v4/values-xlarge-land-v4.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-xlarge-v4/values-xlarge-v4.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-xlarge-v4/values-xlarge-v4.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-zh-rCN/values-zh-rCN.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-zh-rCN/values-zh-rCN.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-zh-rHK/values-zh-rHK.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-zh-rHK/values-zh-rHK.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-zh-rTW/values-zh-rTW.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-zh-rTW/values-zh-rTW.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-zu/values-zu.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values-zu/values-zu.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/bundles/release/res/values/values.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/bundles/release/res/values/values.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values/values.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/values/values.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/bundles/release/res/color/vpi__dark_theme.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/bundles/release/res/color/vpi__dark_theme.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/color/vpi__dark_theme.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/color/vpi__dark_theme.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/bundles/release/res/color/vpi__light_theme.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/bundles/release/res/color/vpi__light_theme.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/color/vpi__light_theme.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/color/vpi__light_theme.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/bundles/release/res/drawable/vpi__tab_indicator.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/bundles/release/res/drawable/vpi__tab_indicator.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/vpi__tab_indicator.xml" afterPath="$PROJECT_DIR$/driver_pro/indicator_library/build/intermediates/res/merged/release/drawable/vpi__tab_indicator.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/driver_pro/.idea/workspace.xml" afterPath="$PROJECT_DIR$/driver_pro/.idea/workspace.xml" />
     </list>
@@ -124,43 +309,42 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="FeedBackActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/FeedBackActivity.java">
+      <file leaf-file-name="NewsActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/NewsActivity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="44" column="59" selection-start-line="44" selection-start-column="59" selection-end-line="44" selection-end-column="59" />
-              <folding />
+              <caret line="53" column="32" selection-start-line="53" selection-start-column="32" selection-end-line="53" selection-end-column="32" />
+              <folding>
+                <element signature="e#2268#2269#0" expanded="false" />
+                <element signature="e#2326#2327#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SettingActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/SettingActivity.java">
+      <file leaf-file-name="activity_news.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_news.xml">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="11" column="25" selection-start-line="11" selection-start-column="25" selection-end-line="11" selection-end-column="25" />
+              <caret line="33" column="38" selection-start-line="33" selection-start-column="38" selection-end-line="33" selection-end-column="38" />
               <folding />
             </state>
           </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PayCostActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/PayCostActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="411" column="0" selection-start-line="411" selection-start-column="0" selection-end-line="411" selection-end-column="0" />
-              <folding />
-            </state>
+          <provider editor-type-id="android-designer">
+            <state />
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <file leaf-file-name="news_card_view.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/news_card_view.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5330739">
-              <caret line="84" column="12" selection-start-line="84" selection-start-column="12" selection-end-line="88" selection-end-column="28" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="76" column="0" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
               <folding />
             </state>
+          </provider>
+          <provider editor-type-id="android-designer">
+            <state />
           </provider>
         </entry>
       </file>
@@ -168,51 +352,81 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/CostEstimateActivity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="33" column="47" selection-start-line="33" selection-start-column="47" selection-end-line="33" selection-end-column="47" />
+              <caret line="55" column="11" selection-start-line="55" selection-start-column="11" selection-end-line="55" selection-end-column="11" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="WePayUtil.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/wxapi/WePayUtil.java">
+      <file leaf-file-name="PreOrderActivity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/PreOrderActivity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="9" column="29" selection-start-line="9" selection-start-column="29" selection-end-line="9" selection-end-column="29" />
+              <caret line="178" column="41" selection-start-line="178" selection-start-column="41" selection-end-line="178" selection-end-column="41" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DuDuResultCallBack.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/communication/http/DuDuResultCallBack.java">
+      <file leaf-file-name="activity_main.xml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="22" column="54" selection-start-line="22" selection-start-column="54" selection-end-line="22" selection-end-column="54" />
+            <state vertical-scroll-proportion="0.5602165">
+              <caret line="39" column="8" selection-start-line="39" selection-start-column="8" selection-end-line="46" selection-end-column="62" />
               <folding />
             </state>
           </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="activity_setting.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_setting.xml">
           <provider editor-type-id="android-designer">
             <state />
           </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="activity_cost_estimate.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_cost_estimate.xml">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="117" column="49" selection-start-line="117" selection-start-column="37" selection-end-line="117" selection-end-column="49" />
+              <caret line="44" column="55" selection-start-line="44" selection-start-column="37" selection-end-line="44" selection-end-column="55" />
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="history_order_card_view.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/history_order_card_view.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="11" column="15" selection-start-line="11" selection-start-column="15" selection-end-line="11" selection-end-column="15" />
+              <folding />
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="151" column="40" selection-start-line="151" selection-start-column="40" selection-end-line="151" selection-end-column="40" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CommonUtil.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/database/CommonUtil.java">
+      <file leaf-file-name="DrawerView.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/ui/DrawerView.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="43" column="12" selection-start-line="43" selection-start-column="12" selection-end-line="43" selection-end-column="12" />
-              <folding />
+              <caret line="110" column="22" selection-start-line="110" selection-start-column="22" selection-end-line="110" selection-end-column="22" />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#2592#2764#0" expanded="false" />
+                <element signature="e#2763#2764#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -2957,12 +3171,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/app/src/main/res/drawable/bg_edittext_normal.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/history_order_card_view.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/drawable/heart_rating_bar_big.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/drawable/evaluate_btn_bg_normal.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/res/drawable/evaluate_btn_bg_selector.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_order_cab.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_complain.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/white_bg.xml" />
@@ -2979,7 +3187,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/communication/http/model/BaseInfo.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/util/SharedPreferencesUtils.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/communication/http/model/IdAndValueModel.java" />
-        <option value="$PROJECT_DIR$/app/signing.properties" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/colors.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/database/CommonUtil.java" />
         <option value="$PROJECT_DIR$/dependancies/DaoDBGenerator/src/main/java/com/guokrspace/DAODBGenerator.java" />
@@ -2993,7 +3200,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/communication/message/MessageTag.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/SearchActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/styles.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/CostEstimateActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/PostOrderActivity.java" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/adapter/OrdersAdapter.java" />
@@ -3007,7 +3213,15 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/FeedBackActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_setting.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/SettingActivity.java" />
+        <option value="$PROJECT_DIR$/app/signing.properties" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/communication/http/model/News.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/adapter/NewsAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_news.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/NewsActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/ui/DrawerView.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/news_card_view.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/CostEstimateActivity.java" />
       </list>
     </option>
   </component>
@@ -3048,8 +3262,8 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="Scratches" />
-      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -3290,6 +3504,186 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mipmap-hdpi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="layout" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="drawable-xhdpi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="drawable-mdpi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="drawable-hdpi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="drawable" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="java" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -3442,13 +3836,271 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="ui" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="database" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="communication" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="communication" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="http" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="communication" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="http" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="model" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="common" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="com" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="adapter" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Duducar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="libs" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
+      <pane id="AndroidView" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -3459,7 +4111,7 @@
     <property name="FullScreen" value="true" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="810EBL22LSWF" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="1111" />
-    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/AndroidManifest.xml&#10;Android&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/AndroidManifest.xml&#10;Pay&#9;PSI&#9;JAVA://com.guokrspace.duducar.PayCostActivity&#10;Common&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/database/CommonUtil.java&#10;Setting&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/SettingActivity.java&#10;Feedba&#9;PSI&#9;JAVA://com.guokrspace.duducar.FeedBackActivity&#10;PayC&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/PayCostActivity.java&#10;Post&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/PostOrderActivity.java&#10;Androidm&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/AndroidManifest.xml&#10;Settin&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/SettingActivity.java&#10;Settings&#9;PSI&#9;JAVA://android.provider.Settings&#10;W&#9;PSI&#9;JAVA://com.guokrspace.duducar.WebViewActivity&#10;Order&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/OrderHistoryActivity.java&#10;bui&#9;FILE&#9;file:///Users/hyman/Duducar/app/build.gradle&#10;Comm&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/database/CommonUtil.java&#10;Pre&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/PreOrderActivity.java&#10;S&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/SearchActivity.java&#10;AndroidM&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/AndroidManifest.xml&#10;Searcha&#9;PSI&#9;JAVA://com.guokrspace.duducar.SearchActivity&#10;MessageTag&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/communication/message/MessageTag.java&#10;SocketClient&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/communication/SocketClient.java&#10;Ra&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/RatingActivity.java&#10;Constan&#9;PSI&#9;JAVA://com.guokrspace.duducar.common.Constants&#10;Dudu&#9;PSI&#9;JAVA://com.guokrspace.duducar.DuduApplication&#10;colo&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/values/colors.xml&#10;Socket&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/communication/SocketClient.java&#10;Pos&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/PostOrderActivity.java&#10;Sh&#9;PSI&#9;JAVA://com.guokrspace.duducar.util.SharedPreferencesUtils&#10;Com&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/ComplainActivity.java&#10;com&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/layout/activity_complain.xml&#10;setting&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/layout/activity_setting.xml&#10;rating&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/layout/activity_rating.xml&#10;po&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/PostOrderActivity.java&#10;Rating&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/RatingActivity.java&#10;attrs&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/values/attrs.xml&#10;Po&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/PostOrderActivity.java&#10;n&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/drawable/complain_button_bg_pressed.xml&#10;his&#9;PSI&#9;JAVA://com.guokrspace.duducar.OrderHistoryActivity&#10;dimen&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/values/dimens.xml&#10;ra&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/layout/activity_rating.xml&#10;colors&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/values/colors.xml&#10;R&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/RatingActivity.java&#10;settin&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/SettingActivity.java&#10;OrderHi&#9;PSI&#9;JAVA://com.guokrspace.duducar.OrderHistoryActivity&#10;co&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/values/colors.xml&#10;strings&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/values/strings.xml&#10;attr&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/values/attrs.xml&#10;Sett&#9;PSI&#9;JAVA://com.guokrspace.duducar.SettingActivity&#10;Per&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/PersonalInfoActivity.java&#10;So&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/communication/SocketClient.java" />
+    <property name="SearchEverywhereHistoryKey" value="Pre&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/PreOrderActivity.java&#10;Coa&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/CostEstimateActivity.java&#10;car&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/layout/history_order_card_view.xml&#10;Android&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/AndroidManifest.xml&#10;Post&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/PostOrderActivity.java&#10;Order&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/OrderHistoryActivity.java&#10;Pay&#9;PSI&#9;JAVA://com.guokrspace.duducar.PayCostActivity&#10;Common&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/database/CommonUtil.java&#10;Setting&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/SettingActivity.java&#10;Feedba&#9;PSI&#9;JAVA://com.guokrspace.duducar.FeedBackActivity&#10;PayC&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/PayCostActivity.java&#10;Androidm&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/AndroidManifest.xml&#10;Settin&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/SettingActivity.java&#10;Settings&#9;PSI&#9;JAVA://android.provider.Settings&#10;W&#9;PSI&#9;JAVA://com.guokrspace.duducar.WebViewActivity&#10;bui&#9;FILE&#9;file:///Users/hyman/Duducar/app/build.gradle&#10;Comm&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/database/CommonUtil.java&#10;S&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/SearchActivity.java&#10;AndroidM&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/AndroidManifest.xml&#10;Searcha&#9;PSI&#9;JAVA://com.guokrspace.duducar.SearchActivity&#10;MessageTag&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/communication/message/MessageTag.java&#10;SocketClient&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/communication/SocketClient.java&#10;Ra&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/RatingActivity.java&#10;Constan&#9;PSI&#9;JAVA://com.guokrspace.duducar.common.Constants&#10;Dudu&#9;PSI&#9;JAVA://com.guokrspace.duducar.DuduApplication&#10;colo&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/values/colors.xml&#10;Socket&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/communication/SocketClient.java&#10;Pos&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/PostOrderActivity.java&#10;Sh&#9;PSI&#9;JAVA://com.guokrspace.duducar.util.SharedPreferencesUtils&#10;Com&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/ComplainActivity.java&#10;com&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/layout/activity_complain.xml&#10;setting&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/layout/activity_setting.xml&#10;rating&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/layout/activity_rating.xml&#10;po&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/PostOrderActivity.java&#10;Rating&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/RatingActivity.java&#10;attrs&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/values/attrs.xml&#10;Po&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/PostOrderActivity.java&#10;n&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/drawable/complain_button_bg_pressed.xml&#10;his&#9;PSI&#9;JAVA://com.guokrspace.duducar.OrderHistoryActivity&#10;dimen&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/values/dimens.xml&#10;ra&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/layout/activity_rating.xml&#10;colors&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/values/colors.xml&#10;R&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/RatingActivity.java&#10;settin&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/java/com/guokrspace/duducar/SettingActivity.java&#10;OrderHi&#9;PSI&#9;JAVA://com.guokrspace.duducar.OrderHistoryActivity&#10;co&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/values/colors.xml&#10;strings&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/values/strings.xml&#10;attr&#9;FILE&#9;file:///Users/hyman/Duducar/app/src/main/res/values/attrs.xml&#10;Sett&#9;PSI&#9;JAVA://com.guokrspace.duducar.SettingActivity" />
     <property name="last_opened_file_path" value="$USER_HOME$/Documents/AndroidDevelopment/guokrspace" />
     <property name="ExportApk.ApkPath" value="$PROJECT_DIR$/app" />
     <property name="ExportApk.Flavors" value="" />
@@ -3474,11 +4126,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/src/main/res/mipmap-hdpi" />
       <recent name="$PROJECT_DIR$/app/src/main/res" />
       <recent name="$PROJECT_DIR$/app/src/main/res/mipmap-xxhdpi" />
       <recent name="$PROJECT_DIR$/app/src/main/res/mipmap-xhdpi" />
       <recent name="$PROJECT_DIR$/app/src/main/res/mipmap-mdpi" />
-      <recent name="$PROJECT_DIR$/app/src/main/res/mipmap-hdpi" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app/libs/dozer" />
@@ -3724,23 +4376,23 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.48085105" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.48004988" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25862068" sideWeight="0.5412371" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31421447" sideWeight="0.51077586" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3297414" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3297414" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32907802" sideWeight="0.49676377" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31421447" sideWeight="0.48922414" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2579023" sideWeight="0.45876288" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2579023" sideWeight="0.45876288" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3297414" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
@@ -3755,7 +4407,7 @@
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32793018" sideWeight="0.49425286" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32917705" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -3774,7 +4426,7 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.48085105" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.48004988" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3297414" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -3785,7 +4437,7 @@
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31421447" sideWeight="0.48922414" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="true" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2579023" sideWeight="0.45876288" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32917705" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3297414" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
     </layout-to-restore>
@@ -3808,81 +4460,39 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/FeedBackActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="44" column="59" selection-start-line="44" selection-start-column="59" selection-end-line="44" selection-end-column="59" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/SettingActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="11" column="25" selection-start-line="11" selection-start-column="25" selection-end-line="11" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/PayCostActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/wxapi/WePayUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="9" column="29" selection-start-line="9" selection-start-column="29" selection-end-line="9" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/communication/http/DuDuResultCallBack.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="22" column="54" selection-start-line="22" selection-start-column="54" selection-end-line="22" selection-end-column="54" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_setting.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="117" column="49" selection-start-line="117" selection-start-column="37" selection-end-line="117" selection-end-column="49" />
           <folding />
         </state>
       </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/database/CommonUtil.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="43" column="12" selection-start-line="43" selection-start-column="12" selection-end-line="43" selection-end-column="12" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_feedback.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="67" column="8" selection-start-line="67" selection-start-column="8" selection-end-line="67" selection-end-column="8" />
           <folding />
         </state>
       </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/evaluate_btn_bg_selector.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="4" column="11" selection-start-line="4" selection-start-column="11" selection-end-line="4" selection-end-column="11" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3890,7 +4500,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="3" column="41" selection-start-line="3" selection-start-column="41" selection-end-line="3" selection-end-column="41" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3909,21 +4518,20 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_webview.xml">
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/SettingActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="135" column="16" selection-start-line="135" selection-start-column="16" selection-end-line="137" selection-end-column="43" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3936,13 +4544,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_alipay.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="15" column="50" selection-start-line="15" selection-start-column="50" selection-end-line="15" selection-end-column="50" />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/gradle.properties">
@@ -3974,22 +4582,14 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_webview.xml">
-      <provider selected="true" editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/PostOrderActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="264" column="45" selection-start-line="264" selection-start-column="45" selection-end-line="264" selection-end-column="45" />
-          <folding />
-        </state>
+      <provider selected="true" editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/AppExitUtil.java">
@@ -4000,27 +4600,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/PreOrderActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="941" column="0" selection-start-line="941" selection-start-column="0" selection-end-line="941" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/wxapi/WXPayEntryActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="138" column="24" selection-start-line="138" selection-start-column="24" selection-end-line="138" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-23/android/text/TextUtils.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334">
           <caret line="460" column="26" selection-start-line="460" selection-start-column="26" selection-end-line="460" selection-end-column="26" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -4038,25 +4621,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/adapter/OrdersAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="74" column="0" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/OrderHistoryActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="341" column="13" selection-start-line="341" selection-start-column="13" selection-end-line="341" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/evaluate_btn_bg_normal.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -4064,7 +4632,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="3" column="41" selection-start-line="3" selection-start-column="41" selection-end-line="3" selection-end-column="41" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -4072,26 +4639,24 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="4" column="11" selection-start-line="4" selection-start-column="11" selection-end-line="4" selection-end-column="11" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_feedback.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="67" column="8" selection-start-line="67" selection-start-column="8" selection-end-line="67" selection-end-column="8" />
           <folding />
         </state>
       </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/FeedBackActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="44" column="59" selection-start-line="44" selection-start-column="59" selection-end-line="44" selection-end-column="59" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -4099,26 +4664,24 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="43" column="12" selection-start-line="43" selection-start-column="12" selection-end-line="43" selection-end-column="12" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_setting.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="117" column="49" selection-start-line="117" selection-start-column="37" selection-end-line="117" selection-end-column="49" />
           <folding />
         </state>
       </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/SettingActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="11" column="25" selection-start-line="11" selection-start-column="25" selection-end-line="11" selection-end-column="25" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -4126,6 +4689,45 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="22" column="54" selection-start-line="22" selection-start-column="54" selection-end-line="22" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/wxapi/WXPayEntryActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="120" column="45" selection-start-line="120" selection-start-column="45" selection-end-line="120" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/app/libs/alipaySdk-20151103.jar!/com/alipay/sdk/app/H5PayActivity.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.14574899">
+          <caret line="34" column="13" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/signing.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="4" column="23" selection-start-line="4" selection-start-column="23" selection-end-line="4" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_order_records.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-7.875">
+          <caret line="28" column="41" selection-start-line="0" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/build/intermediates/exploded-aar/com.github.dexafree/materiallist/3.1.2/res/values/values.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.35378322">
+          <caret line="24" column="17" selection-start-line="24" selection-start-column="17" selection-end-line="24" selection-end-column="17" />
           <folding />
         </state>
       </provider>
@@ -4133,44 +4735,173 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/wxapi/WePayUtil.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="9" column="29" selection-start-line="9" selection-start-column="29" selection-end-line="9" selection-end-column="29" />
-          <folding />
+          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/PayCostActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="411" column="0" selection-start-line="411" selection-start-column="0" selection-end-line="411" selection-end-column="0" />
+          <caret line="380" column="13" selection-start-line="380" selection-start-column="13" selection-end-line="380" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/communication/http/model/News.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="17" column="23" selection-start-line="17" selection-start-column="23" selection-end-line="17" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/PostOrderActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.233334">
+          <caret line="875" column="12" selection-start-line="875" selection-start-column="12" selection-end-line="877" selection-end-column="74" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/adapter/OrdersAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="123" column="0" selection-start-line="123" selection-start-column="0" selection-end-line="123" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/adapter/NewsAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="62" column="50" selection-start-line="62" selection-start-column="50" selection-end-line="62" selection-end-column="50" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_cost_estimate.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/OrderHistoryActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <caret line="508" column="5" selection-start-line="494" selection-start-column="4" selection-end-line="508" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#3084#7158#0" expanded="false" />
+            <element signature="e#5131#5138#0" expanded="false" />
+            <element signature="e#5992#5999#0" expanded="false" />
+            <element signature="e#6805#6812#0" expanded="false" />
+            <element signature="e#7157#7158#0" expanded="false" />
+            <element signature="e#12169#12451#0" expanded="false" />
+            <element signature="e#12450#12451#0" expanded="false" />
+            <element signature="e#12728#12729#0" expanded="false" />
+            <element signature="e#12800#12801#0" expanded="false" />
+            <element signature="e#13467#13620#0" expanded="false" />
+            <element signature="e#13619#13620#0" expanded="false" />
+            <element signature="e#15153#15888#0" expanded="false" />
+            <element signature="e#15887#15888#0" expanded="false" />
+            <element signature="e#17029#17197#0" expanded="false" />
+            <element signature="e#17196#17197#0" expanded="false" />
+            <element signature="e#18080#18458#0" expanded="false" />
+            <element signature="e#18457#18458#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/CostEstimateActivity.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/NewsActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="33" column="47" selection-start-line="33" selection-start-column="47" selection-end-line="33" selection-end-column="47" />
-          <folding />
+          <caret line="53" column="32" selection-start-line="53" selection-start-column="32" selection-end-line="53" selection-end-column="32" />
+          <folding>
+            <element signature="e#2268#2269#0" expanded="false" />
+            <element signature="e#2326#2327#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5330739">
-          <caret line="84" column="12" selection-start-line="84" selection-start-column="12" selection-end-line="88" selection-end-column="28" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="151" column="40" selection-start-line="151" selection-start-column="40" selection-end-line="151" selection-end-column="40" />
           <folding />
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/ui/DrawerView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="110" column="22" selection-start-line="110" selection-start-column="22" selection-end-line="110" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#2592#2764#0" expanded="false" />
+            <element signature="e#2763#2764#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_news.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="33" column="38" selection-start-line="33" selection-start-column="38" selection-end-line="33" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/history_order_card_view.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="11" column="15" selection-start-line="11" selection-start-column="15" selection-end-line="11" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/news_card_view.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="76" column="0" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_cost_estimate.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="44" column="55" selection-start-line="44" selection-start-column="37" selection-end-line="44" selection-end-column="55" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/CostEstimateActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="55" column="11" selection-start-line="55" selection-start-column="11" selection-end-line="55" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/duducar/PreOrderActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="178" column="41" selection-start-line="178" selection-start-column="41" selection-end-line="178" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5602165">
+          <caret line="39" column="8" selection-start-line="39" selection-start-column="8" selection-end-line="46" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
   </component>

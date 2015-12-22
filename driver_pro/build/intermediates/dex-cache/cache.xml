@@ -2,11 +2,11 @@
 <items version="2" >
 
     <item
-        jar="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/exploded-aar/driver_pro/indicator_library/unspecified/jars/classes.jar"
+        jar="/Users/hyman/Duducar/driver_pro/app/build/intermediates/exploded-aar/driver_pro/indicator_library/unspecified/jars/classes.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="27c7e87179623fb44313972c76114a1a02f32f76">
-        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/classes-462042cf492026d7eea92016892b45b4f18cd065.jar" />
+        sha1="287a47ee27258037b5a5f99a8ca4ebbce1c2fa8f">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/classes-126997302508e8af4fee96f5bfe593a08900bacf.jar" />
     </item>
 
 </items>

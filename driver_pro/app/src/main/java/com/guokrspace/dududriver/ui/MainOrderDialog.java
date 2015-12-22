@@ -241,7 +241,7 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
                 }
                 break;
             case HANDLER_TIMER_TIMEOUT:
-                this.dismiss();
+                this.dismissAllowingStateLoss();
                 //超时返回监听状态
                 VoiceUtil.stopSpeaking();
                 VoiceUtil.startSpeaking(VoiceCommand.ORDER_AUTO_CANCEL);

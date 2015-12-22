@@ -47,7 +47,7 @@ public class CostEstimateActivity extends AppCompatActivity {
 
         context = this;
 
-        startTextView.setOnClickListener(new View.OnClickListener() {
+        /*startTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent inent = new Intent(context, SearchActivity.class);
@@ -61,7 +61,7 @@ public class CostEstimateActivity extends AppCompatActivity {
                 Intent inent = new Intent(context, SearchActivity.class);
                 startActivityForResult(inent, PreOrderActivity.ACTIVITY_SEARCH_DEST_REQUEST);
             }
-        });
+        });*/
 
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override

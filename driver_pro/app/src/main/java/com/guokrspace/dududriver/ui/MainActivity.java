@@ -86,6 +86,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     private boolean isVisiable = false;
     private boolean isListeneing = false;
     private boolean isOverButtonVisiable = false;
+    private long lastOrderTime;
 
     private Handler mHandler;
     private Intent duduService;
@@ -335,7 +336,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         SocketClient.getInstance().pullBaseInfo(new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
-                Log.e("daddy ", "base info " + messageBody);
+                Log.e("daddy_baseinfo", "base info " + messageBody);
                 baseInfo = (BaseInfo) new Gson().fromJson(messageBody, BaseInfo.class);
 //                Log.e("daddy", "base" + baseInfo.getWebivew().getAbout().length());
                 mHandler.sendEmptyMessage(HANDLE_BASEINFO);
@@ -501,6 +502,9 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 }
                 break;
             case NEW_ORDER_ARRIVE:
+                /*if(System.currentTimeMillis() - lastOrderTime < 6 * 1000) {
+                    break;
+                }*/
                 OrderItem orderItem = CommonUtil.getCurOrderItem();
                 if (CommonUtil.getCurOrderItem() == null) {
                     Log.e("daddy", "orderItem fail ");
@@ -514,8 +518,8 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 //                        Double.valueOf(orderItem.getOrder().getDestination_lat()), Double.valueOf(orderItem.getOrder().getDestination_lng()));
                 orderItem.setDistance(String.valueOf(DistanceUtil.getDistance(startLoaction, endLoaction)));
                 //显示派单dialog
-                if(CommonUtil.getCurrentStatus() == Constants.STATUS_WAIT){
-
+                if(CommonUtil.getCurrentStatus() == Constants.STATUS_WAIT) {
+                    lastOrderTime = System.currentTimeMillis();
                     dialog = new MainOrderDialog(context, orderItem);
                     Log.e("Daddy m", "orderItem" + orderItem.getOrder().getStart() + " " + orderItem.getOrder().getDestination() + " ");
                     dialog.setCancelable(true);
@@ -642,6 +646,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 case Constants.SERVICE_ACTION_NEW_ORDER: //收到新的订单  来自服务的消息
                     Log.e("daddy", "got a new order");
                     mHandler.sendEmptyMessage(NEW_ORDER_ARRIVE);
+                    abortBroadcast();
                     break;
                 default:
                     return;

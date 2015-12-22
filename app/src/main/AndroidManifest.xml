@@ -115,6 +115,7 @@
                 <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
             </intent-filter>
         </receiver>
+        <!-- wepay init end -->
 
         <activity
             android:name=".OrderHistoryActivity"
@@ -147,8 +148,12 @@
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
             android:label="关于嘟嘟" />
+        <activity
+            android:name=".NewsActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:exported="false"
+            android:label="关于嘟嘟" />
 
-        <!-- wepay init end -->
 
         <!-- Update Activitys Start -->
         <activity

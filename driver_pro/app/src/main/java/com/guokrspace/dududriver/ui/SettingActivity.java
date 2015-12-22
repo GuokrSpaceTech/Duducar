@@ -17,6 +17,8 @@ import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.common.NewOrderReceiver;
+import com.guokrspace.dududriver.net.DuduService;
+import com.guokrspace.dududriver.util.AppExitUtil;
 import com.guokrspace.dududriver.util.CommonUtil;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
@@ -30,7 +32,7 @@ import butterknife.ButterKnife;
 /**
  * Created by hyman on 15/10/24.
  */
-public class SettingActivity extends BaseActivity implements View.OnClickListener, Handler.Callback{
+public class SettingActivity extends BaseActivity implements View.OnClickListener, Handler.Callback {
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -217,10 +219,15 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 startActivity(legalIntent);
                 break;
             case R.id.confirm_button:
+
+                AppExitUtil.getInstance().finishOtherActivities(SettingActivity.this);
                 //清空用户数据
                 mApplication.mDaoSession.getPersonalInformationDao().deleteAll();
-                //退出，跳到登陆界面
-                startActivity(new Intent(context, LoginActivity.class));
+                Intent _stopServiceIntent = new Intent();
+                _stopServiceIntent.setAction(DuduService.STOP_SERVICE);
+                sendBroadcast(_stopServiceIntent);
+                //退出，跳到主界面
+                startActivity(new Intent(context, MainActivity.class));
                 finish();
                 break;
             default:
