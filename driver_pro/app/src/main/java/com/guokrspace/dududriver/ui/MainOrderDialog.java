@@ -175,6 +175,7 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
     public void onDestroyView() {
         super.onDestroyView();
         myTimeTick.stopTimer();
+        CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
         ButterKnife.unbind(this);
     }
 
