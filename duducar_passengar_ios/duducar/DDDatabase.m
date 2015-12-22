@@ -100,8 +100,8 @@
         NSString *baseinfo;
         while ([set next]) {
             baseinfo = [set stringForColumn:@"baseinfo"];
+            completionHandler(baseinfo);
         }
-        completionHandler(baseinfo);
     }];
 }
 

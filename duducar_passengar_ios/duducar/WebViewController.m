@@ -19,10 +19,8 @@
 
 -(void)dealloc
 {
-#ifndef __IPHONE_7_1
     if(iOS8)
         [_wkWebview removeObserver:self forKeyPath:@"estimatedProgress" context:NULL];
-#endif
 }
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
@@ -38,8 +36,7 @@
     self.navigationItem.title = self.titleStr;
     [self.navigationItem.leftBarButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor]} forState:UIControlStateNormal];
     NSURLRequest * quest = [NSURLRequest requestWithURL:[NSURL URLWithString:_urlStr]];
-    
-#ifndef __IPHONE_7_1
+        
     if(iOS8)
     {
         WKWebViewConfiguration * configuration = [[WKWebViewConfiguration alloc]init];
@@ -54,7 +51,6 @@
         //[_kwWebView loadRequest:request];
     }
     else
-#endif
     {
         _webview = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, SCREENHEIGHT)];
         _webview.delegate =self;
@@ -64,8 +60,6 @@
         // [_webView loadRequest:request];
         [_webview loadRequest:quest];
     }
-    
-    
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView
@@ -95,7 +89,6 @@
     processView = nil;
 }
 
-#ifndef __IPHONE_7_1
 - (WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures
 {
     // _kwWebView.configuration = configuration;
@@ -110,7 +103,6 @@
     [_wkWebview addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     return _wkWebview;
 }
-#endif
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

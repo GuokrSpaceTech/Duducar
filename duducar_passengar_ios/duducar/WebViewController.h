@@ -16,9 +16,7 @@
 #define SCREENWIDTH [UIScreen mainScreen].bounds.size.width
 #define SCREENHEIGHT [UIScreen mainScreen].bounds.size.height
 
-#ifdef __IPHONE_7_1
 @property (nonatomic,strong)UIWebView * webview;
-#endif
 @property (nonatomic,strong)WKWebView * wkWebview;
 @property (nonatomic,copy) NSString * urlStr;
 @property (nonatomic,copy)NSString * titleStr;

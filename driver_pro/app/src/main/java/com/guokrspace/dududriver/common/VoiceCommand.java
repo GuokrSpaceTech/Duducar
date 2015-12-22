@@ -6,6 +6,8 @@ package com.guokrspace.dududriver.common;
 public class VoiceCommand {
 
     public static final String CONNECT_SERVER = "正在连接服务器..";
+    public static final String NETWORK_DISCONNECT = "网络连接中断";
+    public static final String NETWORK_NOT_AVAILABLE = "请检查网络状态";
     public static final String WAIT_FOR_ORDER = "开始听单";
     public static final String HOLD_CAR = "收车";
     public static final String CONTINUE_WAIT = "继续听单";

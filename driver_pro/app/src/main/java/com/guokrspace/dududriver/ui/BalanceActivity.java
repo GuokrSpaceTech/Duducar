@@ -87,7 +87,7 @@ public class BalanceActivity extends BaseActivity implements Handler.Callback{
                 }
                 GetBalanceResponse response = null;
                 if (!TextUtils.isEmpty(messageBody)) {
-//                    Log.e("hyman_balance", "加载成功：" + messageBody);
+                    Log.e("hyman_balance", "加载成功：" + messageBody);
                     response = JSON.parseObject(messageBody, GetBalanceResponse.class);
                 }
                 if (response != null && !TextUtils.isEmpty(response.getAvailable())) {
@@ -174,7 +174,7 @@ public class BalanceActivity extends BaseActivity implements Handler.Callback{
                                 billsResponse = FastJsonTools.getObject(messageBody, GetBillsResponse.class);
 //                            Log.e("hyman_bill_log", billsResponse.modelToString());
                         }
-                        mHandler.sendMessage(mHandler.obtainMessage(HANDLE_REFRESH_SUCCESS, billsResponse.getBalance()));
+                        mHandler.sendMessage(mHandler.obtainMessage(HANDLE_REFRESH_SUCCESS, billsResponse.getBalance() == null ? "0.0" : billsResponse.getBalance()));
                         List<BillItem> bills = null;
                         if (billsResponse != null) {
                             bills = billsResponse.getBill_list();

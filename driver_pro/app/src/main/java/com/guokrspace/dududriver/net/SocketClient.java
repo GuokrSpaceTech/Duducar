@@ -432,7 +432,7 @@ public class SocketClient {
             heartbeat.put("lat",heartBeatMessage.getLat());
             heartbeat.put("lng", heartBeatMessage.getLng());
             heartbeat.put("speed",heartBeatMessage.getSpeed());
-            ret = sendMessage(heartbeat, handler, 10);
+            ret = sendMessage(heartbeat, handler, 5);
         } catch (JSONException e) {
             e.printStackTrace();
         }
