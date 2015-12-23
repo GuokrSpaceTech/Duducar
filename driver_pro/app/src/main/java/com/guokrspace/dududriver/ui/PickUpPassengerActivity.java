@@ -669,7 +669,11 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
             @Override
             public void onClick(View v) {
                 //TODO:无论如何都要结束订单
-                unregisterReceiver(receiver);
+                try {
+                    unregisterReceiver(receiver);
+                } catch (Exception e){
+                }
+
                 if(chargeService != null) {
                     stopService(chargeService);
                 }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.util.Log;
 
+import java.util.Currency;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,5 +39,18 @@ public class AppExitUtil extends Application {
         }
         System.exit(0);
         Log.e("daddy", "system.exit()");
+    }
+
+    /*
+     * finish掉除当前activity以外的所有activity
+     * @param currentActivity
+     */
+    public void finishOtherActivities(Activity currentActivity) {
+        Class clazz = currentActivity.getClass();
+        for (Activity activity : activityList) {
+            if (!activity.getClass().equals(clazz)) {
+                activity.finish();
+            }
+        }
     }
 }

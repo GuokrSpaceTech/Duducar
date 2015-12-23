@@ -26,6 +26,7 @@ import com.guokrspace.dududriver.database.PersonalInformation;
 import com.guokrspace.dududriver.model.OrderItem;
 import com.guokrspace.dududriver.net.message.HeartBeatMessage;
 import com.guokrspace.dududriver.net.message.MessageTag;
+import com.guokrspace.dududriver.ui.SettingActivity;
 import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.FastJsonTools;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
@@ -51,6 +52,11 @@ public class DuduService extends Service {
     private Timer heartBeatTimer;
     private TimerTask heartBeatTask;
 
+    private StopServiceReceiver mStopReceiver;
+
+    public static final String STOP_SERVICE = "dudu.action.stop_service";
+
+
     public DuduService() {
     }
 
@@ -72,6 +78,14 @@ public class DuduService extends Service {
         };
         //,发送心跳包 5s一次
         heartBeatTimer.schedule(heartBeatTask, 1000, 5000);
+
+        //停止服务广播接收器
+        mStopReceiver = new StopServiceReceiver();
+        IntentFilter filter = new IntentFilter(STOP_SERVICE);
+        filter.setPriority(1000);
+        registerReceiver(mStopReceiver, filter);
+
+
 
         //注册网络状态监听
         IntentFilter mFilter = new IntentFilter();
@@ -111,10 +125,12 @@ public class DuduService extends Service {
 
     @Override
     public void onDestroy() {
-        Toast.makeText(getApplicationContext(), "service done", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "service stoped", Toast.LENGTH_SHORT).show();
         super.onDestroy();
 
         unregisterReceiver(mReceiver);
+        unregisterReceiver(mStopReceiver);
+        mStopReceiver = null;
 
         if(null != mLocClient){
             mLocClient.stop();
@@ -430,6 +446,18 @@ public class DuduService extends Service {
             }
         }
         return isAppRunning;
+    }
+
+    /*
+     *  该广播接收器用于关闭service
+     *
+     */
+    private class StopServiceReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            stopSelf();
+        }
     }
 }
 

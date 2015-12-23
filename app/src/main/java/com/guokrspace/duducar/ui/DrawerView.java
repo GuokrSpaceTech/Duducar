@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.guokrspace.duducar.DuduApplication;
+import com.guokrspace.duducar.NewsActivity;
 import com.guokrspace.duducar.OrderHistoryActivity;
 import com.guokrspace.duducar.PersonalInfoActivity;
 import com.guokrspace.duducar.R;
@@ -106,7 +107,7 @@ public class DrawerView implements View.OnClickListener {
 
                 break;
             case R.id.notice_layout:
-
+                enterActivity(NewsActivity.class);
                 break;
 
             default:

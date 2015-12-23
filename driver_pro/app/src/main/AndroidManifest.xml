@@ -114,7 +114,15 @@
             android:name=".ui.PayCostActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="账单支付"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            android:exported="true"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="wxa58560e44b455eca" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.HistoryOrderDetailActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -142,6 +150,29 @@
             android:name=".net.DuduService"
             android:enabled="true"
             android:exported="false" />
+
+        <!-- alipay sdk begin -->
+        <activity
+            android:name="com.alipay.sdk.app.H5PayActivity"
+            android:configChanges="orientation|keyboardHidden|navigation"
+            android:exported="false"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+        <!-- alipay sdk end -->
+
+        <!-- wepay init begin-->
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <receiver android:name=".wxapi.AppRegister">
+            <intent-filter>
+                <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
+            </intent-filter>
+        </receiver>
+        <!-- wepay init end -->
 
         <!-- Update Activitys Start -->
         <activity
