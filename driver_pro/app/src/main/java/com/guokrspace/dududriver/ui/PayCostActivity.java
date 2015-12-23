@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
@@ -24,13 +25,17 @@ import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.alipay.PayResult;
 import com.guokrspace.dududriver.alipay.SignUtils;
+import com.guokrspace.dududriver.common.VoiceCommand;
 import com.guokrspace.dududriver.database.PersonalInformation;
 import com.guokrspace.dududriver.model.OrderItem;
+import com.guokrspace.dududriver.net.ResponseHandler;
+import com.guokrspace.dududriver.net.SocketClient;
 import com.guokrspace.dududriver.net.http.DuDuResultCallBack;
 import com.guokrspace.dududriver.net.http.HttpUrls;
 import com.guokrspace.dududriver.net.http.model.UnifiedorderResp;
 import com.guokrspace.dududriver.util.AppExitUtil;
 import com.guokrspace.dududriver.util.CommonUtil;
+import com.guokrspace.dududriver.util.VoiceUtil;
 import com.guokrspace.dududriver.wxapi.WePayUtil;
 import com.squareup.okhttp.Request;
 import com.tencent.mm.sdk.modelpay.PayReq;
@@ -229,11 +234,31 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
      * call alipay sdk pay. 调用SDK支付
      */
     public void pay(View v) {
-        if (aliRadioButton.isChecked()) {
-            aliPay();
-        } else if (wxRadioButton.isChecked()) {
-            weixinPay();
-        }
+        SocketClient.getInstance().checkIfPaid(Integer.parseInt(tripOverOrderDetail.getOrder().getId()), new ResponseHandler(Looper.myLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                //未支付
+                if (aliRadioButton.isChecked()) {
+                    aliPay();
+                } else if (wxRadioButton.isChecked()) {
+                    weixinPay();
+                }
+            }
+
+            @Override
+            public void onFailure(String error) {
+                // 已支付
+                Toast.makeText(PayCostActivity.this, "订单已支付", Toast.LENGTH_SHORT).show();
+                VoiceUtil.startSpeaking(VoiceCommand.ORDER_PAID);
+                finish();
+            }
+
+            @Override
+            public void onTimeout() {
+
+            }
+        });
+
     }
 
     private void weixinPay() {
