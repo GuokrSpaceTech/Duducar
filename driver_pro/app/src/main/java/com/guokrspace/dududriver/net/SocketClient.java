@@ -30,6 +30,7 @@ public class SocketClient {
     private static SocketClient s_socketClient;
     private String serverMessage;
     private int messageid;
+    private int blockMessage = 0;
     /**
      * Specify the Server Ip Address here. Whereas our Socket Server is started.
      * */
@@ -83,6 +84,7 @@ public class SocketClient {
 
                 Log.e("DADDY " , mRun + "d");
                 //Start a timer
+                blockMessage = 0;
                 final Runnable timerRunnable = new Runnable() {
                     int counter=0;
                     @Override
@@ -102,6 +104,10 @@ public class SocketClient {
                 //Enqueue
                 MessageDispatcher messageDispatcher = new MessageDispatcher(messageid, message, timerRunnable, handler);
                 messageDispatchQueue.put(messageid, messageDispatcher);
+            } else { //发送失败
+                if(++blockMessage > 6){ //多次连续发送失败, 阻塞重连
+
+                }
             }
             ret = messageid;
 
@@ -200,6 +206,7 @@ public class SocketClient {
                 //the socket must be closed. It is not possible to reconnect to this socket
                 // after it is closed, which means a new socket instance has to be created.
                 socket.close();
+                SocketClient.getInstance().run();
             }
 
         } catch (Exception e) {

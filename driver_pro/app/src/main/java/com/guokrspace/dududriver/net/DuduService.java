@@ -113,7 +113,7 @@ public class DuduService extends Service {
             conctTask = new connectTask(); //Connect to server
             conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
-        pullOrder();
+//        pullOrder();
         return START_STICKY;
     }
 
@@ -239,6 +239,11 @@ public class DuduService extends Service {
 
     //后台不断发送心跳包
     private void sendHeartBeat(Looper looper) {
+        if(!isRunningApp(getApplicationContext())){
+            // 程序完全退出
+            stopSelf();
+            return;
+        }
         HeartBeatMessage msg = new HeartBeatMessage();
         msg.setCmd("heartbeat");
         msg.setStatus(CommonUtil.getCurrentStatus());
@@ -309,7 +314,6 @@ public class DuduService extends Service {
                 preTime = System.currentTimeMillis();
                 if(currTimeOut > 5){//5次心跳超时, 默认断开连接 ,尝试重连
                     reConnectServer();
-                    currTimeOut = 0;
                 }
                 Log.e("daddy heart beat", "time out " + currTimeOut);
 //                if(SocketClient.getInstance().getSocket().)
@@ -357,13 +361,13 @@ public class DuduService extends Service {
                 netInfo = mConnectivityManager.getActiveNetworkInfo();
                 if(netInfo != null && netInfo.isAvailable()) {
                     /////////////网络连接
-                    String name = netInfo.getTypeName();
+                    int type = netInfo.getType();
                     //网络连接切换, 一般重新连接
-                    if(netInfo.getType()==ConnectivityManager.TYPE_WIFI){
+                    if(type == ConnectivityManager.TYPE_WIFI){
                         /////WiFi网络
-                    }else if(netInfo.getType()==ConnectivityManager.TYPE_ETHERNET){
+                    }else if(type == ConnectivityManager.TYPE_ETHERNET){
 
-                    }else if(netInfo.getType()==ConnectivityManager.TYPE_MOBILE){
+                    }else if(type == ConnectivityManager.TYPE_MOBILE){
                         /////////3g网络
                     }
                     reConnectServer();

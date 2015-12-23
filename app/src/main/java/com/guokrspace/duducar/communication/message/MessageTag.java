@@ -32,6 +32,7 @@ public class MessageTag {
 
     public static final int MESSAGE_ORDER_CANCEL_CONFIRMED = 0x9003;
     public static final int MESSAGE_ORDER_CANCEL_TIMEOUT = 0x9004;
+    public static final int MESSAGE_ORDER_CANCEL_ERROR = 0x9008;
     public static final int MESSAGE_ORDER_COMPLETED = 0x900b;
     public static final int MESSAGE_UPDATE_CHARGE = 0x900c;
     public static final int MESSAGE_UPDATE_TRACK = 0x900d;
