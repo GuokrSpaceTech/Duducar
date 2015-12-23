@@ -33,6 +33,7 @@ public class Constants {
     public static final String ACTION_NEW_ORDER = "GOT_A_NEW_ORDER";
     public static final String SERVICE_ACTION_UPDATE_CHARGE = "UPDATE_CHARGE";
     public static final String SERVICE_ACTION_ORDER_NOT_EXISTS = "ORDER_NOT_EXISTS";
+    public static final String ACTION_ORDER_CANCEL = "ORDER_CANCELED";
 
     public static final int MESSAGE_NEW_ORDER = 0x5009;
 

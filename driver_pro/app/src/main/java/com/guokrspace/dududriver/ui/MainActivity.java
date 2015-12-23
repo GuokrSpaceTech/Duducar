@@ -173,6 +173,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         /*
         * 调整circle状态
         * */
+        Log.e("daddy adjust", " onresume ");
         mHandler.sendEmptyMessage(ADJUST_STATUS);
         /*
         * 更新每天的记录
@@ -587,15 +588,22 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 updateGrabOrderFragment(MessageTag.MESSAGE_UPDATE_MESSAGE);
                 break;
             case ADJUST_STATUS:
+                Log.e("daddy adjust", CommonUtil.getCurrentStatus() + " " + System.currentTimeMillis());
                 if(CommonUtil.getCurrentStatus() == Constants.STATUS_WAIT) {
                     isListeneing = true;
+
                     if (!listenProgressView.isCircling()) {
                         listenProgressView.changeViewStatus();
                     }
+
                     if(btnOver.getVisibility() != View.VISIBLE){
                         initStartAnim();
                     }
+
+                } else if(CommonUtil.getCurrentStatus() == Constants.STATUS_DEAL){
+                    break;
                 } else {
+                    Log.e("dady invoke ", " adjust status "+ CommonUtil.getCurrentStatus() +  " "  + listenProgressView.isCircling() + " " + btnOver.getVisibility());
                     isListeneing = false;
                     if(listenProgressView.isCircling()){
                         listenProgressView.changeViewStatus();
@@ -625,6 +633,9 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 if (recentTasks.get(i).baseActivity.toShortString().indexOf("com.guokrspace.dududriver") > -1) {
                     activityManager.moveTaskToFront(recentTasks.get(i).id, ActivityManager.MOVE_TASK_WITH_HOME);
                     isInvoke = true;
+
+                    mHandler.sendEmptyMessage(ADJUST_STATUS);
+                    Log.e("daddy invoke", CommonUtil.getCurrentStatus()+" status");
                 }
             }
         }

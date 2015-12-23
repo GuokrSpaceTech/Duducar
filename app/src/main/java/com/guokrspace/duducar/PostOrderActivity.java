@@ -608,11 +608,12 @@ public class PostOrderActivity extends AppCompatActivity {
 
                             @Override
                             public void onFailure(String error) {
-                                mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_CANCEL_TIMEOUT);
+                                mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_CANCEL_ERROR);
                             }
 
                             @Override
                             public void onTimeout() {
+                                mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_CANCEL_TIMEOUT)
                                 Toast.makeText(PostOrderActivity.this, "连接超时, 请检查网络..", Toast.LENGTH_SHORT).show();
                             }
                         });
