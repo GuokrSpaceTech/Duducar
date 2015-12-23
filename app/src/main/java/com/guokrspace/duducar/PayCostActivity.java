@@ -341,11 +341,35 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
      * call alipay sdk pay. 调用SDK支付
      */
     public void pay(View v) {
-        if (aliRadioButton.isChecked()) {
-            aliPay();
-        } else if (wxRadioButton.isChecked()) {
-            weixinPay();
-        }
+        SocketClient.getInstance().checkIfPaid(Integer.parseInt(tripOverOrderDetail.getId()), new ResponseHandler(Looper.myLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                //订单未支付
+                if (aliRadioButton.isChecked()) {
+                    aliPay();
+                } else if (wxRadioButton.isChecked()) {
+                    weixinPay();
+                }
+            }
+
+            @Override
+            public void onFailure(String error) {
+                Toast.makeText(PayCostActivity.this, "订单已经支付!" , Toast.LENGTH_SHORT).show();
+                //订单已支付
+                Intent intent = new Intent(mContext, RatingActivity.class);
+                tripOverOrderDetail.setStatus("5");
+                intent.putExtra("order", tripOverOrderDetail);
+                startActivity(intent);
+                finish();
+            }
+
+            @Override
+            public void onTimeout() {
+                //连接超时
+                Toast.makeText(PayCostActivity.this, "连接超时, 请检查网络连接" , Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     private void weixinPay() {

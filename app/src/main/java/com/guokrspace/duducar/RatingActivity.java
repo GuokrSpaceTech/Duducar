@@ -199,6 +199,7 @@ public class RatingActivity extends ActionBarActivity {
                         }
                     } else {
                         //TODO 没法继续拨打 提示联系客服
+                        Toast.makeText(RatingActivity.this, "订单已完成, 如需联系乘客, 请直接联系客服", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -271,6 +272,22 @@ public class RatingActivity extends ActionBarActivity {
             payButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    SocketClient.getInstance().checkIfPaid(orderRecord.getId().intValue(), new ResponseHandler(Looper.myLooper()) {
+                        @Override
+                        public void onSuccess(String messageBody) {
+
+                        }
+
+                        @Override
+                        public void onFailure(String error) {
+
+                        }
+
+                        @Override
+                        public void onTimeout() {
+
+                        }
+                    })
                     Intent intent = new Intent(RatingActivity.this, PayCostActivity.class);
                     intent.putExtra("order", mOrder);
                     startActivity(intent);

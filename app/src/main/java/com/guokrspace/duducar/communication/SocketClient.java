@@ -461,6 +461,25 @@ public class SocketClient {
 
         return ret;
     }
+    // 检测账单是否支付
+
+    public int checkIfPaid(int orderid, ResponseHandler handler){
+        int ret = -1;
+        JSONObject check = new JSONObject();
+
+        try {
+            check.put("cmd", "pay_check");
+            check.put("order_id", orderid);
+            check.put("role", "2");
+
+            ret = sendMessage(check, handler, 5);
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        return ret;
+    }
+
 
     /*
      * 获取乘客端基本信息，

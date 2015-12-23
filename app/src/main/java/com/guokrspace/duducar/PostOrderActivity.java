@@ -119,6 +119,7 @@ public class PostOrderActivity extends AppCompatActivity {
     private LatLng mPrevLatLng;//上一次的经纬度地址
     private LatLng mCurrLatLng;//当前的经纬度地址
     private boolean mIsFirstDraw = true;
+    private long wait4Car;
 
 
     //Data
@@ -373,8 +374,6 @@ public class PostOrderActivity extends AppCompatActivity {
         AppExitUtil.getInstance().addActivity(this);
 
         //Get Args
-
-        //Get Args
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             boolean isRecover = bundle.getBoolean("isRecover", false);
@@ -424,6 +423,7 @@ public class PostOrderActivity extends AppCompatActivity {
                 dest = (SearchLocation) bundle.get("dest");
 
                 Log.e("daddy", "request car");
+                wait4Car = System.currentTimeMillis();
                 requestCar();
             }
         }
