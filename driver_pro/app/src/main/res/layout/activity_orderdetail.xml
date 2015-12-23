@@ -23,19 +23,18 @@
 
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/gray_frame_shape">
+                android:layout_height="wrap_content">
 
                 <com.guokrspace.dududriver.view.CircleImageView
                     android:id="@+id/passenger_avatar"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:scaleType="centerCrop"
                     android:src="@mipmap/hyman" />
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/myposition_ll"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -44,7 +43,7 @@
                     android:layout_toRightOf="@id/passenger_avatar"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingLeft="16dp">
+                    android:paddingLeft="14dp">
 
                     <ImageView
                         android:layout_width="20dp"
@@ -56,15 +55,15 @@
                         android:id="@+id/myposition_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="26dp"
                         android:ellipsize="end"
-                        android:maxLines="2"
+                        android:maxLines="1"
                         android:text="长沙轮渡"
                         android:textColor="@android:color/white"
-                        android:textSize="22sp" />
-                </LinearLayout>
+                        android:textSize="18sp" />
+                </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/passengerposition_ll"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -75,7 +74,7 @@
                     android:layout_toRightOf="@id/passenger_avatar"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingLeft="16dp">
+                    android:paddingLeft="14dp">
 
                     <ImageView
                         android:layout_width="20dp"
@@ -87,13 +86,13 @@
                         android:id="@+id/passengerposition_textview"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
+                        android:layout_marginLeft="26dp"
                         android:ellipsize="end"
-                        android:maxLines="2"
+                        android:maxLines="1"
                         android:text="友阿百货"
                         android:textColor="@android:color/white"
-                        android:textSize="22sp" />
-                </LinearLayout>
+                        android:textSize="18sp" />
+                </RelativeLayout>
 
 
                 <ImageButton
@@ -173,15 +172,16 @@
 
             <LinearLayout
                 android:id="@+id/check_detail_ll"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:padding="3dp">
 
                 <ImageView
-                    android:layout_width="26dp"
-                    android:layout_height="26dp"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
                     android:scaleType="centerCrop"
                     android:src="@mipmap/search_black" />
 
@@ -191,7 +191,8 @@
                     android:layout_height="wrap_content"
                     android:text="查看收费明细"
                     android:textColor="@color/white"
-                    android:textSize="20sp" />
+                    android:textSize="14sp"
+                    android:layout_marginLeft="5dp"/>
             </LinearLayout>
 
             <com.gc.materialdesign.views.ButtonFlat

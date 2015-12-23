@@ -13,7 +13,7 @@ public class WePayUtil {
 
 
   //商户号
-   public static final String MCH_ID = "1284724701";
+   public static final String MCH_ID = "1285624001";
 
 
 //  API密钥，在商户平台设置

@@ -16,8 +16,10 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="60dp"
         android:text="距您1.9公里"
+        android:maxLines="2"
+        android:ellipsize="end"
         android:textColor="@color/yellow"
-        android:textSize="40sp"
+        android:textSize="30sp"
         android:textStyle="bold" />
 
     <TextView
@@ -31,10 +33,10 @@
         android:layout_marginTop="@dimen/activity_vertical_margin"
         android:text="普通型"
         android:textColor="@color/orange"
-        android:textSize="24sp" />
+        android:textSize="20sp" />
 
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/origin_position_ly"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -53,15 +55,15 @@
             android:id="@+id/order_origin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="36dp"
             android:ellipsize="end"
             android:maxLines="2"
             android:text="车站南路西书香名邸"
             android:textColor="@android:color/white"
-            android:textSize="28sp" />
-    </LinearLayout>
+            android:textSize="24sp" />
+    </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/termini_ly"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -80,18 +82,18 @@
             android:id="@+id/order_destination"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="36dp"
             android:ellipsize="end"
             android:maxLines="2"
             android:text="五一广场"
             android:textColor="@android:color/white"
-            android:textSize="28sp" />
-    </LinearLayout>
+            android:textSize="24sp" />
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/order_btn_ly"
         android:layout_width="fill_parent"
-        android:layout_height="80dp"
+        android:layout_height="60dp"
         android:layout_below="@id/termini_ly"
         android:layout_marginTop="40dp"
         android:orientation="horizontal">
@@ -101,7 +103,7 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="20dp"
             android:layout_weight="1"
             android:background="@drawable/main_order_btn_bg_selector"
             android:text="查看地图"
@@ -113,7 +115,7 @@
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginRight="20dp"
             android:layout_weight="1"
             android:background="@drawable/main_order_btn_bg_selector"
             android:text="关闭"
