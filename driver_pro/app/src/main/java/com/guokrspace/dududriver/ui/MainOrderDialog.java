@@ -150,7 +150,7 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
         tvOrderOrigin.setText(" " + order.getOrder().getStart());
         tvOrderDestination.setText(" " + order.getOrder().getDestination());
 
-        VoiceUtil.startSpeaking(VoiceCommand.NEW_ORDER_ARRIVE + ", " + distanceStr);
+        VoiceUtil.startSpeaking(distanceStr);
 
         myTimeTick = new MyTimeTick(MAX_TIME);
         myTimeTick.startTimer();
@@ -265,6 +265,9 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
                 this.dismiss();
                 VoiceUtil.startSpeaking(VoiceCommand.ORDER_CANCEL);
                 CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+                Intent cancel = new Intent();
+                cancel.setAction(Constants.ACTION_ORDER_CANCEL);
+                this.getActivity().sendBroadcast(cancel);
                 break;
             default:
                 break;

@@ -50,6 +50,7 @@ public class CostEstimateActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 confirmButton.setClickable(false);
+                confirmButton.setEnabled(false);
                 setResult(RESULT_OK);
                 finish();
             }

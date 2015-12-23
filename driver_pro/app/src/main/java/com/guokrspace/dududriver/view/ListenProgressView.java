@@ -11,6 +11,7 @@ import android.graphics.Shader;
 import android.graphics.SweepGradient;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -200,6 +201,13 @@ public class ListenProgressView extends View{
         index++;
         text = texts[index % 2];
         invalidate();
+    }
+
+    public boolean isTextRight(){
+        if(isListening)
+            return text.equals(texts[1]);
+        else
+            return text.equals(texts[0]);
     }
 
     public boolean isCircling(){

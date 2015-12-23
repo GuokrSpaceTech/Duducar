@@ -178,6 +178,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
     private double curCharge = 0;
     public final int UPDATE_CHARGE = 0x101;
     public final int ORDER_NOT_EXIST = 0x102;
+    public final int ORDER_CANCELED = 0x103;
 
     private OrderItem orderItem;
     private BDLocation mLoaction;
@@ -265,6 +266,12 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
 //                    });
                 }
                 Log.e("daddy", "current charge");
+                break;
+            case ORDER_CANCELED://订单取消
+                VoiceUtil.startSpeaking(VoiceCommand.ORDER_CANCEL);
+                stopService(chargeService);
+                CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+                finish();
                 break;
             case ORDER_NOT_EXIST://订单出现异常
                 VoiceUtil.startSpeaking(VoiceCommand.ORDER_STATUS_EXCEPTION);
@@ -452,18 +459,29 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                     mHandler.sendEmptyMessage(ORDER_NOT_EXIST);
 //                    abortBroadcast();
                     break;
+                case Constants.ACTION_ORDER_CANCEL:
+                    //订单取消
+                    mHandler.sendEmptyMessage(ORDER_CANCELED);
+                    abortBroadcast();
+                    break;
                 default:
                     return;
             }
         }
     }
 
-    private void registerBroadcastReceiver(){
+    private void registerBroadcastReceiver(int type){
+        if(receiver != null){
+            receiver = null;
+        }
         receiver = new ChargeServiceReceiver();
 
         IntentFilter filter = new IntentFilter();
-        filter.addAction(Constants.SERVICE_ACTION_UPDATE_CHARGE);
-        filter.addAction(Constants.SERVICE_ACTION_ORDER_NOT_EXISTS);
+        if(type == 2){  //go dest
+            filter.addAction(Constants.SERVICE_ACTION_UPDATE_CHARGE);
+            filter.addAction(Constants.SERVICE_ACTION_ORDER_NOT_EXISTS);
+        }
+        filter.addAction(Constants.ACTION_ORDER_CANCEL);
         filter.setPriority(1000);
         registerReceiver(receiver, filter);
     }
@@ -479,7 +497,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         ButterKnife.bind(this);
         initDirs();
         initNavi();
-
+        registerBroadcastReceiver(1);
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null) {
             orderItem = (OrderItem) bundle.getSerializable("orderItem");
@@ -633,7 +651,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         SharedPreferencesUtils.setParam(PickUpPassengerActivity.this, Constants.PREFERENCE_KEY_ORDER_STATUS, Constants.STATUS_RUN);
-        registerBroadcastReceiver();
+        registerBroadcastReceiver(2);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

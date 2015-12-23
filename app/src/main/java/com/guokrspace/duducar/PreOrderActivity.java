@@ -393,6 +393,7 @@ public class PreOrderActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 destLocButton.setClickable(false);
+                destLocButton.setEnabled(false);
                 SocketClient.getInstance().pullNotPaidOrder(Constants.PASSENGER_ROLE, new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {

@@ -1,11 +1,13 @@
 package com.guokrspace.dududriver.ui;
 
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -87,6 +89,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     private boolean isVisiable = false;
     private boolean isListeneing = false;
     private boolean isOverButtonVisiable = false;
+    private boolean isInvoke = false;
     private long lastOrderTime;
 
     private Handler mHandler;
@@ -170,6 +173,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         /*
         * 调整circle状态
         * */
+        Log.e("daddy adjust", " onresume ");
         mHandler.sendEmptyMessage(ADJUST_STATUS);
         /*
         * 更新每天的记录
@@ -518,9 +522,10 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 }
                 break;
             case NEW_ORDER_ARRIVE:
-                if(System.currentTimeMillis() - lastOrderTime < 6 * 1000){ // 连续的订单
+                if(!isInvoke && System.currentTimeMillis() - lastOrderTime < 6 * 1000){ // 连续的订单
                     break;
                 }
+                isInvoke = false;
                 if(System.currentTimeMillis() - lastOrderTime > 10 * 1000){
                     if(CommonUtil.getCurrentStatus() == Constants.STATUS_DEAL){
                         //一直处于状态2
@@ -544,9 +549,11 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                     dialog = new MainOrderDialog(context, orderItem);
                     Log.e("Daddy m", "orderItem" + orderItem.getOrder().getStart() + " " + orderItem.getOrder().getDestination() + " ");
                     dialog.setCancelable(true);
+                    VoiceUtil.startSpeaking(VoiceCommand.NEW_ORDER_ARRIVE);
                     if(isVisiable){
                         if(!dialog.isVisible()) {
                             dialog.show(getSupportFragmentManager(), "mainorderdialog");
+                            CommonUtil.changeCurStatus(Constants.STATUS_DEAL);
                         }
                     } else { //处于其他页面或
                         CommonUtil.setCurOrderItem(orderItem);
@@ -554,9 +561,12 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                         intent.setAction(Constants.ACTION_NEW_ORDER);
                         sendBroadcast(intent);
                     }
+                    if(CommonUtil.getCurrentStatus() != Constants.STATUS_DEAL){ // 应用在后台
+                        moveToFront();
+                        mHandler.sendEmptyMessage(NEW_ORDER_ARRIVE);
+                    }
                     CommonUtil.addTodayAllWork();
                     //选择界面不听单
-                    CommonUtil.changeCurStatus(Constants.STATUS_DEAL);
                 } else {
                     Log.e("MainActivity ", "wrong status to get new order!"+ CommonUtil.getCurrentStatus());
                 }
@@ -578,15 +588,22 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 updateGrabOrderFragment(MessageTag.MESSAGE_UPDATE_MESSAGE);
                 break;
             case ADJUST_STATUS:
+                Log.e("daddy adjust", CommonUtil.getCurrentStatus() + " " + System.currentTimeMillis());
                 if(CommonUtil.getCurrentStatus() == Constants.STATUS_WAIT) {
                     isListeneing = true;
+
                     if (!listenProgressView.isCircling()) {
                         listenProgressView.changeViewStatus();
                     }
+
                     if(btnOver.getVisibility() != View.VISIBLE){
                         initStartAnim();
                     }
+
+                } else if(CommonUtil.getCurrentStatus() == Constants.STATUS_DEAL){
+                    break;
                 } else {
+                    Log.e("dady invoke ", " adjust status "+ CommonUtil.getCurrentStatus() +  " "  + listenProgressView.isCircling() + " " + btnOver.getVisibility());
                     isListeneing = false;
                     if(listenProgressView.isCircling()){
                         listenProgressView.changeViewStatus();
@@ -602,6 +619,27 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         return false;
     }
 
+    protected void moveToFront() {
+        if (Build.VERSION.SDK_INT >= 11) { // honeycomb
+            final ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+            final List<ActivityManager.RunningTaskInfo> recentTasks = activityManager.getRunningTasks(Integer.MAX_VALUE);
+
+            for (int i = 0; i < recentTasks.size(); i++)
+            {
+                Log.d("Executed app", "Application executed : "
+                        +recentTasks.get(i).baseActivity.toShortString()
+                        + "\t\t ID: "+recentTasks.get(i).id+"");
+                // bring to front
+                if (recentTasks.get(i).baseActivity.toShortString().indexOf("com.guokrspace.dududriver") > -1) {
+                    activityManager.moveTaskToFront(recentTasks.get(i).id, ActivityManager.MOVE_TASK_WITH_HOME);
+                    isInvoke = true;
+
+                    mHandler.sendEmptyMessage(ADJUST_STATUS);
+                    Log.e("daddy invoke", CommonUtil.getCurrentStatus()+" status");
+                }
+            }
+        }
+    }
 
     private void updateMeFragmentBaseinfo(BaseInfo info){
 
@@ -661,6 +699,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                     break;
                 case Constants.ACTION_NEW_ORDER:
                     if(dialog == null || !dialog.isVisible()){
+                        CommonUtil.changeCurStatus(Constants.STATUS_DEAL);
                         dialog = new MainOrderDialog(context, CommonUtil.getCurOrderItem());
                         dialog.show(getSupportFragmentManager(), "mainorderdialog");
                     }

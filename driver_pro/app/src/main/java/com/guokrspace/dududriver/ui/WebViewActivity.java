@@ -211,6 +211,7 @@ public class WebViewActivity extends AppCompatActivity implements Handler.Callba
                     return false;
                 }
                 if(dialog == null || !dialog.isVisible()){
+                    CommonUtil.changeCurStatus(Constants.STATUS_DEAL);
                     dialog = new MainOrderDialog(context, CommonUtil.getCurOrderItem());
                     dialog.show(getSupportFragmentManager(), "mainorderdialog");
                 }

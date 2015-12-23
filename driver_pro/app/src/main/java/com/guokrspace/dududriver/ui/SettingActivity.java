@@ -155,6 +155,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                     return false;
                 }
                 if(dialog == null || !dialog.isVisible()){
+                    CommonUtil.changeCurStatus(Constants.STATUS_DEAL);
                     dialog = new MainOrderDialog(context, CommonUtil.getCurOrderItem());
                     dialog.show(getSupportFragmentManager(), "mainorderdialog");
                 }
