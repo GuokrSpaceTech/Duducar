@@ -238,7 +238,7 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
                                     VoiceUtil.startSpeaking(VoiceCommand.ORDER_STATUS_EXCEPTION);
                                     finish();
                                 }
-                                Toast.makeText(context, "正在发送账单...", Toast.LENGTH_SHORT);
+                                Toast.makeText(context, "正在发送账单...", Toast.LENGTH_SHORT).show();
                                 btnConfirm.callOnClick();
                             }
 
@@ -246,7 +246,7 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
                             @Override
                             public void onTimeout() {
                                 Log.e("PickUpPassengerAct", "end order time out");
-                                Toast.makeText(context, "网络状况较差!", Toast.LENGTH_SHORT);
+                                Toast.makeText(context, "网络状况较差!", Toast.LENGTH_SHORT).show();
                                 VoiceUtil.startSpeaking(VoiceCommand.TIME_OUT_ALERT);
                                 btnConfirm.callOnClick();
                             }

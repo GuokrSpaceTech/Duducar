@@ -1,10 +1,8 @@
 package com.guokrspace.dududriver.ui;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,7 +17,6 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gc.materialdesign.views.ButtonFlat;
 import com.gc.materialdesign.views.ButtonRectangle;
@@ -113,6 +110,7 @@ public class OrderDetailActivity extends BaseActivity{
                 intent.putExtra("orderNum", orderNum);
                 intent.putExtra("mileage", curDistance);
                 startActivity(intent);
+                finish();
 
             }
         }).setNegativeButton("取消", new DialogInterface.OnClickListener() {

@@ -1,36 +1,19 @@
 package com.guokrspace.duducar;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.dexafree.materialList.card.Card;
-import com.dexafree.materialList.card.CardProvider;
-import com.dexafree.materialList.view.MaterialListView;
-import com.guokrspace.duducar.database.PersonalInformation;
-import com.squareup.picasso.RequestCreator;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link PersonalInfoActivity.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link PersonalInfoActivity#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class PersonalInfoActivity extends AppCompatActivity {
 
 
     private DuduApplication mApplication;
     private Context mContext;
-    private MaterialListView materialListView;
     private Toolbar mToolbar;
 
 
@@ -46,7 +29,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
         mContext = this;
         //init toolbar
         initToolBar();
-        materialListView = (MaterialListView)findViewById(R.id.material_listview);
+        /*materialListView = (MaterialListView)findViewById(R.id.material_listview);
 
         for(PersonalInformation personalInformation:mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().list())
         {
@@ -73,7 +56,7 @@ public class PersonalInfoActivity extends AppCompatActivity {
                     .build();
             materialListView.getAdapter().add(card);
 
-        }
+        }*/
     }
 
     private void initToolBar() {

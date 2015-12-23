@@ -24,7 +24,7 @@
             android:background="@drawable/white_roundcorner_grey_border_background"
             android:text="岳麓大道388号"
             android:textColor="@android:color/black"
-            android:textSize="8pt"/>
+            android:textSize="8pt" />
 
         <ImageView
             android:layout_width="24dp"
