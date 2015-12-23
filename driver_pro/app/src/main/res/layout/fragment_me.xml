@@ -32,6 +32,8 @@
             android:text="嘟嘟司机"
             android:textColor="@color/white"
             android:textSize="20sp"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:textStyle="bold" />
 
         <LinearLayout

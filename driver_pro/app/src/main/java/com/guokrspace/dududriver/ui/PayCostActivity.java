@@ -258,15 +258,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
         params.put("mobile", person.getMobile());
         params.put("role", "1");
         Log.e("weixinpay", orderNum + " " + body + " " + totalFee + " " + person.getToken() + " " + person.getMobile());
-        /*body = "长沙到北京，共1000公里";
-        tradeNo = WePayUtil.genOutTradeNo();
-        totalFee = "0.01";
-        params.put("orderNum", tradeNo);
-        params.put("body", body);
-        params.put("total_fee", totalFee);
-        params.put("token", "d4f4ded9ef733ba5e19b5bc767e72a190c8");
-        params.put("mobile", "13700000003");
-        params.put("role", "2");*/
+
         new OkHttpRequest.Builder().url(HttpUrls.getUrl(HttpUrls.WX_PAY_WXUNIFIEDORDER)).params(params).post(new DuDuResultCallBack<UnifiedorderResp>(mContext) {
             @Override
             public void onError(Request request, Exception e) {
