@@ -175,6 +175,9 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
     public void onDestroyView() {
         super.onDestroyView();
         myTimeTick.stopTimer();
+        if(CommonUtil.getCurrentStatus() != Constants.STATUS_GET){
+            CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+        }
         ButterKnife.unbind(this);
     }
 
@@ -201,8 +204,8 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
                         //发送成功了
                         Toast.makeText(retContext(), "接单成功!", Toast.LENGTH_SHORT).show();
                         VoiceUtil.startSpeaking(VoiceCommand.ORDER_ACCEPT);
-                        mHandler.sendEmptyMessage(INTENT_TO_PICKUP);
                         CommonUtil.changeCurStatus(Constants.STATUS_GET);
+                        mHandler.sendEmptyMessage(INTENT_TO_PICKUP);
                     }
 
                     @Override
@@ -241,7 +244,9 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
                 }
                 break;
             case HANDLER_TIMER_TIMEOUT:
-                this.dismiss();
+                if(this.isVisible()) {
+                    this.dismiss();
+                }
                 //超时返回监听状态
                 VoiceUtil.stopSpeaking();
                 VoiceUtil.startSpeaking(VoiceCommand.ORDER_AUTO_CANCEL);
@@ -309,4 +314,5 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
             }
         }
     }
+
 }

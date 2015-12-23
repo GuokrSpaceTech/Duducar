@@ -161,9 +161,15 @@ public class PostOrderActivity extends AppCompatActivity {
                 case MessageTag.MESSAGE_ORDER_CANCEL_TIMEOUT:
                     if (state == ORDER_CANCELLING) {
                         getSupportActionBar().setTitle("消息发送失败,请检查网络连接");
-                        mFab.setClickable(false);
-                        mFab.setVisibility(View.GONE);
-                        mFab.setEnabled(false);
+//                        mFab.setClickable(false);
+//                        mFab.setVisibility(View.GONE);
+//                        mFab.setEnabled(false);
+                    }
+                    break;
+                case MessageTag.MESSAGE_ORDER_CANCEL_ERROR:
+                    if(state == ORDER_CANCELLING) {
+                        getSupportActionBar().setTitle("订单已取消");
+                        finish();
                     }
                     break;
                 case MessageTag.MESSAGE_ORDER_DISPATCHED:
@@ -445,11 +451,12 @@ public class PostOrderActivity extends AppCompatActivity {
 
                             @Override
                             public void onFailure(String error) {
-                                mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_CANCEL_TIMEOUT);
+                                mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_CANCEL_ERROR);
                             }
 
                             @Override
                             public void onTimeout() {
+                                mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_CANCEL_TIMEOUT);
                             }
                         });
                 return false;

@@ -23,6 +23,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
@@ -390,13 +391,13 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 }
 
                 if (isListeneing) {
-                    if (!CommonUtil.isNetworkAvailable(context)){
+                    if (!CommonUtil.isNetworkAvailable(context)) {
                         CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
                         VoiceUtil.startSpeaking(VoiceCommand.NETWORK_NOT_AVAILABLE);
                         isListeneing = !isListeneing;
                         return false;
                     }
-                    if(!SocketClient.getInstance().getSocket().isConnected() || SocketClient.getInstance().getSocket().isClosed()){
+                    if (!SocketClient.getInstance().getSocket().isConnected() || SocketClient.getInstance().getSocket().isClosed()) {
                         // socket 断网
                         CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
                         VoiceUtil.startSpeaking(VoiceCommand.CONNECT_SERVER);
@@ -520,6 +521,12 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 if(System.currentTimeMillis() - lastOrderTime < 6 * 1000){ // 连续的订单
                     break;
                 }
+                if(System.currentTimeMillis() - lastOrderTime > 10 * 1000){
+                    if(CommonUtil.getCurrentStatus() == Constants.STATUS_DEAL){
+                        //一直处于状态2
+                        CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+                    }
+                }
                 OrderItem orderItem = CommonUtil.getCurOrderItem();
                 if (CommonUtil.getCurOrderItem() == null) {
                     Log.e("daddy", "orderItem fail ");
@@ -530,7 +537,6 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                         Double.valueOf(orderItem.getOrder().getStart_lat()), Double.valueOf(orderItem.getOrder().getStart_lng()));
                 LatLng endLoaction = new LatLng(
                         CommonUtil.getCurLat(), CommonUtil.getCurLng());
-//                        Double.valueOf(orderItem.getOrder().getDestination_lat()), Double.valueOf(orderItem.getOrder().getDestination_lng()));
                 orderItem.setDistance(String.valueOf(DistanceUtil.getDistance(startLoaction, endLoaction)));
                 //显示派单dialog
                 if(CommonUtil.getCurrentStatus() == Constants.STATUS_WAIT){
@@ -539,7 +545,9 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                     Log.e("Daddy m", "orderItem" + orderItem.getOrder().getStart() + " " + orderItem.getOrder().getDestination() + " ");
                     dialog.setCancelable(true);
                     if(isVisiable){
-                        dialog.show(getSupportFragmentManager(), "mainorderdialog");
+                        if(!dialog.isVisible()) {
+                            dialog.show(getSupportFragmentManager(), "mainorderdialog");
+                        }
                     } else { //处于其他页面或
                         CommonUtil.setCurOrderItem(orderItem);
                         Intent intent = new Intent();
@@ -660,15 +668,15 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                     break;
                 case Constants.SERVICE_ACTION_NEW_ORDER: //收到新的订单  来自服务的消息
                     Log.e("daddy", "got a new order");
-
                     mHandler.sendEmptyMessage(NEW_ORDER_ARRIVE);
                     abortBroadcast();
                     break;
                 case Constants.SERVICE_ACTION_NETWORK_OUT: // 断开连接
-                    if(isListeneing){
-                        isListeneing = !isListeneing;
+                    //无语音提示
+                    Toast.makeText(MainActivity.this, VoiceCommand.NETWORK_DISCONNECT + VoiceCommand.NETWORK_NOT_AVAILABLE, Toast.LENGTH_SHORT).show();
+                    if(CommonUtil.getCurrentStatus() == Constants.STATUS_WAIT){//
+                        CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
                         mHandler.sendEmptyMessage(ADJUST_STATUS);
-                        VoiceUtil.startSpeaking(VoiceCommand.NETWORK_DISCONNECT);
                     }
                     abortBroadcast();
                     break;

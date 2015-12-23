@@ -2,7 +2,10 @@ package com.guokrspace.dududriver.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -17,12 +20,14 @@ import android.widget.TextView;
 
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
+import com.guokrspace.dududriver.common.NewOrderReceiver;
+import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 
 /**
  * Created by hyman on 15/12/19.
  */
-public class WebViewActivity extends AppCompatActivity {
+public class WebViewActivity extends AppCompatActivity implements Handler.Callback{
 
     public static final String WEBVIEW_TYPE = "webview_type";
     public static final int WEBVIEW_CLAUSE = 100;
@@ -38,6 +43,10 @@ public class WebViewActivity extends AppCompatActivity {
     private TextView titleTextView;
     private ProgressBar mProgressBar;
 
+    private NewOrderReceiver receiver;
+    private MainOrderDialog dialog;
+    private Handler mHandler;
+
     private int type;
 
     @Override
@@ -49,6 +58,7 @@ public class WebViewActivity extends AppCompatActivity {
         context = WebViewActivity.this;
         Intent mIntent = getIntent();
         type = mIntent.getIntExtra(WEBVIEW_TYPE, 0);
+        mHandler = new Handler(this);
         initView();
     }
 
@@ -165,8 +175,49 @@ public class WebViewActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        registerBroadcastReceiver();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
+
+    //监听service传来的消息
+    private void registerBroadcastReceiver(){
+        receiver = new NewOrderReceiver(mHandler);
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constants.ACTION_NEW_ORDER);
+        filter.setPriority(1000);
+        registerReceiver(receiver, filter);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         mWebView.clearCache(true);
+    }
+
+    @Override
+    public boolean handleMessage(Message msg) {
+        switch (msg.what){
+            case Constants.MESSAGE_NEW_ORDER:
+                //有新的订单来了
+                if(CommonUtil.getCurOrderItem() == null){
+                    return false;
+                }
+                if(dialog == null || !dialog.isVisible()){
+                    dialog = new MainOrderDialog(context, CommonUtil.getCurOrderItem());
+                    dialog.show(getSupportFragmentManager(), "mainorderdialog");
+                }
+                break;
+            default:
+                break;
+        }
+        return false;
     }
 }
