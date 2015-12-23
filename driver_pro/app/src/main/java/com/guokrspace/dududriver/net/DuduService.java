@@ -26,7 +26,6 @@ import com.guokrspace.dududriver.database.PersonalInformation;
 import com.guokrspace.dududriver.model.OrderItem;
 import com.guokrspace.dududriver.net.message.HeartBeatMessage;
 import com.guokrspace.dududriver.net.message.MessageTag;
-import com.guokrspace.dududriver.ui.SettingActivity;
 import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.FastJsonTools;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
@@ -113,7 +112,7 @@ public class DuduService extends Service {
             conctTask = new connectTask(); //Connect to server
             conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
-//        pullOrder();
+        pullOrder();
         return START_STICKY;
     }
 

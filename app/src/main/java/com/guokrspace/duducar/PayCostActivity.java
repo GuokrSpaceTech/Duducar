@@ -150,7 +150,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
                             tripOverOrderDetail.setStatus("5");
                             intent.putExtra("order", tripOverOrderDetail);
                             startActivity(intent);
-
+                            SocketClient.getInstance().unregisterServerMessageHandler(MessageTag.DRIVER_PAY);
                             finish();
                         } else {
 //                             判断resultStatus 为非“9000”则代表可能支付失败
@@ -164,7 +164,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
                                 Intent intent = new Intent(mContext, RatingActivity.class);
                                 intent.putExtra("order", tripOverOrderDetail);
                                 startActivity(intent);
-
+                                SocketClient.getInstance().unregisterServerMessageHandler(MessageTag.DRIVER_PAY);
                                 finish();
                             } else {
                                 // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
@@ -248,6 +248,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
                         "确认", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                SocketClient.getInstance().unregisterServerMessageHandler(MessageTag.DRIVER_PAY);
                                 finish();
                             }
                         }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -274,14 +275,16 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
                     JSONObject mDriverPay = new JSONObject(messageBody);
 //                    Log.e("daddy detail", tripOverOrderDetail.toString());
                     if (tripOverOrderDetail == null) {
+                        SocketClient.getInstance().unregisterServerMessageHandler(MessageTag.DRIVER_PAY);
                         finish();
                     }
                     Intent intent = new Intent(mContext, RatingActivity.class);
                     tripOverOrderDetail.setStatus("5");
-                    tripOverOrderDetail.setPay_role("2");
+                    tripOverOrderDetail.setPay_role("1");
                     intent.putExtra("order", tripOverOrderDetail);
                     startActivity(intent);
                     Toast.makeText(mContext, "司机已代付!", Toast.LENGTH_LONG).show();
+                    SocketClient.getInstance().unregisterServerMessageHandler(MessageTag.DRIVER_PAY);
                     finish();
                     if (Integer.parseInt((String) mDriverPay.get("order_id")) != Integer.parseInt(tripOverOrderDetail.getId())) {
                         //异常情况,不是目前处理订单的消息
@@ -324,6 +327,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
                     "确认", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    SocketClient.getInstance().unregisterServerMessageHandler(MessageTag.DRIVER_PAY);
                     finish();
                 }
             }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -341,11 +345,36 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
      * call alipay sdk pay. 调用SDK支付
      */
     public void pay(View v) {
-        if (aliRadioButton.isChecked()) {
-            aliPay();
-        } else if (wxRadioButton.isChecked()) {
-            weixinPay();
-        }
+        SocketClient.getInstance().checkIfPaid(Integer.parseInt(tripOverOrderDetail.getId()), new ResponseHandler(Looper.myLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                //订单未支付
+                if (aliRadioButton.isChecked()) {
+                    aliPay();
+                } else if (wxRadioButton.isChecked()) {
+                    weixinPay();
+                }
+            }
+
+            @Override
+            public void onFailure(String error) {
+                Toast.makeText(PayCostActivity.this, "订单已经支付!" , Toast.LENGTH_SHORT).show();
+                //订单已支付
+                Intent intent = new Intent(mContext, RatingActivity.class);
+                tripOverOrderDetail.setStatus("5");
+                intent.putExtra("order", tripOverOrderDetail);
+                startActivity(intent);
+                SocketClient.getInstance().unregisterServerMessageHandler(MessageTag.DRIVER_PAY);
+                finish();
+            }
+
+            @Override
+            public void onTimeout() {
+                //连接超时
+                Toast.makeText(PayCostActivity.this, "连接超时, 请检查网络连接" , Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     private void weixinPay() {
@@ -429,6 +458,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
                             new DialogInterface.OnClickListener() {
                                 public void onClick(
                                         DialogInterface dialoginterface, int i) {
+                                    SocketClient.getInstance().unregisterServerMessageHandler(MessageTag.DRIVER_PAY);
                                     finish();
                                 }
                             }).show();
@@ -582,6 +612,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         if (KeyEvent.KEYCODE_BACK == event.getKeyCode()) { //直接返回
+            SocketClient.getInstance().unregisterServerMessageHandler(MessageTag.DRIVER_PAY);
             finish();
         }
         return false;

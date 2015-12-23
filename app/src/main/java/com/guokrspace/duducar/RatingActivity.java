@@ -199,6 +199,7 @@ public class RatingActivity extends ActionBarActivity {
                         }
                     } else {
                         //TODO 没法继续拨打 提示联系客服
+                        Toast.makeText(RatingActivity.this, "订单已完成, 如需联系司机, 请直接转接客服", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -265,19 +266,45 @@ public class RatingActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
         statusTextView.setText("已完成");
+
+        payButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                SocketClient.getInstance().checkIfPaid(Integer.parseInt(mOrder.getId()), new ResponseHandler(Looper.myLooper()) {
+                    @Override
+                    public void onSuccess(String messageBody) {
+                        Intent intent = new Intent(RatingActivity.this, PayCostActivity.class);
+                        intent.putExtra("order", mOrder);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailure(String error) {
+                        //已经支付
+                        Toast.makeText(RatingActivity.this, "订单已支付", Toast.LENGTH_SHORT).show();
+                        findViewById(R.id.evaluate_layout).setVisibility(View.VISIBLE);
+                        payButton.setVisibility(View.GONE);
+                        mOrder.setStatus("5");
+                        statusTextView.setText("已支付");
+                    }
+
+                    @Override
+                    public void onTimeout() {
+                        Toast.makeText(RatingActivity.this, "连接超时, 请检查网络连接", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+        });
+
         if (mOrder.getStatus().equals("4") && TextUtils.equals(mOrder.getPay_role(), "2")) {//未支付
             findViewById(R.id.evaluate_layout).setVisibility(View.GONE);
             payButton.setVisibility(View.VISIBLE);
-            payButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(RatingActivity.this, PayCostActivity.class);
-                    intent.putExtra("order", mOrder);
-                    startActivity(intent);
-                    finish();
-                }
-            });
             statusTextView.setText("未支付");
+
+
         }
 
         if (!"0".equals(mOrder.getRating())) {// 已支付 已评价

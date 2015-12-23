@@ -2,46 +2,11 @@
 <items version="2" >
 
     <item
-        jar="/Users/hyman/Duducar/driver_pro/app/build/intermediates/exploded-aar/driver_pro/indicator_library/unspecified/jars/classes.jar"
+        jar="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/exploded-aar/driver_pro/indicator_library/unspecified/jars/classes.jar"
         jumboMode="false"
         revision="23.0.1"
-        sha1="287a47ee27258037b5a5f99a8ca4ebbce1c2fa8f">
-        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/release/classes-126997302508e8af4fee96f5bfe593a08900bacf.jar" />
-    </item>
-    <item
-        jar="/Users/hyman/Duducar/driver_pro/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/23.1.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="d96886efea7cc74fbb3abd0e3b51d5638fc57be0">
-        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/release/classes-ee09126eba3a810033488c801492b4acddf8113d.jar" />
-    </item>
-    <item
-        jar="/Users/hyman/Duducar/driver_pro/app/build/intermediates/exploded-aar/driver_pro/ToggleButtonLib/unspecified/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="014b47dfd81070f47b379b78299d53de1b60fca1">
-        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/release/classes-a21301c137e74740c5eb3feda9e04e564372e035.jar" />
-    </item>
-    <item
-        jar="/Users/hyman/Duducar/driver_pro/app/build/intermediates/exploded-aar/com.github.dexafree/materiallist/3.1.2/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="07cb37d60b2949131813d532fea644b2cd7d9a63">
-        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/release/classes-4f7a386a6f771270571ee2608af4bc8997645ba3.jar" />
-    </item>
-    <item
-        jar="/Users/hyman/Duducar/driver_pro/app/build/intermediates/exploded-aar/driver_pro/MaterialDesign/unspecified/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="2ce23e8e3d2904b103c822d236502c26e8f6ed60">
-        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/release/classes-e09067977e2ca7a6772ff5aa6a98551e7569e81f.jar" />
-    </item>
-    <item
-        jar="/Users/hyman/.gradle/caches/modules-2/files-2.1/com.squareup.picasso/picasso/2.5.2/7446d06ec8d4f7ffcc53f1da37c95f200dcb9387/picasso-2.5.2.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="7446d06ec8d4f7ffcc53f1da37c95f200dcb9387">
-        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/release/picasso-2.5.2-ff84f03a2dd52e64be7e86c0258591593bf4b012.jar" />
+        sha1="e28eba3ef3ee7c2203af523d7dcce92ccfa97988">
+        <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/release/classes-462042cf492026d7eea92016892b45b4f18cd065.jar" />
     </item>
 
 </items>
