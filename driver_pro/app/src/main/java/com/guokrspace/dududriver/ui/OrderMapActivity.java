@@ -294,6 +294,7 @@ public class OrderMapActivity extends BaseActivity implements View.OnClickListen
                         return ;
                     }
                     if(dialog == null || !dialog.isVisible()){
+                        CommonUtil.changeCurStatus(Constants.STATUS_DEAL);
                         dialog = new MainOrderDialog(context, CommonUtil.getCurOrderItem());
                         dialog.show(getSupportFragmentManager(), "mainorderdialog");
                     }
