@@ -75,9 +75,15 @@ public class HistoryOrderDetailActivity extends BaseActivity implements Handler.
 
             @Override
             public void onFailure(String error) {//已支付
-                Toast.makeText(HistoryOrderDetailActivity.this, "已支付, 请刷新历史订单", Toast.LENGTH_SHORT).show();
-                substitutePayButton.setVisibility(View.GONE);
-                statusTextView.setText("已支付");
+                if(error.contains("login")){
+                    // 账户问题
+                    Toast.makeText(HistoryOrderDetailActivity.this, "正在连接服务器, 请稍后尝试..", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(HistoryOrderDetailActivity.this, "已支付, 请刷新历史订单", Toast.LENGTH_SHORT).show();
+                    substitutePayButton.setVisibility(View.GONE);
+                    statusTextView.setText("已支付");
+                }
+
             }
 
             @Override
