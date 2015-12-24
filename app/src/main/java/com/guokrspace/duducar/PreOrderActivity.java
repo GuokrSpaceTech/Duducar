@@ -422,6 +422,7 @@ public class PreOrderActivity extends AppCompatActivity
                                     }
                                 }).show();
                                 destLocButton.setClickable(true);
+                                destLocButton.setEnabled(true);
                                 return;
                             }
                         }  //正常跳转
@@ -430,12 +431,14 @@ public class PreOrderActivity extends AppCompatActivity
                         intent.putExtra("city", city);
                         startActivityForResult(intent, ACTIVITY_SEARCH_DEST_REQUEST);
                         destLocButton.setClickable(true);
+                        destLocButton.setEnabled(true);
                     }
 
                     @Override
                     public void onFailure(String error) {
                         Toast.makeText(PreOrderActivity.this, "状态异常, 请稍后尝试", Toast.LENGTH_SHORT).show();
                         destLocButton.setClickable(true);
+                        destLocButton.setEnabled(true);
                     }
 
                     @Override
@@ -446,6 +449,7 @@ public class PreOrderActivity extends AppCompatActivity
 //                        intent.putExtra("city", city);
 //                        startActivityForResult(intent, ACTIVITY_SEARCH_DEST_REQUEST);
                         destLocButton.setClickable(true);
+                        destLocButton.setEnabled(true);
                     }
                 });
 //                Intent intent = new Intent(mContext, SearchActivity.class);

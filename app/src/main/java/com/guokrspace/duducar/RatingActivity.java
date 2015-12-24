@@ -189,6 +189,7 @@ public class RatingActivity extends ActionBarActivity {
                 @Override
                 public void onClick(View view) {
                     //Call the number
+                    Log.e("hyman phone", mOrder.getStatus() + "  " +mOrder.getPay_role());
                     if(!mOrder.getStatus().equals("5")){ // 未完成可以拨打
                         String mobile = mOrder.getPassenger_mobile();
                         if (mobile != null && mobile.length() == 11) {
