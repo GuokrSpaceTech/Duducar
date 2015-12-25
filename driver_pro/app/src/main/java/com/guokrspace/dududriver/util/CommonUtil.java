@@ -239,7 +239,7 @@ public class CommonUtil {
     }
 
     public static String getTodayWorkRate(){
-        if(getTodayAllWork() == 0){
+        if(getTodayAllWork() == 0 || getTodayDoneWork() == 0){
             return "0";
         }
         double rate = ((double)getTodayDoneWork() * 100.00D) / ((double)getTodayAllWork());
@@ -274,10 +274,10 @@ public class CommonUtil {
 
     public static double countPrice(double mileage, int lowtime) {
 
-        float starting_price = Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_DRIVER_STARTING_PRICE, "5.5"));
-        float starting_distance = Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_DRIVER_STARTING_DISTANCE, "6.0"));
-        float km_price = Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_DRIVER_KM_PRICE, "2.0"));
-        float low_speed_price = Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_DRIVER_LOW_SPEED_PRICE, "2.0"));
+        float starting_price = Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_DRIVER_STARTING_PRICE, "0.01"));
+        float starting_distance = Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_DRIVER_STARTING_DISTANCE, "1.0"));
+        float km_price = Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_DRIVER_KM_PRICE, "0.01"));
+        float low_speed_price = Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_DRIVER_LOW_SPEED_PRICE, "0.01"));
         mileage = mileage/1000.0d;
         if(mileage <= starting_distance + 0.5){
             return starting_price + low_speed_price * lowtime;

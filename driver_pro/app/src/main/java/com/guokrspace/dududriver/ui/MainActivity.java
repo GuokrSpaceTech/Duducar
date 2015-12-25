@@ -365,7 +365,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             public void onTimeout() {
                 //超时 重试
                 Log.e("daddy", "time out ");
-//                pullBaseInfo();
+                pullBaseInfo();
             }
         });
 
