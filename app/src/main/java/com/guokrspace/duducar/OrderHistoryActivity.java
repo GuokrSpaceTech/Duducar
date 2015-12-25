@@ -355,9 +355,11 @@ public class OrderHistoryActivity extends AppCompatActivity implements Handler.C
                 int totalItemCount = mAdapter.getItemCount();
                 //lastVisibleItem >= totalItemCount - 3 表示剩下3个item自动加载
                 if (hasMore && lastVisibleItem >= totalItemCount - 3 && dy > 0) {
-                    if (isRefreshing || isLoading) {
+                    if (isRefreshing) {
                         showToast("cannot load more");
-                    } else {
+                        return;
+                    }
+                    if (!isLoading) {
                         loadMoreData();
                     }
                 }
