@@ -176,8 +176,8 @@ public class OrderDetailActivity extends BaseActivity{
             public void onClick(View v) {
                 CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
                 VoiceUtil.startSpeaking(VoiceCommand.HOLD_CAR);
-                CommonUtil.addTodayDoneWork();
-                CommonUtil.addTodayCash(Float.parseFloat(String.valueOf(sumprice)));
+//                CommonUtil.addTodayDoneWork();
+//                CommonUtil.addTodayCash(Float.parseFloat(String.valueOf(sumprice)));
                 finish();
             }
         });
@@ -187,8 +187,8 @@ public class OrderDetailActivity extends BaseActivity{
             public void onClick(View v) {
                 CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
                 VoiceUtil.startSpeaking(VoiceCommand.CONTINUE_WAIT);
-                CommonUtil.addTodayDoneWork();
-                CommonUtil.addTodayCash(Float.parseFloat(String.valueOf(sumprice)));
+//                CommonUtil.addTodayDoneWork();
+//                CommonUtil.addTodayCash(Float.parseFloat(String.valueOf(sumprice)));
                 finish();
             }
         });
@@ -237,6 +237,8 @@ public class OrderDetailActivity extends BaseActivity{
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+        CommonUtil.addTodayDoneWork();
+        CommonUtil.addTodayCash(Float.parseFloat(String.valueOf(sumprice)));
     }
 
     @Override

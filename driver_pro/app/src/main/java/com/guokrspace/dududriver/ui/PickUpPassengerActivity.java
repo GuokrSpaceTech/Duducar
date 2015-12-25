@@ -228,12 +228,14 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
             }
 
             if (drivingRouteResult.error == SearchResult.ERRORNO.NO_ERROR) {
-                mBaiduMap.clear();
-                DrivingRouteOverlay overlay = new MyDrivingRouteOverlay(mBaiduMap);
-                mBaiduMap.setOnMarkerClickListener(overlay);
-                overlay.setData(drivingRouteResult.getRouteLines().get(0));
-                overlay.addToMap();
-                overlay.zoomToSpan();
+                if(mBaiduMap != null){
+                    mBaiduMap.clear();
+                    DrivingRouteOverlay overlay = new MyDrivingRouteOverlay(mBaiduMap);
+                    mBaiduMap.setOnMarkerClickListener(overlay);
+                    overlay.setData(drivingRouteResult.getRouteLines().get(0));
+                    overlay.addToMap();
+                    overlay.zoomToSpan();
+                }
             }
         }
     };
@@ -472,6 +474,11 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
 
     private void registerBroadcastReceiver(int type){
         if(receiver != null){
+            try {
+                unregisterReceiver(receiver);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
             receiver = null;
         }
         receiver = new ChargeServiceReceiver();
@@ -828,6 +835,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
     protected void onDestroy() {
         super.onDestroy();
         mBaiduMap.setMyLocationEnabled(false);
+        routePlanSearch.destroy();
         if (mMapview != null) {
             mMapview.onDestroy();
             mMapview = null;
@@ -835,7 +843,6 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         if(isNavigationNow){
             BNRouteGuideManager.getInstance().onDestroy();
         }
-
         ButterKnife.unbind(this);
     }
 

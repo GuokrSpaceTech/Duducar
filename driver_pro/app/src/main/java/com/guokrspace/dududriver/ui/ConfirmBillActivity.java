@@ -186,7 +186,6 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
             public void onClick(View v) {
 
                 VoiceUtil.startSpeaking(VoiceCommand.CONFIRM_CHARGE);
-
                 dialog.show();
                 dialog.getButtonAccept().setButtonText("确认");
                 dialog.getButtonCancel().setButtonText("取消");
@@ -317,8 +316,8 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
 
                     VoiceUtil.startSpeaking(VoiceCommand.PAY_OVER);
 
-                    CommonUtil.addTodayDoneWork();
-                    CommonUtil.addTodayCash(Float.parseFloat(String.valueOf(price)));
+//                    CommonUtil.addTodayDoneWork();
+//                    CommonUtil.addTodayCash(Float.parseFloat(String.valueOf(price)));
 
                     dialog.getButtonAccept().setButtonText("继续听单");
                     dialog.getButtonCancel().setButtonText("收车");

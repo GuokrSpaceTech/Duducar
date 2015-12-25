@@ -108,6 +108,7 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
             }
             if (isNetworkAvailable()) {
                 currentOrderId = Long.MAX_VALUE;
+
                 SocketClient.getInstance().getHistoryOrders("old", Constants.ORDER_PAGE_NUM, currentOrderId, new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
@@ -264,6 +265,7 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
 
     private void loadMoreData() {
         isLoading = true;
+
         // TODO: 加载数据
         SocketClient.getInstance().getHistoryOrders("old", Constants.ORDER_PAGE_NUM, currentOrderId, new ResponseHandler(Looper.getMainLooper()) {
             @Override

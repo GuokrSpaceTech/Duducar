@@ -166,6 +166,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         }
 
         if(!CommonUtil.isServiceOn()){
+            Log.e("daddy", "resume service restart");
             startService(duduService);
         }
 
@@ -185,11 +186,11 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 //        if(isOnline){
 //            pullOrder();
 //        }
-        pullBaseInfo();
+//        pullBaseInfo();
         // 后台掉起的操作
         if(isInvoke){
             isInvoke2 = true;
-            mHandler.sendEmptyMessageDelayed(NEW_ORDER_ARRIVE, 5 * 100);
+            mHandler.sendEmptyMessageDelayed(NEW_ORDER_ARRIVE, 1 * 1000);
         }
     }
 
