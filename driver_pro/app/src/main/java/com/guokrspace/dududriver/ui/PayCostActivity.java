@@ -251,11 +251,16 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
 
             @Override
             public void onFailure(String error) {
-                // 已支付
-                Toast.makeText(PayCostActivity.this, "订单已支付", Toast.LENGTH_SHORT).show();
-                VoiceUtil.startSpeaking(VoiceCommand.ORDER_PAID);
-                CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
-                finish();
+                if(error.contains("login")){
+                    // 账户问题
+                    Toast.makeText(PayCostActivity.this, "正在连接服务器, 请稍后尝试..", Toast.LENGTH_SHORT).show();
+                } else {
+                    // 已支付
+                    Toast.makeText(PayCostActivity.this, "订单已支付", Toast.LENGTH_SHORT).show();
+                    VoiceUtil.startSpeaking(VoiceCommand.ORDER_PAID);
+                    CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+                    finish();
+                }
             }
 
             @Override

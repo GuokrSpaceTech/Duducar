@@ -9,6 +9,9 @@ import android.util.Log;
 import android.view.View;
 
 import com.guokrspace.dududriver.R;
+import com.guokrspace.dududriver.common.Constants;
+import com.guokrspace.dududriver.ui.MainActivity;
+import com.guokrspace.dududriver.util.CommonUtil;
 import com.tencent.mm.sdk.constants.ConstantsAPI;
 import com.tencent.mm.sdk.modelbase.BaseReq;
 import com.tencent.mm.sdk.modelbase.BaseResp;
@@ -64,7 +67,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 		Log.e(TAG, "onPayFinish, errorStr = " + resp.errStr + "errCode = " + resp.errCode);
 
 		if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
-			int code = resp.errCode;
+			final int code = resp.errCode;
 			String msg = "";
 			switch (code) {
 				case 0:
@@ -99,6 +102,11 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 				@Override
 				public void onClick(View v) {
 					dialog.dismiss();
+					if (code == 0) { // 支付成功进入主界面
+						Intent intent = new Intent(WXPayEntryActivity.this, MainActivity.class);
+						CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+						startActivity(intent);
+					}
 					WXPayEntryActivity.this.finish();
 				}
 			});

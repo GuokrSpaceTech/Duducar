@@ -119,7 +119,7 @@ public class NewsActivity extends AppCompatActivity implements Handler.Callback{
 
     public List<News> getNews() {
         List<News> newsList = new ArrayList<>();
-        News news = new News(1, "嘟嘟大平台 打车送妹纸", "2015-12-18", "", "奶萨撒娇哦i恐怕吃亏的搜谱但是反馈颇多打什么饭啥都没了吗神马弗兰克妈蛋", "");
+        News news = new News(1, "嘟嘟迎元旦 打车送妹纸", "2015-12-24", "", "史上最大力度促销, 打车送妹子, 元旦不孤单", "");
         newsList.add(news);
         return newsList;
     }

@@ -217,7 +217,14 @@ public class DuduService extends Service {
             @Override
             public void onSuccess(String messageBody) {
                 Log.e("Mainactivity", "confirm order handler");
-                CommonUtil.setCurOrderItem(FastJsonTools.getObject(messageBody, OrderItem.class));
+                OrderItem orderItem = FastJsonTools.getObject(messageBody, OrderItem.class);
+                if(CommonUtil.getCurOrderItem() != null){
+                    if(CommonUtil.getCurOrderItem().getOrder().getId().equals(orderItem.getOrder().getId())){
+                        //同一个单
+                        return;
+                    }
+                }
+                CommonUtil.setCurOrderItem(orderItem);
 //                Log.e("Daddy ", messageBody + "  " + orderItem.getCMD() + " " + orderItem.getOrder().getDestination_lat() + "::" + orderItem.getOrder().getDestination_lng());
                 //向主界面发送广播
                 sendBroadCast(Constants.SERVICE_ACTION_NEW_ORDER);
@@ -311,8 +318,9 @@ public class DuduService extends Service {
                     currTimeOut = 0;
                 }
                 preTime = System.currentTimeMillis();
-                if(currTimeOut > 5){//5次心跳超时, 默认断开连接 ,尝试重连
+                if(currTimeOut > 3){//5次心跳超时, 默认断开连接 ,尝试重连
                     reConnectServer();
+                    currTimeOut = 0;
                 }
                 Log.e("daddy heart beat", "time out " + currTimeOut);
 //                if(SocketClient.getInstance().getSocket().)
@@ -340,6 +348,9 @@ public class DuduService extends Service {
                 conctTask = new connectTask(); //Connect to server
                 conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
+        } else {
+            conctTask = new connectTask(); //Connect to server
+            conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
         pullOrder();
     }

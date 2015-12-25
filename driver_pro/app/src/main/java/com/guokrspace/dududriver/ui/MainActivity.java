@@ -69,7 +69,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     @Bind(R.id.pattern_btn)
     Button btnPattern;
     @OnClick(R.id.pattern_btn) public void changePattern(){
-        //   voice guide on/off
+        //  TODO voice guide on/off
     }
     private Context context;
 
@@ -90,6 +90,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     private boolean isListeneing = false;
     private boolean isOverButtonVisiable = false;
     private boolean isInvoke = false;
+    private boolean isInvoke2 = false;
     private long lastOrderTime;
 
     private Handler mHandler;
@@ -185,13 +186,17 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 //            pullOrder();
 //        }
         pullBaseInfo();
+        // 后台掉起的操作
+        if(isInvoke){
+            isInvoke2 = true;
+            mHandler.sendEmptyMessageDelayed(NEW_ORDER_ARRIVE, 5 * 100);
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         isVisiable = false;
-//        CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
         unregisterReceiver(receiver);
         mHandler.removeMessages(HANDLE_LOGIN_FAILURE);
     }
@@ -522,10 +527,11 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 }
                 break;
             case NEW_ORDER_ARRIVE:
-                if(!isInvoke && System.currentTimeMillis() - lastOrderTime < 6 * 1000){ // 连续的订单
+                if(!isInvoke2 && System.currentTimeMillis() - lastOrderTime < 6 * 1000){ // 连续的订单
                     break;
                 }
                 isInvoke = false;
+                isInvoke2 = false;
                 if(System.currentTimeMillis() - lastOrderTime > 10 * 1000){
                     if(CommonUtil.getCurrentStatus() == Constants.STATUS_DEAL){
                         //一直处于状态2
@@ -551,19 +557,21 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                     dialog.setCancelable(true);
                     VoiceUtil.startSpeaking(VoiceCommand.NEW_ORDER_ARRIVE);
                     if(isVisiable){
+                        Log.e("daddy invoke", "isvisiable");
                         if(!dialog.isVisible()) {
+                            Log.e("daddy invoke", "dialog not isvisiable");
                             dialog.show(getSupportFragmentManager(), "mainorderdialog");
                             CommonUtil.changeCurStatus(Constants.STATUS_DEAL);
                         }
-                    } else { //处于其他页面或
+                    } else if(!isBackground(getApplicationContext())){ //处于其他页面或
+                        Log.e("daddy invoke", "other page");
                         CommonUtil.setCurOrderItem(orderItem);
                         Intent intent = new Intent();
                         intent.setAction(Constants.ACTION_NEW_ORDER);
                         sendBroadcast(intent);
-                    }
-                    if(CommonUtil.getCurrentStatus() != Constants.STATUS_DEAL){ // 应用在后台
+                    } else if(CommonUtil.getCurrentStatus() != Constants.STATUS_DEAL && isBackground(context)){ // 应用在后台
                         moveToFront();
-                        mHandler.sendEmptyMessage(NEW_ORDER_ARRIVE);
+                        Log.e("daddy invoke", "invoke background");
                     }
                     CommonUtil.addTodayAllWork();
                     //选择界面不听单
@@ -619,6 +627,21 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         return false;
     }
 
+    protected static boolean isBackground(Context context) {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
+        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+            if (appProcess.processName.equals(context.getPackageName())) {
+                if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_BACKGROUND) {
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
     protected void moveToFront() {
         if (Build.VERSION.SDK_INT >= 11) { // honeycomb
             final ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
@@ -633,7 +656,6 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 if (recentTasks.get(i).baseActivity.toShortString().indexOf("com.guokrspace.dududriver") > -1) {
                     activityManager.moveTaskToFront(recentTasks.get(i).id, ActivityManager.MOVE_TASK_WITH_HOME);
                     isInvoke = true;
-
                     mHandler.sendEmptyMessage(ADJUST_STATUS);
                     Log.e("daddy invoke", CommonUtil.getCurrentStatus()+" status");
                 }
