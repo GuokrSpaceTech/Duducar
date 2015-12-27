@@ -67,16 +67,7 @@ public class DuduService extends Service {
         //开始请求定位
         mLocClient.start();
         mLocClient.requestLocation();
-        final Looper looper = Looper.myLooper();
-        heartBeatTimer = new Timer();
-        heartBeatTask = new TimerTask() {
-            @Override
-            public void run() {
-                sendHeartBeat(looper);
-            }
-        };
-        //,发送心跳包 5s一次
-        heartBeatTimer.schedule(heartBeatTask, 1000, 5000);
+
 
         //停止服务广播接收器
         mStopReceiver = new StopServiceReceiver();
@@ -112,6 +103,25 @@ public class DuduService extends Service {
             conctTask = new connectTask(); //Connect to server
             conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
+
+        final Looper looper = Looper.myLooper();
+        if(heartBeatTimer != null){
+            heartBeatTimer.cancel();
+        }
+        if(heartBeatTask != null){
+            heartBeatTask.cancel();
+        }
+        heartBeatTimer = new Timer();
+        heartBeatTask = new TimerTask() {
+            @Override
+            public void run() {
+                sendHeartBeat(looper);
+            }
+        };
+        //发送心跳包 5s一次
+        Log.e("daddy service", "start heart beat" );
+        heartBeatTimer.schedule(heartBeatTask, 1000, 5 * 1000);
+
         pullOrder();
         return START_STICKY;
     }
@@ -205,9 +215,6 @@ public class DuduService extends Service {
             CommonUtil.setCurAddressDescription(location.getLocationDescribe());
             CommonUtil.setCurTime(System.currentTimeMillis());
             CommonUtil.setCurSpeed(curLocaData.speed+"");
-
-
-
         }
     }
 
@@ -247,6 +254,7 @@ public class DuduService extends Service {
     private void sendHeartBeat(Looper looper) {
         if(!isRunningApp(getApplicationContext())){
             // 程序完全退出
+            Log.e("daddy best", "service stop self");
             stopSelf();
             return;
         }
@@ -449,7 +457,7 @@ public class DuduService extends Service {
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> list = am.getRunningTasks(100);
         for (ActivityManager.RunningTaskInfo info : list) {
-            if (info.topActivity.getPackageName().equals(Constants.PACKAGE_NAME) && info.baseActivity.getPackageName().equals(Constants.PACKAGE_NAME)) {
+            if (info.baseActivity.getPackageName().equals(Constants.PACKAGE_NAME)) {
                 isAppRunning = true;
                 // find it, break
                 break;

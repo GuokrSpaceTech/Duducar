@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author Prashant Adesara, Kai Yang
@@ -29,7 +30,7 @@ public class SocketClient {
 
     private static SocketClient s_socketClient;
     private String serverMessage;
-    private int messageid;
+    private AtomicInteger messageid = new AtomicInteger();
     private int blockMessage = 0;
     /**
      * Specify the Server Ip Address here. Whereas our Socket Server is started.
@@ -61,7 +62,7 @@ public class SocketClient {
     {
 //        mMessageListener = listener;
         s_socketClient = this;
-        messageid = 0;
+        messageid.getAndSet(0);
     }
 
 
@@ -69,7 +70,7 @@ public class SocketClient {
      * Sends the message entered by client to the server
      * @param message text entered by client
      */
-    public int sendMessage(final JSONObject message, final ResponseHandler handler, final int timeout){
+    public synchronized int sendMessage(final JSONObject message, final ResponseHandler handler, final int timeout){
         int ret = -1; //Default is error
         Log.e("daddy", "message" + message.toString());
 //        Log.e("daddy", out.toString());
@@ -85,33 +86,36 @@ public class SocketClient {
                 Log.e("DADDY " , mRun + "d");
                 //Start a timer
                 blockMessage = 0;
-                final Runnable timerRunnable = new Runnable() {
-                    int counter=0;
-                    @Override
-                    public void run() {
-                        counter ++;
-                        if(counter < timeout) {
-                            handler.postRunnableDelay(this, 1000); //1s interval
-                        } else {
-                            handler.stopRunnable(this);
-                            Message msg = handler.obtainMessage(ResponseHandler.TIMEOUT_MESSAGE,message.toString());
-                            handler.sendMessage(msg);
-                        }
-                    }
-                };
-                handler.postRunnable(timerRunnable);
 
-                //Enqueue
-                MessageDispatcher messageDispatcher = new MessageDispatcher(messageid, message, timerRunnable, handler);
-                messageDispatchQueue.put(messageid, messageDispatcher);
             } else { //发送失败
-                if(++blockMessage > 6){ //多次连续发送失败, 阻塞重连
-
+                if (++blockMessage > 4) { //多次连续发送失败, 阻塞重连
+                    SocketClient.getInstance().run();
+                    blockMessage = 0;
                 }
             }
-            ret = messageid;
 
-            messageid++;
+            final Runnable timerRunnable = new Runnable() {
+                int counter=0;
+                @Override
+                public void run() {
+                    counter ++;
+                    if(counter < timeout) {
+                        handler.postRunnableDelay(this, 1000); //1s interval
+                    } else {
+                        handler.stopRunnable(this);
+                        Message msg = handler.obtainMessage(ResponseHandler.TIMEOUT_MESSAGE,message.toString());
+                        handler.sendMessage(msg);
+                    }
+                }
+            };
+            handler.postRunnable(timerRunnable);
+
+            //Enqueue
+            MessageDispatcher messageDispatcher = new MessageDispatcher(messageid.get(), message, timerRunnable, handler);
+            messageDispatchQueue.put(messageid.get(), messageDispatcher);
+
+            ret = messageid.get();
+            messageid.getAndIncrement();
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -195,22 +199,26 @@ public class SocketClient {
                     }
                     serverMessage = null;
                 }
+                if(mRun){ // 正在执行 ,socket失败
+                    SocketClient.getInstance().run();
+                }
             }
             catch (Exception e)
             {
                 Log.e("TCP SI Error", "SI: Error", e);
                 e.printStackTrace();
+//                SocketClient.getInstance().run();
             }
             finally
             {
                 //the socket must be closed. It is not possible to reconnect to this socket
                 // after it is closed, which means a new socket instance has to be created.
                 socket.close();
-                SocketClient.getInstance().run();
             }
 
         } catch (Exception e) {
             Log.e("TCP SI Error", "SI: Error", e);
+//            SocketClient.getInstance().run();
         }
     }
 

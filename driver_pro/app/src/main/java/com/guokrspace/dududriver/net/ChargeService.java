@@ -15,7 +15,6 @@ import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
-import com.guokrspace.dududriver.ui.PickUpPassengerActivity;
 import com.guokrspace.dududriver.util.CommonUtil;
 
 import java.math.BigDecimal;
@@ -26,14 +25,16 @@ public class ChargeService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Intent notificationIntent = new Intent(this, PickUpPassengerActivity.class);
+        Intent notificationIntent = new Intent();
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
         Notification noti = new Notification.Builder(this)
                 .setContentTitle("嘟嘟提醒")
                 .setContentText("请合理安排线路,感谢您提供的优质服务")
                 .setSmallIcon(R.drawable.caricon)
                 .setContentIntent(pendingIntent)
+                .setOnlyAlertOnce(true)
                 .build();
+
         startForeground(12346, noti);
 
         return Service.START_STICKY;

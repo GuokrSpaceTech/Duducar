@@ -11,7 +11,6 @@ import android.graphics.Shader;
 import android.graphics.SweepGradient;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -178,6 +177,10 @@ public class ListenProgressView extends View{
         canvas.drawCircle(size / 2, size / 2, bRadius, translucentPaint);
         if (isListening) {
             int sc = canvas.save();
+            if(matrix == null){
+                mHandler.post(runnable);
+                return;
+            }
             canvas.concat(matrix);
             canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
             canvas.drawCircle(size / 2, size / 2, bRadius, scannerPaint);
