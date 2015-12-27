@@ -54,7 +54,7 @@ public class ComplainActivity extends BaseActivity implements Handler.Callback{
     @OnClick(R.id.call_button)
     public void callCustomService() {
         //拨打客服电话
-        Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "13975194188"));
+        Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "4006887312"));
         startActivity(callIntent);
     }
 

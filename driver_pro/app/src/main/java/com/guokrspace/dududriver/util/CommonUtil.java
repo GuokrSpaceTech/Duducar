@@ -357,4 +357,16 @@ public class CommonUtil {
         }
     }
 
+
+    /*
+     * 格式化为小数点后只有一位小数
+     * @param dec
+     * @return
+     */
+    public static String formatDecimal(String dec) {
+        if (TextUtils.isEmpty(dec)) return "";
+        Double d = Double.parseDouble(dec);
+        return String.format("%.1f", d);
+    }
+
 }

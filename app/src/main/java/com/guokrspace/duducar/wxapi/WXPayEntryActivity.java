@@ -109,7 +109,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 							final MaterialDialog dialog = new MaterialDialog(WXPayEntryActivity.this);
 							dialog.setMessage(trade_result);
 							dialog.setTitle("支付详情");
-							dialog.setPositiveButton("OK", new View.OnClickListener() {
+							dialog.setPositiveButton("确认", new View.OnClickListener() {
 								@Override
 								public void onClick(View v) {
 									if (tradeResult.status == 1) {

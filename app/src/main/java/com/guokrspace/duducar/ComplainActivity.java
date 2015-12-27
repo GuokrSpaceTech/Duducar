@@ -153,7 +153,7 @@ public class ComplainActivity extends AppCompatActivity implements View.OnClickL
         switch (v.getId()) {
             case R.id.call_button:
                 //拨打客服电话
-                Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "13975194188"));
+                Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "4006887312"));
                 startActivity(callIntent);
                 break;
             case R.id.bad_manner_btn:

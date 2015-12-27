@@ -3,6 +3,8 @@ package com.guokrspace.duducar.database;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.text.TextUtils;
+import android.util.Log;
 
 import com.guokrspace.duducar.communication.message.OrderDetail;
 
@@ -75,6 +77,17 @@ public class CommonUtil {
         ConnectivityManager cm = (ConnectivityManager) context
                 .getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo();
+    }
+
+    /*
+     * 格式化为小数点后只有一位小数
+     * @param dec
+     * @return
+     */
+    public static String formatDecimal(String dec) {
+        if (TextUtils.isEmpty(dec)) return "";
+        Double d = Double.parseDouble(dec);
+        return String.format("%.1f",d);
     }
 
 }
