@@ -90,17 +90,7 @@ public class ComplainActivity extends BaseActivity implements Handler.Callback{
     private MainOrderDialog dialog;
     private Button[] complainBtns;
 
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-
-                default:
-                    break;
-            }
-
-        }
-    };
+    private Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

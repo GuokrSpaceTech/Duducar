@@ -404,7 +404,9 @@ public class SocketClient {
         int ret = -1;
         JSONObject baseInfo = new JSONObject();
         try {
+
             baseInfo.put("cmd", "baseinfo");
+//            baseInfo.put("cmd", MessageTag.getInstance().Command(MessageTag.HISTORY_ORDERS));
             baseInfo.put("role", "1");
             ret = sendMessage(baseInfo, handler, 5);
         } catch (JSONException e) {

@@ -1,7 +1,7 @@
 package com.guokrspace.dududriver.ui;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,6 +15,9 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.guokrspace.dududriver.R;
+import com.guokrspace.dududriver.common.Constants;
+import com.guokrspace.dududriver.common.NewOrderReceiver;
+import com.guokrspace.dududriver.util.CommonUtil;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -33,22 +36,34 @@ public class FeedBackActivity extends AppCompatActivity {
     private ProgressBar mProgressBar;
     private Button publishButton;
 
+    private NewOrderReceiver receiver;
+    private MainOrderDialog dialog;
+
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1:
                     mProgressBar.setVisibility(View.INVISIBLE);
-                    final MaterialDialog dialog = new MaterialDialog(context);
-                    dialog.setMessage("提交成功");
-                    dialog.setCanceledOnTouchOutside(true);
-                    dialog.setPositiveButton("OK", new View.OnClickListener() {
+                    final MaterialDialog confirmDialog = new MaterialDialog(context);
+                    confirmDialog.setMessage("提交成功");
+                    confirmDialog.setCanceledOnTouchOutside(true);
+                    confirmDialog.setPositiveButton("OK", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             FeedBackActivity.this.finish();
                         }
                     });
-                    dialog.show();
+                    confirmDialog.show();
+                    break;
+                case Constants.MESSAGE_NEW_ORDER:
+                    if(CommonUtil.getCurOrderItem() == null){
+                        return;
+                    }
+                    if(dialog == null || !dialog.isVisible()){
+                        dialog = new MainOrderDialog(context, CommonUtil.getCurOrderItem());
+                        dialog.show(getSupportFragmentManager(), "mainorderdialog");
+                    }
                     break;
                 default:
                     break;
@@ -89,6 +104,7 @@ public class FeedBackActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        registerBroadcastReceiver();
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
 
@@ -100,6 +116,22 @@ public class FeedBackActivity extends AppCompatActivity {
 
                        },
                 1000);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
+
+    //监听service传来的消息
+    private void registerBroadcastReceiver(){
+        receiver = new NewOrderReceiver(mHandler);
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constants.ACTION_NEW_ORDER);
+        filter.setPriority(1000);
+        registerReceiver(receiver, filter);
     }
 
     /*

@@ -2,6 +2,7 @@ package com.guokrspace.dududriver.ui;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,6 +24,7 @@ import com.gc.materialdesign.views.ButtonFlat;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.adapter.BillListAdapter;
 import com.guokrspace.dududriver.common.Constants;
+import com.guokrspace.dududriver.common.NewOrderReceiver;
 import com.guokrspace.dududriver.database.BillRecord;
 import com.guokrspace.dududriver.model.BillItem;
 import com.guokrspace.dududriver.model.GetBalanceResponse;
@@ -140,6 +142,11 @@ public class BalanceActivity extends BaseActivity implements Handler.Callback{
     private boolean hasMore = true;
     private boolean hasLoadLocalRecord = false;
 
+
+    private NewOrderReceiver receiver;
+    private MainOrderDialog dialog;
+
+
     private Handler mHandler = new Handler(Looper.getMainLooper(), this);
     private Runnable autoRefreshRunnable = new Runnable() {
         @Override
@@ -147,6 +154,22 @@ public class BalanceActivity extends BaseActivity implements Handler.Callback{
             setRefreshing(mRefreshLayout, true, true);
         }
     };
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
+
+    //监听service传来的消息
+    private void registerBroadcastReceiver(){
+        receiver = new NewOrderReceiver(mHandler);
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constants.ACTION_NEW_ORDER);
+        filter.setPriority(1000);
+        registerReceiver(receiver, filter);
+    }
 
     //刷新事件监听
     private SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
@@ -518,6 +541,7 @@ public class BalanceActivity extends BaseActivity implements Handler.Callback{
     @Override
     protected void onResume() {
         super.onResume();
+        registerBroadcastReceiver();
         //进入页面自动刷新
         mHandler.postDelayed(autoRefreshRunnable, 200);
     }
@@ -538,7 +562,15 @@ public class BalanceActivity extends BaseActivity implements Handler.Callback{
             case HANLDE_LOADMORE_OVER:
                 mScrollView.getMoreComplete();
                 break;
-
+            case Constants.MESSAGE_NEW_ORDER:
+                if(CommonUtil.getCurOrderItem() == null){
+                    return false;
+                }
+                if(dialog == null || !dialog.isVisible()){
+                    dialog = new MainOrderDialog(context, CommonUtil.getCurOrderItem());
+                    dialog.show(getSupportFragmentManager(), "mainorderdialog");
+                }
+                break;
             default:
                 break;
         }
