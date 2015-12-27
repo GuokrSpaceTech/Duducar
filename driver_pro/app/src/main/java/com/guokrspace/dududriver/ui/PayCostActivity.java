@@ -274,7 +274,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
     private void weixinPay() {
         //1、 通过socket获取到订单号，cmd: order_end
         if (tripOverOrderDetail != null) {
-            body = tripOverOrderDetail.getOrder().getStart() + "到" + tripOverOrderDetail.getOrder().getDestination() + "，共" + mileage + "公里";
+            body = tripOverOrderDetail.getOrder().getDestination() + "，行程" + CommonUtil.formatDecimal(mileage + "") + "公里";
 //            tradeNo = tripOverOrderDetail.getOrder().getId();
             // TODO:这里应为sumprice
             totalFee = price+"";

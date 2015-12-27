@@ -380,7 +380,8 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
     private void weixinPay() {
         //1、 通过socket获取到订单号，cmd: order_end
         if (tripOverOrderDetail != null) {
-            body = tripOverOrderDetail.getStart() + "到" + tripOverOrderDetail.getDestination() + "，共" + tripOverOrderDetail.getMileage() + "公里";
+//            body = tripOverOrderDetail.getStart() + "到" + tripOverOrderDetail.getDestination() + "，共" + tripOverOrderDetail.getMileage() + "公里";
+            body = tripOverOrderDetail.getDestination() + "，行程" + CommonUtil.formatDecimal(tripOverOrderDetail.getMileage()) + "公里";
             tradeNo = tripOverOrderDetail.getOrderNum();
             SharedPreferencesUtils.setParam(mContext, SharedPreferencesUtils.OUT_TRADE_NO, tradeNo);
             // TODO:这里应为sumprice
@@ -430,7 +431,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
                 //将sid保存
                 SharedPreferencesUtils.setParam(mContext, SharedPreferencesUtils.COMFIRM_TRADE_RESULT_SID, unifiedorderResp.sid);
 
-//                Log.e("TAG", unifiedorderResp.toString());
+                Log.e("TAG", unifiedorderResp.toString());
                 req.appId = WePayUtil.APP_ID;
                 req.partnerId = WePayUtil.MCH_ID;
                 req.prepayId = unifiedorderResp.prepayid;
