@@ -22,203 +22,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d7e7038b-5395-4a19-b059-ad2307aa981b" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/classes/release/com/viewpagerindicator/CirclePageIndicator.class" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/classes/release/com/viewpagerindicator/CirclePageIndicator.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/classes/release/com/viewpagerindicator/R.class" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/classes/release/com/viewpagerindicator/R.class" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../.idea/libraries/appcompat_v7_23_1_0.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../.idea/libraries/circleimageview_1_3_0.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../.idea/libraries/support_v4_23_1_0.xml" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gradle/2.4/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/../.gradle/2.4/taskArtifacts/cache.properties.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/cache.properties.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/bundles/release/classes.jar" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/bundles/release/classes.jar" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gradle/2.4/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/../.gradle/2.4/taskArtifacts/fileHashes.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileHashes.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gradle/2.4/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/../.gradle/2.4/taskArtifacts/fileSnapshots.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/fileSnapshots.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../build/intermediates/gradle_project_sync_data.bin" afterPath="$PROJECT_DIR$/../build/intermediates/gradle_project_sync_data.bin" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/gradle_project_sync_data.bin" afterPath="$PROJECT_DIR$/build/intermediates/gradle_project_sync_data.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/outputs/aar/indicator_library-release.aar" afterPath="$PROJECT_DIR$/indicator_library/build/outputs/aar/indicator_library-release.aar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gradle/2.4/taskArtifacts/outputFileStates.bin" afterPath="$PROJECT_DIR$/../.gradle/2.4/taskArtifacts/outputFileStates.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.gradle/2.4/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/../.gradle/2.4/taskArtifacts/taskArtifacts.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.4/taskArtifacts/taskArtifacts.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../app/src/main/java/com/guokrspace/duducar/database/CommonUtil.java" afterPath="$PROJECT_DIR$/../app/src/main/java/com/guokrspace/duducar/database/CommonUtil.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/util/CommonUtil.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/util/CommonUtil.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../app/src/main/java/com/guokrspace/duducar/ComplainActivity.java" afterPath="$PROJECT_DIR$/../app/src/main/java/com/guokrspace/duducar/ComplainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/ComplainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/ComplainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../dependancies/DaoDBGenerator/DaoDBGenerator.iml" afterPath="$PROJECT_DIR$/../dependancies/DaoDBGenerator/DaoDBGenerator.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DaoDBGenerator/DaoDBGenerator.iml" afterPath="$PROJECT_DIR$/DaoDBGenerator/DaoDBGenerator.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MaterialDesign/MaterialDesign.iml" afterPath="$PROJECT_DIR$/MaterialDesign/MaterialDesign.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../app/src/main/java/com/guokrspace/duducar/PayCostActivity.java" afterPath="$PROJECT_DIR$/../app/src/main/java/com/guokrspace/duducar/PayCostActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/PayCostActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/PayCostActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ToggleButtonLib/ToggleButtonLib.iml" afterPath="$PROJECT_DIR$/ToggleButtonLib/ToggleButtonLib.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../app/src/main/java/com/guokrspace/duducar/wxapi/WXPayEntryActivity.java" afterPath="$PROJECT_DIR$/../app/src/main/java/com/guokrspace/duducar/wxapi/WXPayEntryActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_action_bar_title_item.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_action_bar_title_item.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_action_bar_up_container.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_action_bar_up_container.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_action_bar_view_list_nav_layout.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_action_bar_view_list_nav_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_action_menu_item_layout.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_action_menu_item_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_action_menu_layout.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_action_menu_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_action_mode_bar.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_action_mode_bar.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_action_mode_close_item_material.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_action_mode_close_item_material.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_activity_chooser_view.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_activity_chooser_view.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_activity_chooser_view_list_item.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_activity_chooser_view_list_item.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/color/abc_background_cache_hint_selector_material_dark.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/color/abc_background_cache_hint_selector_material_dark.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/color/abc_background_cache_hint_selector_material_light.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/color/abc_background_cache_hint_selector_material_light.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_btn_check_material.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_btn_check_material.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_btn_default_mtrl_shape.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_btn_default_mtrl_shape.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_btn_radio_material.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_btn_radio_material.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_cab_background_internal_bg.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_cab_background_internal_bg.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_cab_background_top_material.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_cab_background_top_material.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_edit_text_material.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_edit_text_material.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_expanded_menu_layout.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_expanded_menu_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/anim/abc_fade_in.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/anim/abc_fade_in.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/anim/abc_fade_out.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/anim/abc_fade_out.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/anim/abc_grow_fade_in_from_bottom.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/anim/abc_grow_fade_in_from_bottom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_item_background_holo_dark.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_item_background_holo_dark.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_item_background_holo_light.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_item_background_holo_light.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_list_menu_item_checkbox.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_list_menu_item_checkbox.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_list_menu_item_icon.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_list_menu_item_icon.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_list_menu_item_layout.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_list_menu_item_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_list_menu_item_radio.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_list_menu_item_radio.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_list_selector_background_transition_holo_dark.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_list_selector_background_transition_holo_dark.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_list_selector_background_transition_holo_light.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_list_selector_background_transition_holo_light.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_list_selector_holo_dark.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_list_selector_holo_dark.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_list_selector_holo_light.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_list_selector_holo_light.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_popup_menu_item_layout.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_popup_menu_item_layout.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/color/abc_primary_text_disable_only_material_dark.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/color/abc_primary_text_disable_only_material_dark.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/color/abc_primary_text_disable_only_material_light.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/color/abc_primary_text_disable_only_material_light.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/color/abc_primary_text_material_dark.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/color/abc_primary_text_material_dark.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/color/abc_primary_text_material_light.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/color/abc_primary_text_material_light.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_ratingbar_full_material.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_ratingbar_full_material.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_screen_content_include.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_screen_content_include.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout-v11/abc_screen_content_include.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout-v11/abc_screen_content_include.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_screen_simple.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_screen_simple.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_screen_simple_overlay_action_mode.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_screen_simple_overlay_action_mode.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_screen_toolbar.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_screen_toolbar.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_search_dropdown_item_icons_2line.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_search_dropdown_item_icons_2line.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/color/abc_search_url_text.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/color/abc_search_url_text.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_search_view.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_search_view.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/color/abc_secondary_text_material_dark.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/color/abc_secondary_text_material_dark.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/color/abc_secondary_text_material_light.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/color/abc_secondary_text_material_light.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/anim/abc_shrink_fade_out_from_bottom.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/anim/abc_shrink_fade_out_from_bottom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_simple_dropdown_hint.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/abc_simple_dropdown_hint.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/anim/abc_slide_in_bottom.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/anim/abc_slide_in_bottom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/anim/abc_slide_in_top.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/anim/abc_slide_in_top.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/anim/abc_slide_out_bottom.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/anim/abc_slide_out_bottom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/anim/abc_slide_out_top.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/anim/abc_slide_out_top.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_spinner_textfield_background_material.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_spinner_textfield_background_material.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_switch_thumb_material.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_switch_thumb_material.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_tab_indicator_material.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_tab_indicator_material.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_textfield_search_material.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/abc_textfield_search_material.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../app/app.iml" afterPath="$PROJECT_DIR$/../app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.idea/libraries/appcompat_v7_23_1_0.xml" afterPath="$PROJECT_DIR$/../.idea/libraries/appcompat_v7_23_1_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml" afterPath="$PROJECT_DIR$/build/intermediates/dex-cache/cache.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.idea/libraries/circleimageview_1_3_0.xml" afterPath="$PROJECT_DIR$/../.idea/libraries/circleimageview_1_3_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/indicator_library.iml" afterPath="$PROJECT_DIR$/indicator_library/indicator_library.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../library_slidingmenu/library_slidingmenu.iml" afterPath="$PROJECT_DIR$/../library_slidingmenu/library_slidingmenu.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../local.properties" afterPath="$PROJECT_DIR$/../local.properties" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/local.properties" afterPath="$PROJECT_DIR$/local.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/incremental/mergeAssets/release/merger.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/incremental/mergeAssets/release/merger.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/incremental/mergeResourcesrelease/merger.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/incremental/mergeResourcesrelease/merger.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/incremental/packageResourcesrelease/merger.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/incremental/packageResourcesrelease/merger.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.idea/misc.xml" afterPath="$PROJECT_DIR$/../.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../app/signing.properties" afterPath="$PROJECT_DIR$/../app/signing.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/signing.properties" afterPath="$PROJECT_DIR$/app/signing.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/support_simple_spinner_dropdown_item.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/layout/support_simple_spinner_dropdown_item.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../.idea/libraries/support_v4_23_1_0.xml" afterPath="$PROJECT_DIR$/../.idea/libraries/support_v4_23_1_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-af/values-af.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-af/values-af.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-am/values-am.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-am/values-am.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-ar/values-ar.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-ar/values-ar.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-bg/values-bg.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-bg/values-bg.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-bn-rBD/values-bn-rBD.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-bn-rBD/values-bn-rBD.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-ca/values-ca.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-ca/values-ca.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-cs/values-cs.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-cs/values-cs.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-da/values-da.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-da/values-da.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-de/values-de.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-de/values-de.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-el/values-el.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-el/values-el.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-en-rGB/values-en-rGB.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-en-rGB/values-en-rGB.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-en-rIN/values-en-rIN.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-en-rIN/values-en-rIN.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-es-rUS/values-es-rUS.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-es-rUS/values-es-rUS.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-es/values-es.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-es/values-es.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-et-rEE/values-et-rEE.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-et-rEE/values-et-rEE.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-eu-rES/values-eu-rES.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-eu-rES/values-eu-rES.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-fa/values-fa.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-fa/values-fa.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-fi/values-fi.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-fi/values-fi.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-fr-rCA/values-fr-rCA.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-fr-rCA/values-fr-rCA.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-fr/values-fr.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-fr/values-fr.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-gl-rES/values-gl-rES.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-gl-rES/values-gl-rES.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-hdpi-v4/values-hdpi-v4.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-hdpi-v4/values-hdpi-v4.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-hi/values-hi.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-hi/values-hi.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-hr/values-hr.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-hr/values-hr.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-hu/values-hu.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-hu/values-hu.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-hy-rAM/values-hy-rAM.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-hy-rAM/values-hy-rAM.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-in/values-in.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-in/values-in.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-is-rIS/values-is-rIS.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-is-rIS/values-is-rIS.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-it/values-it.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-it/values-it.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-iw/values-iw.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-iw/values-iw.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-ja/values-ja.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-ja/values-ja.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-ka-rGE/values-ka-rGE.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-ka-rGE/values-ka-rGE.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-kk-rKZ/values-kk-rKZ.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-kk-rKZ/values-kk-rKZ.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-km-rKH/values-km-rKH.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-km-rKH/values-km-rKH.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-kn-rIN/values-kn-rIN.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-kn-rIN/values-kn-rIN.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-ko/values-ko.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-ko/values-ko.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-ky-rKG/values-ky-rKG.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-ky-rKG/values-ky-rKG.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-land/values-land.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-land/values-land.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-large-v4/values-large-v4.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-large-v4/values-large-v4.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-lo-rLA/values-lo-rLA.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-lo-rLA/values-lo-rLA.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-lt/values-lt.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-lt/values-lt.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-lv/values-lv.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-lv/values-lv.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-mk-rMK/values-mk-rMK.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-mk-rMK/values-mk-rMK.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-ml-rIN/values-ml-rIN.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-ml-rIN/values-ml-rIN.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-mn-rMN/values-mn-rMN.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-mn-rMN/values-mn-rMN.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-mr-rIN/values-mr-rIN.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-mr-rIN/values-mr-rIN.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-ms-rMY/values-ms-rMY.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-ms-rMY/values-ms-rMY.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-my-rMM/values-my-rMM.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-my-rMM/values-my-rMM.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-nb/values-nb.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-nb/values-nb.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-ne-rNP/values-ne-rNP.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-ne-rNP/values-ne-rNP.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-nl/values-nl.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-nl/values-nl.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-pl/values-pl.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-pl/values-pl.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-port/values-port.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-port/values-port.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-pt-rPT/values-pt-rPT.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-pt-rPT/values-pt-rPT.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-pt/values-pt.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-pt/values-pt.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-ro/values-ro.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-ro/values-ro.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-ru/values-ru.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-ru/values-ru.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-si-rLK/values-si-rLK.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-si-rLK/values-si-rLK.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-sk/values-sk.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-sk/values-sk.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-sl/values-sl.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-sl/values-sl.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-sr/values-sr.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-sr/values-sr.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-sv/values-sv.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-sv/values-sv.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-sw/values-sw.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-sw/values-sw.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-sw600dp-v13/values-sw600dp-v13.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-sw600dp-v13/values-sw600dp-v13.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-ta-rIN/values-ta-rIN.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-ta-rIN/values-ta-rIN.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-te-rIN/values-te-rIN.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-te-rIN/values-te-rIN.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-th/values-th.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-th/values-th.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-tl/values-tl.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-tl/values-tl.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-tr/values-tr.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-tr/values-tr.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-uk/values-uk.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-uk/values-uk.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-ur-rPK/values-ur-rPK.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-ur-rPK/values-ur-rPK.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-uz-rUZ/values-uz-rUZ.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-uz-rUZ/values-uz-rUZ.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-v11/values-v11.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-v11/values-v11.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-v14/values-v14.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-v14/values-v14.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-v17/values-v17.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-v17/values-v17.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-v21/values-v21.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-v21/values-v21.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-vi/values-vi.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-vi/values-vi.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-w360dp-v13/values-w360dp-v13.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-w360dp-v13/values-w360dp-v13.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-w480dp-v13/values-w480dp-v13.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-w480dp-v13/values-w480dp-v13.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-w500dp-v13/values-w500dp-v13.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-w500dp-v13/values-w500dp-v13.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-w600dp-v13/values-w600dp-v13.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-w600dp-v13/values-w600dp-v13.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-w720dp-v13/values-w720dp-v13.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-w720dp-v13/values-w720dp-v13.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-xlarge-land-v4/values-xlarge-land-v4.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-xlarge-land-v4/values-xlarge-land-v4.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-xlarge-v4/values-xlarge-v4.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-xlarge-v4/values-xlarge-v4.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-zh-rCN/values-zh-rCN.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-zh-rCN/values-zh-rCN.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-zh-rHK/values-zh-rHK.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-zh-rHK/values-zh-rHK.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-zh-rTW/values-zh-rTW.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-zh-rTW/values-zh-rTW.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-zu/values-zu.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values-zu/values-zu.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/bundles/release/res/values/values.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/bundles/release/res/values/values.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values/values.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/values/values.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/bundles/release/res/color/vpi__dark_theme.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/bundles/release/res/color/vpi__dark_theme.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/color/vpi__dark_theme.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/color/vpi__dark_theme.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/bundles/release/res/color/vpi__light_theme.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/bundles/release/res/color/vpi__light_theme.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/color/vpi__light_theme.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/color/vpi__light_theme.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/bundles/release/res/drawable/vpi__tab_indicator.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/bundles/release/res/drawable/vpi__tab_indicator.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/vpi__tab_indicator.xml" afterPath="$PROJECT_DIR$/indicator_library/build/intermediates/res/merged/release/drawable/vpi__tab_indicator.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="driver_pro.iws" />
@@ -250,13 +63,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="204" column="20" selection-start-line="204" selection-start-column="20" selection-end-line="204" selection-end-column="20" />
+            <state vertical-scroll-proportion="0.42671853">
+              <caret line="758" column="68" selection-start-line="758" selection-start-column="68" selection-end-line="758" selection-end-column="68" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <marker date="1451197638000" expanded="true" signature="46:2320" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -266,25 +79,20 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/view/ListenProgressView.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="196" column="0" selection-start-line="196" selection-start-column="0" selection-end-line="196" selection-end-column="0" />
+              <caret line="199" column="0" selection-start-line="199" selection-start-column="0" selection-end-line="199" selection-end-column="0" />
               <folding>
-                <element signature="imports" expanded="false" />
-                <element signature="e#2319#2320#0" expanded="false" />
-                <element signature="e#2354#2355#0" expanded="false" />
-                <element signature="e#2424#2425#0" expanded="false" />
-                <element signature="e#2463#2464#0" expanded="false" />
-                <element signature="e#3805#3806#0" expanded="false" />
-                <element signature="e#3839#3840#0" expanded="false" />
+                <marker date="1451197638000" expanded="false" signature="48:432" placeholder="..." />
+                <marker date="1451197638000" expanded="true" signature="5608:6206" placeholder="{...}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SocketClient.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SocketClient.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/net/SocketClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.79850745">
-              <caret line="520" column="13" selection-start-line="520" selection-start-column="13" selection-end-line="520" selection-end-column="13" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="442" column="13" selection-start-line="442" selection-start-column="13" selection-end-line="442" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -4246,7 +4054,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/HistoryOrderDetailActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/net/ChargeService.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_graborder.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/net/SocketClient.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/adapter/OptionGridAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/WebViewActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/BalanceActivity.java" />
@@ -4274,6 +4081,7 @@
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/PayCostActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/util/CommonUtil.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/ComplainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/net/SocketClient.java" />
       </list>
     </option>
   </component>
@@ -4317,8 +4125,16 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
+      <pane id="AndroidView">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="driver_pro" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -5019,17 +4835,9 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
       <pane id="Scratches" />
-      <pane id="AndroidView">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="driver_pro" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -5042,7 +4850,7 @@
     <property name="OverrideImplement.overriding.sorted" value="false" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="810EBL22LSWF" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_AVD" value="1111" />
-    <property name="SearchEverywhereHistoryKey" value="Ba&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/BalanceActivity.java&#10;B&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/BalanceActivity.java&#10;Main&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MainActivity.java&#10;Complai&#9;PSI&#9;JAVA://com.guokrspace.dududriver.ui.ComplainActivity&#10;Common&#9;PSI&#9;JAVA://com.guokrspace.dududriver.util.CommonUtil&#10;PayCo&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/PayCostActivity.java&#10;Socket&#9;PSI&#9;JAVA://com.guokrspace.dududriver.net.SocketClient&#10;ANdroid&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/AndroidManifest.xml&#10;P&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/PayCostActivity.java&#10;dudu&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/net/DuduService.java&#10;Dudu&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/net/DuduService.java&#10;App&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/util/AppExitUtil.java&#10;Setting&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/SettingActivity.java&#10;Dud&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/net/DuduService.java&#10;Android&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/AndroidManifest.xml&#10;Payco&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/PayCostActivity.java&#10;WeiXi&#9;PSI&#9;JAVA://com.guokrspace.dududriver.ui.PayCostActivity#weixinPay&#10;bui&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/build.gradle&#10;Settin&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/SettingActivity.java&#10;Conta&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/common/Constants.java&#10;His&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/HistoryOrderDetailActivity.java&#10;Androi&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/AndroidManifest.xml&#10;Mo&#9;PSI&#9;JAVA://com.guokrspace.dududriver.ui.MoreFragment&#10;Sha&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/util/SharedPreferencesUtils.java&#10;Consta&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/common/Constants.java&#10;colo&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/values/colors.xml&#10;Order&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/HistoryOrderDetailActivity.java&#10;An&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/AndroidManifest.xml&#10;settin&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/layout/activity_setting.xml&#10;Hyman&#9;PSI&#9;JAVA://com.guokrspace.dududriver.view.HymanScrollView&#10;Hy&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/view/HymanScrollView.java&#10;mESS&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/net/message/MessageTag.java&#10;Me&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MeFragment.java&#10;Mwe&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/view/HymanScrollView.java&#10;Bal&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/BalanceActivity.java&#10;Bill&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/model/BillItem.java&#10;Comm&#9;PSI&#9;JAVA://com.guokrspace.dududriver.util.CommonUtil&#10;Socke&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/net/SocketClient.java&#10;Messag&#9;PSI&#9;JAVA://com.guokrspace.dududriver.net.message.MessageTag&#10;Hi&#9;PSI&#9;JAVA://com.guokrspace.dududriver.ui.HistoryOrderDetailActivity&#10;duduA&#9;PSI&#9;JAVA://com.guokrspace.dududriver.DuduDriverApplication&#10;M&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MainActivity.java&#10;MeF&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MeFragment.java&#10;balance&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/layout/activity_balance.xml&#10;attrs&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/indicator_library/res/values/vpi__attrs.xml&#10;com&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/layout/activity_complain.xml&#10;complain&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/layout/activity_complain.xml&#10;Com&#9;PSI&#9;JAVA://com.guokrspace.dududriver.ui.ComplainActivity&#10;style&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/values/styles.xml&#10;me&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/layout/fragment_me.xml" />
+    <property name="SearchEverywhereHistoryKey" value="Main&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MainActivity.java&#10;Ba&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/BalanceActivity.java&#10;B&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/BalanceActivity.java&#10;Complai&#9;PSI&#9;JAVA://com.guokrspace.dududriver.ui.ComplainActivity&#10;Common&#9;PSI&#9;JAVA://com.guokrspace.dududriver.util.CommonUtil&#10;PayCo&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/PayCostActivity.java&#10;Socket&#9;PSI&#9;JAVA://com.guokrspace.dududriver.net.SocketClient&#10;ANdroid&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/AndroidManifest.xml&#10;P&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/PayCostActivity.java&#10;dudu&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/net/DuduService.java&#10;Dudu&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/net/DuduService.java&#10;App&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/util/AppExitUtil.java&#10;Setting&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/SettingActivity.java&#10;Dud&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/net/DuduService.java&#10;Android&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/AndroidManifest.xml&#10;Payco&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/PayCostActivity.java&#10;WeiXi&#9;PSI&#9;JAVA://com.guokrspace.dududriver.ui.PayCostActivity#weixinPay&#10;bui&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/build.gradle&#10;Settin&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/SettingActivity.java&#10;Conta&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/common/Constants.java&#10;His&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/HistoryOrderDetailActivity.java&#10;Androi&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/AndroidManifest.xml&#10;Mo&#9;PSI&#9;JAVA://com.guokrspace.dududriver.ui.MoreFragment&#10;Sha&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/util/SharedPreferencesUtils.java&#10;Consta&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/common/Constants.java&#10;colo&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/values/colors.xml&#10;Order&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/HistoryOrderDetailActivity.java&#10;An&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/AndroidManifest.xml&#10;settin&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/layout/activity_setting.xml&#10;Hyman&#9;PSI&#9;JAVA://com.guokrspace.dududriver.view.HymanScrollView&#10;Hy&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/view/HymanScrollView.java&#10;mESS&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/net/message/MessageTag.java&#10;Me&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MeFragment.java&#10;Mwe&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/view/HymanScrollView.java&#10;Bal&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/BalanceActivity.java&#10;Bill&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/model/BillItem.java&#10;Comm&#9;PSI&#9;JAVA://com.guokrspace.dududriver.util.CommonUtil&#10;Socke&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/net/SocketClient.java&#10;Messag&#9;PSI&#9;JAVA://com.guokrspace.dududriver.net.message.MessageTag&#10;Hi&#9;PSI&#9;JAVA://com.guokrspace.dududriver.ui.HistoryOrderDetailActivity&#10;duduA&#9;PSI&#9;JAVA://com.guokrspace.dududriver.DuduDriverApplication&#10;M&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MainActivity.java&#10;MeF&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/java/com/guokrspace/dududriver/ui/MeFragment.java&#10;balance&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/layout/activity_balance.xml&#10;attrs&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/indicator_library/res/values/vpi__attrs.xml&#10;com&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/layout/activity_complain.xml&#10;complain&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/layout/activity_complain.xml&#10;Com&#9;PSI&#9;JAVA://com.guokrspace.dududriver.ui.ComplainActivity&#10;style&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/values/styles.xml&#10;me&#9;FILE&#9;file:///Users/hyman/Duducar/driver_pro/app/src/main/res/layout/fragment_me.xml" />
     <property name="dynamic.classpath" value="false" />
     <property name="FullScreen" value="true" />
     <property name="last_opened_file_path" value="$USER_HOME$/Documents/AndroidDevelopment/guokrspace" />
@@ -5312,12 +5120,11 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32793018" sideWeight="0.49137932" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32907802" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3297414" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.46009976" sideWeight="0.48635057" order="14" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.46009976" sideWeight="0.48635057" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.4503464" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.4503464" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Dynamic Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -5327,6 +5134,7 @@
       <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32907802" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Dynamic Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -5363,7 +5171,7 @@
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3297414" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.46009976" sideWeight="0.48635057" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.4503464" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.4503464" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32917705" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="true" content_ui="tabs" />
@@ -5382,7 +5190,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="5" />
+      <option name="time" value="6" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -5419,7 +5227,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="41" column="60" selection-start-line="41" selection-start-column="60" selection-end-line="41" selection-end-column="60" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -5460,212 +5267,193 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_alipay.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_complain.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_feedback.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_navi.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_post_order.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-10.125">
           <caret line="18" column="40" selection-start-line="18" selection-start-column="40" selection-end-line="18" selection-end-column="40" />
-          <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_search.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_setting.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="117" column="0" selection-start-line="117" selection-start-column="0" selection-end-line="124" selection-end-column="63" />
-          <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/confirm_balance_dialog.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/de_ui_dialog_loading.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_main.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_me.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-17.25">
           <caret line="114" column="8" selection-start-line="114" selection-start-column="8" selection-end-line="114" selection-end-column="8" />
-          <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_more.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_order.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_searchlocation.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/record_list_item.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_ordermap.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-          <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/fragment_graborder.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="20" column="34" selection-start-line="20" selection-start-column="34" selection-end-line="20" selection-end-column="34" />
-          <folding />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_pickuppassenger.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_pickuppassenger.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="68" column="39" selection-start-line="68" selection-start-column="39" selection-end-line="68" selection-end-column="39" />
-          <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/Library/Android/sdk/sources/android-23/android/os/HandlerThread.java">
@@ -5676,14 +5464,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/dialog_main_order.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="68" column="44" selection-start-line="68" selection-start-column="44" selection-end-line="68" selection-end-column="44" />
-          <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/MainOrderDialog.java">
@@ -5711,25 +5498,23 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/ativity_confirmbill.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.48849797">
           <caret line="394" column="47" selection-start-line="394" selection-start-column="33" selection-end-line="394" selection-end-column="47" />
-          <folding />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_orderdetail.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_orderdetail.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="217" column="47" selection-start-line="217" selection-start-column="29" selection-end-line="217" selection-end-column="47" />
-          <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/OrderDetailActivity.java">
@@ -5744,7 +5529,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="31" column="8" selection-start-line="31" selection-start-column="8" selection-end-line="31" selection-end-column="8" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -5752,7 +5536,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="65" column="13" selection-start-line="65" selection-start-column="13" selection-end-line="65" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -5772,15 +5555,10 @@
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/view/ListenProgressView.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="196" column="0" selection-start-line="196" selection-start-column="0" selection-end-line="196" selection-end-column="0" />
+          <caret line="199" column="0" selection-start-line="199" selection-start-column="0" selection-end-line="199" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#2319#2320#0" expanded="false" />
-            <element signature="e#2354#2355#0" expanded="false" />
-            <element signature="e#2424#2425#0" expanded="false" />
-            <element signature="e#2463#2464#0" expanded="false" />
-            <element signature="e#3805#3806#0" expanded="false" />
-            <element signature="e#3839#3840#0" expanded="false" />
+            <marker date="1451197638000" expanded="false" signature="48:432" placeholder="..." />
+            <marker date="1451197638000" expanded="true" signature="5608:6206" placeholder="{...}" />
           </folding>
         </state>
       </provider>
@@ -5805,10 +5583,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.78109455">
           <caret line="203" column="48" selection-start-line="203" selection-start-column="48" selection-end-line="203" selection-end-column="48" />
-          <folding>
-            <element signature="e#6829#6830#0" expanded="true" />
-            <element signature="e#6885#6886#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -5836,16 +5610,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/MainActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="204" column="20" selection-start-line="204" selection-start-column="20" selection-end-line="204" selection-end-column="20" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/net/message/MessageTag.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -5864,9 +5628,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/net/SocketClient.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.79850745">
-          <caret line="520" column="13" selection-start-line="520" selection-start-column="13" selection-end-line="520" selection-end-column="13" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="442" column="13" selection-start-line="442" selection-start-column="13" selection-end-line="442" selection-end-column="13" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/guokrspace/dududriver/ui/MainActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.42671853">
+          <caret line="758" column="68" selection-start-line="758" selection-start-column="68" selection-end-line="758" selection-end-column="68" />
+          <folding>
+            <marker date="1451197638000" expanded="true" signature="46:2320" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>
