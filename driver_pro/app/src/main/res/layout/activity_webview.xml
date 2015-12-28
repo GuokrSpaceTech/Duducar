@@ -22,14 +22,14 @@
             android:textStyle="bold" />
     </android.support.v7.widget.Toolbar>
     <ProgressBar
-        style="?android:attr/progressBarStyleHorizontal"
+        style="@style/custom_progressBar"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="5dp"
         android:id="@+id/progressBar"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:indeterminate="false"
-        android:visibility="gone"/>
+        android:visibility="invisible"/>
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="0dp"

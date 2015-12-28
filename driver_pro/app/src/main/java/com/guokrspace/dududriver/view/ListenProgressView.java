@@ -36,7 +36,7 @@ public class ListenProgressView extends View{
 
     private float sRadius = 0;//内圆半径即为外圆半径减去diff的值
 
-    private float diff = DisplayUtil.dp2px(6);
+    private float diff = DisplayUtil.dp2px(3);
 
     private int size;//自定义view的宽、高
 

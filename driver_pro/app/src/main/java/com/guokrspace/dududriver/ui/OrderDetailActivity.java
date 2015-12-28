@@ -243,8 +243,11 @@ public class OrderDetailActivity extends BaseActivity{
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (KeyEvent.KEYCODE_BACK == event.getKeyCode()
-                || KeyEvent.KEYCODE_MENU == event.getKeyCode()) {
+        if (KeyEvent.KEYCODE_BACK == event.getKeyCode()) {
+            moveTaskToBack(true);
+            return true;
+        }
+        if (KeyEvent.KEYCODE_MENU == event.getKeyCode()) {
             return false;
         }
         return true;

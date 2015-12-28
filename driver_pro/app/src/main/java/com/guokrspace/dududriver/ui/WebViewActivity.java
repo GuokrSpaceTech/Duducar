@@ -140,9 +140,9 @@ public class WebViewActivity extends AppCompatActivity implements Handler.Callba
                 /*//Activity的进度范围是0~10000之间，而webview进度是0~100，所以需要乘以100
                 AboutActivity.this.setProgress(newProgress * 100);*/
                 if (newProgress == 100) {
-                    mProgressBar.setVisibility(View.GONE);
+                    mProgressBar.setVisibility(View.INVISIBLE);
                 } else {
-                    if (mProgressBar.getVisibility() == View.GONE) {
+                    if (mProgressBar.getVisibility() == View.INVISIBLE) {
                         mProgressBar.setVisibility(View.VISIBLE);
                     }
                     mProgressBar.setProgress(newProgress);
