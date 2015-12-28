@@ -351,9 +351,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             public void onSuccess(String messageBody) {
                 Log.e("daddy_baseinfo", "base info " + messageBody);
                 baseInfo = (BaseInfo) new Gson().fromJson(messageBody, BaseInfo.class);
-//                Log.e("daddy", "base" + baseInfo.getWebivew().getAbout().length());
                 mHandler.sendEmptyMessage(HANDLE_BASEINFO);
-                Log.e("daddy", "send message");
             }
 
             @Override
