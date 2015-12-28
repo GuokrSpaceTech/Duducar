@@ -48,6 +48,7 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.PolylineOptions;
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.utils.DistanceUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.guokrspace.duducar.adapter.CancelReasonAdapter;
@@ -95,6 +96,7 @@ public class PostOrderActivity extends AppCompatActivity {
     DriverInformationView driverView;
     boolean isFirstLoc = true;// 是否首次定位
     boolean isStartFollow = false;
+    boolean isInCar = true;
     ProgressBar mProgressBar;
     Toolbar mToolbar;
     Button cancelButton;
@@ -209,23 +211,17 @@ public class PostOrderActivity extends AppCompatActivity {
                     orderStatusString = "已经上车";
                     getSupportActionBar().setTitle(orderStatusString);
 
-                    //修正上车地点
-                    if (order_start != null) {
-//                        Double lat = order_start.getOrder().getStart_lat();
-//                        Double lng = order_start.getOrder().getStart_lng();
-//                        LatLng ll = new LatLng(lat, lng);
-//
-//                        mBaiduMap.clear();
-//                        mBaiduMap.addOverlay(new MarkerOptions()
-//                                .position(ll)
-//                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_current_position_pin)));
-//                        mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLng(ll));
-                    }
+
                     mCurrentChargeView.setVisibility(View.VISIBLE);
                     mBaiduMap.clear();
                     mCurrentMarker = BitmapDescriptorFactory.fromResource(R.drawable.caricon);
                     mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(MyLocationConfiguration.LocationMode.FOLLOWING, true, mCurrentMarker));
-
+                    LatLng carLatLng = new LatLng(Double.parseDouble(order_start.getOrder().getStart_lat()), Double.parseDouble(order_start.getOrder().getStart_lng()));
+                    LatLng pasLatLng = new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng());
+                    double dis = DistanceUtil.getDistance(carLatLng, pasLatLng);
+                    if(dis > 1 * 1000){ // 距离超过1公里 ,判断乘客不在车上
+                        isInCar = false;
+                    }
                     isStartFollow = true;
                     break;
                 case MessageTag.MESSAGE_UPDATE_CHARGE:
@@ -236,6 +232,11 @@ public class PostOrderActivity extends AppCompatActivity {
                                 "行驶里程: " + charge_detail.getCurrent_mile() + "公里\n" +
                                 "低速行驶: " + charge_detail.getLow_speed_time() + "分钟"
                         );
+                    }
+                    if(!isInCar){
+                        currentLocation = new LatLng(Double.parseDouble(charge_detail.getCurrent_lat()), Double.parseDouble(charge_detail.getCurrent_lng()));
+                        //更新界面
+                        mHandler.sendEmptyMessage(MessageTag.MESSAGE_UPDATE_TRACK);
                     }
                     break;
                 case MessageTag.MESSAGE_ORDER_COMPLETED:
@@ -658,19 +659,19 @@ public class PostOrderActivity extends AppCompatActivity {
         SocketClient.getInstance().registerServerMessageHandler(MessageTag.DRIVER_POSITION, new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
-                if(!isWaitForCar){
+                if (!isWaitForCar) {
                     return;
                 }
                 try {
                     JSONObject position = new JSONObject(messageBody);
                     double lat = Double.parseDouble(position.getString("lat"));
                     double lng = Double.parseDouble(position.getString("lng"));
-                    if(marker != null){
+                    if (marker != null) {
                         marker.remove();
                     }
                     markerOptions = new MarkerOptions().icon(mCurrentMarker).position(new LatLng(lat, lng));
                     marker = (Marker) mBaiduMap.addOverlay(markerOptions);
-                } catch (JSONException e){
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
@@ -709,6 +710,9 @@ public class PostOrderActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String messageBody) {
                 charge_detail = FastJsonTools.getObject(messageBody, ChargeDetail.class);
+                if (!isInCar) {
+
+                }
                 mHandler.sendEmptyMessage(MessageTag.MESSAGE_UPDATE_CHARGE);
             }
 
@@ -935,7 +939,7 @@ public class PostOrderActivity extends AppCompatActivity {
                     .direction(location.getDirection()).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
 
-            if (locData != null) {
+            if (locData != null && isInCar) {
                 mBaiduMap.setMyLocationData(locData);
                 currentLocation = new LatLng(locData.latitude, locData.longitude);
             }
@@ -973,7 +977,7 @@ public class PostOrderActivity extends AppCompatActivity {
                     public void onTimeout() {
                     }
                 });
-            } else if (isStartFollow && currentLocation != null){
+            } else if (isInCar && isStartFollow && currentLocation != null){
                 //更新界面
                 mHandler.sendEmptyMessage(MessageTag.MESSAGE_UPDATE_TRACK);
             }

@@ -455,11 +455,12 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                 case Constants.SERVICE_ACTION_UPDATE_CHARGE:
                     // 更新收费消息,
                     mHandler.sendEmptyMessage(UPDATE_CHARGE);
+                    abortBroadcast();
                     break;
                 case Constants.SERVICE_ACTION_ORDER_NOT_EXISTS:
                     //订单不存在
                     mHandler.sendEmptyMessage(ORDER_NOT_EXIST);
-//                    abortBroadcast();
+                    abortBroadcast();
                     break;
                 case Constants.ACTION_ORDER_CANCEL:
                     //订单取消
@@ -895,59 +896,58 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                         isNavigationOk = false;
                     }
 
-                }, mTTSCallback);
+                }, null/*mTTSCallback*/);
     }
     //导航语音回调
-    private BNOuterTTSPlayerCallback mTTSCallback = new BNOuterTTSPlayerCallback() {
-
-        @Override
-        public void stopTTS() {
-            // TODO Auto-generated method stub
-        }
-
-        @Override
-        public void resumeTTS() {
-            // TODO Auto-generated method stub
-        }
-
-        @Override
-        public void releaseTTSPlayer() {
-            // TODO Auto-generated method stub
-        }
-
-        @Override
-        public int playTTSText(String speech, int bPreempt) {
-            // TODO Auto-generated method stub
-            Log.e("daddy", "tts adxt " + speech);
-            return 0;
-        }
-
-        @Override
-        public void phoneHangUp() {
-            // TODO Auto-generated method stub
-        }
-
-        @Override
-        public void phoneCalling() {
-            // TODO Auto-generated method stub
-        }
-
-        @Override
-        public void pauseTTS() {
-            // TODO Auto-generated method stub
-        }
-
-        @Override
-        public void initTTSPlayer() {
-            // TODO Auto-generated method stub
-        }
-
-        @Override
-        public int getTTSState() {
-            // TODO Auto-generated method stub
-            return 0;
-        }
-    };
+//    private BNOuterTTSPlayerCallback mTTSCallback = new BNOuterTTSPlayerCallback() {
+//
+//        @Override
+//        public void stopTTS() {
+//            // TODO Auto-generated method stub
+//        }
+//
+//        @Override
+//        public void resumeTTS() {
+//            // TODO Auto-generated method stub
+//        }
+//
+//        @Override
+//        public void releaseTTSPlayer() {
+//            // TODO Auto-generated method stub
+//        }
+//
+//        @Override
+//        public int playTTSText(String speech, int bPreempt) {
+//            // TODO Auto-generated method stub
+//            return 0;
+//        }
+//
+//        @Override
+//        public void phoneHangUp() {
+//            // TODO Auto-generated method stub
+//        }
+//
+//        @Override
+//        public void phoneCalling() {
+//            // TODO Auto-generated method stub
+//        }
+//
+//        @Override
+//        public void pauseTTS() {
+//            // TODO Auto-generated method stub
+//        }
+//
+//        @Override
+//        public void initTTSPlayer() {
+//            // TODO Auto-generated method stub
+//        }
+//
+//        @Override
+//        public int getTTSState() {
+//            // TODO Auto-generated method stub
+//            return 0;
+//        }
+//    };
 
     private boolean initDirs() {
         mSDCardPath = getSdcardDir();
@@ -1102,4 +1102,8 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         }
     }
 
+    @Override
+    public void setRequestedOrientation(int requestedOrientation) {
+        return;
+    }
 }

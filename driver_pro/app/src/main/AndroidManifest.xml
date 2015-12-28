@@ -66,7 +66,8 @@
         <activity
             android:name=".ui.LoginActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="" />
+            android:label=""
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.MainActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -82,15 +83,18 @@
         <activity
             android:name=".ui.SearchActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="@string/title_activity_search" />
+            android:label="@string/title_activity_search"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.SettingActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="设置" />
+            android:label="设置"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.PostOrderActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="订单" />
+            android:label="订单"
+            android:screenOrientation="portrait" />
 
         <service
             android:name="com.baidu.location.f"
@@ -100,54 +104,66 @@
         <activity
             android:name=".ui.PickUpPassengerActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="去接乘客" />
+            android:label="去接乘客"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.ConfirmBillActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="确认账单" />
+            android:label="确认账单"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.OrderDetailActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="订单详情" />
+            android:label="订单详情"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.OrderMapActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="订单地图" />
+            android:label="订单地图"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.PayCostActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="账单支付"
-            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             android:exported="true"
-            android:launchMode="singleTop">
+            android:label="账单支付"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:scheme="wxa58560e44b455eca" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ui.HistoryOrderDetailActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="历史订单详情" />
+            android:label="历史订单详情"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.ComplainActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="投诉" />
+            android:label="投诉"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.BalanceActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="余额" />
+            android:label="余额"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.FeedBackActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="意见反馈"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".ui.WebViewActivity"
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
-            android:label="关于嘟嘟" />
+            android:label="关于嘟嘟"
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".net.DuduService"
@@ -160,22 +176,24 @@
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
             android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <!-- alipay sdk end -->
 
-        <!-- wepay init begin-->
+
+        <!-- wepay init begin -->
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-        <receiver android:name=".wxapi.AppRegister">
+        <receiver android:name=".wxapi.AppRegister" >
             <intent-filter>
                 <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
             </intent-filter>
         </receiver>
         <!-- wepay init end -->
+
 
         <!-- Update Activitys Start -->
         <activity
@@ -201,7 +219,9 @@
             android:process=":DownloadingService" >
         </service>
 
-        <activity android:name=".ui.NaviActivity" >
+        <activity
+            android:name=".ui.NaviActivity"
+            android:screenOrientation="portrait" >
         </activity>
 
         <service
@@ -209,6 +229,7 @@
             android:enabled="true"
             android:exported="true" >
         </service>
+
     </application>
 
 </manifest>

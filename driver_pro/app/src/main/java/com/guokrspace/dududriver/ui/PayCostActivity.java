@@ -486,4 +486,9 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
                 break;
         }
     }
+
+    @Override
+    public void setRequestedOrientation(int requestedOrientation) {
+        return;
+    }
 }

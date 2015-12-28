@@ -237,4 +237,9 @@ public class HistoryOrderDetailActivity extends BaseActivity implements Handler.
         order.setStart_lng(orderRecord.getStart_lng());
         return order;
     }
+
+    @Override
+    public void setRequestedOrientation(int requestedOrientation) {
+        return;
+    }
 }

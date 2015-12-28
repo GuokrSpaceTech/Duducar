@@ -267,7 +267,7 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
                 CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
                 Intent cancel = new Intent();
                 cancel.setAction(Constants.ACTION_ORDER_CANCEL);
-                this.getActivity().sendBroadcast(cancel);
+                this.getActivity().sendOrderedBroadcast(cancel, null);
                 break;
             default:
                 break;

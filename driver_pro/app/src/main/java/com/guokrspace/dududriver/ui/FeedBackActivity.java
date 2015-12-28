@@ -160,4 +160,9 @@ public class FeedBackActivity extends AppCompatActivity {
             }
         }).start();
     }
+
+    @Override
+    public void setRequestedOrientation(int requestedOrientation) {
+        return;
+    }
 }

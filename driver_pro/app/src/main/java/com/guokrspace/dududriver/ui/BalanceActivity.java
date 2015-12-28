@@ -595,4 +595,10 @@ public class BalanceActivity extends BaseActivity implements Handler.Callback{
             }
         }
     }
+
+
+    @Override
+    public void setRequestedOrientation(int requestedOrientation) {
+        return;
+    }
 }

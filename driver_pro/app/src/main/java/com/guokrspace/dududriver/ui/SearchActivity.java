@@ -302,4 +302,9 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
             return mDataset.size();
         }
     }
+
+    @Override
+    public void setRequestedOrientation(int requestedOrientation) {
+        return;
+    }
 }

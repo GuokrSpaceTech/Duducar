@@ -9,6 +9,8 @@ public class ChargeDetail {
     String current_mile;
     String current_charge;
     String low_speed_time;
+    String current_lat;
+    String current_lng;
 
     public String getCmd() {
         return cmd;
@@ -41,4 +43,21 @@ public class ChargeDetail {
     public void setLow_speed_time(String low_speed_time) {
         this.low_speed_time = low_speed_time;
     }
+
+    public String getCurrent_lng() {
+        return current_lng;
+    }
+
+    public void setCurrent_lng(String current_lng) {
+        this.current_lng = current_lng;
+    }
+
+    public String getCurrent_lat() {
+        return current_lat;
+    }
+
+    public void setCurrent_lat(String current_lat) {
+        this.current_lat = current_lat;
+    }
+
 }

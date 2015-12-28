@@ -226,7 +226,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
                 mApplication.mDaoSession.getPersonalInformationDao().deleteAll();
                 Intent _stopServiceIntent = new Intent();
                 _stopServiceIntent.setAction(DuduService.STOP_SERVICE);
-                sendBroadcast(_stopServiceIntent);
+                sendOrderedBroadcast(_stopServiceIntent, null);
                 //退出，跳到主界面
                 startActivity(new Intent(context, MainActivity.class));
                 finish();
@@ -234,5 +234,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             default:
                 break;
         }
+    }
+
+    @Override
+    public void setRequestedOrientation(int requestedOrientation) {
+        return;
     }
 }

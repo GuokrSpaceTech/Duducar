@@ -402,7 +402,7 @@ public class DuduService extends Service {
     private void sendBroadCast(String action){
         Intent intent = new Intent();
         intent.setAction(action);
-        sendBroadcast(intent);
+        sendOrderedBroadcast(intent, null);
     }
 
     /**

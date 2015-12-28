@@ -272,4 +272,9 @@ public class PostOrderActivity extends AppCompatActivity
 //            Log.i("BaiduLocationApiDem", sb.toString());
         }
     }
+
+    @Override
+    public void setRequestedOrientation(int requestedOrientation) {
+        return;
+    }
 }

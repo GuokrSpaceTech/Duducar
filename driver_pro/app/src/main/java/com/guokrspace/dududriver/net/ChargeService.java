@@ -35,7 +35,7 @@ public class ChargeService extends Service {
                 .setOnlyAlertOnce(true)
                 .build();
 
-        startForeground(12346, noti);
+        startForeground(12347, noti);
 
         return Service.START_STICKY;
     }
@@ -113,8 +113,7 @@ public class ChargeService extends Service {
                 secDistance = DistanceUtil.getDistance(new LatLng(preLat, preLng), new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng()));
                 if ((secDistance * 1000 / (System.currentTimeMillis() - CommonUtil.getCurTime())) >= Constants.STRANGEDISTANCE) { //这一次的距离跳转异常
                     //drop it
-                    tmpDistance += secDistance;
-                    preDis = secDistance;
+                    tmpDistance += preDis;
                 } else {
                     tmpDistance += secDistance;
                     preDis = secDistance;
@@ -166,6 +165,6 @@ public class ChargeService extends Service {
     private void sendBroadCast(String action){
         Intent intent = new Intent();
         intent.setAction(action);
-        sendBroadcast(intent);
+        sendOrderedBroadcast(intent, null);
     }
 }
