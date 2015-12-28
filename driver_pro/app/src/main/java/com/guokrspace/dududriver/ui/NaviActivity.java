@@ -118,4 +118,8 @@ public class NaviActivity extends Activity {
         }
     }
 
+    @Override
+    public void setRequestedOrientation(int requestedOrientation) {
+        return;
+    }
 }

@@ -3,6 +3,7 @@ package com.guokrspace.dududriver.ui;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -558,17 +559,16 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                     if(isVisiable){
                         Log.e("daddy invoke", "isvisiable");
                         if(!dialog.isVisible()) {
-                            Log.e("daddy invoke", "dialog not isvisiable");
                             dialog.show(getSupportFragmentManager(), "mainorderdialog");
                             CommonUtil.changeCurStatus(Constants.STATUS_DEAL);
                         }
-                    } else if(!isBackground(getApplicationContext())){ //处于其他页面或
+                    } else if(!isApplicationBroughtToBackground(getApplicationContext())){ //处于其他页面或
                         Log.e("daddy invoke", "other page");
                         CommonUtil.setCurOrderItem(orderItem);
                         Intent intent = new Intent();
                         intent.setAction(Constants.ACTION_NEW_ORDER);
-                        sendBroadcast(intent);
-                    } else if(CommonUtil.getCurrentStatus() != Constants.STATUS_DEAL && isBackground(context)){ // 应用在后台
+                        sendOrderedBroadcast(intent, null);
+                    } else if(CommonUtil.getCurrentStatus() != Constants.STATUS_DEAL){ // 应用在后台
                         moveToFront();
                         Log.e("daddy invoke", "invoke background");
                     }
@@ -622,6 +622,19 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 break;
             default:
                 break;
+        }
+        return false;
+    }
+
+
+    public static boolean isApplicationBroughtToBackground(final Context context) {
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningTaskInfo> tasks = am.getRunningTasks(1);
+        if (!tasks.isEmpty()) {
+            ComponentName topActivity = tasks.get(0).topActivity;
+            if (!topActivity.getPackageName().equals(context.getPackageName())) {
+                return true;
+            }
         }
         return false;
     }
@@ -711,6 +724,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                     } else {
                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     }
+                    abortBroadcast();
                     break;
                 case Constants.SERVICE_ACTION_MESAGE:
                     // 服务器有通知推送,
@@ -780,5 +794,10 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         }
 
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void setRequestedOrientation(int requestedOrientation) {
+        return;
     }
 }

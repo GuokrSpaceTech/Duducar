@@ -28,8 +28,8 @@ import com.baidu.mapapi.search.core.CityInfo;
 import com.baidu.mapapi.search.core.PoiInfo;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
+import com.baidu.mapapi.search.poi.PoiCitySearchOption;
 import com.baidu.mapapi.search.poi.PoiDetailResult;
-import com.baidu.mapapi.search.poi.PoiNearbySearchOption;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
 import com.baidu.mapapi.search.sug.OnGetSuggestionResultListener;
@@ -135,9 +135,8 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
             keyWorldsView.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void afterTextChanged(Editable arg0) {
-                    mPoiSearch.searchNearby(new PoiNearbySearchOption()
-                            .location(mReqLoc)
-                            .radius(50000) //50Km
+                    mPoiSearch.searchInCity(new PoiCitySearchOption()
+                            .city("湖南")
                             .keyword(editSearchKey.getText().toString()));
 //                    mSoftManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     SearchHistory searchHistory = new SearchHistory();
@@ -158,7 +157,8 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
                     /**
                      * 使用建议搜索服务获取建议列表，结果在onSuggestionResult()中更新
                      */
-                    mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).keyword(cs.toString()).city("长沙"));
+
+                    mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).keyword(cs.toString()).city("湖南"));
                 }
             });
         }
@@ -236,7 +236,7 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
                 strInfo += ",";
             }
             strInfo += "找到结果";
-            Toast.makeText(mContext, strInfo, Toast.LENGTH_LONG).show();
+//            Toast.makeText(mContext, strInfo, Toast.LENGTH_LONG).show();
         }
     }
 

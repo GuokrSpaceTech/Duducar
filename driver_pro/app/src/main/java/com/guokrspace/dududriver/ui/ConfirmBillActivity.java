@@ -389,4 +389,9 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
             addPriceText[feeType].setText(addPrice[feeType] + "元");
         }
     }
+
+    @Override
+    public void setRequestedOrientation(int requestedOrientation) {
+        return;
+    }
 }

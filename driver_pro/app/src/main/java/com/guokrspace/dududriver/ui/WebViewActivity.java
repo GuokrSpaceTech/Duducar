@@ -221,4 +221,9 @@ public class WebViewActivity extends AppCompatActivity implements Handler.Callba
         }
         return false;
     }
+
+    @Override
+    public void setRequestedOrientation(int requestedOrientation) {
+        return;
+    }
 }

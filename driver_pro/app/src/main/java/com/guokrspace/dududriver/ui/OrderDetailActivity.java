@@ -193,7 +193,6 @@ public class OrderDetailActivity extends BaseActivity{
             }
         });
 
-
     }
 
     @Override
@@ -251,6 +250,11 @@ public class OrderDetailActivity extends BaseActivity{
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void setRequestedOrientation(int requestedOrientation) {
+        return;
     }
 
     public static final int WAIT_FOR_PASS_PAY = 4;

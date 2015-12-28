@@ -440,4 +440,8 @@ public class LoginActivity extends BaseActivity implements
         }
     }
 
+    @Override
+    public void setRequestedOrientation(int requestedOrientation) {
+        return;
+    }
 }

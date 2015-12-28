@@ -139,4 +139,8 @@ public class BaseActivity extends AppCompatActivity {
         return isNetConnected;
     }
 
+    @Override
+    public void setRequestedOrientation(int requestedOrientation) {
+        return;
+    }
 }

@@ -170,4 +170,9 @@ public class ComplainActivity extends BaseActivity implements Handler.Callback{
         }
         return false;
     }
+
+    @Override
+    public void setRequestedOrientation(int requestedOrientation) {
+        return;
+    }
 }
