@@ -19,7 +19,7 @@ import com.guokrspace.dududriver.R;
 public class HymanScrollView extends ScrollView {
 
     public interface OnGetMoreListener {
-        public void onGetMore();
+        void onGetMore();
     }
 
     private OnGetMoreListener onGetMoreListener;
@@ -54,9 +54,9 @@ public class HymanScrollView extends ScrollView {
     private void init(Context  context) {
         inflater = LayoutInflater.from(context);
 
-        footView = inflater.inflate(R.layout.get_more_footview, this, false);
-        tvFootTitle = (TextView) footView.findViewById(R.id.tv_foot_title);
-        pbFootRefreshing = (ProgressBar) footView.findViewById(R.id.pb_foot_refreshing);
+//        footView = inflater.inflate(R.layout.get_more_footview, this, false);
+//        tvFootTitle = (TextView) footView.findViewById(R.id.tv_foot_title);
+//        pbFootRefreshing = (ProgressBar) footView.findViewById(R.id.pb_foot_refreshing);
 
     }
 
@@ -89,15 +89,15 @@ public class HymanScrollView extends ScrollView {
         this.onGetMoreListener = onGetMoreListener;
         if (contentView == null) {
             contentView = (ViewGroup) getChildAt(0);
-            if (!addFooterFlag) {
-                addFooterFlag = true;
-                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(-1, -2);
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                footView.setLayoutParams(layoutParams);
-                footView.setVisibility(GONE);
-                contentView.addView(footView);
-            }
-
+//            if (!addFooterFlag) {
+//                addFooterFlag = true;
+//                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(-1, -2);
+//                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+//                footView.setLayoutParams(layoutParams);
+//                footView.setVisibility(GONE);
+//                contentView.addView(footView);
+//            }
+//
         }
     }
 
@@ -106,15 +106,15 @@ public class HymanScrollView extends ScrollView {
      */
     public void getMoreComplete() {
         isGetMoreing = false;
-        footView.setVisibility(GONE);
+//        footView.setVisibility(GONE);
     }
 
     private void doOnGetMoreListener() {
         if (contentView != null && contentView.getMeasuredHeight() <= getScrollY() + getHeight()) {
             if (onGetMoreListener != null && !isGetMoreing) {
                 isGetMoreing = true;
-                footView.setVisibility(VISIBLE);
-                tvFootTitle.setText("正在加载...");
+//                footView.setVisibility(VISIBLE);
+//                tvFootTitle.setText("正在加载...");
                 onGetMoreListener.onGetMore();
             }
         }

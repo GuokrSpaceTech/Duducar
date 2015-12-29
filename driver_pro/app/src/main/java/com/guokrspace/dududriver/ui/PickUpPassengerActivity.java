@@ -48,7 +48,6 @@ import com.baidu.mapapi.search.route.RoutePlanSearch;
 import com.baidu.mapapi.search.route.TransitRouteResult;
 import com.baidu.mapapi.search.route.WalkingRouteResult;
 import com.baidu.mapapi.utils.DistanceUtil;
-import com.baidu.navisdk.adapter.BNOuterTTSPlayerCallback;
 import com.baidu.navisdk.adapter.BNRouteGuideManager;
 import com.baidu.navisdk.adapter.BNRoutePlanNode;
 import com.baidu.navisdk.adapter.BaiduNaviManager;
@@ -841,6 +840,8 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         if(isNavigationNow){
             BNRouteGuideManager.getInstance().onDestroy();
         }
+        unregisterReceiver(receiver);
+
         ButterKnife.unbind(this);
     }
 

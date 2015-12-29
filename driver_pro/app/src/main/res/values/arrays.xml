@@ -21,4 +21,12 @@
         <item>@mipmap/guide</item>
         <item>@mipmap/setting</item>
     </array>
+
+    <string-array name="query_item_text">
+        <item>分成</item>
+        <item>成绩查询</item>
+        <item>账单</item>
+    </string-array>
+
+
 </resources>

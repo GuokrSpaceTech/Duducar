@@ -207,7 +207,7 @@ public class PostOrderActivity extends AppCompatActivity {
 
                     break;
                 case MessageTag.MESSAGE_CAR_ARRIVED:
-                    if (cancelDialog != null) cancelDialog.dismiss();
+                    try{if (cancelDialog != null) cancelDialog.dismiss();} catch (Exception e){Log.e("PostOrderActivity", "dismiss canceldialog:" + e.getLocalizedMessage());}
                     cancelButton.setVisibility(View.GONE);
                     orderStatusString = "已经上车";
                     getSupportActionBar().setTitle(orderStatusString);
