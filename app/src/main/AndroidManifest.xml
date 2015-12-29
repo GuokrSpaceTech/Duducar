@@ -56,6 +56,7 @@
         <activity
             android:name=".PreOrderActivity"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:theme="@style/AppBaseTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -64,9 +65,11 @@
         </activity>
         <activity
             android:name=".LoginActivity"
+            android:screenOrientation="portrait"
             android:label=""></activity>
         <activity
             android:name=".SearchActivity"
+            android:screenOrientation="portrait"
             android:label="@string/title_activity_search">
 
         </activity>
@@ -76,11 +79,14 @@
             android:enabled="true"
             android:process=":remote" />
 
-        <activity android:name=".PostOrderActivity"></activity>
-        <activity android:name=".CostEstimateActivity" />
+        <activity android:name=".PostOrderActivity"
+            android:screenOrientation="portrait"></activity>
+        <activity android:name=".CostEstimateActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".PayCostActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -121,37 +127,44 @@
             android:name=".OrderHistoryActivity"
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:label="历史订单" />
         <activity
             android:name=".SettingActivity"
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:label="设置" />
         <activity
             android:name=".PersonalInfoActivity"
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:label="个人信息" />
         <activity
             android:name=".ComplainActivity"
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:label="投诉" />
         <activity
             android:name=".FeedBackActivity"
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
             android:label="帮助与反馈"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustUnspecified" />
         <activity
             android:name=".WebViewActivity"
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:label="关于嘟嘟" />
         <activity
             android:name=".NewsActivity"
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
+            android:screenOrientation="portrait"
             android:label="关于嘟嘟" />
 
 
