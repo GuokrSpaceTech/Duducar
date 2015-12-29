@@ -5,6 +5,7 @@
         jar="/Users/daddyfang/.gradle/caches/modules-2/files-2.1/com.squareup.picasso/picasso/2.5.2/7446d06ec8d4f7ffcc53f1da37c95f200dcb9387/picasso-2.5.2.jar"
         jumboMode="false"
         revision="23.0.1"
+<<<<<<< HEAD
         sha1="7446d06ec8d4f7ffcc53f1da37c95f200dcb9387">
         <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/picasso-2.5.2-07bd94a4a2ad56a157a53ce2d509e57339622080.jar" />
     </item>
@@ -253,5 +254,10 @@
         sha1="d7c2f29c05b35e8c8713be2b81c41cf18f98b64a">
         <dex dex="/Users/daddyfang/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/libammsdk-84ccb498378cb2006845b6dbeeb9aced6ce47d34.jar" />
     </item>
+=======
+        sha1="abf71b0d8ffcb7a87414599085bb6741dc10b9de">
+        <dex dex="/Users/hyman/Duducar/driver_pro/app/build/intermediates/pre-dexed/debug/classes-126997302508e8af4fee96f5bfe593a08900bacf.jar" />
+    </item>
+>>>>>>> 205605f364480e75b436469864bb0bb5fe0508d4
 
 </items>

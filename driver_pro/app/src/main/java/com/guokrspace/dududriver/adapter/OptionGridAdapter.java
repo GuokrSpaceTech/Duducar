@@ -1,5 +1,6 @@
 package com.guokrspace.dududriver.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -16,7 +17,6 @@ import android.widget.TextView;
 
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.MoreOptionType;
-import com.guokrspace.dududriver.ui.LoginActivity;
 import com.guokrspace.dududriver.ui.OrderMapActivity;
 import com.guokrspace.dududriver.ui.SettingActivity;
 import com.guokrspace.dududriver.ui.WebViewActivity;
@@ -128,6 +128,7 @@ public class OptionGridAdapter extends RecyclerView.Adapter<OptionGridAdapter.It
             default:
                 break;
         }
+        ((Activity) context).overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_up);
     }
 
     @Override

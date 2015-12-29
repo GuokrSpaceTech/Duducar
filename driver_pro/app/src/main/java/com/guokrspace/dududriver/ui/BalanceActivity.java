@@ -71,6 +71,8 @@ public class BalanceActivity extends BaseActivity implements Handler.Callback{
     TextView availableTextView;
     EditText inputCash;
     ButtonFlat totalButton;
+    RelativeLayout loadMoreLayout = null;
+    TextView footViewText;
 
     @OnClick(R.id.substitute_pay)
     void doWithdraw() {
@@ -139,7 +141,7 @@ public class BalanceActivity extends BaseActivity implements Handler.Callback{
     private Long currentBillId = Long.MAX_VALUE;
     private boolean isRefreshing = false;
     private boolean isLoading = false;
-    private boolean hasMore = true;
+    private boolean hasMore = false;
     private boolean hasLoadLocalRecord = false;
 
 
@@ -329,8 +331,14 @@ public class BalanceActivity extends BaseActivity implements Handler.Callback{
         //init toolbar
         initToolBar();
 
+        loadMoreLayout = (RelativeLayout) LayoutInflater.from(context).inflate(R.layout.get_more_footview, null, false);
+        footViewText = (TextView) loadMoreLayout.findViewById(R.id.tv_foot_title);
+        footViewText.setText("正在加载...");
+        loadMoreLayout.setVisibility(View.GONE);
+
         mListview.setNoScroll(true);
         mAdapter = new BillListAdapter(context, mDatas);
+        mListview.addFooterView(loadMoreLayout);
         mListview.setAdapter(mAdapter);
 
         mScrollView.setOnGetMoreListener(new HymanScrollView.OnGetMoreListener() {
@@ -339,12 +347,21 @@ public class BalanceActivity extends BaseActivity implements Handler.Callback{
                 if (hasMore) {
                     if (isRefreshing || isLoading) {
                         mScrollView.getMoreComplete();
+                        if (loadMoreLayout != null) {
+                            loadMoreLayout.setVisibility(View.GONE);
+                        }
                         Log.d("hyman_log", "cannot load more");
                     } else {
+                        if (loadMoreLayout != null) {
+                            loadMoreLayout.setVisibility(View.VISIBLE);
+                        }
                         loadMoreData();
                     }
                 } else {
                     mScrollView.getMoreComplete();
+                    if (loadMoreLayout != null) {
+                        loadMoreLayout.setVisibility(View.GONE);
+                    }
                 }
             }
         });
@@ -359,6 +376,7 @@ public class BalanceActivity extends BaseActivity implements Handler.Callback{
         mRefreshLayout.setOnRefreshListener(refreshListener);
 
         initConfirmBalanceDialog();
+
     }
 
     private void initConfirmBalanceDialog() {
@@ -561,6 +579,9 @@ public class BalanceActivity extends BaseActivity implements Handler.Callback{
                 break;
             case HANLDE_LOADMORE_OVER:
                 mScrollView.getMoreComplete();
+                if (loadMoreLayout != null) {
+                    loadMoreLayout.setVisibility(View.GONE);
+                }
                 break;
             case Constants.MESSAGE_NEW_ORDER:
                 if(CommonUtil.getCurOrderItem() == null){

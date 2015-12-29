@@ -78,6 +78,11 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
         getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 
+    @OnClick(R.id.search_rl) void enterSearchPage() {
+        startActivity(new Intent(getActivity(), QueryActivity.class));
+        getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    }
+
     private DuduDriverApplication mApplication;
     private LinearLayoutManager mLayoutManager;
 

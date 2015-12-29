@@ -153,6 +153,11 @@
             android:label="余额"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.QueryActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="查询"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.FeedBackActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="意见反馈"
