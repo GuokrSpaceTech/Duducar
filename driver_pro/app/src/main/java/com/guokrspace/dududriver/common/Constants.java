@@ -41,7 +41,7 @@ public class Constants {
     public static final int MESSAGE_PER_PAGE = 40;
 
     public static final double LOWSPEEDDISTANACE = 333.3; // m/min
-    public static final double STRANGEDISTANCE = 33.3; // m/s
+    public static final double STRANGEDISTANCE = 120.0; // m/s
 
     public static final String PREFERENCE_KEY_DRIVER_NAME = "DRIVER_NAME";
     public static final String PREFERENCE_KEY_DRIVER_AVATAR = "DRIVER_AVATAR";

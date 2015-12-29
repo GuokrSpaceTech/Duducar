@@ -109,17 +109,17 @@ public class ChargeService extends Service {
             @Override
             public void run() {
                 Log.e("daddy", "task is runnin as " + CommonUtil.getCurrentStatus());
-
                 secDistance = DistanceUtil.getDistance(new LatLng(preLat, preLng), new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng()));
-                if ((secDistance * 1000 / (System.currentTimeMillis() - CommonUtil.getCurTime())) >= Constants.STRANGEDISTANCE) { //这一次的距离跳转异常
+//                if ((secDistance * 1000 / (System.currentTimeMillis() - CommonUtil.getCurTime())) >= Constants.STRANGEDISTANCE) { //这一次的距离跳转异常
                     //drop it
+                if(secDistance >= Constants.STRANGEDISTANCE){
                     tmpDistance += preDis;
                 } else {
                     tmpDistance += secDistance;
                     preDis = secDistance;
                 }
 
-                if (CommonUtil.getCurrentStatus() == Constants.STATUS_RUN) {//开车中
+                if (CommonUtil.isCharging) {//开车中
                     if (++times == 12) {//1 min
                         minutes++;
                         if (tmpDistance <= Constants.LOWSPEEDDISTANACE) {//这一分钟内是低速行驶
@@ -135,6 +135,7 @@ public class ChargeService extends Service {
                     preLng = CommonUtil.getCurLng();
                     //TODO:通知界面更新,发送到乘客端
                     CommonUtil.curPrice = CommonUtil.countPrice(CommonUtil.curDistance, CommonUtil.curLowSpeedTime);
+                    CommonUtil.cur5sDistance = secDistance;//5秒的距离
                     sendBroadCast(Constants.SERVICE_ACTION_UPDATE_CHARGE);
                     mHandler.sendEmptyMessage(UPDATE_CHARGE);
                 } else { //非法状态下停止

@@ -244,9 +244,14 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
             case UPDATE_CHARGE:
                 Log.e("daddy", "current charge");
                 double price = CommonUtil.curPrice;
+                double dis = CommonUtil.cur5sDistance;
+                double disA = CommonUtil.curDistance;
                 if(curCharge <= price) {
                     curCharge = new BigDecimal(price).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
-                    btnConfirm.setText(curCharge + "元   到达目的地");
+                    dis = new BigDecimal(dis).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                    disA = new BigDecimal(disA).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+
+                    btnConfirm.setText(dis + "m/5s, 共" + disA +" 米 , " + curCharge + "元   到达目的地");
 //                    SocketClient.getInstance().sendCurrentChargeDetail(curCharge, curDistance/1000, lowSpeedTime, new ResponseHandler(Looper.myLooper()) {
 //                        @Override
 //                        public void onSuccess(String messageBody) {
@@ -268,12 +273,14 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                 break;
             case ORDER_CANCELED://订单取消
                 VoiceUtil.startSpeaking(VoiceCommand.ORDER_CANCEL);
+                CommonUtil.isCharging = false;
                 stopService(chargeService);
                 CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
                 finish();
                 break;
             case ORDER_NOT_EXIST://订单出现异常
                 VoiceUtil.startSpeaking(VoiceCommand.ORDER_STATUS_EXCEPTION);
+                CommonUtil.isCharging = false;
                 stopService(chargeService);
                 finish();
                 break;
@@ -288,10 +295,13 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                     isFirstTrack = false;
                 }
 
-                if(Math.abs(currentLatLng.latitude- CommonUtil.getCurLatLng().latitude) > 0.0005
-                        ||Math.abs(currentLatLng.longitude - CommonUtil.getCurLatLng().longitude) > 0.0005 )
+                if(Math.abs(currentLatLng.latitude- CommonUtil.getCurLatLng().latitude) > 0.001
+                        || Math.abs(currentLatLng.longitude - CommonUtil.getCurLatLng().longitude) > 0.001 ){
                     //异常定位
+                    currentLatLng = CommonUtil.getCurLatLng();
                     break;
+                }
+
                 Log.e("daddy", "start track no exception");
                 drawLine(mBaiduMap, currentLatLng, CommonUtil.getCurLatLng());
                 currentLatLng = CommonUtil.getCurLatLng();
@@ -368,6 +378,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         chargeService = new Intent(PickUpPassengerActivity.this, ChargeService.class);
         CommonUtil.curBaseDistance = baseDistance;
         CommonUtil.curBaseLowTime = baseLowTime;
+        CommonUtil.isCharging = true;
         startService(chargeService);
         Log.e("daddy", "end to charge");
 
@@ -698,6 +709,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                 }
 
                 if(chargeService != null) {
+                    CommonUtil.isCharging = false;
                     stopService(chargeService);
                 }
                 if(isNavigationNow){

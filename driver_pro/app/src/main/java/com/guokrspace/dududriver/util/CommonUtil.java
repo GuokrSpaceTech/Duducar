@@ -163,10 +163,12 @@ public class CommonUtil {
     public static double curBaseDistance;
     public static int curBaseLowTime;
     public static double curPrice;
+    public static double cur5sDistance;
     public static double curDistance;
     public static int curLowSpeedTime;
     public static int curOrderId;
     public static int curOrderStatus;
+    public static boolean isCharging;
 //    public static OrderItem curOrderItem;
 
     public static LatLng getCurLatLng() {

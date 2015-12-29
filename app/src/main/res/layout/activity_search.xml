@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:background="@drawable/white_roundcorner_grey_border_background"
-            android:text="岳麓大道388号"
+            android:hint="输入格式:长沙 湖南大学"
             android:textColor="@android:color/black"
             android:textSize="8pt" />
 

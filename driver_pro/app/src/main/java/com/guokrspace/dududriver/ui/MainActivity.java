@@ -1,11 +1,9 @@
 package com.guokrspace.dududriver.ui;
 
 import android.app.ActivityManager;
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
@@ -87,7 +85,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 
 
     private boolean isOnline = false;
-    private boolean isVisiable = false;
+    private boolean isVisiable = true;
     private boolean isListeneing = false;
     private boolean isOverButtonVisiable = false;
     private boolean isInvoke = false;
@@ -154,6 +152,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.e("daddy vis", "resume to true");
         isVisiable = true;
         /*
          * 用户不在线，就进行登陆
@@ -173,6 +172,10 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 
         registerBroadcastReceiver();
 
+        //TODO : 恢复听单状态
+        if(isListeneing){//正在听单
+            CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+        }
         /*
         * 调整circle状态
         * */
@@ -188,6 +191,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 //            pullOrder();
 //        }
 //        pullBaseInfo();
+
         // 后台掉起的操作
         if(isInvoke){
             isInvoke2 = true;
@@ -198,6 +202,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     @Override
     protected void onPause() {
         super.onPause();
+        Log.e("daddy vis", "pause to false");
         isVisiable = false;
         unregisterReceiver(receiver);
         mHandler.removeMessages(HANDLE_LOGIN_FAILURE);
@@ -210,6 +215,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(Constants.SERVICE_ACTION_RELOGIN);
+        filter.addAction(Constants.ACTION_NEW_ORDER);
         filter.setPriority(1000);
         registerReceiver(receiver, filter);
 
@@ -556,18 +562,12 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                     Log.e("Daddy m", "orderItem" + orderItem.getOrder().getStart() + " " + orderItem.getOrder().getDestination() + " ");
                     dialog.setCancelable(true);
                     VoiceUtil.startSpeaking(VoiceCommand.NEW_ORDER_ARRIVE);
-                    if(isVisiable){
-                        Log.e("daddy invoke", "isvisiable");
-                        if(!dialog.isVisible()) {
-                            dialog.show(getSupportFragmentManager(), "mainorderdialog");
-                            CommonUtil.changeCurStatus(Constants.STATUS_DEAL);
-                        }
-                    } else if(!isApplicationBroughtToBackground(getApplicationContext())){ //处于其他页面或
+                    if(!isApplicationBroughtToBackground(getApplicationContext())){ //处于前台
                         Log.e("daddy invoke", "other page");
                         CommonUtil.setCurOrderItem(orderItem);
                         Intent intent = new Intent();
                         intent.setAction(Constants.ACTION_NEW_ORDER);
-                        sendOrderedBroadcast(intent, null);
+                        sendBroadcast(intent);
                     } else if(CommonUtil.getCurrentStatus() != Constants.STATUS_DEAL){ // 应用在后台
                         moveToFront();
                         Log.e("daddy invoke", "invoke background");
@@ -800,4 +800,40 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     public void setRequestedOrientation(int requestedOrientation) {
         return;
     }
+
+    /**
+     * 监听GPS
+     */
+//    private void initGPS() {
+//        LocationManager locationManager = (LocationManager) this
+//                .getSystemService(Context.LOCATION_SERVICE);
+//        // 判断GPS模块是否开启，如果没有则开启
+//        if (!locationManager
+//                .isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
+//            Toast.makeText(MainActivity.this, "请打开GPS",
+//                    Toast.LENGTH_SHORT).show();
+//            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+//            dialog.setMessage("请打开GPS");
+//            dialog.setPositiveButton("确定",
+//                    new android.content.DialogInterface.OnClickListener() {
+//
+//                        @Override
+//                        public void onClick(DialogInterface arg0, int arg1) {
+//
+//                            // 转到手机设置界面，用户设置GPS
+//                            Intent intent = new Intent(
+//                                    Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+//                            startActivityForResult(intent, 0); // 设置完成后返回到原来的界面
+//
+//                        }
+//                    });
+//            dialog.setNeutralButton("取消", new android.content.DialogInterface.OnClickListener() {
+//
+//                @Override
+//                public void onClick(DialogInterface arg0, int arg1) {
+//                    arg0.dismiss();
+//                }
+//            } );
+//            dialog.show();
+//        }
 }

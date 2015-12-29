@@ -10,6 +10,8 @@ public class Constants {
     public static final String PASSENGER_ROLE = "2";
     public static final int ORDER_PAGE_NUM = 10;
 
+    public static final String citys = "长沙市常德市汨罗市长沙县望城县";
+
     public static final int ORDER_STATUS_INITATION = 1;//创建订单
     public static final int ORDER_STATUS_ACCEPT = 2;//已接单
     public static final int ORDER_STATUS_START = 3;//乘客上车

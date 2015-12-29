@@ -30,13 +30,17 @@ import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.poi.OnGetPoiSearchResultListener;
 import com.baidu.mapapi.search.poi.PoiCitySearchOption;
 import com.baidu.mapapi.search.poi.PoiDetailResult;
+import com.baidu.mapapi.search.poi.PoiNearbySearchOption;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
+import com.baidu.mapapi.search.poi.PoiSortType;
 import com.baidu.mapapi.search.sug.OnGetSuggestionResultListener;
 import com.baidu.mapapi.search.sug.SuggestionResult;
 import com.baidu.mapapi.search.sug.SuggestionSearch;
 import com.baidu.mapapi.search.sug.SuggestionSearchOption;
+import com.guokrspace.duducar.common.Constants;
 import com.guokrspace.duducar.communication.message.SearchLocation;
+import com.guokrspace.duducar.database.CommonUtil;
 import com.guokrspace.duducar.database.DaoSession;
 import com.guokrspace.duducar.database.SearchHistory;
 
@@ -134,10 +138,33 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
         if(mReqLoc!=null) {
             keyWorldsView.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void afterTextChanged(Editable arg0) {
-                    mPoiSearch.searchInCity(new PoiCitySearchOption()
-                            .city("湖南")
-                            .keyword(editSearchKey.getText().toString()));
+                public void afterTextChanged(Editable keyWord) {
+                    if(keyWord == null || keyWord.length() ==0){
+                        return;
+                    }
+                    String key = keyWord.toString();
+                    if(key.split(" ").length > 1){ // 存在空格
+                        String[] keys = key.split(" ");
+                        String city = "", k = "";
+                        for(String s : keys){
+                            if(Constants.citys.contains(s)){// 存在城市
+                                city = s;
+                            } else {
+                                k += " " + s;
+                            }
+                        }
+                        mPoiSearch.searchInCity(new PoiCitySearchOption()
+                                .city(city)
+                                .keyword(k));
+//                        mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).keyword(k).city(city));
+                    } else {
+                        mPoiSearch.searchNearby(new PoiNearbySearchOption()
+                                .keyword(key)
+                                .location(new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng()))
+                                .sortType(PoiSortType.comprehensive));
+//                        mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).keyword(key).city("长沙").location(new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng())));
+                    }
+
 //                    mSoftManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                     SearchHistory searchHistory = new SearchHistory();
                     searchHistory.setAddress(editSearchKey.getText().toString());
@@ -150,15 +177,30 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
                 }
 
                 @Override
-                public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
-                    if (cs.length() <= 0) {
+                public void onTextChanged(CharSequence keyWord, int arg1, int arg2, int arg3) {
+                    if (keyWord.length() <= 0) {
                         return;
                     }
                     /**
                      * 使用建议搜索服务获取建议列表，结果在onSuggestionResult()中更新
                      */
-
-                    mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).keyword(cs.toString()).city("湖南"));
+                    String key = keyWord.toString();
+                    if(key.split(" ").length > 1){ // 存在空格
+                        String[] keys = key.split(" ");
+                        String city = "", k = "";
+                        for(String s : keys){
+                            if(Constants.citys.contains(s)){// 存在城市
+                                city = s;
+                            } else {
+                                k += " " + s;
+                            }
+                        }
+                        mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).keyword(k).city(city));
+                    } else {
+                        mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).keyword(key).city("长沙").location(new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng())));
+                    }
+//                    if(cs)
+//                    mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).keyword(cs.toString()).city("长沙").city("常德"));
                 }
             });
         }
@@ -230,13 +272,17 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
         if (result.error == SearchResult.ERRORNO.AMBIGUOUS_KEYWORD) {
 
             // 当输入关键字在本市没有找到，但在其他城市找到时，返回包含该关键字信息的城市列表
+//            if(keyWorldsView.getText() != null && keyWorldsView.getText().length() > 0){
+//                mSuggestionSearch.requestSuggestion((new SuggestionSearchOption()).location(new LatLng(CommonUtil.getCurLat(),CommonUtil.getCurLng()))
+//                        .keyword(keyWorldsView.toString()));
+//            }
             String strInfo = "在";
             for (CityInfo cityInfo : result.getSuggestCityList()) {
                 strInfo += cityInfo.city;
                 strInfo += ",";
             }
             strInfo += "找到结果";
-//            Toast.makeText(mContext, strInfo, Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, strInfo, Toast.LENGTH_LONG).show();
         }
     }
 

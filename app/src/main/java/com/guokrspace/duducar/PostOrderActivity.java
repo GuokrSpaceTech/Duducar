@@ -207,7 +207,8 @@ public class PostOrderActivity extends AppCompatActivity {
 
                     break;
                 case MessageTag.MESSAGE_CAR_ARRIVED:
-                    if (cancelDialog != null) cancelDialog.dismiss();
+                    try { if (cancelDialog != null)  cancelDialog.dismiss(); } catch (Exception e){}
+
                     cancelButton.setVisibility(View.GONE);
                     orderStatusString = "已经上车";
                     getSupportActionBar().setTitle(orderStatusString);
@@ -220,7 +221,7 @@ public class PostOrderActivity extends AppCompatActivity {
                     LatLng carLatLng = new LatLng(Double.parseDouble(order_start.getOrder().getStart_lat()), Double.parseDouble(order_start.getOrder().getStart_lng()));
                     LatLng pasLatLng = new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng());
                     double dis = DistanceUtil.getDistance(carLatLng, pasLatLng);
-                    if(dis > 1 * 1000){ // 距离超过1公里 ,判断乘客不在车上
+                    if(dis > 400){ // 距离超过0.4公里 ,判断乘客不在车上
                         isInCar = false;
                     }
                     isStartFollow = true;

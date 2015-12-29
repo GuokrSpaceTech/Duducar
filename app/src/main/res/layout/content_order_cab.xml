@@ -35,23 +35,11 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/currentChargeView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:layout_centerInParent="true"
-        android:background="@android:color/white"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:inputType="textMultiLine"
-        android:text="正在计算当前费用"
-        android:textColor="@android:color/black"
-        android:textSize="8pt" />
+
 
 
     <LinearLayout
+        android:id="@+id/topPanel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/progressBar"
@@ -111,6 +99,20 @@
                 android:id="@+id/textViewDestination" />
         </FrameLayout>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/currentChargeView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="120dp"
+        android:background="@android:color/white"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:inputType="textMultiLine"
+        android:text="正在计算当前费用"
+        android:textColor="@android:color/black"
+        android:textSize="8pt" />
 
     <com.guokrspace.duducar.ui.DriverInformationView
         android:id="@+id/driverView"
