@@ -765,7 +765,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 
         if (KeyEvent.KEYCODE_BACK == event.getKeyCode()) {
 
-            final String tmp = CommonUtil.getCurrentStatus();
+            /*final String tmp = CommonUtil.getCurrentStatus();
             CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
 
             final AlertDialog.Builder alterDialog = new AlertDialog.Builder(this);
@@ -788,10 +788,12 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                     dialog.cancel();
                 }
             });
-            alterDialog.show();
+            alterDialog.show();*/
+            moveTaskToBack(true);
+            return true;
         }
 
-        return false;
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override

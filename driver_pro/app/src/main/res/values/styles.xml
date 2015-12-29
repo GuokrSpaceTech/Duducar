@@ -124,4 +124,9 @@
         <item name="android:background">@color/navpage</item>
     </style>
 
+    <style name="custom_progressBar" parent="@android:style/Widget.ProgressBar.Horizontal">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:progressDrawable">@drawable/hyman_define_progress</item>
+    </style>
+
 </resources>

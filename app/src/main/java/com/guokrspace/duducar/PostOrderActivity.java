@@ -207,6 +207,7 @@ public class PostOrderActivity extends AppCompatActivity {
 
                     break;
                 case MessageTag.MESSAGE_CAR_ARRIVED:
+                    if (cancelDialog != null) cancelDialog.dismiss();
                     cancelButton.setVisibility(View.GONE);
                     orderStatusString = "已经上车";
                     getSupportActionBar().setTitle(orderStatusString);
@@ -581,6 +582,10 @@ public class PostOrderActivity extends AppCompatActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
         if (KeyEvent.KEYCODE_BACK == event.getKeyCode()) {
+            if (isStartFollow) {
+              moveTaskToBack(true);
+              return true;
+            }
             cancelOption();
         }
         return false;

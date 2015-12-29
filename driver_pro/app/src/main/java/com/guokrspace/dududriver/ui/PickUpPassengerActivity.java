@@ -2,14 +2,11 @@ package com.guokrspace.dududriver.ui;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
-import android.app.Service;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -596,7 +593,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
             @Override
             public void onClick(View v) {
                 if(!isNavigationOk){
-                    Toast.makeText(PickUpPassengerActivity.this, "地图导航加载失败", Toast.LENGTH_SHORT);
+                    Toast.makeText(PickUpPassengerActivity.this, "地图导航加载失败", Toast.LENGTH_SHORT).show();
                 }
                 if(!isNavigationNow){
                     //启动导航
@@ -740,7 +737,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
             @Override
             public void onClick(View v) {
                 if (!isNavigationOk) {
-                    Toast.makeText(PickUpPassengerActivity.this, "地图导航加载失败", Toast.LENGTH_SHORT);
+                    Toast.makeText(PickUpPassengerActivity.this, "地图导航加载失败", Toast.LENGTH_SHORT).show();
                 }
                 if (!isNavigationNow) {
                     //启动导航
@@ -854,8 +851,12 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (KeyEvent.KEYCODE_BACK == event.getKeyCode()
-                || KeyEvent.KEYCODE_MENU == event.getKeyCode() ) {
+
+        if (KeyEvent.KEYCODE_BACK == event.getKeyCode()) {
+            moveTaskToBack(true);
+            return true;
+        }
+        if (KeyEvent.KEYCODE_MENU == event.getKeyCode() ) {
             return false;
         }
         return true;
