@@ -32,10 +32,11 @@ import com.baidu.mapapi.search.geocode.GeoCoder;
 import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
+import com.baidu.nplatform.comapi.map.gesture.Base;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.net.HandlerMessageTag;
 
-public class PostOrderActivity extends AppCompatActivity
+public class PostOrderActivity extends BaseActivity
         implements
         OnGetGeoCoderResultListener{
     private Context mContext = this;

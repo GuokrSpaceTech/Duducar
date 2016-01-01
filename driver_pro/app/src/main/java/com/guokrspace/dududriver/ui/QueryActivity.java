@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 /**
  * Created by hyman on 15/12/29.
  */
-public class QueryActivity extends AppCompatActivity {
+public class QueryActivity extends BaseActivity {
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -70,10 +70,6 @@ public class QueryActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    private void showToast(String msg) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
     }
 
     private void initToolBar() {

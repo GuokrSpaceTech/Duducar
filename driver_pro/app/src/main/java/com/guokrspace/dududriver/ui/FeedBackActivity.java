@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
+import com.baidu.nplatform.comapi.map.gesture.Base;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.common.NewOrderReceiver;
@@ -27,7 +28,7 @@ import me.drakeet.materialdialog.MaterialDialog;
 /**
  * Created by hyman on 15/12/12.
  */
-public class FeedBackActivity extends AppCompatActivity {
+public class FeedBackActivity extends BaseActivity {
 
     private Context context;
 

@@ -19,11 +19,13 @@ import android.widget.Toast;
 
 import com.guokrspace.duducar.adapter.NewsAdapter;
 import com.guokrspace.duducar.communication.http.model.News;
+import com.umeng.analytics.MobclickAgent;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 /**
  * Created by hyman on 15/12/22.
@@ -50,6 +52,7 @@ public class NewsActivity extends AppCompatActivity implements Handler.Callback{
                 Toast.makeText(context, "正在刷新，请稍后...", Toast.LENGTH_SHORT).show();
                 return;
             }
+            /*MobclickAgent.reportError(context, "信息中心，界面刷新报错");*/
             isRefreshing = true;
             mHandler.sendEmptyMessageDelayed(HANDLE_REFRESH_OVER, 500);
         }
@@ -68,6 +71,7 @@ public class NewsActivity extends AppCompatActivity implements Handler.Callback{
     @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onResume(this);
         //进入页面自动刷新
         mHandler.postDelayed(new Runnable() {
             @Override
@@ -76,6 +80,12 @@ public class NewsActivity extends AppCompatActivity implements Handler.Callback{
             }
         }, 500);
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     private void initView() {

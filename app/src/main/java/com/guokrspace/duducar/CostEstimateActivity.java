@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.baidu.mapapi.utils.DistanceUtil;
 import com.guokrspace.duducar.communication.message.SearchLocation;
+import com.umeng.analytics.MobclickAgent;
 
 public class CostEstimateActivity extends AppCompatActivity {
 
@@ -79,6 +80,18 @@ public class CostEstimateActivity extends AppCompatActivity {
 
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     private void initToolBar() {

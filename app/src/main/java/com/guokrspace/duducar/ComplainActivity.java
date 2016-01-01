@@ -23,6 +23,7 @@ import com.guokrspace.duducar.communication.http.model.Order;
 import com.guokrspace.duducar.communication.message.OrderDetail;
 import com.guokrspace.duducar.util.ConvertUtil;
 import com.guokrspace.duducar.util.SharedPreferencesUtils;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -96,6 +97,18 @@ public class ComplainActivity extends AppCompatActivity implements View.OnClickL
             orderDetail= (OrderDetail)bundle.getSerializable("order");
         }
         initView();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     private void initView() {

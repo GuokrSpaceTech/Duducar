@@ -18,6 +18,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.baidu.nplatform.comapi.map.gesture.Base;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.common.NewOrderReceiver;
@@ -27,7 +28,7 @@ import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 /**
  * Created by hyman on 15/12/19.
  */
-public class WebViewActivity extends AppCompatActivity implements Handler.Callback{
+public class WebViewActivity extends BaseActivity implements Handler.Callback{
 
     public static final String WEBVIEW_TYPE = "webview_type";
     public static final int WEBVIEW_CLAUSE = 100;

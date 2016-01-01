@@ -38,6 +38,7 @@ import com.guokrspace.duducar.database.DriverRecord;
 import com.guokrspace.duducar.database.DriverRecordDao;
 import com.guokrspace.duducar.database.OrderRecord;
 import com.guokrspace.duducar.util.ConvertUtil;
+import com.umeng.analytics.MobclickAgent;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -306,6 +307,7 @@ public class OrderHistoryActivity extends AppCompatActivity implements Handler.C
     @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onResume(this);
         //进入页面自动刷新
         mHandler.postDelayed(new Runnable() {
             @Override
@@ -313,6 +315,12 @@ public class OrderHistoryActivity extends AppCompatActivity implements Handler.C
                 setRefreshing(mRefreshLayout, true, true);
             }
         }, 500);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     private void initView() {

@@ -30,6 +30,7 @@ import com.guokrspace.duducar.database.PersonalInformation;
 import com.guokrspace.duducar.ui.EditTextHolder;
 import com.guokrspace.duducar.ui.LoadingDialog;
 import com.guokrspace.duducar.ui.WinToast;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -144,12 +145,19 @@ public class LoginActivity extends AppCompatActivity implements
 
     protected void onPause() {
         super.onPause();
+        MobclickAgent.onPause(this);
         if (mSoftManager == null) {
             mSoftManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         }
         if (getCurrentFocus() != null) {
             mSoftManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);// 隐藏软键盘
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
     }
 
     @Override

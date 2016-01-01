@@ -36,6 +36,7 @@ import com.guokrspace.duducar.database.OrderRecord;
 import com.guokrspace.duducar.ui.WinToast;
 import com.guokrspace.duducar.util.SharedPreferencesUtils;
 import com.squareup.picasso.Picasso;
+import com.umeng.analytics.MobclickAgent;
 import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
@@ -266,6 +267,8 @@ public class RatingActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onResume(this);
+
         statusTextView.setText("已完成");
 
         payButton.setOnClickListener(new View.OnClickListener() {
@@ -311,6 +314,12 @@ public class RatingActivity extends ActionBarActivity {
         if (!"0".equals(mOrder.getRating())) {// 已支付 已评价
             findViewById(R.id.evaluate_layout).setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     private void initToolBar() {

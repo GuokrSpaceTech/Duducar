@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.guokrspace.duducar.util.SharedPreferencesUtils;
+import com.umeng.analytics.MobclickAgent;
 
 import org.apache.http.util.EncodingUtils;
 
@@ -158,6 +159,18 @@ public class WebViewActivity extends AppCompatActivity {
                 WebViewActivity.this.finish();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override

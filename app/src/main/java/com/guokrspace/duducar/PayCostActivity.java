@@ -43,6 +43,7 @@ import com.squareup.okhttp.Request;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.umeng.analytics.MobclickAgent;
 import com.zhy.http.okhttp.request.OkHttpRequest;
 
 import org.json.JSONException;
@@ -264,6 +265,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
     @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onResume(this);
         //注册监听司机代付信息
         SocketClient.getInstance().registerServerMessageHandler(MessageTag.DRIVER_PAY, new ResponseHandler(Looper.myLooper()) {
             @Override
@@ -304,6 +306,12 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
             public void onTimeout() {
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override

@@ -302,6 +302,11 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
