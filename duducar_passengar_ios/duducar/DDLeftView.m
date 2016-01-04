@@ -9,6 +9,7 @@
 #import "DDLeftView.h"
 #import "UIImageView+WebCache.h"
 #import "Masonry.h"
+#import "UIColor+RCColor.h"
 
 @interface DDLeftView()
 {
@@ -21,18 +22,25 @@
 
 -(instancetype)initWithFrame:(CGRect)frame
 {
+    float BUTTON_WIDTH  = 200-20;
+    float BUTTON_HEIGHT = 50;
+    float ICON_WIDTH = 30;
+    float ICON_HEIGHT = 30;
+    float MENU_START_Y = 155;
+    float SPACE = 8;
+    
     if(self = [super initWithFrame:frame])
     {
         UIView * bgView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 200, frame.size.height)];
-        bgView.backgroundColor = [UIColor blackColor];
-        bgView.alpha = 0.5;
+        bgView.backgroundColor = [UIColor colorWithHexString:@"212B37" alpha:1.0f];
+        bgView.alpha = 0.3;
         [self addSubview:bgView];
         
         UIView * contentView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 200, frame.size.height)];
         contentView.backgroundColor = [UIColor clearColor];
         [self addSubview:contentView];
         
-        //个人信息Header，历史订单
+        //个人信息Header
         UIView *headerView = [[UIView alloc]init];
         avatarImageView = [[UIImageView alloc]init];
         [headerView addSubview:avatarImageView];
@@ -40,9 +48,12 @@
         mobileLabel.textColor = [UIColor whiteColor];
         mobileLabel.font = [UIFont systemFontOfSize:14.0f];
         
+        UIView *line = [[UIView alloc]init];
+        
         [headerView addSubview:avatarImageView];
         [headerView addSubview:mobileLabel];
         [contentView addSubview:headerView];
+        [contentView addSubview:line];
         
         //Autolayout Constrains
         [headerView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -65,56 +76,123 @@
         
         [mobileLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(avatarImageView.mas_right).offset(10);
-            make.baseline.equalTo(avatarImageView.mas_baseline);
+            make.centerY.equalTo(avatarImageView.mas_centerY);
         }];
         
-//        UIButton * button1 = [UIButton buttonWithType:UIButtonTypeCustom];
-//        [button1 setTitle:@"个人信息" forState:UIControlStateNormal];
-//        button1.frame = CGRectMake(10, 155, 200-20, 40);
-//        button1.tag = 100;
-//        button1.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-//        [button1 addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
-//        [button1 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//        [contentView addSubview:button1];
+        [line mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(headerView.mas_left).offset(8);
+            make.top.equalTo(headerView.mas_bottom);
+            make.height.mas_equalTo(@(1));
+        }];
+        
+        UIImageView *icon_history_order = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"ic_history_white"]];
+        [contentView addSubview:icon_history_order];
+        [icon_history_order mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(avatarImageView.mas_left);
+            make.top.mas_equalTo(@(MENU_START_Y));
+            make.width.mas_equalTo(@(ICON_WIDTH));
+            make.height.mas_equalTo(@(ICON_HEIGHT));
+        }];
+
         UIButton * button2 = [UIButton buttonWithType:UIButtonTypeCustom];
         [button2 setTitle:@"历史订单" forState:UIControlStateNormal];
         button2.tag = 100;
         button2.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         [button2 addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
-        button2.frame = CGRectMake(10, 155, 200-20, 40);
         [button2 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [contentView addSubview:button2];
+        [button2 mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(icon_history_order.mas_left).offset(SPACE);
+            make.top.equalTo(icon_history_order);
+            make.width.mas_equalTo(@(BUTTON_WIDTH));
+            make.height.mas_equalTo(@(BUTTON_HEIGHT));
+        }];
         
+        
+        UIImageView *icon_aboutus = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"ic_info_outline_white"]];
+        [contentView addSubview:icon_aboutus];
+        [icon_aboutus mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(avatarImageView.mas_left);
+            make.top.mas_equalTo(@(MENU_START_Y + BUTTON_HEIGHT));
+            make.width.mas_equalTo(@(ICON_WIDTH));
+            make.height.mas_equalTo(@(ICON_HEIGHT));
+        }];
         UIButton * button3 = [UIButton buttonWithType:UIButtonTypeCustom];
         [button3 setTitle:@"关于我们" forState:UIControlStateNormal];
         button3.tag = 101;
         button3.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         [button3 addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
-        button3.frame = CGRectMake(10, 155+40, 200-20, 40);
         [button3 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [contentView addSubview:button3];
+        [button3 mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(icon_aboutus.mas_left).offset(SPACE);
+            make.top.equalTo(icon_aboutus.mas_top);
+            make.width.mas_equalTo(@(BUTTON_WIDTH));
+            make.height.mas_equalTo(@(BUTTON_HEIGHT));
+        }];
         
+        UIImageView *icon_clause = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"ic_list_white"]];
+        [contentView addSubview:icon_clause];
+        [icon_clause mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(avatarImageView.mas_left);
+            make.top.mas_equalTo(@(MENU_START_Y + BUTTON_HEIGHT + BUTTON_HEIGHT));
+            make.width.mas_equalTo(@(ICON_WIDTH));
+            make.height.mas_equalTo(@(ICON_HEIGHT));
+        }];
         UIButton * button4 = [UIButton buttonWithType:UIButtonTypeCustom];
         [button4 setTitle:@"使用条款" forState:UIControlStateNormal];
         button4.tag = 102;
         button4.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         [button4 addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
-        button4.frame = CGRectMake(10, 155+(40*2), 200-20, 40);
         [button4 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [contentView addSubview:button4];
+        [button4 mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(icon_clause.mas_left).offset(SPACE);
+            make.top.equalTo(icon_clause.mas_top);
+            make.width.mas_equalTo(@(BUTTON_WIDTH));
+            make.height.mas_equalTo(@(BUTTON_HEIGHT));
+        }];
         
+        
+        UIImageView *icon_help = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"ic_help_outline"]];
+        [contentView addSubview:icon_help];
+        [icon_help mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(avatarImageView.mas_left);
+            make.top.mas_equalTo(@(MENU_START_Y + BUTTON_HEIGHT + BUTTON_HEIGHT + BUTTON_HEIGHT));
+            make.width.mas_equalTo(@(ICON_WIDTH));
+            make.height.mas_equalTo(@(ICON_HEIGHT));
+        }];
         UIButton * button5 = [UIButton buttonWithType:UIButtonTypeCustom];
         [button5 setTitle:@"帮助" forState:UIControlStateNormal];
         button5.tag = 103;
         button5.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
         [button5 addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
-        button5.frame = CGRectMake(10, 155+(40*3), 200-20, 40);
         [button5 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [contentView addSubview:button5];
+        [button5 mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(icon_help.mas_left).offset(SPACE);
+            make.top.equalTo(icon_help.mas_top);
+            make.width.mas_equalTo(@(BUTTON_WIDTH));
+            make.height.mas_equalTo(@(BUTTON_HEIGHT));
+        }];
         
-        UIView *logoutBackView = [[UIView alloc]initWithFrame:CGRectMake(10, 155+(40*4), 200-20, 40)];
+        UIView *divide_line = [[UIView alloc]init];
+        [contentView addSubview:divide_line];
+        [line mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(headerView.mas_left).offset(SPACE);
+            make.top.equalTo(button5.mas_bottom).offset(4);
+            make.height.mas_equalTo(@(1));
+        }];
+        
+        UIView *logoutBackView = [[UIView alloc]init];
         logoutBackView.backgroundColor = [UIColor redColor];
         [contentView addSubview:logoutBackView];
+        [logoutBackView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.equalTo(contentView.mas_bottom).offset(-SPACE);
+            make.left.equalTo(avatarImageView.mas_left);
+            make.height.mas_equalTo(@(BUTTON_HEIGHT));
+            make.width.equalTo(contentView.mas_width).offset(SPACE);
+        }];
         
         UIImageView *logoutIcon = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"ic_power_settings_new_white"]];
         logoutIcon.frame = CGRectMake(10, 5, 30, 30);
@@ -127,6 +205,8 @@
         [button6 setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [logoutBackView addSubview:button6];
         [logoutBackView addSubview:logoutIcon];
+        
+        
     }
     return self;
 }
