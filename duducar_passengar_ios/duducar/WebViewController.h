@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import </usr/include/Availability.h>  
+#import <Availability.h>
 #import <WebKit/WebKit.h>
 @interface WebViewController : UIViewController
 
