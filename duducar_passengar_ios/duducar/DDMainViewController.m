@@ -716,7 +716,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         webVC.urlStr = helpUrl;
         [self.navigationController pushViewController:webVC animated:YES];
     }
-    else if(index == 4)
+    else if(index == 4 || index == 5)
     {
         [[DDDatabase sharedDatabase]clearTable];
         LoginViewController *loginVC = [[LoginViewController alloc]init];

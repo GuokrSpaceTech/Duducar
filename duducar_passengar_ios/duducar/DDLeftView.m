@@ -48,6 +48,8 @@
         mobileLabel =[UIButton buttonWithType:UIButtonTypeCustom];
         mobileLabel.titleLabel.textColor = [UIColor whiteColor];
         mobileLabel.titleLabel.font = [UIFont systemFontOfSize:14.0f];
+        mobileLabel.tag = 99;
+        [mobileLabel addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
         [mobileLabel setTitle:@"点击登录" forState:UIControlStateNormal];
         
         UIView *line = [[UIView alloc]init];
@@ -67,20 +69,20 @@
         }];
         
         [avatarImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.width.mas_equalTo(@50);
-            make.height.mas_equalTo(@50);
+            make.width.mas_equalTo(@40);
+            make.height.mas_equalTo(@40);
             make.top.equalTo(headerView.mas_top).offset(4);
             make.left.equalTo(headerView.mas_left).offset(4);
         }];
-        avatarImageView.layer.cornerRadius = 25;
+        avatarImageView.layer.cornerRadius = 20;
         avatarImageView.clipsToBounds = YES;
         avatarImageView.backgroundColor = [UIColor clearColor];
         avatarImageView.contentMode = UIViewContentModeScaleAspectFit;
         
         [mobileLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(avatarImageView.mas_right).offset(SPACE);
+            make.left.equalTo(avatarImageView.mas_right).offset(0);
             make.centerY.equalTo(avatarImageView.mas_centerY);
-            make.right.equalTo(contentView.mas_right).offset(-SPACE);
+            make.right.equalTo(contentView.mas_right).offset(0);
             make.height.mas_equalTo(@(BUTTON_HEIGHT-SPACE));
         }];
         
@@ -226,14 +228,15 @@
 //        NSLog(@"User Avatar load Completed.");
 //    }];
     
-    [avatarImageView setImage:[UIImage imageNamed:@"ic_account_circle_white"]];
-    mobileLabel.titleLabel.text = mobile;
+    //如果用户登录，获取电话信息，取消点击登录
+    [mobileLabel setTitle:mobile forState:UIControlStateNormal];
+    [mobileLabel removeTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 -(void)buttonClick:(UIButton *)but
 {
     NSInteger tag = but.tag;
-    if(     tag == 100)
+    if(tag == 100)
     {
         // 历史订单
         [_delegate leftView:self index:0];
@@ -256,7 +259,12 @@
     }
     else if(tag == 104)
     {
-        // 帮助
+        // 退出
+        [_delegate leftView:self index:4];
+    }
+    else if(tag == 99)
+    {
+        //点击登录
         [_delegate leftView:self index:4];
     }
 }

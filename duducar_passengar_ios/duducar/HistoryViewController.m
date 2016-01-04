@@ -10,6 +10,7 @@
 #import "DDSocket.h"
 #import "HistoryTableViewCell.h"
 #import "DDDatabase.h"
+#import "PaymentViewController.h"
 
 @interface HistoryViewController ()
 {
@@ -92,7 +93,6 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     
     cell.startLabel.text = [orderDict objectForKey:@"start"];
     cell.destLabel.text = [orderDict objectForKey:@"destination"];
-    
    
     NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
     [formatter setDateStyle:NSDateFormatterMediumStyle];
@@ -104,14 +104,29 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     cell.dateLabel.text = confromTimespStr;
     
     NSString *orderStatus = [NSString stringWithFormat:@"%d",[[orderDict objectForKey:@"status"] intValue] ];
-    
+    NSString *payrole = [NSString stringWithFormat:@"%d",[[orderDict objectForKey:@"pay_role"] intValue] ];
+
+    //未支付或者司机代付订单
     if([orderStatus isEqualToString:@"4"])
     {
-        cell.orderStatusLabel.text = @"未支付订单";
+        //如果司机代付
+        if([payrole isEqualToString:@"1"])
+        {
+            //查看历史订单库
+            [cell.orderStatusButton setTitle:@"已完成" forState:(UIControlStateNormal)];
+            cell.orderStatusButton.enabled= NO;
+        }
+        else
+        {
+            [cell.orderStatusButton setTitle:@"需支付订单" forState:(UIControlStateNormal)];
+            cell.orderStatusButton.enabled = YES;
+            [cell.orderStatusButton addTarget:self action:@selector(orderStatusButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        }
     }
     else if([orderStatus isEqualToString:@"5"])
     {
-        cell.orderStatusLabel.text = @"已完成";
+        [cell.orderStatusButton setTitle:@"已完成" forState:(UIControlStateNormal)];
+        cell.orderStatusButton.enabled= NO;
     }
     
     return cell;
@@ -119,8 +134,9 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 150;
+    return 160;
 }
+
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -155,21 +171,14 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 }
 */
 
-/*
+
 #pragma mark - Table view delegate
 
 // In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here, for example:
-    // Create the next view controller.
-    <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:<#@"Nib name"#> bundle:nil];
-    
-    // Pass the selected object to the new view controller.
-    
-    // Push the view controller.
-    [self.navigationController pushViewController:detailViewController animated:YES];
+    [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
-*/
+
 
 /*
 #pragma mark - Navigation
@@ -228,6 +237,28 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
         {
             NSLog(@"HISTORY_ORDER REQ FAILED.");
         }
+    }
+}
+
+#pragma mark
+#pragma mark == Actions
+
+-(void)orderStatusButtonClicked:(id)sender
+{
+    UIButton *button = sender;
+    int orderIndex = (int)button.tag;
+    NSDictionary *orderDict = [_orderArray objectAtIndex:orderIndex];
+    NSDictionary *driverDict = [orderDict objectForKey:@"driver"];
+    
+    //需要支付
+    //防止重复调用支付界面
+    if(![[self.navigationController topViewController] isKindOfClass:[PaymentViewController class]])
+    {
+        PaymentViewController *payVC = [[PaymentViewController alloc]initWithNibName:@"PaymentViewController" bundle:nil];
+        [payVC setActiveOrder:orderDict];
+        Driver *driver = [[Driver alloc]initWithDic:driverDict];
+        [payVC setDriver:driver];
+        [self.navigationController pushViewController:payVC animated:YES];
     }
 }
 @end

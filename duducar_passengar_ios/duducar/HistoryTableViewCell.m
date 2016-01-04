@@ -12,6 +12,13 @@
 
 - (void)awakeFromNib {
     // Initialization code
+    _background.layer.borderColor = [UIColor grayColor].CGColor;
+    _background.layer.borderWidth = 1;
+    _background.clipsToBounds = YES;
+    _orderStatusButton.clipsToBounds = YES;
+    _orderStatusButton.layer.cornerRadius = 4;
+    _orderStatusButton.backgroundColor = [UIColor blueColor];
+    _orderStatusButton.titleLabel.textColor = [UIColor whiteColor];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
