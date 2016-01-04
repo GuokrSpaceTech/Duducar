@@ -206,17 +206,24 @@ public class ListenProgressView extends View{
         invalidate();
     }
 
-    public boolean isTextRight(){
-        if(isListening)
-            return text.equals(texts[1]);
-        else
-            return text.equals(texts[0]);
-    }
-
     public boolean isCircling(){
         //是不是在听单页面
         return isListening;
     }
 
+    public void showConnecting() {
+        text = "连接中";
+        final long time = System.currentTimeMillis();
+        new Runnable() {
+            @Override
+            public void run() {
+                while(System.currentTimeMillis() - time < 1500){ //1.5秒
+                }
+                if(text.equals("连接中")){
+                    text = "听单中";
+                }
+            }
+        }.run();
+    }
 
 }

@@ -66,9 +66,11 @@ public class SocketClient {
      * Sends the message entered by client to the server
      * @param message text entered by client
      */
-    public int sendMessage(final JSONObject message, final ResponseHandler handler, final int timeout){
+    private int blockMessage;
+    public synchronized int sendMessage(final JSONObject message, final ResponseHandler handler, final int timeout){
         int ret = -1; //Default is error
-//        Log.e("sendmessage" + (out == null), "daddy " + out.checkError());//
+        Log.e("daddy", "message" + message.toString());
+//        Log.e("daddy", out.toString());
         //Send the message
         try {
             message.put("message_id", messageid);
@@ -79,29 +81,36 @@ public class SocketClient {
                 out.flush();
 
                 //Start a timer
-                final Runnable timerRunnable = new Runnable() {
-                    int counter=0;
-                    @Override
-                    public void run() {
-                        counter ++;
-                        if(counter < timeout) {
-                            handler.postRunnableDelay(this, 1000); //1s interval
-                        } else {
-                            handler.stopRunnable(this);
-                            Message msg = handler.obtainMessage(ResponseHandler.TIMEOUT_MESSAGE,message.toString());
-                            handler.sendMessage(msg);
-                        }
-                    }
-                };
-                handler.postRunnable(timerRunnable);
+                blockMessage = 0;
 
-                //Enqueue
-                MessageDispatcher messageDispatcher = new MessageDispatcher(messageid, message, timerRunnable, handler);
-                messageDispatchQueue.put(messageid, messageDispatcher);
+            } else { //发送失败
+                if (++blockMessage > 4) { //多次连续发送失败, 阻塞重连
+                    SocketClient.getInstance().run();
+                    blockMessage = 0;
+                }
             }
 
-            ret = messageid;
+            final Runnable timerRunnable = new Runnable() {
+                int counter=0;
+                @Override
+                public void run() {
+                    counter ++;
+                    if(counter < timeout) {
+                        handler.postRunnableDelay(this, 1000); //1s interval
+                    } else {
+                        handler.stopRunnable(this);
+                        Message msg = handler.obtainMessage(ResponseHandler.TIMEOUT_MESSAGE,message.toString());
+                        handler.sendMessage(msg);
+                    }
+                }
+            };
+            handler.postRunnable(timerRunnable);
 
+            //Enqueue
+            MessageDispatcher messageDispatcher = new MessageDispatcher(messageid, message, timerRunnable, handler);
+            messageDispatchQueue.put(messageid, messageDispatcher);
+
+            ret = messageid;
             messageid++;
 
         } catch (JSONException e) {
@@ -146,15 +155,13 @@ public class SocketClient {
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
                 //in this while the client listens for the messages sent by the server
-                while (mRun) {
+                while (mRun && !socket.isClosed() && socket.isConnected()) {
                     serverMessage = in.readLine();
 
                     if (serverMessage != null) {
 
-                        //call the method messageReceived in MainActivity class
                         JSONObject jsonObject = new JSONObject(serverMessage);
                         if (jsonObject.has("message_id")) {
-
                             int messageid = (int) jsonObject.get("message_id");
                             MessageDispatcher dispatcher = messageDispatchQueue.get(messageid);
 
@@ -174,24 +181,20 @@ public class SocketClient {
                         } else if(jsonObject.has("cmd")){
                             String cmd = (String) jsonObject.get("cmd");
                             int messageTag = MessageTag.getInstance().Tag(cmd);
+                            Log.d("SocketClient ", "messageTag"+messageTag);
                             ResponseHandler target = serverMessageDispatchMap.get(messageTag);
-                            if (target != null)
+                            if (target != null) {
                                 target.sendResponse(serverMessage);
-                            else {
+                            } else {
                                 String errorMsg = String.format("Unregisted Message: %s", serverMessage);
-                                Log.i("DuduCar", errorMsg);
-                            }
-                        } else if(jsonObject.has("status")) { // {"status:1"} the initial message
-                            int status = (int)jsonObject.get("status");
-                            if(status == 1)//Connection Success
-                            {
-                                socketConnected = true;
                             }
                         }
-
                         Log.e("RESPONSE FROM SERVER", "S: Received Message: '" + serverMessage + "'");
                     }
                     serverMessage = null;
+                }
+                if(mRun){ // 正在执行 ,socket失败
+                    SocketClient.getInstance().run();
                 }
             }
             catch (Exception e)
@@ -204,13 +207,13 @@ public class SocketClient {
                 //the socket must be closed. It is not possible to reconnect to this socket
                 // after it is closed, which means a new socket instance has to be created.
                 socket.close();
-                socketConnected = false;
             }
 
         } catch (Exception e) {
             Log.e("TCP SI Error", "SI: Error", e);
         }
     }
+
 
     public int sendHeartBeat(DuduService.HeartBeatMessage heartBeatMessage, String role, ResponseHandler handler){
         int ret = -1;

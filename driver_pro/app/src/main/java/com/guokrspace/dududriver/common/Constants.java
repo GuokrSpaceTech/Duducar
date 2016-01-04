@@ -29,6 +29,7 @@ public class Constants {
     public static final String SERVICE_ACTION_MESAGE = "GOT_A_NEW_MESSAGE";
     public static final String SERVICE_ACTION_NEW_ORDER = "SERVICE_GOT_A_NEW_ORDER";
     public static final String SERVICE_ACTION_NETWORK_OUT = "SERVICE_NETWORK_OUT";
+    public static final String SERVICE_ACTION_NEWWORK_RECONNET = "SERVICE_NETWORK_RECONNECT";
 
     public static final String ACTION_NEW_ORDER = "GOT_A_NEW_ORDER";
     public static final String SERVICE_ACTION_UPDATE_CHARGE = "UPDATE_CHARGE";

@@ -389,6 +389,7 @@ public class DuduService extends Service {
                         /////////3g网络
                     }
                     reConnectServer();
+                    sendBroadCast(Constants.SERVICE_ACTION_NEWWORK_RECONNET);
                 } else {
                     ////////网络断开
                     Toast.makeText(DuduService.this, "网络连接断开...", Toast.LENGTH_SHORT).show();

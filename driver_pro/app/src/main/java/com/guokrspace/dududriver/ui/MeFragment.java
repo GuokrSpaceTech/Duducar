@@ -175,7 +175,9 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
     };
 
     private void loadRefreshRecord(List<OrderRecord> orders) {
-
+        if(orders.size() == 0){
+            return;
+        }
         Collections.sort(orders, new Comparator<OrderRecord>() {
             @Override
             public int compare(OrderRecord lhs, OrderRecord rhs) {
@@ -213,15 +215,19 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_me, container, false);
         ButterKnife.bind(this, view);
-        initView();
+        Log.e("mefragment ", "createView init");
+        initView();Log.e("mefragment ", "afterinit");
         return view;
     }
 
     @Override
     public void onResume() {
+        Log.e("mefragment ", "super onresume");
         super.onResume();
         //更新司机个人信息
+        Log.e("mefragment ", "onresume");
         updateDriverInfo();
+        Log.e("mefragment ", "updateDriverInfo");
         //进入页面自动刷新
         mHandler.postDelayed(new Runnable() {
             @Override
@@ -229,6 +235,7 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
                 setRefreshing(refreshLayout, true, true);
             }
         }, 2000);
+        Log.e("mefragment ", "fresh delay");
     }
 
     private void initView() {
@@ -384,7 +391,7 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
         tvOderNum.setText(String.format(getResources().getString(R.string.my_order_num), total_order));
         tvPraiseRate.setText("好评率 " + favorable_rate + "%");
         tvBanlance.setText(" " + balance);
-        if(avatar.length() > 1){
+        if(avatar.length() > 5){
             Picasso.with(getContext())
                     .load(avatar).centerCrop()
                     .fit().into(civAvatar);

@@ -852,7 +852,8 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         if(isNavigationNow){
             BNRouteGuideManager.getInstance().onDestroy();
         }
-        unregisterReceiver(receiver);
+        try{ unregisterReceiver(receiver); } catch (Exception e){}
+
 
         ButterKnife.unbind(this);
     }
