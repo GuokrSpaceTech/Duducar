@@ -216,7 +216,7 @@
         </meta-data>
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="Umeng" >
+            android:value="DuduDriver" >
         </meta-data>
 
         <service

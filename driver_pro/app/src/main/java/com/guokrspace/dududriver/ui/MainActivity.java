@@ -50,6 +50,7 @@ import com.guokrspace.dududriver.util.LogUtil;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 import com.guokrspace.dududriver.util.VoiceUtil;
 import com.guokrspace.dududriver.view.ListenProgressView;
+import com.umeng.analytics.MobclickAgent;
 import com.viewpagerindicator.TabPageIndicator;
 
 import org.json.JSONObject;
@@ -124,6 +125,8 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         context = this;
 
         initView();
+
+/*        MobclickAgent.reportError(context, "主界面报错");*/
 
         AppExitUtil.getInstance().addActivity(this);
         mHandler = new Handler(this);

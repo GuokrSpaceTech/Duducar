@@ -8,8 +8,8 @@ android {
         applicationId "com.guokrspace.duducar"
         minSdkVersion 11
         targetSdkVersion 23
-        versionCode 3
-        versionName "1.0.3"
+        versionCode 4
+        versionName "1.0.4"
     }
 
     sourceSets {
@@ -67,7 +67,6 @@ if (propFile.exists()) {
     android.buildTypes.release.signingConfig = null
     android.buildTypes.debug.signingConfig = null
 }
-
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')

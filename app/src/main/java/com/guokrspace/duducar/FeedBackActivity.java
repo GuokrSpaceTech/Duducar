@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.umeng.analytics.MobclickAgent;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -90,6 +92,7 @@ public class FeedBackActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onResume(this);
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
 
@@ -103,9 +106,15 @@ public class FeedBackActivity extends AppCompatActivity {
                 1000);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
     /*
-     *  提交反馈
-     */
+         *  提交反馈
+         */
     public void publishFeedBack(View view) {
 
         if (TextUtils.isEmpty(feedbackEditText.getText())) {

@@ -42,6 +42,7 @@ import com.squareup.okhttp.Request;
 import com.tencent.mm.sdk.modelpay.PayReq;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
+import com.umeng.analytics.MobclickAgent;
 import com.zhy.http.okhttp.request.OkHttpRequest;
 
 import java.io.UnsupportedEncodingException;
@@ -209,6 +210,13 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
     @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override

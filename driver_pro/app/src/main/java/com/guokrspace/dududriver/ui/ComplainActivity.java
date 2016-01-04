@@ -8,19 +8,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.gc.materialdesign.views.ButtonRectangle;
-import com.gc.materialdesign.views.ProgressBarDeterminate;
 import com.gc.materialdesign.views.ProgressBarIndeterminate;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.common.NewOrderReceiver;
-import com.guokrspace.dududriver.common.VoiceCommand;
 import com.guokrspace.dududriver.util.CommonUtil;
-import com.guokrspace.dududriver.util.VoiceUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

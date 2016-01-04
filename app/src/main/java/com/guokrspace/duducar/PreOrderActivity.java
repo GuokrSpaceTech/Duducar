@@ -71,6 +71,7 @@ import com.guokrspace.duducar.ui.OrderConfirmationView;
 import com.guokrspace.duducar.ui.WinToast;
 import com.guokrspace.duducar.util.SharedPreferencesUtils;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;
 import java.util.List;
@@ -710,6 +711,7 @@ public class PreOrderActivity extends AppCompatActivity
         timer.purge();
         unregisterReceiver(receiver);
         super.onPause();
+        MobclickAgent.onPause(mContext);
     }
 
     @Override
@@ -724,6 +726,8 @@ public class PreOrderActivity extends AppCompatActivity
         registerBroadcastReceiver();
 
         super.onResume();
+
+        MobclickAgent.onResume(mContext);
     }
 
     //监听service传来的消息

@@ -43,6 +43,7 @@ import com.guokrspace.duducar.communication.message.SearchLocation;
 import com.guokrspace.duducar.database.CommonUtil;
 import com.guokrspace.duducar.database.DaoSession;
 import com.guokrspace.duducar.database.SearchHistory;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -207,6 +208,18 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
 
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     private void initToolBar() {

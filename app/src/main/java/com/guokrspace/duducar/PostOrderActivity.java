@@ -71,6 +71,7 @@ import com.guokrspace.duducar.database.OrderRecord;
 import com.guokrspace.duducar.ui.DriverInformationView;
 import com.guokrspace.duducar.util.SharedPreferencesUtils;
 import com.squareup.picasso.Picasso;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -640,6 +641,7 @@ public class PostOrderActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        MobclickAgent.onResume(this);
 
         SocketClient.getInstance().registerServerMessageHandler(MessageTag.ORDER_ACCEPT, new ResponseHandler(Looper.myLooper()) {
             @Override
@@ -794,6 +796,7 @@ public class PostOrderActivity extends AppCompatActivity {
         timer.cancel();
         timer.purge();
         super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override

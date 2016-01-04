@@ -19,6 +19,7 @@ import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.view.LoadingDialog;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * Created by hyman on 15/10/22.
@@ -34,6 +35,18 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mApplication = DuduDriverApplication.getInstance();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override

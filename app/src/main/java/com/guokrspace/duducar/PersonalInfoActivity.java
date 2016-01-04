@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.umeng.analytics.MobclickAgent;
 
 
 public class PersonalInfoActivity extends AppCompatActivity {
@@ -57,6 +58,18 @@ public class PersonalInfoActivity extends AppCompatActivity {
             materialListView.getAdapter().add(card);
 
         }*/
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     private void initToolBar() {
