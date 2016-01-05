@@ -19,14 +19,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
-import com.guokrspace.duducar.communication.http.model.Order;
+import com.guokrspace.duducar.model.Order;
 import com.guokrspace.duducar.communication.message.OrderDetail;
-import com.guokrspace.duducar.util.ConvertUtil;
 import com.guokrspace.duducar.util.SharedPreferencesUtils;
 import com.umeng.analytics.MobclickAgent;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import me.drakeet.materialdialog.MaterialDialog;
 

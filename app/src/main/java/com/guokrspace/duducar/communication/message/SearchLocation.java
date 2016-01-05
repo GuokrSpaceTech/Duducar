@@ -1,8 +1,5 @@
 package com.guokrspace.duducar.communication.message;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.baidu.mapapi.model.LatLng;
 
 import java.io.Serializable;

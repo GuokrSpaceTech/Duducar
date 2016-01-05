@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.guokrspace.duducar.R;
-import com.guokrspace.duducar.communication.http.model.Order;
+import com.guokrspace.duducar.model.Order;
 import com.guokrspace.duducar.util.DisplayUtils;
 
 import java.text.SimpleDateFormat;

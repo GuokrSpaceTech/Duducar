@@ -15,7 +15,7 @@ import com.guokrspace.duducar.PayCostActivity;
 import com.guokrspace.duducar.R;
 import com.guokrspace.duducar.RatingActivity;
 import com.guokrspace.duducar.communication.http.HttpUrls;
-import com.guokrspace.duducar.communication.http.model.TradeResult;
+import com.guokrspace.duducar.model.TradeResult;
 import com.guokrspace.duducar.database.CommonUtil;
 import com.guokrspace.duducar.util.SharedPreferencesUtils;
 import com.squareup.okhttp.Request;

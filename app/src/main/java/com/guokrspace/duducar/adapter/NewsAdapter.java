@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.guokrspace.duducar.R;
-import com.guokrspace.duducar.communication.http.model.News;
+import com.guokrspace.duducar.model.News;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

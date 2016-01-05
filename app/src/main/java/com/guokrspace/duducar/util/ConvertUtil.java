@@ -1,7 +1,7 @@
 package com.guokrspace.duducar.util;
 
 import com.alibaba.fastjson.JSON;
-import com.guokrspace.duducar.communication.http.model.Order;
+import com.guokrspace.duducar.model.Order;
 import com.guokrspace.duducar.communication.message.OrderDetail;
 
 /**

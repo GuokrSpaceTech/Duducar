@@ -44,4 +44,7 @@
     <color name="materialBlue">#FF375BF1</color>
     <color name="materialYellow">#FFF7D23E</color>
     <color name="materialGreen">#FF34A350</color>
+
+    <color name="gray_text">#C0C0C0</color>
+    <color name="gray_bg">#EFEFEF</color>
 </resources>

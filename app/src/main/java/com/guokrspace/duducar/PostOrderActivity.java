@@ -56,7 +56,7 @@ import com.guokrspace.duducar.common.Constants;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
 import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
-import com.guokrspace.duducar.communication.http.model.IdAndValueModel;
+import com.guokrspace.duducar.model.IdAndValueModel;
 import com.guokrspace.duducar.communication.message.ChargeDetail;
 import com.guokrspace.duducar.communication.message.DriverDetail;
 import com.guokrspace.duducar.communication.message.DriverInfo;

@@ -3,12 +3,17 @@ package com.guokrspace.duducar;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,11 +23,15 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.CityInfo;
 import com.baidu.mapapi.search.core.PoiInfo;
@@ -38,19 +47,32 @@ import com.baidu.mapapi.search.sug.OnGetSuggestionResultListener;
 import com.baidu.mapapi.search.sug.SuggestionResult;
 import com.baidu.mapapi.search.sug.SuggestionSearch;
 import com.baidu.mapapi.search.sug.SuggestionSearchOption;
+import com.guokrspace.duducar.common.CommonAddrType;
 import com.guokrspace.duducar.common.Constants;
+import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
 import com.guokrspace.duducar.communication.message.SearchLocation;
 import com.guokrspace.duducar.database.CommonUtil;
 import com.guokrspace.duducar.database.DaoSession;
 import com.guokrspace.duducar.database.SearchHistory;
+import com.guokrspace.duducar.model.AddrRowDescriptor;
+import com.guokrspace.duducar.util.SharedPreferencesUtils;
+import com.guokrspace.duducar.util.Trace;
 import com.umeng.analytics.MobclickAgent;
+
+import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchResultListener, OnGetSuggestionResultListener {
 
+    public static final String PREORDERACTIVITY = "searchCommonAddr";
+    public static final String COMMONADDRACTIVITY = "searchDestination";
+
     private static final String ARG_CITY = "city";
+    private static final String ARG_FROM = "from";
+    private static final String ARG_TYPE = "common_addr_type";
 
     private PoiSearch mPoiSearch = null;
     private SuggestionSearch mSuggestionSearch = null;
@@ -73,6 +95,8 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
     private TextView editCity;
     private EditText editSearchKey;
     private RecyclerView recyclerView;
+    private LinearLayout commonAttrLayout;
+
     private List<PoiInfo> mDataset = new ArrayList<>();
     ResultListAdapter mAdapter;
 
@@ -82,6 +106,15 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
 
     private DaoSession dbSession;
     private DuduApplication mApplication;
+    private String fromPage;
+    private CommonAddrType addrType;
+    private Button cancelSearchBtn;
+    private TextView tvAddrHome;
+    private Drawable homeIcon;
+    private TextView tvAddrCompany;
+    private Drawable companyIcon;
+    private FrameLayout homeTabLayout;
+    private FrameLayout companyTabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,10 +126,16 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
         //Get ARGs
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null) {
-            mCity = bundle.getString(ARG_CITY);
-            location = (SearchLocation)bundle.get("location");
-            if(location!=null)
-                mReqLoc = location.getLocation();
+            fromPage = bundle.getString(ARG_FROM);
+            if (TextUtils.equals(fromPage, PREORDERACTIVITY)) {
+                mCity = bundle.getString(ARG_CITY);
+                location = (SearchLocation)bundle.get("location");
+                if(location!=null)
+                    mReqLoc = location.getLocation();
+            } else if (TextUtils.equals(fromPage, COMMONADDRACTIVITY)) {
+                addrType = CommonAddrType.getByDesc(bundle.getString(ARG_TYPE));
+            }
+
         }
 
 
@@ -116,13 +155,107 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
         //Init UI
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        getSupportActionBar().setTitle("搜索");
+
+        commonAttrLayout = (LinearLayout) findViewById(R.id.common_addr_layout);
+        editSearchKey = (EditText) findViewById(R.id.searchkey);
+        editSearchKey.setText("");
+
+        if (TextUtils.equals(fromPage, PREORDERACTIVITY)) {
+            commonAttrLayout.setVisibility(View.VISIBLE);
+            int mIconSize = this.getResources().getDimensionPixelSize(R.dimen.common_addr_icon_size);
+
+            tvAddrHome = (TextView) findViewById(R.id.addr_home_tv);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                homeIcon = this.getResources().getDrawable(R.mipmap.home, this.getTheme());
+            } else {
+                homeIcon = this.getResources().getDrawable(R.mipmap.home);
+            }
+            homeIcon.setColorFilter(this.getResources().getColor(R.color.orange_button), PorterDuff.Mode.MULTIPLY);
+            homeIcon.setBounds(0, 0, mIconSize, mIconSize);
+            TextViewCompat.setCompoundDrawablesRelative(tvAddrHome, homeIcon, null, null, null);
+
+            tvAddrCompany = (TextView) findViewById(R.id.addr_company_tv);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                companyIcon = this.getResources().getDrawable(R.mipmap.company, this.getTheme());
+            } else {
+                companyIcon = this.getResources().getDrawable(R.mipmap.company);
+            }
+            companyIcon.setColorFilter(this.getResources().getColor(R.color.orange_button), PorterDuff.Mode.MULTIPLY);
+            companyIcon.setBounds(0, 0, mIconSize, mIconSize);
+            TextViewCompat.setCompoundDrawablesRelative(tvAddrCompany, companyIcon, null, null, null);
+
+            editSearchKey.setHint("输入格式:长沙 湖南大学");
+        } else if (TextUtils.equals(fromPage, COMMONADDRACTIVITY)) {
+            commonAttrLayout.setVisibility(View.GONE);
+            switch (addrType) {
+                case HOME:
+                    editSearchKey.setHint("输入家庭住址");
+                    break;
+                case COMPANY:
+                    editSearchKey.setHint("输入公司地址");
+                    break;
+                default:
+                    break;
+            }
+        }
+
         keyWorldsView = (AutoCompleteTextView) findViewById(R.id.searchkey);
         sugAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_dropdown_item_1line);
         keyWorldsView.setAdapter(sugAdapter);
 
-        editSearchKey = (EditText) findViewById(R.id.searchkey);
+        cancelSearchBtn = (Button) findViewById(R.id.cancel_search);
+        cancelSearchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!TextUtils.isEmpty(keyWorldsView.getText().toString())) {
+                    keyWorldsView.setText("");
+                }
+            }
+        });
 
-        editSearchKey.setText("");
+        homeTabLayout = (FrameLayout)findViewById(R.id.homeTabLayout);
+        homeTabLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //点击常用地址”家“
+                String addrInfo = (String) SharedPreferencesUtils.getParam(mContext, SharedPreferencesUtils.COMMON_ADDR_HOME, "");
+                if (TextUtils.isEmpty(addrInfo)) {
+                    Toast.makeText(mContext, "请到\"设置-常用地址\"中设置家庭地址", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                AddrRowDescriptor descriptor = JSON.parseObject(addrInfo, AddrRowDescriptor.class);
+                Intent intent = new Intent();
+                SearchLocation location = new SearchLocation();
+                location.setLat(descriptor.latitude);
+                location.setLng(descriptor.longitude);
+                location.setAddress(descriptor.addrName);
+                intent.putExtra("location", location);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
+
+        companyTabLayout = (FrameLayout) findViewById(R.id.companyTabLayout);
+        companyTabLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //点击常用地址”公司“
+                String addrInfo = (String) SharedPreferencesUtils.getParam(mContext, SharedPreferencesUtils.COMMON_ADDR_COMPANY, "");
+                if (TextUtils.isEmpty(addrInfo)) {
+                    Toast.makeText(mContext, "请到\"设置-常用地址\"中设置公司地址", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                AddrRowDescriptor descriptor = JSON.parseObject(addrInfo, AddrRowDescriptor.class);
+                Intent intent = new Intent();
+                SearchLocation location = new SearchLocation();
+                location.setLat(descriptor.latitude);
+                location.setLng(descriptor.longitude);
+                location.setAddress(descriptor.addrName);
+                intent.putExtra("location", location);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -136,7 +269,7 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
         /**
          * 当输入关键字变化时，动态更新建议列表
          */
-        if(mReqLoc!=null) {
+        if(TextUtils.equals(fromPage, COMMONADDRACTIVITY) || mReqLoc!=null) {
             keyWorldsView.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void afterTextChanged(Editable keyWord) {
@@ -264,6 +397,8 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mPoiSearch != null) mPoiSearch.destroy();
+        if (mSuggestionSearch != null) mSuggestionSearch.destroy();
     }
 
     @Override
@@ -367,15 +502,35 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
             holder.mRLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mLoc = mDataset.get(position).location;
-                    Intent intent = new Intent();
-                    SearchLocation location = new SearchLocation();
-                    location.setLat(mLoc.latitude);
-                    location.setLng(mLoc.longitude);
-                    location.setAddress(mDataset.get(position).name);
-                    intent.putExtra("location", location);
-                    setResult(RESULT_OK, intent);
-                    finish();
+//                    Trace.e("hyman_poi", mDataset.get(position).address + " " + mDataset.get(position).name + " ");
+                    PoiInfo info = mDataset.get(position);
+                    mLoc = info.location;
+                    if (TextUtils.equals(fromPage, PREORDERACTIVITY)) {
+                        Intent intent = new Intent();
+                        SearchLocation location = new SearchLocation();
+                        location.setLat(mLoc.latitude);
+                        location.setLng(mLoc.longitude);
+                        location.setAddress(mDataset.get(position).name);
+                        intent.putExtra("location", location);
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    } else if (TextUtils.equals(fromPage, COMMONADDRACTIVITY)) {
+                        AddrRowDescriptor descriptor = new AddrRowDescriptor(R.mipmap.home, addrType.getDesc(), info.name, info.address, mLoc.latitude, mLoc.longitude);
+                        String commonAddrJson = JSON.toJSONString(descriptor);
+                        switch (addrType) {
+                            case HOME:
+                                SharedPreferencesUtils.setParam(mContext, SharedPreferencesUtils.COMMON_ADDR_HOME, commonAddrJson);
+                                break;
+                            case COMPANY:
+                                SharedPreferencesUtils.setParam(mContext, SharedPreferencesUtils.COMMON_ADDR_COMPANY, commonAddrJson);
+                                break;
+                        }
+                        Intent addrIntent = new Intent();
+                        addrIntent.putExtra("addrType", addrType.getDesc());
+                        addrIntent.putExtra("addrInfo", descriptor);
+                        setResult(RESULT_OK, addrIntent);
+                        finish();
+                    }
                 }
             });
         }
