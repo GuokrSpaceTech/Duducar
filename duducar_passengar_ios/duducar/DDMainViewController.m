@@ -443,6 +443,21 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 {
     if(_isLoginSuccess)
     {
+        //检查终点和起点
+        if(startLocation.name == nil )
+        {
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"请确认上车地点" delegate:self cancelButtonTitle:@"我知道了" otherButtonTitles:nil, nil];
+            [alert show];
+            return;
+        }
+        
+        if(endLocation.name == nil)
+        {
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"请输入下车地点" delegate:self cancelButtonTitle:@"我知道了" otherButtonTitles:nil, nil];
+            [alert show];
+            return;
+        }
+        
         CallCarViewController * carVC = [[CallCarViewController alloc]init] ;
         carVC.startLocation = startLocation;
         carVC.endLocation = endLocation;
@@ -522,7 +537,6 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
                 }
             }];
         
-            
             BMKReverseGeoCodeOption *reverseGeocodeSearchOption = [[BMKReverseGeoCodeOption alloc]init];
             reverseGeocodeSearchOption.reverseGeoPoint = currentLoc.location.coordinate;
             [_geocodesearch reverseGeoCode:reverseGeocodeSearchOption];
@@ -601,6 +615,9 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
                     else
                     //需要支付
                     {
+                        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"发现未支付订单，请支付" delegate:self cancelButtonTitle:@"我知道了" otherButtonTitles:nil, nil];
+                        [alert show];
+                        
                         PaymentViewController *payVC = [[PaymentViewController alloc]initWithNibName:@"PaymentViewController" bundle:nil];
                         [payVC setActiveOrder:activeOrder];
                         [payVC setDriver:driver];

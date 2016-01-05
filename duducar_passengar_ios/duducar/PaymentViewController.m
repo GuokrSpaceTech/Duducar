@@ -49,7 +49,12 @@ enum Paymethod{
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    /*
+     * Init UI
+     */
     //导航条
+    UIBarButtonItem * leftItem = [[UIBarButtonItem alloc]initWithTitle:@"取消支付" style:UIBarButtonItemStyleDone target:self action:@selector(back:)];
+    self.navigationItem.leftBarButtonItem = leftItem;
     self.navigationItem.title = @"支付";
     
     if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
@@ -81,6 +86,29 @@ enum Paymethod{
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark
+#pragma mark == User Action
+-(void)back:(id)sender
+{
+    //确认取消订单
+    
+    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"是否取消支付" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    [alert show];
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex ==0 )
+    {
+        NSLog(@"取消");
+    }
+    else if(buttonIndex == 1)
+    {
+        //确定, Back2MainView
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
 }
 
 - (IBAction)paymentAction:(id)sender {
@@ -140,10 +168,19 @@ enum Paymethod{
         [[AlipaySDK defaultService] payOrder:orderString fromScheme:appScheme callback:^(NSDictionary *resultDic) {
             //【callback处理支付结果】
             NSLog(@"reslut = %@",resultDic);
-            RatingViewController *rateVC = [[RatingViewController alloc] initWithNibName:@"RatingViewController" bundle:nil];
-            rateVC.activeOrder = _activeOrder;
-            rateVC.driver = _driver;
-            [self.navigationController pushViewController:rateVC animated:YES];
+            int retCode = (int)[resultDic objectForKey:@"resultStatus"];
+            NSString *retMsg = [resultDic objectForKey:@"result"];
+            //支付成功
+            if(retCode == 9000)
+            {
+                RatingViewController *rateVC = [[RatingViewController alloc] initWithNibName:@"RatingViewController" bundle:nil];
+                rateVC.activeOrder = _activeOrder;
+                rateVC.driver = _driver;
+                [self.navigationController pushViewController:rateVC animated:YES];
+            } else {
+                UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"支付未完成" message:retMsg delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alter show];
+            }
         }];
     }
 }
@@ -207,7 +244,5 @@ enum Paymethod{
             //Do nothing
         }
     }
-    
 }
-
 @end

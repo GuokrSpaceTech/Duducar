@@ -334,13 +334,17 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     }
     else if([command isEqualToString:@"cancel_order_resp"])
     {
+        //1 -成功 ，-101 原本没有订单 ，-102 已经开始计费，无法取消
         if([status integerValue] == 1 || [status intValue] == -101)
         {
             [self.navigationController popViewControllerAnimated:YES];
         }
-        else if([status intValue] == -102)
+        else if([status intValue] == -102) //
         {
             self.navigationItem.leftBarButtonItem.enabled = false;
+            
+            UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"已经开始计费，无法取消" delegate:self cancelButtonTitle:@"继续" otherButtonTitles:nil, nil];
+            [alert show];
             NSLog(@"不能取消");
         }
     }

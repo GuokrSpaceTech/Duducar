@@ -25,7 +25,12 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    /*
+     * Init UI
+     */
     //导航条
+    UIBarButtonItem * leftItem = [[UIBarButtonItem alloc]initWithTitle:@"取消" style:UIBarButtonItemStyleDone target:self action:@selector(back:)];
+    self.navigationItem.leftBarButtonItem = leftItem;
     self.navigationItem.title = @"评价";
     
     if ([self respondsToSelector:@selector(edgesForExtendedLayout)])
@@ -86,6 +91,28 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     // Pass the selected object to the new view controller.
 }
 */
+
+#pragma mark
+#pragma mark == User Action
+-(void)back:(id)sender
+{
+    //确认取消评价
+    UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"是否取消评价" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    [alert show];
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex ==0 )
+    {
+        NSLog(@"取消");
+    }
+    else if(buttonIndex == 1)
+    {
+        //确定, Back 2 MainView
+        [self.navigationController popToRootViewControllerAnimated:YES];
+    }
+}
 
 - (IBAction)rateValueChanged:(id)sender {
     int rateValue = _ratingViewUserRate.value;
