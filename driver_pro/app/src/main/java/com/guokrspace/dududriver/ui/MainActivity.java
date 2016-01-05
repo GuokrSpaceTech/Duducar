@@ -104,6 +104,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     private static final int ORDER_CANCELED = 104;
     private static final int ADJUST_STATUS = 105;
     private static final int UPDATE_GRABORDER = 106;
+    private static final int NETWORK_RECONNET = 107;
     //TODO:OTHER thing
 
     private PersonalInformation userInfo;
@@ -227,6 +228,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         mFilter.addAction(Constants.SERVICE_ACTION_MESAGE);
         mFilter.addAction(Constants.SERVICE_ACTION_NEW_ORDER);
         mFilter.addAction(Constants.SERVICE_ACTION_NETWORK_OUT);
+        mFilter.addAction(Constants.SERVICE_ACTION_NEWWORK_RECONNET);
         mFilter.setPriority(1000);
         registerReceiver(messageReceiver, mFilter);
     }
@@ -623,6 +625,11 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                     }
                 }
                 break;
+            case NETWORK_RECONNET:
+                if(CommonUtil.getCurrentStatus() == Constants.STATUS_WAIT){
+                    listenProgressView.showConnecting();
+                }
+                break;
             default:
                 break;
         }
@@ -751,11 +758,14 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 case Constants.SERVICE_ACTION_NETWORK_OUT: // 断开连接
                     //无语音提示
                     Toast.makeText(MainActivity.this, VoiceCommand.NETWORK_DISCONNECT + VoiceCommand.NETWORK_NOT_AVAILABLE, Toast.LENGTH_SHORT).show();
-                    if(CommonUtil.getCurrentStatus() == Constants.STATUS_WAIT){//
-                        CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
-                        mHandler.sendEmptyMessage(ADJUST_STATUS);
-                    }
                     abortBroadcast();
+                    break;
+                case Constants.SERVICE_ACTION_NEWWORK_RECONNET: //重新连接
+                    //TODO
+                    if(CommonUtil.getCurrentStatus() == Constants.STATUS_WAIT){
+                        //重新连接
+                        mHandler.sendEmptyMessage(NETWORK_RECONNET);
+                    }
                     break;
                 default:
                     return;

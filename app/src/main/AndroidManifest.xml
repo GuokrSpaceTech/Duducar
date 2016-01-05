@@ -67,8 +67,9 @@
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".SearchActivity"
-            android:label="@string/title_activity_search"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:launchMode="singleTop"
+            android:label="@string/title_activity_search">
 
         </activity>
 
