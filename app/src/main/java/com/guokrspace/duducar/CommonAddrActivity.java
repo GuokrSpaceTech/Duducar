@@ -9,10 +9,12 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.guokrspace.duducar.common.CommonAddrType;
 import com.guokrspace.duducar.model.AddrRowDescriptor;
 import com.guokrspace.duducar.model.HistoryOrdersResponse;
 import com.guokrspace.duducar.ui.RowViewGroup;
+import com.guokrspace.duducar.util.SharedPreferencesUtils;
 import com.guokrspace.duducar.util.Trace;
 
 import java.util.ArrayList;
@@ -43,8 +45,18 @@ public class CommonAddrActivity extends AppCompatActivity implements RowViewGrou
 
         this.rowGroupView = (RowViewGroup) findViewById(R.id.rowgroup);
         descriptors = new ArrayList<>();
-        descriptors.add(new AddrRowDescriptor(R.mipmap.home, "家", "点击设置", "", null, null));
-        descriptors.add(new AddrRowDescriptor(R.mipmap.company, "公司", "点击设置", "", null, null));
+        String homeAddr = (String) SharedPreferencesUtils.getParam(context, SharedPreferencesUtils.COMMON_ADDR_HOME, "");
+        if (!TextUtils.isEmpty(homeAddr)) {
+            descriptors.add(JSON.parseObject(homeAddr, AddrRowDescriptor.class));
+        } else {
+            descriptors.add(new AddrRowDescriptor(R.mipmap.home, "家", "点击设置", "", null, null));
+        }
+        String companyAddr = (String) SharedPreferencesUtils.getParam(context, SharedPreferencesUtils.COMMON_ADDR_COMPANY, "");
+        if (!TextUtils.isEmpty(companyAddr)) {
+            descriptors.add(JSON.parseObject(companyAddr, AddrRowDescriptor.class));
+        } else {
+            descriptors.add(new AddrRowDescriptor(R.mipmap.company, "公司", "点击设置", "", null, null));
+        }
         rowGroupView.initializeData(descriptors, this);
         rowGroupView.notifyDataChanged();
     }
@@ -84,8 +96,6 @@ public class CommonAddrActivity extends AppCompatActivity implements RowViewGrou
                         String addrDesc = data.getStringExtra("addrType");
                         AddrRowDescriptor addrDescriptor = (AddrRowDescriptor) data.getSerializableExtra("addrInfo");
                         for (AddrRowDescriptor descriptor : descriptors) {
-                            int iconResId = descriptor.iconResId;
-                            String rowName = descriptor.rowName;
                             if (TextUtils.equals(addrDesc, descriptor.rowName)) {
                                 descriptor.addrName = addrDescriptor.addrName;
                                 descriptor.addrDetail = addrDescriptor.addrDetail;

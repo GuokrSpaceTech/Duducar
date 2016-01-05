@@ -170,7 +170,7 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
             } else {
                 homeIcon = this.getResources().getDrawable(R.mipmap.home);
             }
-            homeIcon.setColorFilter(this.getResources().getColor(R.color.orange_button), PorterDuff.Mode.MULTIPLY);
+            homeIcon.setColorFilter(this.getResources().getColor(R.color.button_backgroud), PorterDuff.Mode.MULTIPLY);
             homeIcon.setBounds(0, 0, mIconSize, mIconSize);
             TextViewCompat.setCompoundDrawablesRelative(tvAddrHome, homeIcon, null, null, null);
 
@@ -180,7 +180,7 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
             } else {
                 companyIcon = this.getResources().getDrawable(R.mipmap.company);
             }
-            companyIcon.setColorFilter(this.getResources().getColor(R.color.orange_button), PorterDuff.Mode.MULTIPLY);
+            companyIcon.setColorFilter(this.getResources().getColor(R.color.button_backgroud), PorterDuff.Mode.MULTIPLY);
             companyIcon.setBounds(0, 0, mIconSize, mIconSize);
             TextViewCompat.setCompoundDrawablesRelative(tvAddrCompany, companyIcon, null, null, null);
 

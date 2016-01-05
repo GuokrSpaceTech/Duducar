@@ -82,7 +82,7 @@
                 android:drawablePadding="6dp"
                 android:gravity="center"
                 android:text="家"
-                android:textColor="@color/orange_button"
+                android:textColor="@color/sky_blue"
                 android:textSize="16sp" />
         </FrameLayout>
 
@@ -108,7 +108,7 @@
                 android:gravity="center"
                 android:text="公司"
                 android:layout_gravity="center"
-                android:textColor="@color/orange_button"
+                android:textColor="@color/sky_blue"
                 android:textSize="16sp" />
         </FrameLayout>
     </LinearLayout>
