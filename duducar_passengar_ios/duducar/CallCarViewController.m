@@ -54,7 +54,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
     _mapView.showsUserLocation = YES;//显示定位图层
     [self.view addSubview:_mapView];
     
-    startEndView = [[StartEndView alloc]initWithFrame:CGRectMake(20, 80, self.view.frame.size.width-40, 100)];
+    startEndView = [[StartEndView alloc]initWithFrame:CGRectMake(20, 80, self.view.frame.size.width-40, 80)];
     [self.view addSubview:startEndView];
     startEndView.startLabel.text = _startLocation.name;
     startEndView.endLabel.text = _endLocation.name;
@@ -227,7 +227,6 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
 -(void)back:(id)sender
 {
     //确认取消订单
-    
     UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"是否取消订单" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
     [alert show];
 }
@@ -237,7 +236,6 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
                             @"start_lat":@(_startLocation.coordinate2D.latitude), @"start_lng":@(_startLocation.coordinate2D.longitude),
                             @"destination_lat":@(_endLocation.coordinate2D.latitude), @"destination_lng":@(_endLocation.coordinate2D.longitude),
                             @"pre_mileage":@(0), @"pre_price":@(65), @"car_type":@(1)};
-    
     [[DDSocket currentSocket] sendRequest:param];
 }
 #pragma mark
@@ -367,7 +365,18 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
             pointAnnotation.coordinate = currentUserLocation.location.coordinate;
             pointAnnotation.title = [NSString stringWithFormat:@"当前里程%@, 当前金额:%@", currentMileage, currentCharge];
             [_mapView addAnnotation:pointAnnotation];
+            [_mapView selectAnnotation:pointAnnotation animated:YES];
         }
+    }
+    else if([command isEqualToString:@"driver_position"])
+    {
+        BMKPointAnnotation *pointAnnotation = [[BMKPointAnnotation alloc]init];
+        NSString *lat = [responseDict objectForKey:@"lat"];
+        NSString *lng = [responseDict objectForKey:@"lng"];
+        double dlat = [lat doubleValue];
+        double dlng = [lng doubleValue];
+        pointAnnotation.coordinate = CLLocationCoordinate2DMake(dlat, dlng);
+        [_mapView addAnnotation:pointAnnotation];
     }
     else if([command isEqualToString:@"order_end"])
     {

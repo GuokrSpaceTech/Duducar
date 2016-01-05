@@ -22,12 +22,12 @@
         
         UIImageView * greenImageView = [[UIImageView alloc]init];
         greenImageView.image = [UIImage imageNamed:@"startIndicator"];
-        greenImageView.contentMode=UIViewContentModeScaleToFill;
+        greenImageView.contentMode=UIViewContentModeScaleAspectFill;
         [self addSubview:greenImageView];
         
         UIImageView * redImageView = [[UIImageView alloc]init];
         redImageView.image = [UIImage imageNamed:@"endIndicator"];
-        redImageView.contentMode=UIViewContentModeScaleToFill;
+        redImageView.contentMode=UIViewContentModeScaleAspectFill;
         [self addSubview:redImageView];
         
         [greenImageView mas_makeConstraints:^(MASConstraintMaker *make) {

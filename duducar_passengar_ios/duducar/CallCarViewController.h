@@ -13,6 +13,6 @@
 @interface CallCarViewController : UIViewController
 @property (nonatomic,strong)Location * startLocation;
 @property (nonatomic,strong)Location * endLocation;
-@property (nonatomic,strong)    Driver * orderDriver;
-@property (nonatomic,copy) NSDictionary *activeOrder;
+@property (nonatomic,strong)  Driver * orderDriver;
+@property (nonatomic,copy) NSDictionary * activeOrder;
 @end

@@ -29,7 +29,7 @@
         _avatorImageView.clipsToBounds = YES;
         _picImageView = [[UIImageView alloc]init];
         _picImageView.layer.cornerRadius = 30;
-        _picImageView.backgroundColor = [UIColor redColor];
+        _picImageView.backgroundColor = [UIColor whiteColor];
         _picImageView.clipsToBounds = YES;
         [self addSubview:_picImageView];
         
@@ -95,8 +95,8 @@
 -(void)setDriver:(Driver *)driver
 {
     _driver = driver;
-    [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:_driver.avatar] placeholderImage:nil];
-    [_picImageView sd_setImageWithURL:[NSURL URLWithString:_driver.picture] placeholderImage:nil];
+    [_avatorImageView sd_setImageWithURL:[NSURL URLWithString:_driver.avatar] placeholderImage:[UIImage imageNamed:@"ic_account_circle"]];
+    [_picImageView sd_setImageWithURL:[NSURL URLWithString:_driver.picture] placeholderImage:[UIImage imageNamed:@"ic_account_circle"]];
     _driverNameLabel.text = _driver.name;
     _carNameLabel.text = _driver.carDescription;
     _carNumLabel.text = [NSString stringWithFormat:@"车牌号：%@",_driver.plate];

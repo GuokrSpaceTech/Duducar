@@ -630,7 +630,7 @@ static NSString * responseNotificationName = @"DDSocketResponseNotification";
             _isLoginSuccess = false;
         }
     }
-    //Socket直接存baseinfo到数据库
+//    Socket直接存baseinfo到数据库
 //    else if([command isEqualToString:@"baseinfo_resp"])
 //    {
 //        if([status intValue] == 1)
