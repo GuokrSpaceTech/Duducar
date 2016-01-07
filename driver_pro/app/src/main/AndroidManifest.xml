@@ -226,7 +226,8 @@
 
         <activity
             android:name=".ui.NaviActivity"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat">
         </activity>
 
         <service

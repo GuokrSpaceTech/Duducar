@@ -858,7 +858,9 @@ public class PostOrderActivity extends AppCompatActivity {
                         //Cancel TripOverOrder
                         cancelOrder();
                         // Try again
-                        requestCar();
+//                        requestCar();
+                        showToast("请求异常...请重新叫车");
+                        finish();
                     }
 
                     @Override
@@ -866,7 +868,9 @@ public class PostOrderActivity extends AppCompatActivity {
                         //Test: Simulate Success
                         cancelOrder();
                         // Try again
-                        requestCar();
+//                        requestCar();
+                        showToast("连接服务器失败...");
+                        finish();
                     }
                 });
     }

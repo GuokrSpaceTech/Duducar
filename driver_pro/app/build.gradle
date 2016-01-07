@@ -11,8 +11,8 @@ android {
         targetSdkVersion 23
         //  Enabling multidex support.
         multiDexEnabled true
-        versionCode 3
-        versionName "1.0.3"
+        versionCode 6
+        versionName "1.0.6"
     }
 
     sourceSets {
