@@ -227,7 +227,7 @@
         <activity
             android:name=".ui.NaviActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Base.Theme.AppCompat.Light">
+            android:theme="@style/Theme.AppCompat.Light">
         </activity>
 
         <service
@@ -239,6 +239,7 @@
         <activity
             android:name=".ui.NewsActivity"
             android:label="@string/title_activity_news"
+            android:screenOrientation="portrait"
             android:theme="@style/AppBaseTheme" >
         </activity>
     </application>

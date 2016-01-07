@@ -329,5 +329,10 @@ public class NewsActivity extends AppCompatActivity implements Handler.Callback{
         }
         return news;
     }
+
+    @Override
+    public void setRequestedOrientation(int requestedOrientation) {
+        return;
+    }
 }
 
