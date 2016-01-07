@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -300,10 +299,11 @@ public class LoginActivity extends AppCompatActivity implements
         switch (msg.what) {
             case HANDLER_REGISTER_SUCCESS:
                 if (mDialog != null) mDialog.dismiss();
-                threadStopFlag = true;
+//                threadStopFlag = true;
                 mPassWordEt.requestFocus();
                 break;
             case HANDLER_REGISTER_FAILURE:
+                if (mDialog != null) mDialog.dismiss();
                 WinToast.toast(LoginActivity.this, "获取验证码失败");
                 threadStopFlag = true;
                 break;
@@ -426,6 +426,10 @@ public class LoginActivity extends AppCompatActivity implements
             public void run() {
                 int seconds_left = max_seconds;
                 while (seconds_left > 0) {
+                    if(threadStopFlag){
+                        mHandler.sendEmptyMessage(HANDLER_TIMER_TIMEOUT);
+                        return;
+                    }
                     seconds_left--;
                     mHandler.sendMessage(mHandler.obtainMessage(HANDLER_TIMERTICK, seconds_left + "秒"));
                     try {

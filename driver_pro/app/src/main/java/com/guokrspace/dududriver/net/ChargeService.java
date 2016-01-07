@@ -18,6 +18,7 @@ import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.util.CommonUtil;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -42,6 +43,7 @@ public class ChargeService extends Service {
 
     int times;
     double preDis;
+    long preTime;
     double secDistance;
     double tmpDistance;
     Timer calTimer;
@@ -99,11 +101,12 @@ public class ChargeService extends Service {
         minutes = 0;
         preLat = CommonUtil.getCurLat();
         preLng = CommonUtil.getCurLng();
+        preTime = CommonUtil.getCurTime();
 
         times = 0;
         preDis = 0;
-        secDistance=0d;
-        tmpDistance=0d;
+        secDistance = 0d;
+        tmpDistance = 0d;
         calTimer = new Timer();
         calTimerTask = new TimerTask() {
             @Override
@@ -112,12 +115,15 @@ public class ChargeService extends Service {
                 secDistance = DistanceUtil.getDistance(new LatLng(preLat, preLng), new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng()));
 //                if ((secDistance * 1000 / (System.currentTimeMillis() - CommonUtil.getCurTime())) >= Constants.STRANGEDISTANCE) { //这一次的距离跳转异常
                     //drop it
-                if(secDistance >= Constants.STRANGEDISTANCE){
+                double secs = new BigDecimal(((System.currentTimeMillis() - preTime) / 1000)).setScale(1, RoundingMode.HALF_UP).doubleValue();
+
+                if(secDistance / secs >= Constants.STRANGEDISTANCE){
                     tmpDistance += preDis;
                 } else {
                     tmpDistance += secDistance;
                     preDis = secDistance;
                 }
+                preTime = System.currentTimeMillis();
 
                 if (CommonUtil.isCharging) {//开车中
                     if (++times == 12) {//1 min
@@ -135,7 +141,8 @@ public class ChargeService extends Service {
                     preLng = CommonUtil.getCurLng();
                     //TODO:通知界面更新,发送到乘客端
                     CommonUtil.curPrice = CommonUtil.countPrice(CommonUtil.curDistance, CommonUtil.curLowSpeedTime);
-                    CommonUtil.cur5sDistance = secDistance;//5秒的距离
+                    CommonUtil.curChargeTime = secs;
+                    CommonUtil.cur5sDistance = secDistance /secs;//每秒的距离
                     sendBroadCast(Constants.SERVICE_ACTION_UPDATE_CHARGE);
                     mHandler.sendEmptyMessage(UPDATE_CHARGE);
                 } else { //非法状态下停止

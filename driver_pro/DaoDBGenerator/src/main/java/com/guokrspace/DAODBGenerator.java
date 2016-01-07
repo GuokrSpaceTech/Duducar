@@ -23,7 +23,7 @@ public class DAODBGenerator {
         addBaseNotice(schema);
         addBill(schema);
 
-        new DaoGenerator().generateAll(schema, "/Users/hyman/Duducar/driver_pro/app/src/main/java");
+        new DaoGenerator().generateAll(schema, "/Users/daddyfang/Duducar/driver_pro/app/src/main/java");
     }
 
     private static void addBill(Schema schema) {
@@ -41,6 +41,7 @@ public class DAODBGenerator {
         person.addIdProperty().autoincrement();
         person.addStringProperty("token");
         person.addStringProperty("mobile");
+        person.addStringProperty("password");
     }
 
     private static void addOrder(Schema schema){

@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Entity mapped to table ORDER_RECORD.
  */
-public class OrderRecord implements Serializable {
+public class OrderRecord implements Serializable{
 
     private Long id;
     private String orderNum;

@@ -9,6 +9,7 @@ public class PersonalInformation {
     private Long id;
     private String token;
     private String mobile;
+    private String password;
 
     public PersonalInformation() {
     }
@@ -17,10 +18,11 @@ public class PersonalInformation {
         this.id = id;
     }
 
-    public PersonalInformation(Long id, String token, String mobile) {
+    public PersonalInformation(Long id, String token, String mobile, String password) {
         this.id = id;
         this.token = token;
         this.mobile = mobile;
+        this.password = password;
     }
 
     public Long getId() {
@@ -45,6 +47,14 @@ public class PersonalInformation {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 }

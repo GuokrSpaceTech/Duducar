@@ -163,6 +163,7 @@ public class CommonUtil {
     public static double curBaseDistance;
     public static int curBaseLowTime;
     public static double curPrice;
+    public static double curChargeTime;
     public static double cur5sDistance;
     public static double curDistance;
     public static int curLowSpeedTime;

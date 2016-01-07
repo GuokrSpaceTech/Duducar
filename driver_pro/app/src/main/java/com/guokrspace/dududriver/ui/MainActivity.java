@@ -50,7 +50,6 @@ import com.guokrspace.dududriver.util.LogUtil;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 import com.guokrspace.dududriver.util.VoiceUtil;
 import com.guokrspace.dududriver.view.ListenProgressView;
-import com.umeng.analytics.MobclickAgent;
 import com.viewpagerindicator.TabPageIndicator;
 
 import org.json.JSONObject;
@@ -140,16 +139,15 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         List localUsers = DuduDriverApplication.getInstance().
                 mDaoSession.getPersonalInformationDao().
                 queryBuilder().list();
-        if (localUsers != null && localUsers.size() > 0) {
+        if (localUsers != null && localUsers.size() > 0 && ((PersonalInformation)localUsers.get(0)).getToken() != null) {
             userInfo = (PersonalInformation) localUsers.get(0);
             if(!CommonUtil.isServiceOn()){
                 startService(duduService);
             }
-//            doLogin(userInfo);
         } else {
-            //用户信息不存在,重新注册页面
+            //用户信息不存在或注销,重新注册页面
+            Log.e("daddy main ", "no persion ");
             startActivity(new Intent(this, LoginActivity.class));
-//            finish();
         }
     }
 
@@ -162,6 +160,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
          * 用户不在线，就进行登陆
          *
          */
+
         isOnline = (boolean) SharedPreferencesUtils.getParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, false);
         if (DuduDriverApplication.getInstance().initPersonalInformation()) {
             if (!isNetworkAvailable()) {
@@ -538,6 +537,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 }
                 break;
             case NEW_ORDER_ARRIVE:
+                Log.e("daddy new order", "newo rder arrive");
                 if(!isInvoke2 && System.currentTimeMillis() - lastOrderTime < 6 * 1000){ // 连续的订单
                     break;
                 }
@@ -748,7 +748,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                         dialog = new MainOrderDialog(context, CommonUtil.getCurOrderItem());
                         dialog.show(getSupportFragmentManager(), "mainorderdialog");
                     }
-                    abortBroadcast();
+//                    abortBroadcast();
                     break;
                 case Constants.SERVICE_ACTION_NEW_ORDER: //收到新的订单  来自服务的消息
                     Log.e("daddy", "got a new order");

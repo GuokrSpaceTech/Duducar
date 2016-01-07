@@ -232,7 +232,7 @@ public class DuduService extends Service {
                     }
                 }
                 CommonUtil.setCurOrderItem(orderItem);
-//                Log.e("Daddy ", messageBody + "  " + orderItem.getCMD() + " " + orderItem.getOrder().getDestination_lat() + "::" + orderItem.getOrder().getDestination_lng());
+                Log.e("Daddy ", messageBody + "  " + orderItem.getCMD() + " " + orderItem.getOrder().getDestination_lat() + "::" + orderItem.getOrder().getDestination_lng());
                 //向主界面发送广播
                 sendBroadCast(Constants.SERVICE_ACTION_NEW_ORDER);
             }
@@ -291,7 +291,7 @@ public class DuduService extends Service {
                     List localUsers = DuduDriverApplication.getInstance().
                             mDaoSession.getPersonalInformationDao().
                             queryBuilder().list();
-                    if(localUsers != null && localUsers.size() > 0){
+                    if(localUsers != null && localUsers.size() > 0 && ((PersonalInformation)localUsers.get(0)).getToken() != null){
                         PersonalInformation user = (PersonalInformation) localUsers.get(0);
                         SocketClient.getInstance().autoLoginRequest(user.getMobile(), "1", user.getToken(), new ResponseHandler(Looper.myLooper()) {
                             @Override

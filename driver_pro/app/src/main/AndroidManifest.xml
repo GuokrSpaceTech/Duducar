@@ -226,7 +226,8 @@
 
         <activity
             android:name=".ui.NaviActivity"
-            android:screenOrientation="portrait" >
+            android:screenOrientation="portrait"
+            android:theme="@style/Base.Theme.AppCompat.Light">
         </activity>
 
         <service
@@ -235,6 +236,11 @@
             android:exported="true" >
         </service>
 
+        <activity
+            android:name=".ui.NewsActivity"
+            android:label="@string/title_activity_news"
+            android:theme="@style/AppBaseTheme" >
+        </activity>
     </application>
 
 </manifest>

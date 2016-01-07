@@ -245,28 +245,13 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                 double price = CommonUtil.curPrice;
                 double dis = CommonUtil.cur5sDistance;
                 double disA = CommonUtil.curDistance;
+                double secs = CommonUtil.curChargeTime;
                 if(curCharge <= price) {
                     curCharge = new BigDecimal(price).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
                     dis = new BigDecimal(dis).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                     disA = new BigDecimal(disA).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 
-                    btnConfirm.setText(dis + "m/5s, 共" + disA +" 米 , " + curCharge + "元   到达目的地");
-//                    SocketClient.getInstance().sendCurrentChargeDetail(curCharge, curDistance/1000, lowSpeedTime, new ResponseHandler(Looper.myLooper()) {
-//                        @Override
-//                        public void onSuccess(String messageBody) {
-//                        }
-//                        @Override
-//                        public void onFailure(String error) {
-//                            if(error.contains("not Order")){ // 订单异常
-//                                VoiceUtil.startSpeaking(VoiceCommand.ORDER_STATUS_EXCEPTION);
-//                                unbindService(connCharge);
-//                                finish();
-//                            }
-//                        }
-//                        @Override
-//                        public void onTimeout() {
-//                        }
-//                    });
+                    btnConfirm.setText(dis + "m/s, 共" + disA +" 米 , " + secs + " s, " + curCharge + "元");
                 }
                 Log.e("daddy", "current charge");
                 break;
@@ -294,8 +279,8 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                     isFirstTrack = false;
                 }
 
-                if(Math.abs(currentLatLng.latitude- CommonUtil.getCurLatLng().latitude) > 0.001
-                        || Math.abs(currentLatLng.longitude - CommonUtil.getCurLatLng().longitude) > 0.001 ){
+                if(Math.abs(currentLatLng.latitude - CommonUtil.getCurLatLng().latitude) > 0.002
+                        || Math.abs(currentLatLng.longitude - CommonUtil.getCurLatLng().longitude) > 0.002 ){
                     //异常定位
                     currentLatLng = CommonUtil.getCurLatLng();
                     break;
@@ -911,58 +896,8 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                         isNavigationOk = false;
                     }
 
-                }, null/*mTTSCallback*/);
+                }, null);
     }
-    //导航语音回调
-//    private BNOuterTTSPlayerCallback mTTSCallback = new BNOuterTTSPlayerCallback() {
-//
-//        @Override
-//        public void stopTTS() {
-//            // TODO Auto-generated method stub
-//        }
-//
-//        @Override
-//        public void resumeTTS() {
-//            // TODO Auto-generated method stub
-//        }
-//
-//        @Override
-//        public void releaseTTSPlayer() {
-//            // TODO Auto-generated method stub
-//        }
-//
-//        @Override
-//        public int playTTSText(String speech, int bPreempt) {
-//            // TODO Auto-generated method stub
-//            return 0;
-//        }
-//
-//        @Override
-//        public void phoneHangUp() {
-//            // TODO Auto-generated method stub
-//        }
-//
-//        @Override
-//        public void phoneCalling() {
-//            // TODO Auto-generated method stub
-//        }
-//
-//        @Override
-//        public void pauseTTS() {
-//            // TODO Auto-generated method stub
-//        }
-//
-//        @Override
-//        public void initTTSPlayer() {
-//            // TODO Auto-generated method stub
-//        }
-//
-//        @Override
-//        public int getTTSState() {
-//            // TODO Auto-generated method stub
-//            return 0;
-//        }
-//    };
 
     private boolean initDirs() {
         mSDCardPath = getSdcardDir();

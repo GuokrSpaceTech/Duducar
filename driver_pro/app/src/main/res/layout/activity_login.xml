@@ -36,46 +36,136 @@
 
 
         <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingTop="10dp">
+
+            <TextView android:id="@+id/tv_regisister"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="注 册"
+                android:textColor="@color/de_action_white"
+                android:padding="10dp"/>
+            <TextView android:id="@+id/tv_login"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="登 陆"
+                android:textColor="@color/translucent_white"
+                android:padding="10dp"/>
+            <TextView android:id="@+id/tv_findpwd"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:text="重置密码"
+                android:textColor="@color/translucent_white"
+                android:padding="10dp"/>
+
+
+        </LinearLayout>
+
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="72dip"
-            android:orientation="vertical">
+            android:layout_marginTop="26dip">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <LinearLayout android:id="@+id/ll_register"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <RelativeLayout
-                    android:id="@+id/liner1"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginRight="30dip"
-                    android:layout_weight="70"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
                     android:orientation="horizontal">
 
+                    <RelativeLayout
+                        android:id="@+id/liner1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="30dip"
+                        android:layout_weight="70"
+                        android:orientation="horizontal">
+
+
+                        <EditText
+                            android:id="@+id/app_username_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rc_ed_public_service_search_selector"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:phoneNumber="true"
+                            android:hint="@string/app_login_show"
+                            android:singleLine="true"
+                            android:textColor="@color/main_regist"
+                            android:textColorHint="@color/group_list_gray" />
+
+                        <FrameLayout
+                            android:id="@+id/fr_username_delete"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignRight="@+id/app_username_et"
+                            android:layout_centerVertical="true"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="5dip"
+                                android:src="@drawable/de_register_delete" />
+                        </FrameLayout>
+
+                    </RelativeLayout>
+
+                    <Button
+                        android:id="@+id/app_regcode_bt"
+                        style="@style/DemoTextStyleSmall"
+                        android:layout_width="150dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="30"
+                        android:background="@drawable/de_login_selector"
+                        android:text="@string/app_req_code"
+                        android:textColor="@color/main_regist" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/liner2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginRight="30dip"
+                    android:layout_marginTop="37dip"
+                    android:orientation="horizontal">
 
                     <EditText
-                        android:id="@+id/app_username_et"
-                        android:layout_width="match_parent"
+                        android:id="@+id/app_password_et"
+                        android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/rc_ed_public_service_search_selector"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
-                        android:phoneNumber="true"
-                        android:hint="@string/app_login_show"
+                        android:inputType="textPassword"
+                        android:hint="@string/app_set_pwd"
                         android:singleLine="true"
                         android:textColor="@color/main_regist"
-                        android:textColorHint="@color/main_regist" />
+                        android:textColorHint="@color/group_list_gray" />
 
                     <FrameLayout
-                        android:id="@+id/fr_username_delete"
+                        android:id="@+id/fr_pass_delete"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignRight="@+id/app_username_et"
+                        android:layout_alignRight="@+id/app_password_et"
                         android:layout_centerVertical="true"
                         android:visibility="gone">
 
@@ -83,76 +173,332 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:padding="5dip"
+                            android:scaleType="fitXY"
                             android:src="@drawable/de_register_delete" />
                     </FrameLayout>
-
                 </RelativeLayout>
 
+                <RelativeLayout
+                    android:id="@+id/liner3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginRight="30dip"
+                    android:layout_marginTop="37dip"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/app_password_verify_et"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rc_ed_public_service_search_selector"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:digits="1234567890"
+                        android:hint="@string/app_login_password"
+                        android:inputType="number"
+                        android:singleLine="true"
+                        android:textColor="@color/main_regist"
+                        android:textColorHint="@color/group_list_gray" />
+
+                    <FrameLayout
+                        android:id="@+id/fr_pass_verify_delete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignRight="@+id/app_password_verify_et"
+                        android:layout_centerVertical="true"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dip"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/de_register_delete" />
+                    </FrameLayout>
+                </RelativeLayout>
+
+
                 <Button
-                    android:id="@+id/app_regcode_bt"
-                    style="@style/DemoTextStyleSmall"
-                    android:layout_width="150dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="30"
+                    android:id="@+id/app_sign_in_bt"
+                    style="@style/DemoTextStyleBig1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginRight="30dip"
+                    android:layout_marginTop="24dip"
                     android:background="@drawable/de_login_selector"
-                    android:text="@string/app_req_code"
+                    android:text="@string/app_sign_up"
                     android:textColor="@color/main_regist" />
             </LinearLayout>
 
-            <RelativeLayout
-                android:id="@+id/liner2"
+            <LinearLayout android:id="@+id/ll_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dip"
-                android:layout_marginRight="30dip"
-                android:layout_marginTop="37dip"
-                android:orientation="horizontal">
+                android:visibility="gone"
+                android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/app_password_et"
-                    android:layout_width="fill_parent"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rc_ed_public_service_search_selector"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:digits="1234567890"
-                    android:hint="@string/app_login_password"
-                    android:inputType="numberPassword"
-                    android:singleLine="true"
-                    android:textColor="@color/main_regist"
-                    android:textColorHint="@color/main_regist" />
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:orientation="horizontal">
 
-                <FrameLayout
-                    android:id="@+id/fr_pass_delete"
-                    android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:id="@+id/liner4"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+
+                        android:layout_weight="70"
+                        android:orientation="horizontal">
+
+
+                        <EditText
+                            android:id="@+id/app_login_username_et"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rc_ed_public_service_search_selector"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:phoneNumber="true"
+                            android:hint="@string/app_login_show"
+                            android:singleLine="true"
+                            android:textColor="@color/main_regist"
+                            android:textColorHint="@color/group_list_gray" />
+
+                        <FrameLayout
+                            android:id="@+id/fr_login_username_delete"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignRight="@+id/app_login_username_et"
+                            android:layout_centerVertical="true"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="5dip"
+                                android:src="@drawable/de_register_delete" />
+                        </FrameLayout>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/liner5"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignRight="@+id/app_password_et"
-                    android:layout_centerVertical="true"
-                    android:visibility="gone">
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginRight="30dip"
+                    android:layout_marginTop="37dip"
+                    android:orientation="horizontal">
 
-                    <ImageView
+                    <EditText
+                        android:id="@+id/app_login_password_et"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rc_ed_public_service_search_selector"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:hint="@string/app_password"
+                        android:inputType="textPassword"
+                        android:singleLine="true"
+                        android:textColor="@color/main_regist"
+                        android:textColorHint="@color/group_list_gray" />
+
+                    <FrameLayout
+                        android:id="@+id/fr_login_pass_delete"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="5dip"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/de_register_delete" />
-                </FrameLayout>
-            </RelativeLayout>
+                        android:layout_alignRight="@+id/app_login_password_et"
+                        android:layout_centerVertical="true"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dip"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/de_register_delete" />
+                    </FrameLayout>
+                </RelativeLayout>
 
 
-            <Button
-                android:id="@+id/app_sign_in_bt"
-                style="@style/DemoTextStyleBig1"
+                <Button
+                    android:id="@+id/app_sign_up_bt"
+                    style="@style/DemoTextStyleBig1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginRight="30dip"
+                    android:layout_marginTop="24dip"
+                    android:background="@drawable/de_login_selector"
+                    android:text="@string/app_sign_in"
+                    android:textColor="@color/main_regist" />
+            </LinearLayout>
+
+            <LinearLayout android:id="@+id/ll_pwd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dip"
-                android:layout_marginRight="30dip"
-                android:layout_marginTop="24dip"
-                android:background="@drawable/de_login_selector"
-                android:text="@string/app_sign_up"
-                android:textColor="@color/main_regist" />
+                android:visibility="gone"
+                android:orientation="vertical">
 
-        </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:id="@+id/liner6"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="30dip"
+                        android:layout_weight="70"
+                        android:orientation="horizontal">
+
+
+                        <EditText
+                            android:id="@+id/app_pwd_username_et"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rc_ed_public_service_search_selector"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:phoneNumber="true"
+                            android:hint="@string/app_login_show"
+                            android:singleLine="true"
+                            android:textColor="@color/main_regist"
+                            android:textColorHint="@color/group_list_gray" />
+
+                        <FrameLayout
+                            android:id="@+id/fr_pwd_username_delete"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignRight="@+id/app_pwd_username_et"
+                            android:layout_centerVertical="true"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="5dip"
+                                android:src="@drawable/de_register_delete" />
+                        </FrameLayout>
+
+                    </RelativeLayout>
+
+                    <Button
+                        android:id="@+id/app_pwd_regcode_bt"
+                        style="@style/DemoTextStyleSmall"
+                        android:layout_width="150dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="30"
+                        android:background="@drawable/de_login_selector"
+                        android:text="@string/app_req_code"
+                        android:textColor="@color/main_regist" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/liner7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginRight="30dip"
+                    android:layout_marginTop="26dip"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/app_pwd_password_et"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rc_ed_public_service_search_selector"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:inputType="textPassword"
+                        android:hint="@string/app_reset_pwd"
+                        android:singleLine="true"
+                        android:textColor="@color/main_regist"
+                        android:textColorHint="@color/group_list_gray" />
+
+                    <FrameLayout
+                        android:id="@+id/fr_pwd_pass_delete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignRight="@+id/app_pwd_password_et"
+                        android:layout_centerVertical="true"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dip"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/de_register_delete" />
+                    </FrameLayout>
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/liner8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginRight="30dip"
+                    android:layout_marginTop="26dip"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/app_pwd_register_et"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rc_ed_public_service_search_selector"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:digits="1234567890"
+                        android:hint="@string/app_login_password"
+                        android:inputType="number"
+                        android:singleLine="true"
+                        android:textColor="@color/main_regist"
+                        android:textColorHint="@color/group_list_gray" />
+
+                    <FrameLayout
+                        android:id="@+id/fr_pwd_register_delete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignRight="@+id/app_pwd_register_et"
+                        android:layout_centerVertical="true"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="5dip"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/de_register_delete" />
+                    </FrameLayout>
+                </RelativeLayout>
+
+
+                <Button
+                    android:id="@+id/app_sign_pwd_bt"
+                    style="@style/DemoTextStyleBig1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dip"
+                    android:layout_marginRight="30dip"
+                    android:layout_marginTop="24dip"
+                    android:background="@drawable/de_login_selector"
+                    android:text="@string/app_confirm"
+                    android:textColor="@color/main_regist" />
+            </LinearLayout>
+
+        </FrameLayout>
     </LinearLayout>
 </RelativeLayout>

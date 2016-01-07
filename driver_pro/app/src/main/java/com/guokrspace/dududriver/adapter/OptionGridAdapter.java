@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.MoreOptionType;
+import com.guokrspace.dududriver.ui.NewsActivity;
 import com.guokrspace.dududriver.ui.OrderMapActivity;
 import com.guokrspace.dududriver.ui.SettingActivity;
 import com.guokrspace.dududriver.ui.WebViewActivity;
@@ -115,7 +116,7 @@ public class OptionGridAdapter extends RecyclerView.Adapter<OptionGridAdapter.It
                 context.startActivity(new Intent(context, OrderMapActivity.class));
                 break;
             case MESSAGE:
-
+                context.startActivity(new Intent(context, NewsActivity.class));
                 break;
             case GUIDE:
                 Intent guideIntent = new Intent(context, WebViewActivity.class);
