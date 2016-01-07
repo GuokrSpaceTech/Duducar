@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.guokrspace.duducar.R;
-import com.guokrspace.duducar.communication.http.model.IdAndValueModel;
+import com.guokrspace.duducar.model.IdAndValueModel;
 import com.guokrspace.duducar.ui.CheckBox;
 
 import java.util.HashSet;

@@ -31,7 +31,7 @@ import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
 import com.guokrspace.duducar.communication.http.DuDuResultCallBack;
 import com.guokrspace.duducar.communication.http.HttpUrls;
-import com.guokrspace.duducar.communication.http.model.UnifiedorderResp;
+import com.guokrspace.duducar.model.UnifiedorderResp;
 import com.guokrspace.duducar.communication.message.DriverDetail;
 import com.guokrspace.duducar.communication.message.MessageTag;
 import com.guokrspace.duducar.communication.message.OrderDetail;

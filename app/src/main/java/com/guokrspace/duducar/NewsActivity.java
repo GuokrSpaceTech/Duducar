@@ -18,14 +18,13 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.guokrspace.duducar.adapter.NewsAdapter;
-import com.guokrspace.duducar.communication.http.model.News;
+import com.guokrspace.duducar.model.News;
 import com.umeng.analytics.MobclickAgent;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 
 /**
  * Created by hyman on 15/12/22.

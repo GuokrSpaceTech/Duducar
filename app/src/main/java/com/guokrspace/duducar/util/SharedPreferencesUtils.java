@@ -41,6 +41,10 @@ public class SharedPreferencesUtils {
 
 	public static final String URL_CLAUSE = "webview_clause";
 
+	public static final String COMMON_ADDR_HOME = "common_addr_home";
+
+	public static final String COMMON_ADDR_COMPANY = "common_addr_company";
+
 	/**
 	 * 保存单个数据的方法，我们需要拿到保存数据的具体类型，然后根据类型调用不同的保存方法
 	 * 

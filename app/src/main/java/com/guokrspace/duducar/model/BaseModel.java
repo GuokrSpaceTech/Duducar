@@ -3,7 +3,7 @@
  * @author hyman
  *
  */
-package com.guokrspace.duducar.communication.http.model;
+package com.guokrspace.duducar.model;
 
 import java.lang.reflect.Field;
 

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    android:background="@drawable/setting_item_bg_selector">
+
+    <ImageView
+        android:id="@+id/ca_row_icon"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_centerVertical="true"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/home"/>
+
+    <TextView
+        android:id="@+id/ca_row_name"
+        android:layout_width="0dp"
+        android:layout_weight="10"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="家"
+        android:textColor="@color/gray_text"
+        android:textSize="18sp" />
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_weight="50"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/address_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="长沙火车南站"
+            android:textSize="18sp"
+            android:textColor="@color/sky_blue"
+            android:layout_marginBottom="6dp"/>
+
+        <TextView
+            android:id="@+id/address_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/address_name"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="雨花区花侯路长沙火车南站"
+            android:textSize="15sp"
+            android:textColor="@android:color/black"/>
+
+    </RelativeLayout>
+</LinearLayout>

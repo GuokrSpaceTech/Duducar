@@ -381,6 +381,7 @@ public class PreOrderActivity extends AppCompatActivity
             public void onClick(View view) {
 
                 Intent intent = new Intent(mContext, SearchActivity.class);
+                intent.putExtra("from", SearchActivity.PREORDERACTIVITY);
                 intent.putExtra("location", start);
                 intent.putExtra("city", city);
                 startActivityForResult(intent, ACTIVITY_SEARCH_START_REQUEST);
@@ -425,6 +426,7 @@ public class PreOrderActivity extends AppCompatActivity
                             }
                         }  //正常跳转
                         Intent intent = new Intent(mContext, SearchActivity.class);
+                        intent.putExtra("from", SearchActivity.PREORDERACTIVITY);
                         intent.putExtra("location", start); //Search nearby from the start
                         intent.putExtra("city", city);
                         startActivityForResult(intent, ACTIVITY_SEARCH_DEST_REQUEST);

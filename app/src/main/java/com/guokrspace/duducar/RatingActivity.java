@@ -29,7 +29,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
-import com.guokrspace.duducar.communication.http.model.IdAndValueModel;
+import com.guokrspace.duducar.model.IdAndValueModel;
 import com.guokrspace.duducar.communication.message.DriverDetail;
 import com.guokrspace.duducar.communication.message.OrderDetail;
 import com.guokrspace.duducar.database.OrderRecord;

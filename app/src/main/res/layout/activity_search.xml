@@ -3,42 +3,125 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@android:color/white"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/de_actionbar_bg"/>
+        android:background="@color/de_actionbar_bg" />
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <AutoCompleteTextView
-            android:id="@+id/searchkey"
-            android:gravity="center"
-            android:padding="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:background="@drawable/white_roundcorner_grey_border_background"
-            android:hint="输入格式:长沙 湖南大学"
-            android:textColor="@android:color/black"
-            android:textSize="8pt" />
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingTop="5dp">
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="30dp"
-            android:background="@drawable/searchicon"/>
-    </FrameLayout>
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="40">
+
+            <AutoCompleteTextView
+                android:id="@+id/searchkey"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/white_roundcorner_grey_border_background"
+                android:gravity="center"
+                android:hint="输入格式:长沙 湖南大学"
+                android:padding="10dp"
+                android:singleLine="true"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/searchicon" />
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/cancel_search"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="6dp"
+            android:layout_weight="10"
+            android:background="@drawable/button_blue_background_selector"
+            android:text="取 消"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginTop="5dp"
+        android:background="@color/light_gray" />
+
+    <LinearLayout
+        android:id="@+id/common_addr_layout"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:id="@+id/homeTabLayout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/setting_item_bg_selector"
+            android:clickable="true">
+
+            <TextView
+                android:id="@+id/addr_home_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:drawablePadding="6dp"
+                android:gravity="center"
+                android:text="家"
+                android:textColor="@color/sky_blue"
+                android:textSize="16sp" />
+        </FrameLayout>
+
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/light_gray" />
+
+        <FrameLayout
+            android:id="@+id/companyTabLayout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/setting_item_bg_selector"
+            android:clickable="true">
+
+            <TextView
+                android:id="@+id/addr_company_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:drawablePadding="6dp"
+                android:gravity="center"
+                android:text="公司"
+                android:layout_gravity="center"
+                android:textColor="@color/sky_blue"
+                android:textSize="16sp" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/light_gray" />
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/resultRecyclerView"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/resultRecyclerView">
-    </android.support.v7.widget.RecyclerView>
+        android:layout_height="fill_parent"></android.support.v7.widget.RecyclerView>
 
     <!--<fragment-->
     <!--android:id="@+id/map"-->

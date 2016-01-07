@@ -35,6 +35,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     private Toolbar mToolbar;
     private ShSwitchView switchView;
     private TextView tvVersionName;
+
     private RelativeLayout soundSettingLayout;
     private RelativeLayout updateApkLayout;
     private RelativeLayout feedbackLayout;
@@ -42,6 +43,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     private RelativeLayout passengerGuideLayout;
     private RelativeLayout legalItemLayout;
     private Button quitButton;
+    private RelativeLayout commonAddrLayout;
 
 
     @Override
@@ -62,6 +64,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         tvVersionName = (TextView) findViewById(R.id.version_name);
         tvVersionName.setText("(" + getAPKVersion(context) + ")");
 
+        commonAddrLayout = (RelativeLayout) findViewById(R.id.common_address_layout);
         soundSettingLayout = (RelativeLayout) findViewById(R.id.sound_setting_layout);
         updateApkLayout = (RelativeLayout) findViewById(R.id.apk_update_layout);
         feedbackLayout = (RelativeLayout) findViewById(R.id.feedback_layout);
@@ -69,6 +72,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         passengerGuideLayout = (RelativeLayout) findViewById(R.id.passenger_guide_layout);
         legalItemLayout = (RelativeLayout) findViewById(R.id.legal_items_layout);
         quitButton = (Button) findViewById(R.id.quit_button);
+        commonAddrLayout.setOnClickListener(this);
         soundSettingLayout.setOnClickListener(this);
         updateApkLayout.setOnClickListener(this);
         feedbackLayout.setOnClickListener(this);
@@ -109,6 +113,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.common_address_layout:
+                startActivity(new Intent(this, CommonAddrActivity.class));
+                break;
             case R.id.sound_setting_layout:
                 switchView.setOn(!switchView.isOn(), true);
                 break;

@@ -1,4 +1,4 @@
-package com.guokrspace.duducar.communication.http.model;
+package com.guokrspace.duducar.model;
 
 /**
  * Created by hyman on 15/11/23.
