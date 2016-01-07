@@ -1,5 +1,6 @@
 package com.guokrspace.dududriver.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -84,9 +85,9 @@ public class GrabOrderFragment extends BaseFragment implements Handler.Callback{
     }
 
     @Override
-    public void onAttach(Context context) {
-        this.context = context;
-        super.onAttach(context);
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        this.context = activity;
         Log.e("daddy", "onattach" + CommonUtil.getTodayDoneWork());
     }
 

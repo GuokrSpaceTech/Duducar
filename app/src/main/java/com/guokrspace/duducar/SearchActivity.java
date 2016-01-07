@@ -100,7 +100,7 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
     private List<PoiInfo> mDataset = new ArrayList<>();
     ResultListAdapter mAdapter;
 
-    private String  mCity;
+    private String mCity;
     private SearchLocation location;
     private Context mContext;
 
@@ -125,12 +125,12 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
 
         //Get ARGs
         Bundle bundle = getIntent().getExtras();
-        if(bundle!=null) {
+        if (bundle != null) {
             fromPage = bundle.getString(ARG_FROM);
             if (TextUtils.equals(fromPage, PREORDERACTIVITY)) {
                 mCity = bundle.getString(ARG_CITY);
-                location = (SearchLocation)bundle.get("location");
-                if(location!=null)
+                location = (SearchLocation) bundle.get("location");
+                if (location != null)
                     mReqLoc = location.getLocation();
             } else if (TextUtils.equals(fromPage, COMMONADDRACTIVITY)) {
                 addrType = CommonAddrType.getByDesc(bundle.getString(ARG_TYPE));
@@ -140,7 +140,7 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
 
 
         mContext = this;
-        mApplication =(DuduApplication)getApplicationContext();
+        mApplication = (DuduApplication) getApplicationContext();
         dbSession = mApplication.mDaoSession;
 
         //init toobar
@@ -213,7 +213,7 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
             }
         });
 
-        homeTabLayout = (FrameLayout)findViewById(R.id.homeTabLayout);
+        homeTabLayout = (FrameLayout) findViewById(R.id.homeTabLayout);
         homeTabLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -259,7 +259,7 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView = (RecyclerView)findViewById(R.id.resultRecyclerView);
+        recyclerView = (RecyclerView) findViewById(R.id.resultRecyclerView);
         recyclerView.setLayoutManager(linearLayoutManager);
         mAdapter = new ResultListAdapter(mDataset);
         recyclerView.setAdapter(mAdapter);
@@ -269,19 +269,19 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
         /**
          * 当输入关键字变化时，动态更新建议列表
          */
-        if(TextUtils.equals(fromPage, COMMONADDRACTIVITY) || mReqLoc!=null) {
+        if (TextUtils.equals(fromPage, COMMONADDRACTIVITY) || mReqLoc != null) {
             keyWorldsView.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void afterTextChanged(Editable keyWord) {
-                    if(keyWord == null || keyWord.length() ==0){
+                    if (keyWord == null || keyWord.length() == 0) {
                         return;
                     }
                     String key = keyWord.toString();
-                    if(key.split(" ").length > 1){ // 存在空格
+                    if (key.split(" ").length > 1) { // 存在空格
                         String[] keys = key.split(" ");
                         String city = "", k = "";
-                        for(String s : keys){
-                            if(Constants.citys.contains(s)){// 存在城市
+                        for (String s : keys) {
+                            if (Constants.citys.contains(s)) {// 存在城市
                                 city = s;
                             } else {
                                 k += " " + s;
@@ -319,11 +319,11 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
                      * 使用建议搜索服务获取建议列表，结果在onSuggestionResult()中更新
                      */
                     String key = keyWord.toString();
-                    if(key.split(" ").length > 1){ // 存在空格
+                    if (key.split(" ").length > 1) { // 存在空格
                         String[] keys = key.split(" ");
                         String city = "", k = "";
-                        for(String s : keys){
-                            if(Constants.citys.contains(s)){// 存在城市
+                        for (String s : keys) {
+                            if (Constants.citys.contains(s)) {// 存在城市
                                 city = s;
                             } else {
                                 k += " " + s;
@@ -385,8 +385,7 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if(id == android.R.id.home)
-        {
+        if (id == android.R.id.home) {
             finish();
             return true;
         }
@@ -468,11 +467,12 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
             public TextView mSearchResultItemTextView;
             public TextView mSearchResultDescrptionItemTextView;
             public RelativeLayout mRLayout;
+
             public ViewHolder(View v) {
                 super(v);
-                mSearchResultItemTextView = (TextView)v.findViewById(R.id.resultTextView);
-                mSearchResultDescrptionItemTextView = (TextView)v.findViewById(R.id.resultDescriptionTextView);
-                mRLayout = (RelativeLayout)v.findViewById(R.id.itemRLayout);
+                mSearchResultItemTextView = (TextView) v.findViewById(R.id.resultTextView);
+                mSearchResultDescrptionItemTextView = (TextView) v.findViewById(R.id.resultDescriptionTextView);
+                mRLayout = (RelativeLayout) v.findViewById(R.id.itemRLayout);
             }
         }
 
@@ -515,13 +515,17 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
                         setResult(RESULT_OK, intent);
                         finish();
                     } else if (TextUtils.equals(fromPage, COMMONADDRACTIVITY)) {
-                        AddrRowDescriptor descriptor = new AddrRowDescriptor(R.mipmap.home, addrType.getDesc(), info.name, info.address, mLoc.latitude, mLoc.longitude);
-                        String commonAddrJson = JSON.toJSONString(descriptor);
+                        AddrRowDescriptor descriptor = null;
+                        String commonAddrJson = "";
                         switch (addrType) {
                             case HOME:
+                                descriptor = new AddrRowDescriptor(R.mipmap.home, addrType.getDesc(), info.name, info.address, mLoc.latitude, mLoc.longitude);
+                                commonAddrJson = JSON.toJSONString(descriptor);
                                 SharedPreferencesUtils.setParam(mContext, SharedPreferencesUtils.COMMON_ADDR_HOME, commonAddrJson);
                                 break;
                             case COMPANY:
+                                descriptor = new AddrRowDescriptor(R.mipmap.company, addrType.getDesc(), info.name, info.address, mLoc.latitude, mLoc.longitude);
+                                commonAddrJson = JSON.toJSONString(descriptor);
                                 SharedPreferencesUtils.setParam(mContext, SharedPreferencesUtils.COMMON_ADDR_COMPANY, commonAddrJson);
                                 break;
                         }
