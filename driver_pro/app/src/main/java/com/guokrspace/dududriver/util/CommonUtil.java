@@ -277,10 +277,10 @@ public class CommonUtil {
 
     public static double countPrice(double mileage, int lowtime) {
 
-        float starting_price = Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_DRIVER_STARTING_PRICE, "0.01"));
-        float starting_distance = Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_DRIVER_STARTING_DISTANCE, "1.0"));
-        float km_price = Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_DRIVER_KM_PRICE, "0.01"));
-        float low_speed_price = Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_DRIVER_LOW_SPEED_PRICE, "0.01"));
+        float starting_price = Float.parseFloat(CommonUtil.getCurOrderItem().getCharge_rule().getStarting_price());
+        float starting_distance = Float.parseFloat(CommonUtil.getCurOrderItem().getCharge_rule().getStarting_distance());
+        float km_price = Float.parseFloat(CommonUtil.getCurOrderItem().getCharge_rule().getKm_price());
+        float low_speed_price = Float.parseFloat(CommonUtil.getCurOrderItem().getCharge_rule().getLow_speed_price());
         mileage = mileage/1000.0d;
         if(mileage <= starting_distance + 0.5){
             return starting_price + low_speed_price * lowtime;
@@ -291,7 +291,9 @@ public class CommonUtil {
     }
 
     public static float getStartPrice(){
-        return Float.parseFloat((String) SharedPreferencesUtils.getParam(DuduDriverApplication.getInstance(), Constants.PREFERENCE_KEY_DRIVER_STARTING_PRICE, "5.5"));
+        if (CommonUtil.getCurOrderItem() != null)
+            return Float.parseFloat(CommonUtil.getCurOrderItem().getCharge_rule().getStarting_price());
+        return Float.parseFloat("5.0");
     }
 
     //格式化日期

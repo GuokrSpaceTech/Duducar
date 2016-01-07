@@ -1,16 +1,19 @@
 package com.guokrspace.dududriver.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.model.News;
+import com.guokrspace.dududriver.ui.WebViewActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -36,7 +39,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     }
 
     @Override
-    public void onBindViewHolder(NewsViewHolder holder, int position) {
+    public void onBindViewHolder(NewsViewHolder holder, final int position) {
 
         if (mItems != null) {
             holder.tvTitle.setText(mItems.get(position).getTitle());
@@ -45,15 +48,26 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
                 Picasso.with(context)
                         .load(mItems.get(position).getImg())
                         .centerCrop().fit().into(holder.newsImage);
+            } else {
+                holder.newsImage.setVisibility(View.GONE);
             }
-            holder.tvContent.setText(mItems.get(position).getContent());
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //进入相应的webview
-                }
-            });
+            holder.tvContent.setText(mItems.get(position).getContent());
+            if (TextUtils.isEmpty(mItems.get(position).getUrl())){
+                holder.rlMore.setVisibility(View.GONE);
+                holder.itemView.setClickable(false);
+            } else {
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //进入相应的webview
+                        Intent contactIntent = new Intent(context, WebViewActivity.class);
+                        contactIntent.putExtra(WebViewActivity.WEBVIEW_TYPE, WebViewActivity.WEBVIEW_NEWS);
+                        contactIntent.putExtra("url", mItems.get(position).getUrl());
+                        context.startActivity(contactIntent);
+                    }
+                });
+            }
         }
 
     }
@@ -73,6 +87,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
         public final TextView tvContent;
 
+        public final RelativeLayout rlMore;
+
 
         public NewsViewHolder(View itemView) {
             super(itemView);
@@ -80,6 +96,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             tvTime = (TextView) itemView.findViewById(R.id.news_time);
             newsImage = (ImageView) itemView.findViewById(R.id.news_img);
             tvContent = (TextView) itemView.findViewById(R.id.news_content);
+            rlMore = (RelativeLayout) itemView.findViewById(R.id.news_more);
         }
     }
 }

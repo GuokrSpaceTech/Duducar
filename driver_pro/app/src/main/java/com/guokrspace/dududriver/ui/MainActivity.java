@@ -45,7 +45,6 @@ import com.guokrspace.dududriver.net.message.MessageTag;
 import com.guokrspace.dududriver.util.AppExitUtil;
 import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.DisplayUtil;
-import com.guokrspace.dududriver.util.FastJsonTools;
 import com.guokrspace.dududriver.util.LogUtil;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 import com.guokrspace.dududriver.util.VoiceUtil;
@@ -267,7 +266,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                             VoiceUtil.startSpeaking(VoiceCommand.LAST_TIME_EXIT_EXCEPTION);
                             dialog.setCanceledOnTouchOutside(false);
                             dialog.show();
-                            OrderItem orderItem = FastJsonTools.getObject(orderDetail, OrderItem.class);
+                            OrderItem orderItem = new Gson().fromJson(orderDetail, OrderItem.class);
                             Intent intent = new Intent(MainActivity.this, PickUpPassengerActivity.class);
                             intent.putExtra("orderItem", orderItem);
                             intent.putExtra("isRecover", false);
@@ -281,9 +280,10 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                                 VoiceUtil.startSpeaking(VoiceCommand.LAST_TIME_BILL_NOT_SENT);
                                 dialog.show();
                                 dialog.setCanceledOnTouchOutside(false);
-                                OrderItem orderItem = FastJsonTools.getObject(orderDetail, OrderItem.class);
+                                OrderItem orderItem = new Gson().fromJson(orderDetail, OrderItem.class);
                                 Intent intent = new Intent(MainActivity.this, ConfirmBillActivity.class);
                                 JSONObject lastCharge = new JSONObject((String)object.get("last_charge"));
+                                CommonUtil.setCurOrderItem(orderItem);
                                 intent.putExtra("orderItem", orderItem);
                                 intent.putExtra("lowspeed", Integer.parseInt((String) lastCharge.get("low_speed_time")));
                                 intent.putExtra("mileage", Double.parseDouble((String) lastCharge.get("current_mile")));
@@ -295,8 +295,9 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                                 VoiceUtil.startSpeaking(VoiceCommand.LAST_TIME_ORDER_NOT_END);
                                 dialog.setCanceledOnTouchOutside(false);
                                 dialog.show();
-                                OrderItem orderItem = FastJsonTools.getObject(orderDetail, OrderItem.class);
+                                OrderItem orderItem = new Gson().fromJson(orderDetail, OrderItem.class);
                                 Intent intent = new Intent(MainActivity.this, PickUpPassengerActivity.class);
+                                CommonUtil.setCurOrderItem(orderItem);
                                 intent.putExtra("orderItem", orderItem);
                                 intent.putExtra("isRecover", true);
                                 intent.putExtra("lastCharge", (String) object.get("last_charge"));
@@ -566,7 +567,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                     dialog = new MainOrderDialog(context, orderItem);
                     Log.e("Daddy m", "orderItem" + orderItem.getOrder().getStart() + " " + orderItem.getOrder().getDestination() + " ");
                     dialog.setCancelable(true);
-                    VoiceUtil.startSpeaking(VoiceCommand.NEW_ORDER_ARRIVE);
+//                    VoiceUtil.startSpeaking(VoiceCommand.NEW_ORDER_ARRIVE);
                     if(!isApplicationBroughtToBackground(getApplicationContext())){ //处于前台
                         Log.e("daddy invoke", "other page");
                         CommonUtil.setCurOrderItem(orderItem);

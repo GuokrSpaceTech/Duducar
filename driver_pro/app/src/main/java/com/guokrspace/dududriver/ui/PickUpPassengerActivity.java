@@ -185,7 +185,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
     private BitmapDescriptor mCurrentMarker = null;
     private View naviView = null;
 
-    private LatLng passengerLatLng = new LatLng(28.169544, 112.957194);
+    private LatLng passengerLatLng;
 
     //绘制路线相关变量
     private RoutePlanSearch routePlanSearch;
@@ -251,7 +251,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                     dis = new BigDecimal(dis).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                     disA = new BigDecimal(disA).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 
-                    btnConfirm.setText(dis + "m/s, 共" + disA +" 米 , " + secs + " s, " + curCharge + "元");
+                    btnConfirm.setText(dis + "m/s, 共" + disA +"米 , " + secs + " /s, " + curCharge + "元");
                 }
                 Log.e("daddy", "current charge");
                 break;
@@ -320,44 +320,11 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
     }
 
     private MyLocationConfiguration.LocationMode mCurrentMode;
-//    private double preLat;
-//    private double preLng;
-//    private double preDis;
-//    private double curDistance;
-//    private int lowSpeedTime;
-//    private int minutes;
-//    private int times;
-//    private double secDistance;
-//    private double tmpDistance;
-//    private double LOWSPEEDDISTANACE = 333.3; // m/min
-//    private double STRANGEDISTANCE = 33.3; // m/s
-//    private Message msg;
-//    private Bundle bundle;
-//    private Timer calTimer;
-//    private TimerTask calTimerTask;
-
-//    private void startRanging(){
-//        curDistance = 100000.0d;
-//        calTimer = new Timer();
-//        final LatLng passLatlng = new LatLng(Double.parseDouble(orderItem.getOrder().getStart_lat()), Double.parseDouble(orderItem.getOrder().getStart_lng()));
-//        calTimerTask = new TimerTask() {
-//            @Override
-//            public void run() {
-//                //计算当前到乘客的距离
-//                curDistance = DistanceUtil.getDistance(new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng()), passLatlng);
-//            }
-//        }
-//    }
 
     private Intent chargeService ;
 
     private void startCharging(){
             //TODO: to charge
-//        curDistance = 0.0d + baseDistance;
-//        lowSpeedTime = 0 + baseLowTime;
-//        minutes = 0;
-//        preLat = CommonUtil.getCurLat();
-//        preLng = CommonUtil.getCurLng();
         Log.e("daddy", "start to charge");
         chargeService = new Intent(PickUpPassengerActivity.this, ChargeService.class);
         CommonUtil.curBaseDistance = baseDistance;
@@ -366,75 +333,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         startService(chargeService);
         Log.e("daddy", "end to charge");
 
-//        times = 0;
-//        preDis = 0;
-//        secDistance=0d;
-//        tmpDistance=0d;
-//        calTimer = new Timer();
-//        calTimerTask = new TimerTask() {
-//            @Override
-//            public void run() {
-//                Log.e("daddy", "task is runnin as " + CommonUtil.getCurrentStatus());
-//
-//                secDistance = DistanceUtil.getDistance(new LatLng(preLat, preLng), new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng()));
-//                if ((secDistance * 1000 / (System.currentTimeMillis() - CommonUtil.getCurTime())) >= STRANGEDISTANCE) { //这一次的距离跳转异常
-//                    //drop it
-//                    tmpDistance += secDistance;
-//                    preDis = secDistance;
-//                } else {
-//                    tmpDistance += secDistance;
-//                    preDis = secDistance;
-//                }
-//
-//                if (CommonUtil.getCurrentStatus() == Constants.STATUS_RUN) {//开车中
-//                    if (++times == 12) {//1 min
-//                        minutes++;
-//                        if (tmpDistance <= LOWSPEEDDISTANACE) {//这一分钟内是低速行驶
-//                            lowSpeedTime++;
-//                        }
-//
-//                        curDistance += tmpDistance;
-//                        tmpDistance = 0;
-//                        times = 0;
-//                    }
-//
-//                    preLat = CommonUtil.getCurLat();
-//                    preLng = CommonUtil.getCurLng();
-//                    //TODO:通知界面更新,发送到乘客端
-//                    double price = CommonUtil.countPrice(curDistance, lowSpeedTime);
-////                    if(price > curCharge){
-//                        Bundle bundle = new Bundle();
-//                        bundle.putDouble("charge", price);
-//                        Message msg = new Message();
-//                        msg.what = UPDATE_CHARGE;
-//                        msg.setData(bundle);
-//                        Log.e("daddy", "send message update");
-//                        mHandler.sendMessage(msg);
-////                    }
-//                } else { //非法状态下停止
-//                    Log.e("daddy", "stop charge");
-//                    stopCharging();
-//                }
-//            }
-//        };
-//        calTimer.schedule(calTimerTask, 1000, 5000);
     }
-
-//    private void stopCharging(){
-//        Log.e("daddy", "start to stop");
-//        if(calTimer != null){
-//            calTimer.cancel();
-//            calTimer = null;
-//        }
-//        if(calTimerTask != null){
-//            calTimerTask.cancel();
-//            calTimerTask = null;
-//        }
-//        if(isNavigationNow){
-//            BNRouteGuideManager.getInstance().forceQuitNaviWithoutDialog();
-//            isNavigationNow = false;
-//        }
-//    }
 
     ChargeServiceReceiver receiver = new ChargeServiceReceiver();
 
@@ -657,7 +556,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
             @Override
             public void onClick(View v) {
                 final AlertDialog.Builder alertrDialog = new AlertDialog.Builder(PickUpPassengerActivity.this);
-                alertrDialog.setMessage("订单正在执行, 请确认完成订单!");
+                alertrDialog.setMessage("订单正在执行, 请确认到达目的地!");
                 alertrDialog.setCancelable(true);
 
                 alertrDialog.setNegativeButton("继续执行", new DialogInterface.OnClickListener() {
@@ -680,9 +579,9 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         timer = new Timer();
         timer.scheduleAtFixedRate(new DrawLineTimerTask(), 7000, 3 * 1000);
 
-        final String price = baseCharge > CommonUtil.getStartPrice() ? baseCharge + "" : CommonUtil.getStartPrice() + "";
+//        final String price = baseCharge > CommonUtil.getStartPrice() ? baseCharge + "" : CommonUtil.getStartPrice() + "";
 
-        btnConfirm.setText(price + "元   到达目的地");
+        btnConfirm.setText("加载计费规则... 到达目的地");
         btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -690,6 +589,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                 try {
                     unregisterReceiver(receiver);
                 } catch (Exception e){
+                    e.printStackTrace();
                 }
 
                 if(chargeService != null) {
@@ -961,35 +861,6 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
             intent.putExtras(bundle);
             Log.e("daddy", "start navigation");
             startActivity(intent);
-//            btnNavi.setText("停止导航");
-//            Log.e("daddy navi", "jump to navigation");
-//
-//            naviView = BNRouteGuideManager.getInstance().onCreate(PickUpPassengerActivity.this, new BNRouteGuideManager.OnNavigationListener() {
-//                @Override
-//                public void onNaviGuideEnd() {
-//                    //TODO 导航结束
-//                    isNavigationNow = false;
-//                }
-//
-//                @Override
-//                public void notifyOtherAction(int i, int i1, int i2, Object o) {
-//                    Log.e("daddy navi guide", "notify" + i + " " + i1 + " " + i2);
-//
-//                }
-//
-//            });
-//            Log.e("daddy navigation", "view " + naviView.getWidth() + " " + naviView.getAlpha());
-//            mNaviFrame.addView(naviView);
-//            Log.e("daddy navigation", "add view success");
-//            mMapview.removeAllViews();
-//            mMapview.addView(naviView, 1);
-//            naviView.refreshDrawableState();
-//            mMapNavi.setVisibility(View.VISIBLE);
-//            mMapNavi.addView(naviView);
-//            BNavigator.getInstance().startNav();
-//            mMapview.setVisibility(View.GONE);
-
-//            Log.e("daddy navigation", "mapview gone");
         }
         @Override
         public void onRoutePlanFailed() {

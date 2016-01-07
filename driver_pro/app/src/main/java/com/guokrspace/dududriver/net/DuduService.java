@@ -20,6 +20,7 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
+import com.google.gson.Gson;
 import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.database.PersonalInformation;
@@ -27,7 +28,6 @@ import com.guokrspace.dududriver.model.OrderItem;
 import com.guokrspace.dududriver.net.message.HeartBeatMessage;
 import com.guokrspace.dududriver.net.message.MessageTag;
 import com.guokrspace.dududriver.util.CommonUtil;
-import com.guokrspace.dududriver.util.FastJsonTools;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 
 import java.util.List;
@@ -224,12 +224,16 @@ public class DuduService extends Service {
             @Override
             public void onSuccess(String messageBody) {
                 Log.e("Mainactivity", "confirm order handler");
-                OrderItem orderItem = FastJsonTools.getObject(messageBody, OrderItem.class);
+                OrderItem orderItem = new Gson().fromJson(messageBody, OrderItem.class);
                 if(CommonUtil.getCurOrderItem() != null){
                     if(CommonUtil.getCurOrderItem().getOrder().getId().equals(orderItem.getOrder().getId())){
                         //同一个单
                         return;
                     }
+                }
+                if(CommonUtil.getCurrentStatus() != Constants.STATUS_WAIT) {
+                    Log.e("daddy error", " dudu service not right status");
+                    return;
                 }
                 CommonUtil.setCurOrderItem(orderItem);
                 Log.e("Daddy ", messageBody + "  " + orderItem.getCMD() + " " + orderItem.getOrder().getDestination_lat() + "::" + orderItem.getOrder().getDestination_lng());

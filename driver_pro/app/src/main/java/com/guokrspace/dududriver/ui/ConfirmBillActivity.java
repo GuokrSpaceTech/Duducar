@@ -30,7 +30,6 @@ import com.guokrspace.dududriver.model.OrderItem;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
 import com.guokrspace.dududriver.util.CommonUtil;
-import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 import com.guokrspace.dududriver.util.VoiceUtil;
 import com.guokrspace.dududriver.view.CircleImageView;
 
@@ -144,11 +143,8 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
 
     private void initView() {
         toolbar.setTitle("确认账单");
-//        toolbar.setNavigationIcon(getResources().getDrawable(R.mipmap.return_icon));
         toolbar.setTitleTextColor(Color.WHITE);
         setSupportActionBar(toolbar);
-//        getSupportActionBar().setHomeButtonEnabled(true);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         btnConfirm.setButtonText("确认账单");
 
@@ -156,9 +152,9 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
         orderItem = (OrderItem) bundle.get("orderItem");
         curDistance = bundle.getDouble("mileage");
         final int lowSpeedTime= bundle.getInt("lowspeed");
-        final float lowSpeedPrice = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), Constants.PREFERENCE_KEY_DRIVER_LOW_SPEED_PRICE, "0.55"));
-        final float startPrice = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), Constants.PREFERENCE_KEY_DRIVER_STARTING_PRICE, "6.5"));
-        final float startDistance = Float.parseFloat((String) SharedPreferencesUtils.getParam(getApplicationContext(), Constants.PREFERENCE_KEY_DRIVER_STARTING_DISTANCE, "6.0"));
+        final float lowSpeedPrice = Float.parseFloat(CommonUtil.getCurOrderItem().getCharge_rule().getLow_speed_price());
+        final float startPrice = Float.parseFloat(CommonUtil.getCurOrderItem().getCharge_rule().getStarting_price());
+        final float startDistance = Float.parseFloat(CommonUtil.getCurOrderItem().getCharge_rule().getStarting_distance());
 
         price = CommonUtil.countPrice(curDistance, lowSpeedTime);
         price = new BigDecimal(price).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();

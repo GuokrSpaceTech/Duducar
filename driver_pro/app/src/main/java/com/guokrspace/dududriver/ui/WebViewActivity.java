@@ -6,7 +6,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -18,7 +17,6 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.baidu.nplatform.comapi.map.gesture.Base;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.common.NewOrderReceiver;
@@ -35,6 +33,7 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
     public static final int WEBVIEW_CONTACT = 101;
     public static final int WEBVIEW_ABOUT = 102;
     public static final int WEBVIEW_JOIN = 103;
+    public static final int WEBVIEW_NEWS = 104;
 
 
     private Context context;
@@ -50,6 +49,8 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
 
     private int type;
 
+    private String noticeUrl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +60,9 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
         context = WebViewActivity.this;
         Intent mIntent = getIntent();
         type = mIntent.getIntExtra(WEBVIEW_TYPE, 0);
+        if (type == WEBVIEW_NEWS) { //嘟嘟播报
+            noticeUrl = mIntent.getStringExtra("url");
+        }
         mHandler = new Handler(this);
         initView();
     }
@@ -86,6 +90,11 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
             case WEBVIEW_JOIN:
                 title = "专车指南";
                 key = Constants.PREFERENCE_KEY_WEBVIEW_JOIN;
+                break;
+            case WEBVIEW_NEWS:
+                title = "嘟嘟播报";
+                key = Constants.WEBVIEW_NOTICE;
+                break;
             default:
                 break;
         }
@@ -151,12 +160,12 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
                 super.onProgressChanged(view, newProgress);
             }
         });
+        if(!key.equals(Constants.WEBVIEW_NOTICE)){ // 其他
+            noticeUrl = (String) SharedPreferencesUtils.getParam(context, key, "");
+        }
+        Log.e("hyman_webview", noticeUrl);
 
-
-        String url = (String) SharedPreferencesUtils.getParam(context, key, "");
-        Log.e("hyman_webview", url);
-
-        mWebView.loadUrl(url);
+        mWebView.loadUrl(noticeUrl);
         mWebView.requestFocus();
     }
 

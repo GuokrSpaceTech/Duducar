@@ -52,15 +52,13 @@ public class Constants {
     public static final String PREFERENCE_KEY_DRIVER_BALANCE = "DRIVER_BALANCE";
     public static final String PREFERENCE_KEY_DRIVER_FAVORABLE_RATE = "DRIVER_FAVORABLE_RATE";
     public static final String PREFERENCE_KEY_DRIVER_KM_PRICE = "DRIVER_KM_PRICE";
-    public static final String PREFERENCE_KEY_DRIVER_LOW_SPEED_PRICE = "DRIVER_LOW_SPEED_PRICE";
-    public static final String PREFERENCE_KEY_DRIVER_STARTING_DISTANCE = "DRIVER_STARTING_DISTANCE";
-    public static final String PREFERENCE_KEY_DRIVER_STARTING_PRICE = "DRIVER_STARTING_PRICE";
     public static final String PREFERENCE_KEY_ORDER_STATUS = "ORDER_STATUS";
 
     public static final String PREFERENCE_KEY_WEBVIEW_ABOUT = "WEB_ABOUT";
     public static final String PREFERENCE_KEY_WEBVIEW_JOIN = "WEB_JOIN";
     public static final String PREFERENCE_KEY_WEBVIEW_CONTACT = "WEB_CONTACT";
     public static final String PREFERENCE_KEY_WEBVIEW_CLAUSE = "WEB_CLAUSE";
+    public static final String WEBVIEW_NOTICE = "WEB_NOTICE";
 
     public static final String PREFERENCE_KEY_TODAY = "TODAY";
     public static final String PREFERENCE_KEY_TODAY_DONE_WORK = "TODAY_DONE_WORK";

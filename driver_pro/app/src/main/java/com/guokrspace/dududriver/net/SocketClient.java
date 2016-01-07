@@ -70,7 +70,7 @@ public class SocketClient {
      * Sends the message entered by client to the server
      * @param message text entered by client
      */
-    public synchronized int sendMessage(final JSONObject message, final ResponseHandler handler, final int timeout){
+    public int sendMessage(final JSONObject message, final ResponseHandler handler, final int timeout){
         int ret = -1; //Default is error
         Log.e("daddy", "message" + message.toString());
 //        Log.e("daddy", out.toString());

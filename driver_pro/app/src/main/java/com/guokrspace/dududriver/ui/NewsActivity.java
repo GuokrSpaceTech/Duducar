@@ -1,6 +1,7 @@
 package com.guokrspace.dududriver.ui;
 
 import android.content.Context;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -24,6 +25,7 @@ import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.adapter.NewsAdapter;
 import com.guokrspace.dududriver.common.Constants;
+import com.guokrspace.dududriver.common.NewOrderReceiver;
 import com.guokrspace.dududriver.database.BaseNotice;
 import com.guokrspace.dududriver.database.BaseNoticeDao;
 import com.guokrspace.dududriver.model.DuduMessage;
@@ -31,6 +33,7 @@ import com.guokrspace.dududriver.model.MessageResponseModel;
 import com.guokrspace.dududriver.model.News;
 import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
+import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.DateUtil;
 import com.umeng.analytics.MobclickAgent;
 
@@ -60,6 +63,9 @@ public class NewsActivity extends AppCompatActivity implements Handler.Callback{
 
     private boolean isRefreshing = false;
 
+    private NewOrderReceiver receiver;
+    private MainOrderDialog dialog;
+
     private SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
@@ -86,6 +92,7 @@ public class NewsActivity extends AppCompatActivity implements Handler.Callback{
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(this);
+        registerBroadcastReceiver();
         //进入页面自动刷新
         mHandler.postDelayed(new Runnable() {
             @Override
@@ -98,8 +105,19 @@ public class NewsActivity extends AppCompatActivity implements Handler.Callback{
     @Override
     protected void onPause() {
         super.onPause();
-            MobclickAgent.onPause(this);
-        }
+        MobclickAgent.onPause(this);
+        unregisterReceiver(receiver);
+    }
+
+    //监听service传来的消息
+    private void registerBroadcastReceiver(){
+        receiver = new NewOrderReceiver(mHandler);
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constants.ACTION_NEW_ORDER);
+        filter.setPriority(1000);
+        registerReceiver(receiver, filter);
+    }
 
     private void initView() {
         initToolBar();
@@ -148,6 +166,15 @@ public class NewsActivity extends AppCompatActivity implements Handler.Callback{
                 break;
             case MESSAGE_NO_NEWS://没有消息
                 Toast.makeText(context, "暂时没有新的通知消息", Toast.LENGTH_SHORT).show();
+                break;
+            case Constants.MESSAGE_NEW_ORDER:
+                if(CommonUtil.getCurOrderItem() == null){
+                    return false;
+                }
+                if(dialog == null || !dialog.isVisible()){
+                    dialog = new MainOrderDialog(context, CommonUtil.getCurOrderItem());
+                    dialog.show(getSupportFragmentManager(), "mainorderdialog");
+                }
                 break;
             default:
                 break;
@@ -294,7 +321,7 @@ public class NewsActivity extends AppCompatActivity implements Handler.Callback{
             Log.e("daddy notice", "message" + body);
             JSONObject object = new JSONObject(body);
             news.setTitle(object.get("title") == null ? "嘟嘟播报" : (String) object.get("title"));
-            news.setUrl(object.get("url") == null ? "" : "");
+            news.setUrl(object.get("url") == null ? "" : (String) object.get("url"));
             news.setContent(object.get("content") == null ? "嘟嘟欢迎您" : (String) object.get("content"));
             news.setTime(object.get("time") == null ? (System.currentTimeMillis() + 1000*60*60*24) +"" : object.get("time").toString());
         } catch (JSONException e){
