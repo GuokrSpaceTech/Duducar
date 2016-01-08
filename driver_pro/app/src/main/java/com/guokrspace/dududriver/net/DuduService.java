@@ -457,7 +457,7 @@ public class DuduService extends Service {
         });
     }
 
-    public boolean isRunningApp(Context context) {
+    public static boolean isRunningApp(Context context) {
         boolean isAppRunning = false;
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> list = am.getRunningTasks(100);

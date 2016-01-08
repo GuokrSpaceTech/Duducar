@@ -26,6 +26,7 @@ public class ChargeService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.e("daddy, charget", " start command");
         Intent notificationIntent = new Intent();
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
         Notification noti = new Notification.Builder(this)
@@ -37,6 +38,8 @@ public class ChargeService extends Service {
                 .build();
 
         startForeground(12347, noti);
+        //开始计费
+        startCharging(CommonUtil.curBaseDistance, CommonUtil.curBaseLowTime);
 
         return Service.START_STICKY;
     }
@@ -90,7 +93,6 @@ public class ChargeService extends Service {
         super.onCreate();
         CommonUtil.curDistance = 0.0d;
         CommonUtil.curLowSpeedTime = 0;
-        startCharging(CommonUtil.curBaseDistance, CommonUtil.curBaseLowTime);
     }
 
     public void startCharging(double baseDistance, int baseLowTime){
@@ -111,6 +113,10 @@ public class ChargeService extends Service {
         calTimerTask = new TimerTask() {
             @Override
             public void run() {
+                if(!DuduService.isRunningApp(getApplicationContext())){ // 应用终止
+                    stopCharging();
+                    stopSelf();
+                }
                 Log.e("daddy", "task is runnin as " + CommonUtil.getCurrentStatus());
                 secDistance = DistanceUtil.getDistance(new LatLng(preLat, preLng), new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng()));
 //                if ((secDistance * 1000 / (System.currentTimeMillis() - CommonUtil.getCurTime())) >= Constants.STRANGEDISTANCE) { //这一次的距离跳转异常

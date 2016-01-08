@@ -207,7 +207,7 @@ public class SocketClient {
             {
                 Log.e("TCP SI Error Inner", "SI: Error", e);
                 e.printStackTrace();
-                SocketClient.getInstance().run();
+//                SocketClient.getInstance().run();
             }
             finally
             {
@@ -218,7 +218,7 @@ public class SocketClient {
 
         } catch (Exception e) {
             Log.e("TCP SI Error Outer", "SI: Error", e);
-            SocketClient.getInstance().run();
+//            SocketClient.getInstance().run();
         }
     }
 

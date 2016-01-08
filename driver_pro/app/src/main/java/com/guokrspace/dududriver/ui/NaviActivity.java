@@ -1,5 +1,6 @@
 package com.guokrspace.dududriver.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,7 +15,7 @@ import com.guokrspace.dududriver.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NaviActivity extends BaseActivity {
+public class NaviActivity extends Activity {
 
     private BNRoutePlanNode mBNRoutePlanNode = null;
     @Override
