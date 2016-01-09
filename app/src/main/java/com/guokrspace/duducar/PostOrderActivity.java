@@ -516,12 +516,10 @@ public class PostOrderActivity extends AppCompatActivity {
         final List<IdAndValueModel> idAndValueModels = new ArrayList<>();
         String reasons = (String) SharedPreferencesUtils.getParam(mContext, SharedPreferencesUtils.BASEINFO_CANCEL_REASONS, "");
         if (!TextUtils.isEmpty(reasons)) {
-            Log.e("hyman_baseinfo", reasons);
 //            idAndValueModels.addAll(FastJsonTools.getListObject(reasons, IdAndValueModel.class));
             List<IdAndValueModel> idAndValueModels1 = new Gson().fromJson(reasons, new TypeToken<ArrayList<IdAndValueModel>>() {
             }.getType());
             idAndValueModels.addAll(idAndValueModels1);
-            Log.e("hyman_baseinfo", idAndValueModels.size() + " ");
         }
         final CancelReasonAdapter _adapter = new CancelReasonAdapter(mContext, idAndValueModels);
         _adapter.setOnItemCheckedListener(new CancelReasonAdapter.OnItemCheckedListener() {
@@ -662,7 +660,7 @@ public class PostOrderActivity extends AppCompatActivity {
 
 
         mCurrentMarker = BitmapDescriptorFactory.fromResource(R.drawable.caricon);
-        //监听司机的未知
+        //监听司机的位置
         SocketClient.getInstance().registerServerMessageHandler(MessageTag.DRIVER_POSITION, new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
