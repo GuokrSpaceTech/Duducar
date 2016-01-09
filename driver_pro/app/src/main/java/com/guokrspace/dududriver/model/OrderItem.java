@@ -19,6 +19,16 @@ public class OrderItem implements Serializable {
 
     private Order order;
 
+    public Charge_rule getCharge_rule() {
+        return charge_rule;
+    }
+
+    public void setCharge_rule(Charge_rule charge_rule) {
+        this.charge_rule = charge_rule;
+    }
+
+    private Charge_rule charge_rule;
+
     public String getCMD() {
         return CMD;
     }
@@ -111,6 +121,46 @@ public class OrderItem implements Serializable {
         public void setId(String id) {
             this.id = id;
         }
+    }
+
+    public class Charge_rule implements Serializable{
+        public String getStarting_price() {
+            return starting_price;
+        }
+
+        public void setStarting_price(String starting_price) {
+            this.starting_price = starting_price;
+        }
+
+        public String getStarting_distance() {
+            return starting_distance;
+        }
+
+        public void setStarting_distance(String starting_distance) {
+            this.starting_distance = starting_distance;
+        }
+
+        public String getKm_price() {
+            return km_price;
+        }
+
+        public void setKm_price(String km_price) {
+            this.km_price = km_price;
+        }
+
+        public String getLow_speed_price() {
+            return low_speed_price;
+        }
+
+        public void setLow_speed_price(String low_speed_price) {
+            this.low_speed_price = low_speed_price;
+        }
+
+        private String starting_price;
+        private String starting_distance;
+        private String km_price;
+        private String low_speed_price;
+
     }
 
 }

@@ -5,14 +5,19 @@
 
     <!-- 登录 -->
     <string name="app_login_show">手机</string>
-    <string name="app_login_password">验证码</string>
+    <string name="app_login_password">短信验证码</string>
+    <string name="app_password">密码</string>
+    <string name="app_set_pwd">设置密码</string>
+    <string name="app_reset_pwd">新的密码</string>
     <string name="app_sign_in">登录</string>
     <string name="app_sign_up">注册</string>
+    <string name="app_confirm">确定</string>
     <string name="app_req_code">获取验证码</string>
     <string name="app_fogot_password">忘记密码?</string>
     <string name="login_erro_is_null">"用户名、密码不能为空"</string>
     <string name="login_success">"登录成功"</string>
     <string name="login_failure">"登录失败"</string>
+    <string name="reset_failure">"操作失败"</string>
     <string name="check_code_failure">"验证码错误"</string>
 
     <string name="title_section1">Section 1</string>
@@ -44,4 +49,5 @@
     <string name="confirm_dialog_content">请您确认费用无误，并提示乘客先付款后下车</string>
     <string name="wealth_add_notice">乘客尾号%1$s支付%2$.2f元，您此单收入请到“我的余额”查看详情</string>
     <string name="title_activity_alipay">AlipayActivity</string>
+    <string name="title_activity_news">NewsActivity</string>
 </resources>

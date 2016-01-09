@@ -9,7 +9,6 @@ android {
         applicationId "com.guokrspace.dududriver"
         minSdkVersion 11
         targetSdkVersion 23
-        //  Enabling multidex support.
         multiDexEnabled true
         versionCode 6
         versionName "1.0.6"

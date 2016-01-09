@@ -148,9 +148,6 @@ public class OrderDetailActivity extends BaseActivity{
         lowSpeedTime= bundle.getInt("lowspeed");
         cash = bundle.getDouble("price");
         sumprice = bundle.getDouble("sumprice");
-//        cash += bundle.getDouble("addPrice1");
-//        cash += bundle.getDouble("addPrice2");
-//        cash += bundle.getDouble("addPrice3");
         orderNum = bundle.getString("orderNum");
         CommonUtil.curOrderStatus = 4;
 

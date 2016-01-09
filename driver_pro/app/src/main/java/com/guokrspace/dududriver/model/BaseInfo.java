@@ -21,11 +21,6 @@ public class BaseInfo {
         info.put(Constants.PREFERENCE_KEY_DRIVER_BALANCE, driver.getBalance() == null ? "0.0" : driver.getBalance());
         info.put(Constants.PREFERENCE_KEY_DRIVER_FAVORABLE_RATE, driver.getFavorable_rate() == null ? "0.0" : driver.getFavorable_rate());
 
-        info.put(Constants.PREFERENCE_KEY_DRIVER_KM_PRICE, charge_rule.getKm_price() == null ? "5" : charge_rule.getKm_price());
-        info.put(Constants.PREFERENCE_KEY_DRIVER_LOW_SPEED_PRICE, charge_rule.getLow_speed_price() == null ? "0.5" : charge_rule.getLow_speed_price());
-        info.put(Constants.PREFERENCE_KEY_DRIVER_STARTING_DISTANCE, charge_rule.getStarting_distance() == null ? "10" : charge_rule.getStarting_distance());
-        info.put(Constants.PREFERENCE_KEY_DRIVER_STARTING_PRICE, charge_rule.getStarting_price() == null ? "8" : charge_rule.getStarting_price());
-
         info.put(Constants.PREFERENCE_KEY_WEBVIEW_ABOUT, webview.getAbout() == null ? "" : webview.getAbout());
         info.put(Constants.PREFERENCE_KEY_WEBVIEW_JOIN, webview.getJoin() == null ? "" : webview.getJoin());
         info.put(Constants.PREFERENCE_KEY_WEBVIEW_CONTACT, webview.getContact() == null ? "" : webview.getContact());
@@ -38,16 +33,6 @@ public class BaseInfo {
 
 
     }
-
-    public Charge_rule getCharge_rule() {
-        return charge_rule;
-    }
-
-    public void setCharge_rule(Charge_rule charge_rule) {
-        this.charge_rule = charge_rule;
-    }
-
-    private Charge_rule charge_rule;
 
     public Driver getDriver() {
         return driver;

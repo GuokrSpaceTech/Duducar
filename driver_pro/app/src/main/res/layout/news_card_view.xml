@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    card_view:cardBackgroundColor="@android:color/white"
+    card_view:cardCornerRadius="6dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/small_padding">
+
+        <TextView
+            android:id="@+id/news_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:paddingBottom="6dp"
+            android:paddingTop="10dp"
+            android:singleLine="true"
+            android:text="嘟嘟大平台 打车送妹纸"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/news_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="2016-01-05"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/news_img"
+            android:layout_width="fill_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="14dp"
+            android:scaleType="fitXY"
+            android:src="@mipmap/meizhi" />
+
+        <TextView
+            android:id="@+id/news_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            android:layout_marginTop="14dp"
+            android:ellipsize="end"
+            android:lineSpacingMultiplier="1.2"
+            android:maxLines="2"
+            android:text="嘟嘟公司哦覅飞机哇哦覅我覅就放大开发脑袋里阀门，打开啦没反馈是的啦"
+            android:textColor="@color/black_textview"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:background="#CCCCCC" />
+
+        <RelativeLayout
+            android:id="@+id/news_more"
+            android:layout_width="fill_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="查看详情"
+                android:textColor="#808080"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="18dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="6dp"
+                android:src="@mipmap/enter_gray"
+                android:layout_marginTop="3dp"/>
+        </RelativeLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

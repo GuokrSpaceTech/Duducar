@@ -27,7 +27,7 @@ public class DuduNotice implements BaseNoticeItem {
 
             JSONObject object = new JSONObject(message);
             title = object.get("title") == null ? "嘟嘟播报" : (String) object.get("title");
-            url = object.get("url") == null ? "" : "";
+            url = object.get("url") == null ? "" : (String) object.get("url");
             content = object.get("content") == null ? "嘟嘟欢迎您" : (String)object.get("content");
             time = object.get("time") == null ? (System.currentTimeMillis() + 1000*60*60*24) +"" : object.get("time").toString();
             notice_id = object.get("notice_id").toString();

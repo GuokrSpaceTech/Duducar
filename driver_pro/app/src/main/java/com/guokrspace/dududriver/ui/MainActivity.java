@@ -45,12 +45,10 @@ import com.guokrspace.dududriver.net.message.MessageTag;
 import com.guokrspace.dududriver.util.AppExitUtil;
 import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.DisplayUtil;
-import com.guokrspace.dududriver.util.FastJsonTools;
 import com.guokrspace.dududriver.util.LogUtil;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 import com.guokrspace.dududriver.util.VoiceUtil;
 import com.guokrspace.dududriver.view.ListenProgressView;
-import com.umeng.analytics.MobclickAgent;
 import com.viewpagerindicator.TabPageIndicator;
 
 import org.json.JSONObject;
@@ -140,16 +138,15 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         List localUsers = DuduDriverApplication.getInstance().
                 mDaoSession.getPersonalInformationDao().
                 queryBuilder().list();
-        if (localUsers != null && localUsers.size() > 0) {
+        if (localUsers != null && localUsers.size() > 0 && ((PersonalInformation)localUsers.get(0)).getToken() != null) {
             userInfo = (PersonalInformation) localUsers.get(0);
             if(!CommonUtil.isServiceOn()){
                 startService(duduService);
             }
-//            doLogin(userInfo);
         } else {
-            //用户信息不存在,重新注册页面
+            //用户信息不存在或注销,重新注册页面
+            Log.e("daddy main ", "no persion ");
             startActivity(new Intent(this, LoginActivity.class));
-//            finish();
         }
     }
 
@@ -162,6 +159,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
          * 用户不在线，就进行登陆
          *
          */
+
         isOnline = (boolean) SharedPreferencesUtils.getParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, false);
         if (DuduDriverApplication.getInstance().initPersonalInformation()) {
             if (!isNetworkAvailable()) {
@@ -268,7 +266,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                             VoiceUtil.startSpeaking(VoiceCommand.LAST_TIME_EXIT_EXCEPTION);
                             dialog.setCanceledOnTouchOutside(false);
                             dialog.show();
-                            OrderItem orderItem = FastJsonTools.getObject(orderDetail, OrderItem.class);
+                            OrderItem orderItem = new Gson().fromJson(orderDetail, OrderItem.class);
                             Intent intent = new Intent(MainActivity.this, PickUpPassengerActivity.class);
                             intent.putExtra("orderItem", orderItem);
                             intent.putExtra("isRecover", false);
@@ -282,9 +280,10 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                                 VoiceUtil.startSpeaking(VoiceCommand.LAST_TIME_BILL_NOT_SENT);
                                 dialog.show();
                                 dialog.setCanceledOnTouchOutside(false);
-                                OrderItem orderItem = FastJsonTools.getObject(orderDetail, OrderItem.class);
+                                OrderItem orderItem = new Gson().fromJson(orderDetail, OrderItem.class);
                                 Intent intent = new Intent(MainActivity.this, ConfirmBillActivity.class);
                                 JSONObject lastCharge = new JSONObject((String)object.get("last_charge"));
+                                CommonUtil.setCurOrderItem(orderItem);
                                 intent.putExtra("orderItem", orderItem);
                                 intent.putExtra("lowspeed", Integer.parseInt((String) lastCharge.get("low_speed_time")));
                                 intent.putExtra("mileage", Double.parseDouble((String) lastCharge.get("current_mile")));
@@ -296,8 +295,9 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                                 VoiceUtil.startSpeaking(VoiceCommand.LAST_TIME_ORDER_NOT_END);
                                 dialog.setCanceledOnTouchOutside(false);
                                 dialog.show();
-                                OrderItem orderItem = FastJsonTools.getObject(orderDetail, OrderItem.class);
+                                OrderItem orderItem = new Gson().fromJson(orderDetail, OrderItem.class);
                                 Intent intent = new Intent(MainActivity.this, PickUpPassengerActivity.class);
+                                CommonUtil.setCurOrderItem(orderItem);
                                 intent.putExtra("orderItem", orderItem);
                                 intent.putExtra("isRecover", true);
                                 intent.putExtra("lastCharge", (String) object.get("last_charge"));
@@ -538,6 +538,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 }
                 break;
             case NEW_ORDER_ARRIVE:
+                Log.e("daddy new order", "newo rder arrive");
                 if(!isInvoke2 && System.currentTimeMillis() - lastOrderTime < 6 * 1000){ // 连续的订单
                     break;
                 }
@@ -566,7 +567,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                     dialog = new MainOrderDialog(context, orderItem);
                     Log.e("Daddy m", "orderItem" + orderItem.getOrder().getStart() + " " + orderItem.getOrder().getDestination() + " ");
                     dialog.setCancelable(true);
-                    VoiceUtil.startSpeaking(VoiceCommand.NEW_ORDER_ARRIVE);
+//                    VoiceUtil.startSpeaking(VoiceCommand.NEW_ORDER_ARRIVE);
                     if(!isApplicationBroughtToBackground(getApplicationContext())){ //处于前台
                         Log.e("daddy invoke", "other page");
                         CommonUtil.setCurOrderItem(orderItem);
@@ -748,7 +749,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                         dialog = new MainOrderDialog(context, CommonUtil.getCurOrderItem());
                         dialog.show(getSupportFragmentManager(), "mainorderdialog");
                     }
-                    abortBroadcast();
+//                    abortBroadcast();
                     break;
                 case Constants.SERVICE_ACTION_NEW_ORDER: //收到新的订单  来自服务的消息
                     Log.e("daddy", "got a new order");

@@ -70,7 +70,7 @@ public class SocketClient {
      * Sends the message entered by client to the server
      * @param message text entered by client
      */
-    public synchronized int sendMessage(final JSONObject message, final ResponseHandler handler, final int timeout){
+    public int sendMessage(final JSONObject message, final ResponseHandler handler, final int timeout){
         int ret = -1; //Default is error
         Log.e("daddy", "message" + message.toString());
 //        Log.e("daddy", out.toString());
@@ -205,7 +205,7 @@ public class SocketClient {
             }
             catch (Exception e)
             {
-                Log.e("TCP SI Error", "SI: Error", e);
+                Log.e("TCP SI Error Inner", "SI: Error", e);
                 e.printStackTrace();
 //                SocketClient.getInstance().run();
             }
@@ -217,7 +217,7 @@ public class SocketClient {
             }
 
         } catch (Exception e) {
-            Log.e("TCP SI Error", "SI: Error", e);
+            Log.e("TCP SI Error Outer", "SI: Error", e);
 //            SocketClient.getInstance().run();
         }
     }
@@ -275,16 +275,16 @@ public class SocketClient {
         return ret;
     }
 
-
-    public int sendVerifyRequst(String mobile, String role, String regcode, ResponseHandler handler)
+    public int sendVerifyRequst(String mobile, String role, String pwd, String regcode, ResponseHandler handler)
     {
         int ret = -1;
         JSONObject verify = new JSONObject();
         try {
             verify.put("cmd", "verify");
-            verify.put("role",role);
-            verify.put("mobile",mobile);
-            verify.put("verifycode",regcode);
+            verify.put("role", role);
+            verify.put("mobile", mobile);
+            verify.put("verifycode", regcode);
+            verify.put("password", pwd);
             ret = sendMessage(verify, handler, 5);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -305,6 +305,22 @@ public class SocketClient {
         } catch(JSONException e) {
             e.printStackTrace();
         }
+        return ret;
+    }
+
+    public int autoLoginRequestWithPwd(String mobile, String role, String pwd, ResponseHandler handler) {
+        int ret = -1;
+        JSONObject loginRequest = new JSONObject();
+        try {
+            loginRequest.put("cmd", "login");
+            loginRequest.put("mobile", mobile);
+            loginRequest.put("role", role);
+            loginRequest.put("password", pwd);
+            ret = sendMessage(loginRequest, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         return ret;
     }
 

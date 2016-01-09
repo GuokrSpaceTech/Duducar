@@ -223,7 +223,8 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
                 AppExitUtil.getInstance().finishOtherActivities(SettingActivity.this);
                 //清空用户数据
-                mApplication.mDaoSession.getPersonalInformationDao().deleteAll();
+                mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().list().get(0).setToken(null);
+//                mApplication.mDaoSession.getPersonalInformationDao().deleteAll();
                 Intent _stopServiceIntent = new Intent();
                 _stopServiceIntent.setAction(DuduService.STOP_SERVICE);
                 sendOrderedBroadcast(_stopServiceIntent, null);

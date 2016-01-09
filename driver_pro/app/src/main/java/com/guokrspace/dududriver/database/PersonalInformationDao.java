@@ -26,6 +26,7 @@ public class PersonalInformationDao extends AbstractDao<PersonalInformation, Lon
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Token = new Property(1, String.class, "token", false, "TOKEN");
         public final static Property Mobile = new Property(2, String.class, "mobile", false, "MOBILE");
+        public final static Property Password = new Property(3, String.class, "password", false, "PASSWORD");
     };
 
 
@@ -43,7 +44,8 @@ public class PersonalInformationDao extends AbstractDao<PersonalInformation, Lon
         db.execSQL("CREATE TABLE " + constraint + "'PERSONAL_INFORMATION' (" + //
                 "'_id' INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "'TOKEN' TEXT," + // 1: token
-                "'MOBILE' TEXT);"); // 2: mobile
+                "'MOBILE' TEXT," + // 2: mobile
+                "'PASSWORD' TEXT);"); // 3: password
     }
 
     /** Drops the underlying database table. */
@@ -71,6 +73,11 @@ public class PersonalInformationDao extends AbstractDao<PersonalInformation, Lon
         if (mobile != null) {
             stmt.bindString(3, mobile);
         }
+ 
+        String password = entity.getPassword();
+        if (password != null) {
+            stmt.bindString(4, password);
+        }
     }
 
     /** @inheritdoc */
@@ -85,7 +92,8 @@ public class PersonalInformationDao extends AbstractDao<PersonalInformation, Lon
         PersonalInformation entity = new PersonalInformation( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // token
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2) // mobile
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // mobile
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3) // password
         );
         return entity;
     }
@@ -96,6 +104,7 @@ public class PersonalInformationDao extends AbstractDao<PersonalInformation, Lon
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setToken(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setMobile(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setPassword(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
      }
     
     /** @inheritdoc */

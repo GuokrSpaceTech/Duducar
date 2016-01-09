@@ -142,15 +142,15 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
         if(distance > 20000) {
             //20公里失败
         } else if(distance <= 999) {
-            distanceStr = "订单距离你只有大约 " + distance + " 米";
+            distanceStr = ",距离你只有大约 " + distance + " 米";
         } else {
-            distanceStr = "订单距离你大约 " + new DecimalFormat(".#").format(distance/1000.0d) + " 公里";
+            distanceStr = ",距离你大约 " + new DecimalFormat(".#").format(distance/1000.0d) + " 公里";
         }
         tvDistance.setText(distanceStr);
         tvOrderOrigin.setText(" " + order.getOrder().getStart());
         tvOrderDestination.setText(" " + order.getOrder().getDestination());
 
-        VoiceUtil.startSpeaking(distanceStr);
+        VoiceUtil.startSpeaking(VoiceCommand.NEW_ORDER_ARRIVE + distanceStr);
 
         myTimeTick = new MyTimeTick(MAX_TIME);
         myTimeTick.startTimer();
