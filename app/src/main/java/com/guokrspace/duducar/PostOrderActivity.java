@@ -204,6 +204,7 @@ public class PostOrderActivity extends AppCompatActivity {
                         }
                     }
 
+                    // TODO: 这里取消了定时器，当isInCar = true,怎么还能绘制距离？
                     timer.cancel();
 
                     break;
@@ -221,6 +222,8 @@ public class PostOrderActivity extends AppCompatActivity {
                     LatLng carLatLng = new LatLng(Double.parseDouble(order_start.getOrder().getStart_lat()), Double.parseDouble(order_start.getOrder().getStart_lng()));
                     LatLng pasLatLng = new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng());
                     double dis = DistanceUtil.getDistance(carLatLng, pasLatLng);
+                    // 友盟自定义错误
+                    MobclickAgent.reportError(mContext, "乘客与司机之间的距离为 " + dis);
                     if(dis > 400){ // 距离超过0.4公里 ,判断乘客不在车上
                         isInCar = false;
                     }
@@ -237,6 +240,11 @@ public class PostOrderActivity extends AppCompatActivity {
                     }
                     if(!isInCar){
                         currentLocation = new LatLng(Double.parseDouble(charge_detail.getCurrent_lat()), Double.parseDouble(charge_detail.getCurrent_lng()));
+                        MyLocationData myLocationData = new MyLocationData.Builder()//
+                                .latitude(currentLocation.latitude)//
+                                .longitude(currentLocation.longitude)//
+                                .build();
+                        mBaiduMap.setMyLocationData(myLocationData);
                         //更新界面
                         mHandler.sendEmptyMessage(MessageTag.MESSAGE_UPDATE_TRACK);
                     }
@@ -258,15 +266,17 @@ public class PostOrderActivity extends AppCompatActivity {
                     Log.e("daddy", "update track");
                     if(currentLocation == null)
                         return;
-                    if(mIsFirstDraw){
+                    if(mIsFirstDraw) {
                         prevLocation = currentLocation;
                         mIsFirstDraw = false;
                     }
 
                     if(Math.abs(prevLocation.latitude- currentLocation.latitude) > 0.001
-                            ||Math.abs(prevLocation.longitude- currentLocation.longitude) > 0.001 )
+                            ||Math.abs(prevLocation.longitude- currentLocation.longitude) > 0.001 ) {
                         //异常定位
+                        MobclickAgent.reportError(mContext, "纬度差：" + Math.abs(prevLocation.latitude- currentLocation.latitude) + " 经度差：" + Math.abs(prevLocation.longitude- currentLocation.longitude));
                         return;
+                    }
                     drawLine(mBaiduMap, prevLocation, currentLocation);
                     prevLocation = currentLocation;
                     break;
@@ -972,13 +982,13 @@ public class PostOrderActivity extends AppCompatActivity {
                         for (NearByCars.CarLocation loc : nearByCars.getCars()) {
                             LatLng ll = new LatLng(loc.getLat(), loc.getLng());
                             mBaiduMap.addOverlay(new MarkerOptions().position(ll).icon(BitmapDescriptorFactory.fromResource(R.drawable.caricon)));
-                            mBaiduMap.addOverlay(new MarkerOptions()
-                                    .position(currentLocation)
-                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_current_position_pin)));
-                            mBaiduMap.clear();
-                            MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(currentLocation);
-                            mBaiduMap.animateMapStatus(u);
                         }
+                        mBaiduMap.addOverlay(new MarkerOptions()
+                                .position(currentLocation)
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_current_position_pin)));
+//                            mBaiduMap.clear();
+                        MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(currentLocation);
+                        mBaiduMap.animateMapStatus(u);
                     }
                     @Override
                     public void onFailure(String error) {
