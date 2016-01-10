@@ -109,14 +109,10 @@ public class LoginActivity extends BaseActivity implements
             }
 
             @Override
-            public void onFailure(String error) {
-                mHandler.sendEmptyMessage(HANDLER_LOGIN_FAILURE);
-            }
+            public void onFailure(String error) { mHandler.sendEmptyMessage(HANDLER_LOGIN_FAILURE); }
 
             @Override
-            public void onTimeout() {
-                mHandler.sendEmptyMessage(HANDLER_LOGIN_FAILURE);
-            }
+            public void onTimeout() { mHandler.sendEmptyMessage(HANDLER_LOGIN_FAILURE); }
         });
 
     }
@@ -206,9 +202,7 @@ public class LoginActivity extends BaseActivity implements
             }
 
             @Override
-            public void onFailure(String error) {
-                mHandler.sendEmptyMessage(HANDLER_RESET_FAILURE);
-            }
+            public void onFailure(String error) { mHandler.sendEmptyMessage(HANDLER_RESET_FAILURE); }
 
             @Override
             public void onTimeout() {
@@ -531,9 +525,7 @@ public class LoginActivity extends BaseActivity implements
                     }
 
                     @Override
-                    public void onFailure(String error) {
-                        mHandler.sendEmptyMessage(HANDLER_LOGIN_FAILURE);
-                    }
+                    public void onFailure(String error) { mHandler.sendEmptyMessage(HANDLER_LOGIN_FAILURE); }
 
                     @Override
                     public void onTimeout() {

@@ -150,6 +150,7 @@ public class PreOrderActivity extends AppCompatActivity
 
     private PersonalInformation person;
     private ServiceReceiver receiver;
+    private MaterialDialog dialog;
 
 
     @Override
@@ -403,7 +404,10 @@ public class PreOrderActivity extends AppCompatActivity
                             if ("1".equals(notPaidOrder.getPay_role())) { //司机代付
                                 //;
                             } else {
-                                final MaterialDialog dialog = new MaterialDialog(PreOrderActivity.this);
+                                destLocButton.setClickable(true);
+                                destLocButton.setEnabled(true);
+                                if(dialog != null) { return; }
+                                dialog = new MaterialDialog(PreOrderActivity.this);
                                 dialog.setTitle("账单欠费").setMessage("您还有支付的订单, 请尽快完成支付, 否则将无法继续为您提供服务!")
                                         .setCanceledOnTouchOutside(false).setNegativeButton("稍后支付", new View.OnClickListener() {
                                     @Override
@@ -420,8 +424,6 @@ public class PreOrderActivity extends AppCompatActivity
 
                                     }
                                 }).show();
-                                destLocButton.setClickable(true);
-                                destLocButton.setEnabled(true);
                                 return;
                             }
                         }  //正常跳转
@@ -494,7 +496,8 @@ public class PreOrderActivity extends AppCompatActivity
                     if("1".equals(notPaidOrder.getPay_role())){ //司机代付
                         return;
                     }
-                    final MaterialDialog dialog = new MaterialDialog(PreOrderActivity.this);
+                    if(dialog != null){ return; }
+                    dialog = new MaterialDialog(PreOrderActivity.this);
                     dialog.setCanceledOnTouchOutside(false);
                     dialog.setTitle("账单欠费").setMessage("您还有支付的订单, 请尽快完成支付, 否则将无法继续为您提供服务!")
                             .setCanceledOnTouchOutside(false).setNegativeButton("稍后支付", new View.OnClickListener() {
@@ -513,7 +516,6 @@ public class PreOrderActivity extends AppCompatActivity
                         }
                     }).show();
                 }
-
             }
 
             @Override

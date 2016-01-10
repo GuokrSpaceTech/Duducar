@@ -56,7 +56,6 @@ import com.guokrspace.duducar.common.Constants;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
 import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
-import com.guokrspace.duducar.model.IdAndValueModel;
 import com.guokrspace.duducar.communication.message.ChargeDetail;
 import com.guokrspace.duducar.communication.message.DriverDetail;
 import com.guokrspace.duducar.communication.message.DriverInfo;
@@ -68,6 +67,7 @@ import com.guokrspace.duducar.communication.message.TripOver;
 import com.guokrspace.duducar.communication.message.TripStart;
 import com.guokrspace.duducar.database.CommonUtil;
 import com.guokrspace.duducar.database.OrderRecord;
+import com.guokrspace.duducar.model.IdAndValueModel;
 import com.guokrspace.duducar.ui.DriverInformationView;
 import com.guokrspace.duducar.util.SharedPreferencesUtils;
 import com.squareup.picasso.Picasso;
@@ -224,8 +224,10 @@ public class PostOrderActivity extends AppCompatActivity {
                     double dis = DistanceUtil.getDistance(carLatLng, pasLatLng);
                     // 友盟自定义错误
                     MobclickAgent.reportError(mContext, "乘客与司机之间的距离为 " + dis);
-                    if(dis > 400){ // 距离超过0.4公里 ,判断乘客不在车上
+                    if(dis > 100){ // 距离超过0.1公里 ,判断乘客不在车上
                         isInCar = false;
+                    } else {
+                        isInCar = true;
                     }
                     isStartFollow = true;
                     break;
@@ -271,8 +273,9 @@ public class PostOrderActivity extends AppCompatActivity {
                         mIsFirstDraw = false;
                     }
 
-                    if(Math.abs(prevLocation.latitude- currentLocation.latitude) > 0.001
-                            ||Math.abs(prevLocation.longitude- currentLocation.longitude) > 0.001 ) {
+                    if(Math.abs(prevLocation.latitude - currentLocation.latitude) > 0.002
+                            ||Math.abs(prevLocation.longitude - currentLocation.longitude) > 0.002) {
+                        prevLocation = currentLocation;
                         //异常定位
                         MobclickAgent.reportError(mContext, "纬度差：" + Math.abs(prevLocation.latitude- currentLocation.latitude) + " 经度差：" + Math.abs(prevLocation.longitude- currentLocation.longitude));
                         return;
@@ -959,9 +962,10 @@ public class PostOrderActivity extends AppCompatActivity {
                     .direction(location.getDirection()).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
 
-            if (locData != null && isInCar) {
+            if (locData != null && isInCar && isStartFollow) {
                 mBaiduMap.setMyLocationData(locData);
                 currentLocation = new LatLng(locData.latitude, locData.longitude);
+                mHandler.sendEmptyMessage(MessageTag.MESSAGE_UPDATE_TRACK);
             }
 
 //            Log.i("BaiduLocationApiDem", sb.toString());
@@ -997,11 +1001,7 @@ public class PostOrderActivity extends AppCompatActivity {
                     public void onTimeout() {
                     }
                 });
-            } else if (isInCar && isStartFollow && currentLocation != null){
-                //更新界面
-                mHandler.sendEmptyMessage(MessageTag.MESSAGE_UPDATE_TRACK);
             }
-
         }
     }
 
@@ -1012,12 +1012,26 @@ public class PostOrderActivity extends AppCompatActivity {
      * */
     private void drawLine(BaiduMap baiduMap,LatLng first, LatLng second){
         // 添加折线
-        Log.e("daddy", "drawline " + first.latitude +"::"+second.latitude);
+        Log.e("daddy", "drawline " + first.latitude + "::" + second.latitude);
         List<LatLng> lineList = new ArrayList<LatLng>();
         lineList.clear();
         lineList.add(first);
         lineList.add(second);
         OverlayOptions ooPolyline = new PolylineOptions().width(10).color(0xAAFF0000).points(lineList);
-        baiduMap.addOverlay(ooPolyline);
+        if(baiduMap != null){
+            try {
+                baiduMap.addOverlay(ooPolyline);
+                MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(new LatLng(second.latitude, second.longitude));
+                baiduMap.animateMapStatus(u);
+                if (marker != null) {
+                    marker.remove();
+                }
+
+                markerOptions = new MarkerOptions().icon(mCurrentMarker).position(new LatLng(second.latitude, second.longitude));
+                marker = (Marker) baiduMap.addOverlay(markerOptions);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 }

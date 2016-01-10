@@ -378,7 +378,7 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
     }
 
     private void updateDriverInfo(){
-        String name = (String) SharedPreferencesUtils.getParam(getActivity(), Constants.PREFERENCE_KEY_DRIVER_NAME, "阿方师傅");
+        String name = (String) SharedPreferencesUtils.getParam(getActivity(), Constants.PREFERENCE_KEY_DRIVER_NAME, "司机师傅");
         float stars = Float.parseFloat((String) SharedPreferencesUtils.getParam(getActivity(), Constants.PREFERNECE_KEY_DRIVER_RATING, "5"));
         int total_order = Integer.parseInt((String) SharedPreferencesUtils.getParam(getActivity(), Constants.PREFERENCE_KEY_DRIVER_TOTAL_ORDER, "0"));
         float favorable_rate = Float.parseFloat((String) SharedPreferencesUtils.getParam(getActivity(), Constants.PREFERENCE_KEY_DRIVER_FAVORABLE_RATE, "0.0"));
