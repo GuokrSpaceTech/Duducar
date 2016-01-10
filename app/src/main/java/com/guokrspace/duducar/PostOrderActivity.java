@@ -56,7 +56,6 @@ import com.guokrspace.duducar.common.Constants;
 import com.guokrspace.duducar.communication.ResponseHandler;
 import com.guokrspace.duducar.communication.SocketClient;
 import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
-import com.guokrspace.duducar.model.IdAndValueModel;
 import com.guokrspace.duducar.communication.message.ChargeDetail;
 import com.guokrspace.duducar.communication.message.DriverDetail;
 import com.guokrspace.duducar.communication.message.DriverInfo;
@@ -68,6 +67,7 @@ import com.guokrspace.duducar.communication.message.TripOver;
 import com.guokrspace.duducar.communication.message.TripStart;
 import com.guokrspace.duducar.database.CommonUtil;
 import com.guokrspace.duducar.database.OrderRecord;
+import com.guokrspace.duducar.model.IdAndValueModel;
 import com.guokrspace.duducar.ui.DriverInformationView;
 import com.guokrspace.duducar.util.SharedPreferencesUtils;
 import com.squareup.picasso.Picasso;
@@ -221,8 +221,10 @@ public class PostOrderActivity extends AppCompatActivity {
                     LatLng carLatLng = new LatLng(Double.parseDouble(order_start.getOrder().getStart_lat()), Double.parseDouble(order_start.getOrder().getStart_lng()));
                     LatLng pasLatLng = new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng());
                     double dis = DistanceUtil.getDistance(carLatLng, pasLatLng);
-                    if(dis > 400){ // 距离超过0.4公里 ,判断乘客不在车上
+                    if(dis > 100){ // 距离超过0.1公里 ,判断乘客不在车上
                         isInCar = false;
+                    } else {
+                        isInCar = true;
                     }
                     isStartFollow = true;
                     break;
@@ -263,10 +265,12 @@ public class PostOrderActivity extends AppCompatActivity {
                         mIsFirstDraw = false;
                     }
 
-                    if(Math.abs(prevLocation.latitude- currentLocation.latitude) > 0.001
-                            ||Math.abs(prevLocation.longitude- currentLocation.longitude) > 0.001 )
+                    if(Math.abs(prevLocation.latitude - currentLocation.latitude) > 0.002
+                            ||Math.abs(prevLocation.longitude - currentLocation.longitude) > 0.002) {
+                        prevLocation = currentLocation;
                         //异常定位
                         return;
+                    }
                     drawLine(mBaiduMap, prevLocation, currentLocation);
                     prevLocation = currentLocation;
                     break;
@@ -1002,12 +1006,23 @@ public class PostOrderActivity extends AppCompatActivity {
      * */
     private void drawLine(BaiduMap baiduMap,LatLng first, LatLng second){
         // 添加折线
-        Log.e("daddy", "drawline " + first.latitude +"::"+second.latitude);
+        Log.e("daddy", "drawline " + first.latitude + "::" + second.latitude);
         List<LatLng> lineList = new ArrayList<LatLng>();
         lineList.clear();
         lineList.add(first);
         lineList.add(second);
         OverlayOptions ooPolyline = new PolylineOptions().width(10).color(0xAAFF0000).points(lineList);
-        baiduMap.addOverlay(ooPolyline);
+        if(baiduMap != null){
+            try {
+                baiduMap.addOverlay(ooPolyline);
+                MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(new LatLng(second.latitude, second.longitude));
+                baiduMap.animateMapStatus(u);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
+
+    @Override
+    public void setRequestedOrientation(int requestedOrientation) { return; }
 }

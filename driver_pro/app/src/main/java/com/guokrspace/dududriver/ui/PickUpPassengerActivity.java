@@ -34,6 +34,8 @@ import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
+import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.MyLocationConfiguration;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.PolylineOptions;
@@ -186,6 +188,8 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
     private View naviView = null;
 
     private LatLng passengerLatLng;
+    private Marker marker;
+    private MarkerOptions markerOptions;
 
     //绘制路线相关变量
     private RoutePlanSearch routePlanSearch;
@@ -525,7 +529,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         }
         zoom.setVisibility(View.GONE);
 
-        MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(16.0f);
+        MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(18.0f);
         mBaiduMap.setMapStatus(msu);
 
         //禁止转动地图
@@ -621,7 +625,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                 Double.valueOf(orderItem.getOrder().getDestination_lat()), Double.valueOf(orderItem.getOrder().getDestination_lng()));
         ed = PlanNode.withLocation(passengerLatLng);
 
-        MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(16.0f);
+        MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(18.0f);
         mBaiduMap.setMapStatus(msu);
         isFirstTrack = true;
 
@@ -917,6 +921,14 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         if(baiduMap != null){
             try {
                 baiduMap.addOverlay(ooPolyline);
+                MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(new LatLng(second.latitude, second.longitude));
+                baiduMap.animateMapStatus(u);
+                if (marker != null) {
+                    marker.remove();
+                }
+
+                markerOptions = new MarkerOptions().icon(mCurrentMarker).position(new LatLng(second.latitude, second.longitude));
+                marker = (Marker) baiduMap.addOverlay(markerOptions);
             } catch (Exception e){
                 e.printStackTrace();
             }
