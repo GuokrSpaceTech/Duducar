@@ -10,6 +10,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.utils.DistanceUtil;
@@ -114,6 +115,7 @@ public class ChargeService extends Service {
             @Override
             public void run() {
                 if(!DuduService.isRunningApp(getApplicationContext())){ // 应用终止
+                    Toast.makeText(getApplicationContext(), "计费服务停止", Toast.LENGTH_SHORT).show();
                     stopCharging();
                     stopSelf();
                 }
@@ -180,5 +182,11 @@ public class ChargeService extends Service {
         Intent intent = new Intent();
         intent.setAction(action);
         sendOrderedBroadcast(intent, null);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Toast.makeText(getApplicationContext(), "计费服务 终止", Toast.LENGTH_SHORT).show();
     }
 }
