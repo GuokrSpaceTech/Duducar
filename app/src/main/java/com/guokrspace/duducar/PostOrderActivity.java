@@ -953,9 +953,10 @@ public class PostOrderActivity extends AppCompatActivity {
                     .direction(location.getDirection()).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
 
-            if (locData != null && isInCar) {
+            if (locData != null && isInCar && isStartFollow) {
                 mBaiduMap.setMyLocationData(locData);
                 currentLocation = new LatLng(locData.latitude, locData.longitude);
+                mHandler.sendEmptyMessage(MessageTag.MESSAGE_UPDATE_TRACK);
             }
 
 //            Log.i("BaiduLocationApiDem", sb.toString());
@@ -991,11 +992,7 @@ public class PostOrderActivity extends AppCompatActivity {
                     public void onTimeout() {
                     }
                 });
-            } else if (isInCar && isStartFollow && currentLocation != null){
-                //更新界面
-                mHandler.sendEmptyMessage(MessageTag.MESSAGE_UPDATE_TRACK);
             }
-
         }
     }
 
@@ -1017,12 +1014,15 @@ public class PostOrderActivity extends AppCompatActivity {
                 baiduMap.addOverlay(ooPolyline);
                 MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(new LatLng(second.latitude, second.longitude));
                 baiduMap.animateMapStatus(u);
+                if (marker != null) {
+                    marker.remove();
+                }
+
+                markerOptions = new MarkerOptions().icon(mCurrentMarker).position(new LatLng(second.latitude, second.longitude));
+                marker = (Marker) baiduMap.addOverlay(markerOptions);
             } catch (Exception e){
                 e.printStackTrace();
             }
         }
     }
-
-    @Override
-    public void setRequestedOrientation(int requestedOrientation) { return; }
 }

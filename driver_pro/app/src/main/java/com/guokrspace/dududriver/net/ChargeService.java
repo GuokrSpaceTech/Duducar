@@ -64,24 +64,25 @@ public class ChargeService extends Service {
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case UPDATE_CHARGE:
-                    if(curCharge <=  CommonUtil.curPrice) {
-                        curCharge = new BigDecimal(CommonUtil.curPrice).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
-                        SocketClient.getInstance().sendCurrentChargeDetail(curCharge, CommonUtil.curDistance/1000, CommonUtil.curLowSpeedTime, new ResponseHandler(Looper.myLooper()) {
-                            @Override
-                            public void onSuccess(String messageBody) {
-                            }
-                            @Override
-                            public void onFailure(String error) {
-                                if(error.contains("not Order")){ // 订单异常
-                                    sendBroadCast(Constants.SERVICE_ACTION_ORDER_NOT_EXISTS);
-                                    stopCharging();
-                                }
-                            }
-                            @Override
-                            public void onTimeout() {
-                            }
-                        });
+                    if(curCharge >  CommonUtil.curPrice) {
+                        CommonUtil.curPrice = curCharge;
                     }
+                    curCharge = new BigDecimal(CommonUtil.curPrice).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+                    SocketClient.getInstance().sendCurrentChargeDetail(curCharge, CommonUtil.curDistance/1000, CommonUtil.curLowSpeedTime, new ResponseHandler(Looper.myLooper()) {
+                        @Override
+                        public void onSuccess(String messageBody) {
+                        }
+                        @Override
+                        public void onFailure(String error) {
+                            if(error.contains("not Order")){ // 订单异常
+                                sendBroadCast(Constants.SERVICE_ACTION_ORDER_NOT_EXISTS);
+                                stopCharging();
+                            }
+                        }
+                        @Override
+                        public void onTimeout() {
+                        }
+                    });
                     break;
                 default:
                     break;
