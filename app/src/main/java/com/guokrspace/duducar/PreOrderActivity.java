@@ -496,7 +496,8 @@ public class PreOrderActivity extends AppCompatActivity
                     if("1".equals(notPaidOrder.getPay_role())){ //司机代付
                         return;
                     }
-                     MaterialDialog dialog = new MaterialDialog(PreOrderActivity.this);
+                    if(dialog != null){ return; }
+                    dialog = new MaterialDialog(PreOrderActivity.this);
                     dialog.setCanceledOnTouchOutside(false);
                     dialog.setTitle("账单欠费").setMessage("您还有支付的订单, 请尽快完成支付, 否则将无法继续为您提供服务!")
                             .setCanceledOnTouchOutside(false).setNegativeButton("稍后支付", new View.OnClickListener() {
@@ -515,7 +516,6 @@ public class PreOrderActivity extends AppCompatActivity
                         }
                     }).show();
                 }
-
             }
 
             @Override
