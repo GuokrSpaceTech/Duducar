@@ -106,6 +106,7 @@ public class OrderDetailActivity extends BaseActivity{
                 CommonUtil.curOrderStatus = 6;
                 intent.putExtra("orderItem", orderItem);
                 intent.putExtra("price", cash);
+                intent.putExtra("type", "current");
                 intent.putExtra("sumprice", sumprice);
                 intent.putExtra("orderNum", orderNum);
                 intent.putExtra("mileage", curDistance);

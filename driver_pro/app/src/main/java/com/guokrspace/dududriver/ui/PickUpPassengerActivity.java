@@ -63,6 +63,7 @@ import com.guokrspace.dududriver.net.ResponseHandler;
 import com.guokrspace.dududriver.net.SocketClient;
 import com.guokrspace.dududriver.net.message.MessageTag;
 import com.guokrspace.dududriver.util.CommonUtil;
+import com.guokrspace.dududriver.util.JsonFileReader;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 import com.guokrspace.dududriver.util.VoiceUtil;
 import com.guokrspace.dududriver.view.CircleImageView;
@@ -71,9 +72,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -177,6 +184,8 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
     public final int UPDATE_CHARGE = 0x101;
     public final int ORDER_NOT_EXIST = 0x102;
     public final int ORDER_CANCELED = 0x103;
+    public final int NETWORK_OUT = 0x104;
+    public final int NETWORK_RECONNECT = 0x105;
 
     private OrderItem orderItem;
     private BDLocation mLoaction;
@@ -202,6 +211,16 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
     private double baseDistance;
     private double baseCharge;
     private int baseLowTime;
+    private int timeup = 1;
+
+    public static boolean isNetworkOut = false;
+    private HashMap<LatLng, Long>cache = new HashMap<>();
+    private boolean isRecover;
+    private String fileDir = "";
+    private String fileName = "";
+    private File routeFile;
+    private OutputStreamWriter routeFileWriter;
+    private List<LatLng> points;
 
     private OnGetRoutePlanResultListener routePlanResultListener = new OnGetRoutePlanResultListener() {
         @Override
@@ -230,6 +249,15 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
             if (drivingRouteResult.error == SearchResult.ERRORNO.NO_ERROR) {
                 if(mBaiduMap != null){
                     mBaiduMap.clear();
+                    if(isRecover && points.size() > 5){  // 存在历史路径
+                        LatLng pre = points.get(0);
+                        for(int i=1; i < points.size(); i++){
+                            Log.e("daddy  pick ", "drawline " + pre.latitude);
+                            drawLine(mBaiduMap, pre, points.get(i));
+                            pre = points.get(i);
+                        }
+                        currentLatLng = pre;
+                    }
                     DrivingRouteOverlay overlay = new MyDrivingRouteOverlay(mBaiduMap);
                     mBaiduMap.setOnMarkerClickListener(overlay);
                     overlay.setData(drivingRouteResult.getRouteLines().get(0));
@@ -250,13 +278,17 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                 double dis = CommonUtil.cur5sDistance;
                 double disA = CommonUtil.curDistance;
                 double secs = CommonUtil.curChargeTime;
+                double speed = Double.parseDouble(CommonUtil.getCurSpeed());
+                float diraction = CommonUtil.getCurDirction();
+
                 if(curCharge <= price) {
                     curCharge = new BigDecimal(price).setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
                     dis = new BigDecimal(dis).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                     disA = new BigDecimal(disA).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 
-                    btnConfirm.setText(dis + "m/s, 共" + disA +"米 , " + secs + "s, " + curCharge + "元");
+                    btnConfirm.setText(dis + "m/s, 共" + disA + "米 , " + secs + "s, " + speed + "bms" + ",方向: " + diraction + "°," + curCharge + "元");
                 }
+
                 Log.e("daddy", "current charge");
                 break;
             case ORDER_CANCELED://订单取消
@@ -283,21 +315,84 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                     isFirstTrack = false;
                 }
 
-                if(Math.abs(currentLatLng.latitude - CommonUtil.getCurLatLng().latitude) > 0.002
-                        || Math.abs(currentLatLng.longitude - CommonUtil.getCurLatLng().longitude) > 0.002 ){
+                if(Math.abs(currentLatLng.latitude - CommonUtil.getCurLatLng().latitude) > 0.002 + 0.001 * timeup
+                        || Math.abs(currentLatLng.longitude - CommonUtil.getCurLatLng().longitude) > 0.002 + 0.001 * timeup ){
                     //异常定位
-                    currentLatLng = CommonUtil.getCurLatLng();
+                    timeup++;
+//                    currentLatLng = CommonUtil.getCurLatLng();
                     break;
                 }
-
+                timeup = 1;
                 Log.e("daddy", "start track no exception");
                 drawLine(mBaiduMap, currentLatLng, CommonUtil.getCurLatLng());
+                if(isNetworkOut){
+                    cache.put(CommonUtil.getCurLatLng(), CommonUtil.getCurTime());
+                }
+                if(routeFileWriter != null){
+                    try {
+                        routeFileWriter.write(CommonUtil.getCurLat() + " " + CommonUtil.getCurLng()+"\n");
+                        routeFileWriter.flush();
+                        Log.e("daddy pick ", "write track to json" + CommonUtil.getCurLat());
+                    } catch (IOException e){
+                        e.printStackTrace();
+                        Log.e("daddy pick", "cant write json");
+                    }
+                }
                 currentLatLng = CommonUtil.getCurLatLng();
+                break;
+            case NETWORK_OUT:
+                isNetworkOut = true;
+                cache.clear();
+                break;
+            case NETWORK_RECONNECT:
+                if(isNetworkOut){
+                    isNetworkOut = false;
+                    stopCache();
+                }
                 break;
             default:
                 break;
         }
         return false;
+    }
+
+    private void stopCache(){
+        if(!cache.isEmpty()){
+            String points = getPoints(cache);
+            SocketClient.getInstance().sendCachePoint(points, new ResponseHandler(Looper.myLooper()) {
+                @Override
+                public void onSuccess(String messageBody) {
+                    //发送历史点成功
+                    Log.e("daddy pick", "send cache success");
+                    cache.clear();
+                }
+
+                @Override
+                public void onFailure(String error) {
+                    //发送失败
+                    Log.e("daddy pickup", "sen cache failure");
+                }
+
+                @Override
+                public void onTimeout() {
+                    //超时重发
+                    Log.e("daddy pickup", "sen cache timeout");
+                    stopCache();
+                }
+            });
+        }
+    }
+
+    private String getPoints(HashMap<LatLng, Long> hist){
+        String points = "";
+        for (Iterator it = hist.entrySet().iterator(); it.hasNext();){
+            Map.Entry e = (Map.Entry)it.next();
+            points += ((LatLng)e.getKey()).latitude + ",";
+            points += ((LatLng)e.getKey()).longitude + ",";
+            points += e.getValue().toString() + ";";
+        }
+        points.substring(0, points.length());
+        return points;
     }
 
     private class MyDrivingRouteOverlay extends DrivingRouteOverlay {
@@ -362,6 +457,14 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                     mHandler.sendEmptyMessage(ORDER_CANCELED);
                     abortBroadcast();
                     break;
+                case Constants.SERVICE_ACTION_NETWORK_OUT:
+                    //网络中断
+                    mHandler.sendEmptyMessage(NETWORK_OUT);
+                    break;
+                case Constants.SERVICE_ACTION_NEWWORK_RECONNET:
+                    //网络重连
+                    mHandler.sendEmptyMessage(NETWORK_RECONNECT);
+                    break;
                 default:
                     return;
             }
@@ -385,6 +488,8 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
             filter.addAction(Constants.SERVICE_ACTION_ORDER_NOT_EXISTS);
         }
         filter.addAction(Constants.ACTION_ORDER_CANCEL);
+        filter.addAction(Constants.SERVICE_ACTION_NETWORK_OUT);
+        filter.addAction(Constants.SERVICE_ACTION_NEWWORK_RECONNET);
         filter.setPriority(1000);
         registerReceiver(receiver, filter);
     }
@@ -397,6 +502,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         setContentView(R.layout.activity_pickuppassenger);
         context = PickUpPassengerActivity.this;
         mHandler = new Handler(this);
+        fileDir = this.getFilesDir().toString();
         ButterKnife.bind(this);
         initDirs();
         initNavi();
@@ -404,7 +510,8 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         Bundle bundle = getIntent().getExtras();
         if(bundle!=null) {
             orderItem = (OrderItem) bundle.getSerializable("orderItem");
-            boolean isRecover = bundle.getBoolean("isRecover");
+            fileName = orderItem.getOrder().getId();
+            isRecover = bundle.getBoolean("isRecover");
             if(isRecover){//恢复到去送乘客的状态
                 if(bundle.getString("lastCharge").equals("null")){
                     // 测试数据
@@ -579,9 +686,32 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
             timer = null;
         }
 
+        if(!JsonFileReader.fileExists(fileDir, fileName)){ //路径文件不存在
+            Log.e("daddy pick", "json file not exitst");
+            routeFile = JsonFileReader.createFile(fileDir,fileName);
+        } else {
+            if(isRecover) {
+                points = JsonFileReader.getJson(fileDir, fileName);
+            } else {
+                JsonFileReader.delFile(fileDir, fileName);
+                JsonFileReader.createFile(fileDir, fileName);
+            }
+            routeFile = new File(fileDir, fileName);
+        }
+
+        if(routeFile != null){
+            try{
+                routeFileWriter = new OutputStreamWriter(new FileOutputStream(routeFile));
+            }catch (Exception e){
+                e.printStackTrace();
+                Log.e("dady pick", " can not get the writer");
+            }
+        }
+
+
         //3秒一次  更新界面
         timer = new Timer();
-        timer.scheduleAtFixedRate(new DrawLineTimerTask(), 7000, 3 * 1000);
+        timer.scheduleAtFixedRate(new DrawLineTimerTask(), 1000, 3 * 1000);
 
 //        final String price = baseCharge > CommonUtil.getStartPrice() ? baseCharge + "" : CommonUtil.getStartPrice() + "";
 
@@ -606,7 +736,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                 }
                 SharedPreferencesUtils.setParam(PickUpPassengerActivity.this, Constants.PREFERENCE_KEY_ORDER_STATUS, Constants.STATUS_REACH);
 
-                SharedPreferencesUtils.setParam(PickUpPassengerActivity.this, Constants.PREFERENCE_KEY_DRIVER_TOTAL_ORDER, (Integer.parseInt((String)SharedPreferencesUtils.getParam(PickUpPassengerActivity.this, Constants.PREFERENCE_KEY_DRIVER_TOTAL_ORDER, "0")) + 1) + "");
+                SharedPreferencesUtils.setParam(PickUpPassengerActivity.this, Constants.PREFERENCE_KEY_DRIVER_TOTAL_ORDER, (Integer.parseInt((String) SharedPreferencesUtils.getParam(PickUpPassengerActivity.this, Constants.PREFERENCE_KEY_DRIVER_TOTAL_ORDER, "0")) + 1) + "");
 
                 Intent intent = new Intent(PickUpPassengerActivity.this, ConfirmBillActivity.class);
                 intent.putExtra("orderItem", orderItem);
@@ -614,6 +744,15 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                 intent.putExtra("lowspeed", CommonUtil.curLowSpeedTime);
                 startActivity(intent);
                 CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
+                try {
+                    routeFileWriter.flush();
+                    routeFileWriter.close();
+                    routeFile.delete();
+                    Log.e("daddy pick","remove 图和 file");
+                } catch ( IOException e){
+                    e.printStackTrace();
+                }
+
                 finish();
             }
         });
@@ -632,6 +771,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         // 定位再次初始化
         st = PlanNode.withLocation(new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng()));
         routePlanSearch.drivingSearch(new DrivingRoutePlanOption().from(st).to(ed));
+
 
         btnNavi.setOnClickListener(new View.OnClickListener() {
             @Override

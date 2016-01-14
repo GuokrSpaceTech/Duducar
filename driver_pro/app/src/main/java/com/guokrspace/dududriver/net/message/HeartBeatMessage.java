@@ -9,6 +9,15 @@ public class HeartBeatMessage {
     String lat;
     String lng;
     String speed;
+    String direction;
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
+    }
 
     public String getCmd() {
         return cmd;

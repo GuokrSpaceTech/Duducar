@@ -1,6 +1,8 @@
 package com.guokrspace.dududriver.net;
 
 import android.app.ActivityManager;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -22,11 +24,13 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.model.LatLng;
 import com.google.gson.Gson;
 import com.guokrspace.dududriver.DuduDriverApplication;
+import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.database.PersonalInformation;
 import com.guokrspace.dududriver.model.OrderItem;
 import com.guokrspace.dududriver.net.message.HeartBeatMessage;
 import com.guokrspace.dududriver.net.message.MessageTag;
+import com.guokrspace.dududriver.ui.PickUpPassengerActivity;
 import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 
@@ -98,6 +102,19 @@ public class DuduService extends Service {
          /*
          * Init the SocketClient
          */
+
+        Intent notificationIntent = new Intent();
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        Notification noti = new Notification.Builder(this)
+                .setContentTitle("嘟嘟播报")
+                .setContentText("记得每日签到, 高级司机会获得更高的分成比例!")
+                .setSmallIcon(R.drawable.caricon)
+                .setContentIntent(pendingIntent)
+                .setOnlyAlertOnce(true)
+                .build();
+
+        startForeground(12349, noti);
+
         Log.e("daady", "start command");
         if(mTcpClient == null){
             conctTask = new connectTask(); //Connect to server
@@ -123,7 +140,7 @@ public class DuduService extends Service {
         heartBeatTimer.schedule(heartBeatTask, 1000, 5 * 1000);
 
         pullOrder();
-        return START_STICKY;
+        return START_NOT_STICKY;
     }
 
     @Override
@@ -135,6 +152,11 @@ public class DuduService extends Service {
     @Override
     public void onDestroy() {
         Toast.makeText(getApplicationContext(), "service stoped", Toast.LENGTH_SHORT).show();
+        if(isRunningApp(getApplicationContext())){
+            // 应用正常运行, 服务意外终止, 重新启动
+            startService(new Intent(getApplicationContext(), DuduService.class));
+            return;
+        }
         super.onDestroy();
 
         unregisterReceiver(mReceiver);
@@ -214,7 +236,13 @@ public class DuduService extends Service {
             CommonUtil.setCurAddress(location.getAddrStr());
             CommonUtil.setCurAddressDescription(location.getLocationDescribe());
             CommonUtil.setCurTime(System.currentTimeMillis());
-            CommonUtil.setCurSpeed(curLocaData.speed+"");
+            CommonUtil.setCurSpeed(curLocaData.speed + "");
+            CommonUtil.setCurDirction(curLocaData.direction);
+            if(!isDuduServiceRunning()){
+                Log.e("daddy service ", " dudu service is stopped and restarting");
+                startService(new Intent(getApplicationContext(), DuduService.class));
+            }
+            Log.e("service", "current location update");
         }
     }
 
@@ -225,13 +253,15 @@ public class DuduService extends Service {
             public void onSuccess(String messageBody) {
                 Log.e("Mainactivity", "confirm order handler");
                 OrderItem orderItem = new Gson().fromJson(messageBody, OrderItem.class);
-                if(CommonUtil.getCurOrderItem() != null){
-                    if(CommonUtil.getCurOrderItem().getOrder().getId().equals(orderItem.getOrder().getId())){
+                Log.e("daddy duduservice", " new order come");
+                if (CommonUtil.getCurOrderItem() != null) {
+                    if (CommonUtil.getCurOrderItem().getOrder().getId().equals(orderItem.getOrder().getId())) {
+                        Log.e("daddy error", " dudu service the same order");
                         //同一个单
                         return;
                     }
                 }
-                if(CommonUtil.getCurrentStatus() != Constants.STATUS_WAIT) {
+                if (CommonUtil.getCurrentStatus() != Constants.STATUS_WAIT) {
                     Log.e("daddy error", " dudu service not right status");
                     return;
                 }
@@ -268,6 +298,7 @@ public class DuduService extends Service {
         msg.setLat(String.valueOf(CommonUtil.getCurLat()));
         msg.setLng(String.valueOf(CommonUtil.getCurLng()));
         msg.setSpeed(String.valueOf(CommonUtil.getCurSpeed()));
+        msg.setDirection(String.valueOf(CommonUtil.getCurDirction()));
 
         SocketClient.getInstance().sendHeartBeat(msg, new ResponseHandler(looper) {
             @Override
@@ -275,6 +306,10 @@ public class DuduService extends Service {
                 Log.i("HeartBeat Response", messageBody);
                 //将登陆状态置为true
                 SharedPreferencesUtils.setParam(DuduService.this, SharedPreferencesUtils.LOGIN_STATE, true);
+                if(PickUpPassengerActivity.isNetworkOut){
+                    sendBroadCast(Constants.SERVICE_ACTION_NEWWORK_RECONNET);
+                }
+
                 if(!discard){
                     registerDuduMessageListener();
                     discard = true;
@@ -305,9 +340,7 @@ public class DuduService extends Service {
                             }
 
                             @Override
-                            public void onFailure(String error) {
-                                Log.e("login in failure!", "errorbody " + error);
-                            }
+                            public void onFailure(String error) { Log.e("login in failure!", "errorbody " + error); }
 
                             @Override
                             public void onTimeout() {
@@ -391,6 +424,7 @@ public class DuduService extends Service {
 
                     }else if(type == ConnectivityManager.TYPE_MOBILE){
                         /////////3g网络
+
                     }
                     reConnectServer();
                     sendBroadCast(Constants.SERVICE_ACTION_NEWWORK_RECONNET);
@@ -422,7 +456,7 @@ public class DuduService extends Service {
             if(mTcpClient == null){
                 mTcpClient = new SocketClient();
             }
-            mTcpClient.run();
+            mTcpClient.getInstance().run();
 
             return null;
         }
@@ -458,17 +492,14 @@ public class DuduService extends Service {
     }
 
     public static boolean isRunningApp(Context context) {
-        boolean isAppRunning = false;
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningTaskInfo> list = am.getRunningTasks(100);
         for (ActivityManager.RunningTaskInfo info : list) {
             if (info.baseActivity.getPackageName().equals(Constants.PACKAGE_NAME)) {
-                isAppRunning = true;
-                // find it, break
-                break;
+                return true;
             }
         }
-        return isAppRunning;
+        return false;
     }
 
     /*
@@ -476,11 +507,21 @@ public class DuduService extends Service {
      *
      */
     private class StopServiceReceiver extends BroadcastReceiver {
-
         @Override
         public void onReceive(Context context, Intent intent) {
             stopSelf();
         }
     }
+
+    protected boolean isDuduServiceRunning(){
+        ActivityManager manager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service :manager.getRunningServices(Integer.MAX_VALUE)) {
+            if(service.service.getClassName().contains(".net.DuduService")){// service 没死
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
 

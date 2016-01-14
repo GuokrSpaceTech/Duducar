@@ -58,6 +58,7 @@ public class MessageTag {
     public static final int CANCEL_ORDER_RESP = 0x1006;
     public static final int TRIP_START = 0x1007;
     public static final int CURRENT_TRIP_FEE = 0x1012;
+    public static final int CACHE_TRIP_FEE = 0x1021;
     public static final int TRIP_OVER = 0x1008;
     public static final int ORDER_ACCEPT = 0x100E;
     public static final int RATING_SERVICE = 0x100F;
@@ -106,6 +107,7 @@ public class MessageTag {
         MessageTag.put("cancel_order", CANCEL_ORDER);
         MessageTag.put("history_orders", HISTORY_ORDERS);
         MessageTag.put("complain", COMPLAIN_SERVICE);
+        MessageTag.put("cache_point", CACHE_TRIP_FEE);
     }
 
     public int Tag(String command)

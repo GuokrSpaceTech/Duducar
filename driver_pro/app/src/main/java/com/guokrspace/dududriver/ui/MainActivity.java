@@ -124,7 +124,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 
         initView();
 
-/*        MobclickAgent.reportError(context, "主界面报错");*/
+        /*MobclickAgent.reportError(context, "主界面报错");*/
 
         AppExitUtil.getInstance().addActivity(this);
         mHandler = new Handler(this);
@@ -232,7 +232,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     }
     //进行自动登陆
     private void doLogin(PersonalInformation user, final boolean recover) {
-        if (user == null) {
+        if (user == null || user.getToken() == null) { // 注销过后
             return;
         }
         Log.e("daddy", user.getMobile() + " " + user.getToken() + " " + user.getId());
@@ -243,10 +243,6 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 showCustomToast("登陆成功");
                 Log.e("login in success!", "messageBody" + messageBody);
                 SharedPreferencesUtils.setParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, true);
-
-                pullBaseInfo();
-//                pullOrder();
-                mHandler.sendEmptyMessage(MessageTag.MESSAGE_UPDATE_MESSAGE);
                 isOnline = true;
                 if(!recover){
                     return;
@@ -312,6 +308,12 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
+                pullBaseInfo();
+//                pullOrder();
+                mHandler.sendEmptyMessage(MessageTag.MESSAGE_UPDATE_MESSAGE);
+
+
             }
 
             @Override
@@ -331,30 +333,6 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             }
         });
     }
-
-//    private void pullOrder() {
-//        //注册派单监听
-//        SocketClient.getInstance().registerServerMessageHandler(MessageTag.PATCH_ORDER, new ResponseHandler(Looper.myLooper()) {
-//            @Override
-//            public void onSuccess(String messageBody) {
-//                Log.e("Mainactivity", "confirm order handler");
-//                orderItem = FastJsonTools.getObject(messageBody, OrderItem.class);
-//                Log.e("Daddy ", messageBody + "  " + orderItem.getCMD() + " " + orderItem.getOrder().getDestination_lat() + "::" + orderItem.getOrder().getDestination_lng());
-//                mHandler.sendEmptyMessage(NEW_ORDER_ARRIVE);
-//            }
-//
-//            @Override
-//            public void onFailure(String error) {
-//                Log.e("Mainactivity", "register order handler error");
-//            }
-//
-//            @Override
-//            public void onTimeout() {
-//                Log.e("Mainactivity", "register order handler time out");
-//            }
-//        });
-//
-//    }
 
     private void pullBaseInfo(){
 
@@ -538,7 +516,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 }
                 break;
             case NEW_ORDER_ARRIVE:
-                Log.e("daddy new order", "newo rder arrive");
+                Log.e("daddy mainactivity", "new order arrive");
                 if(!isInvoke2 && System.currentTimeMillis() - lastOrderTime < 6 * 1000){ // 连续的订单
                     break;
                 }
@@ -650,21 +628,6 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         return false;
     }
 
-    protected static boolean isBackground(Context context) {
-        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
-        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
-            if (appProcess.processName.equals(context.getPackageName())) {
-                if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_BACKGROUND) {
-                    return true;
-                }else{
-                    return false;
-                }
-            }
-        }
-        return false;
-    }
-
     protected void moveToFront() {
         if (Build.VERSION.SDK_INT >= 11) { // honeycomb
             final ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
@@ -731,7 +694,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             switch (action){
                 case Constants.SERVICE_ACTION_RELOGIN:
                     if(userInfo != null) { // 用户登陆出错
-                       doLogin(userInfo, true);
+                        doLogin(userInfo, true);
                     } else {
                         startActivity(new Intent(MainActivity.this, LoginActivity.class));
                     }

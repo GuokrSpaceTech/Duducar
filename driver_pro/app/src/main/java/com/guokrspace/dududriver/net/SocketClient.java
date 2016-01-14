@@ -145,6 +145,7 @@ public class SocketClient {
 
             //create a socket to make the connection with the server
             socket = new Socket(serverAddr, SERVERPORT);
+            Log.e("TCP SI Client", "SI: Connected whit port " + socket.getLocalPort());
 //            socket.setSoTimeout(30000);
             try {
 
@@ -451,6 +452,20 @@ public class SocketClient {
             e.printStackTrace();
         }
 
+        return ret;
+    }
+
+    public int sendCachePoint(String hisList, ResponseHandler handler){
+        int ret = -1;
+        JSONObject hist = new JSONObject();
+        try {
+            hist.put("cmd", "cache_point");
+            hist.put("role", "1");
+            hist.put("points", hisList);
+            ret = sendMessage(hist, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return ret;
     }
 

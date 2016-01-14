@@ -66,6 +66,7 @@ public class HistoryOrderDetailActivity extends BaseActivity implements Handler.
                 Intent intent = new Intent(context, PayCostActivity.class);
                 OrderItem orderItem = new OrderItem();
                 orderItem.setOrder(getOrder(orderDetail));
+                intent.putExtra("type", "history");
                 intent.putExtra("orderItem", orderItem);
                 intent.putExtra("sumprice", Double.parseDouble(orderDetail.getSumprice()));
                 intent.putExtra("orderNum", orderDetail.getOrderNum());
