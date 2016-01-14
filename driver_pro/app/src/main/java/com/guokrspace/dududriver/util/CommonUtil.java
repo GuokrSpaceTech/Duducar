@@ -156,10 +156,19 @@ public class CommonUtil {
         CommonUtil.curSpeed = curSpeed;
     }
 
+    public static float getCurDirction() {
+        return curDirction;
+    }
+
+    public static void setCurDirction(float curDirction) {
+        CommonUtil.curDirction = curDirction;
+    }
+
     private static String curSpeed;
     private static double curLat;
     private static double curLng;
     private static LatLng curLatLng;
+    private static float curDirction;
 
     public static double curBaseDistance;
     public static int curBaseLowTime;

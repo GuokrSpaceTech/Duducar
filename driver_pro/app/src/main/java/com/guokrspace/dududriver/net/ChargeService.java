@@ -20,6 +20,8 @@ import com.guokrspace.dududriver.util.CommonUtil;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -46,6 +48,7 @@ public class ChargeService extends Service {
     }
 
     int times;
+    int timeup;
     double preDis;
     long preTime;
     double secDistance;
@@ -55,6 +58,10 @@ public class ChargeService extends Service {
     double preLat,preLng;
     int minutes;
     double curCharge = 0d;
+    List<Double> minDistance = new ArrayList<>();
+    double minTotalDistance = 0d;
+
+
     final int UPDATE_CHARGE = 0x101;
     public int getMinutes(){
         return minutes;
@@ -109,6 +116,7 @@ public class ChargeService extends Service {
 
         times = 0;
         preDis = 0;
+        timeup = 1;
         secDistance = 0d;
         tmpDistance = 0d;
         calTimer = new Timer();
@@ -123,15 +131,28 @@ public class ChargeService extends Service {
                 Log.e("daddy", "task is runnin as " + CommonUtil.getCurrentStatus());
                 secDistance = DistanceUtil.getDistance(new LatLng(preLat, preLng), new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng()));
 //                if ((secDistance * 1000 / (System.currentTimeMillis() - CommonUtil.getCurTime())) >= Constants.STRANGEDISTANCE) { //这一次的距离跳转异常
-                    //drop it
+
+
                 double secs = new BigDecimal(((System.currentTimeMillis() - preTime) / 1000)).setScale(1, RoundingMode.HALF_UP).doubleValue();
 
-                if(secDistance / secs >= Constants.STRANGEDISTANCE){
-                    tmpDistance += preDis;
-                } else {
+                //drop it
+
+                if(minDistance.size() < 12){
+                    minDistance.add(secDistance);
+                    minTotalDistance += secDistance;
                     tmpDistance += secDistance;
-                    preDis = secDistance;
+                    preDis = secs;
+                } else {
+                    minTotalDistance -= minDistance.get(0);
+                    minTotalDistance += secDistance;
+                    if(minTotalDistance <= Constants.STRANGEDISTANCE) {
+                        minDistance.remove(0);
+                        minDistance.add(secDistance);
+                        tmpDistance += secDistance;
+                        preDis = secs;
+                    } // 一分钟内超过极限距离, 直接丢弃
                 }
+
                 preTime = System.currentTimeMillis();
 
                 if (CommonUtil.isCharging) {//开车中
@@ -140,8 +161,11 @@ public class ChargeService extends Service {
                         if (tmpDistance <= Constants.LOWSPEEDDISTANACE) {//这一分钟内是低速行驶
                             CommonUtil.curLowSpeedTime++;
                         }
-
-                        CommonUtil.curDistance += tmpDistance;
+                        if (tmpDistance >= Constants.STRANGEDISTANCE){
+                            CommonUtil.curDistance += Constants.STRANGEDISTANCE;
+                        } else {
+                            CommonUtil.curDistance += tmpDistance;
+                        }
                         tmpDistance = 0;
                         times = 0;
                     }

@@ -100,6 +100,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
     private double price;
     private double mileage;
     private String orderNum;
+    private boolean current;
     private Button payButton;
     private TextView feeTextView;
     private RelativeLayout alipayLayout;
@@ -129,7 +130,9 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
                         if(CommonUtil.curOrderId == Integer.parseInt(tripOverOrderDetail.getOrder().getId())){
                             CommonUtil.curOrderStatus = 5;
                         }
-                        CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+                        if(current) {
+                            CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+                        }
                         finish();
                     } else {
 //                             判断resultStatus 为非“9000”则代表可能支付失败
@@ -140,7 +143,9 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
                         } else if(TextUtils.equals(resultStatus, "6001")) {
                             // 中途停止支付
                             Toast.makeText(PayCostActivity.this, "请尽快完成代付", Toast.LENGTH_SHORT).show();
-                            CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+                            if(current) {
+                                CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+                            }
                             finish();
                         } else {
                             // 其他值就可以判断为支付失败，包括用户主动取消支付，或者系统返回的错误
@@ -197,6 +202,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
             price = bundle.getDouble("sumprice");
             mileage = bundle.getDouble("mileage");
             orderNum = bundle.getString("orderNum");
+            current = bundle.getString("type").equals("current") ? true : false;
             feeTextView.setText(price+"");
         }
 
@@ -235,7 +241,9 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
 
         if (id == android.R.id.home)
         {
-            CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+            if(current) {
+                CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+            }
             finish();
         }
 
@@ -266,7 +274,9 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
                     // 已支付
                     Toast.makeText(PayCostActivity.this, "订单已支付", Toast.LENGTH_SHORT).show();
                     VoiceUtil.startSpeaking(VoiceCommand.ORDER_PAID);
-                    CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+                    if(current) {
+                        CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+                    }
                     finish();
                 }
             }
@@ -343,7 +353,9 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
                             new DialogInterface.OnClickListener() {
                                 public void onClick(
                                         DialogInterface dialoginterface, int i) {
-                                    CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+                                    if(current) {
+                                        CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
+                                    }
                                     finish();
                                 }
                             }).show();

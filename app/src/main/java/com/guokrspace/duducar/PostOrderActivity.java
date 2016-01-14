@@ -69,6 +69,7 @@ import com.guokrspace.duducar.database.CommonUtil;
 import com.guokrspace.duducar.database.OrderRecord;
 import com.guokrspace.duducar.model.IdAndValueModel;
 import com.guokrspace.duducar.ui.DriverInformationView;
+import com.guokrspace.duducar.util.JsonFileReader;
 import com.guokrspace.duducar.util.SharedPreferencesUtils;
 import com.squareup.picasso.Picasso;
 import com.umeng.analytics.MobclickAgent;
@@ -76,6 +77,10 @@ import com.umeng.analytics.MobclickAgent;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -153,6 +158,14 @@ public class PostOrderActivity extends AppCompatActivity {
 
     private Timer timer;
 
+    private boolean isRecover;
+    private int timeup = 1;
+    private String fileDir = "";
+    private String fileName = "";
+    private File routeFile;
+    private OutputStreamWriter routeFileWriter;
+    private List<LatLng> points;
+
     Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message message) {
@@ -218,8 +231,30 @@ public class PostOrderActivity extends AppCompatActivity {
 
                     mCurrentChargeView.setVisibility(View.VISIBLE);
                     mBaiduMap.clear();
-//                    mCurrentMarker = BitmapDescriptorFactory.fromResource(R.drawable.caricon);
-//                    mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(MyLocationConfiguration.LocationMode.FOLLOWING, true, mCurrentMarker));
+                    fileName = order_start.getOrder().getId();
+                    if(!JsonFileReader.fileExists(fileDir, fileName)){ //路径文件不存在
+                        Log.e("daddy pick", "json file not exitst");
+                        routeFile = JsonFileReader.createFile(fileDir, fileName);
+                    } else {
+                        if(isRecover) {
+                            points = JsonFileReader.getJson(fileDir, fileName);
+                        } else {
+                            JsonFileReader.delFile(fileDir, fileName);
+                            JsonFileReader.createFile(fileDir, fileName);
+                        }
+                        routeFile = new File(fileDir, fileName);
+                    }
+
+                    if(routeFile != null){
+                        try{
+                            routeFileWriter = new OutputStreamWriter(new FileOutputStream(routeFile));
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            Log.e("dady pick", " can not get the writer");
+                        }
+                    }
+                    mCurrentMarker = BitmapDescriptorFactory.fromResource(R.drawable.caricon);
+                    mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(MyLocationConfiguration.LocationMode.FOLLOWING, true, mCurrentMarker));
                     LatLng carLatLng = new LatLng(Double.parseDouble(order_start.getOrder().getStart_lat()), Double.parseDouble(order_start.getOrder().getStart_lng()));
                     LatLng pasLatLng = new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng());
                     double dis = DistanceUtil.getDistance(carLatLng, pasLatLng);
@@ -231,6 +266,15 @@ public class PostOrderActivity extends AppCompatActivity {
                         isInCar = true;
                     }
                     isStartFollow = true;
+                    if(isRecover && points.size() > 5){  // 存在历史路径
+                        LatLng pre = points.get(0);
+                        for(int i=1; i < points.size(); i++){
+                            Log.e("daddy  pick ", "drawline " + pre.latitude);
+                            drawLine(mBaiduMap, pre, points.get(i));
+                            pre = points.get(i);
+                        }
+                        currentLocation = pre;
+                    }
                     break;
                 case MessageTag.MESSAGE_UPDATE_CHARGE:
                     //TODO : 更新费用信息
@@ -262,6 +306,14 @@ public class PostOrderActivity extends AppCompatActivity {
                         intent.putExtra("order",order_finish.getOrder());
                         startActivity(intent);
                         isStartFollow = false;
+                        try {
+                            routeFileWriter.flush();
+                            routeFileWriter.close();
+                            routeFile.delete();
+                            Log.e("daddy pick","remove 图和 file");
+                        } catch ( IOException e){
+                            e.printStackTrace();
+                        }
                         finish();
                     }
                     break;
@@ -274,12 +326,24 @@ public class PostOrderActivity extends AppCompatActivity {
                         mIsFirstDraw = false;
                     }
 
-                    if(Math.abs(prevLocation.latitude - currentLocation.latitude) > 0.002
-                            ||Math.abs(prevLocation.longitude - currentLocation.longitude) > 0.002) {
-                        prevLocation = currentLocation;
+                    if(Math.abs(prevLocation.latitude - currentLocation.latitude) > 0.002 + 0.001 * timeup
+                            ||Math.abs(prevLocation.longitude - currentLocation.longitude) > 0.002 + 0.001 * timeup) {
+//                        prevLocation = currentLocation;
                         //异常定位
+                        timeup++;
                         MobclickAgent.reportError(mContext, "纬度差：" + Math.abs(prevLocation.latitude- currentLocation.latitude) + " 经度差：" + Math.abs(prevLocation.longitude- currentLocation.longitude));
                         return;
+                    }
+                    timeup = 1;
+                    if(routeFileWriter != null){
+                        try {
+                            routeFileWriter.write(currentLocation.latitude + " " + currentLocation.longitude+"\n");
+                            routeFileWriter.flush();
+                            Log.e("daddy pick ", "write track to json" + CommonUtil.getCurLat());
+                        } catch (IOException e){
+                            e.printStackTrace();
+                            Log.e("daddy pick", "cant write json");
+                        }
                     }
                     drawLine(mBaiduMap, prevLocation, currentLocation);
                     prevLocation = currentLocation;
@@ -390,10 +454,14 @@ public class PostOrderActivity extends AppCompatActivity {
         initToolBar();
         AppExitUtil.getInstance().addActivity(this);
 
+        fileDir = this.getFilesDir().toString();
+
+        timeup = 1;
+
         //Get Args
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            boolean isRecover = bundle.getBoolean("isRecover", false);
+            isRecover = bundle.getBoolean("isRecover", false);
             if(isRecover){
                 String status = bundle.getString("status");
                 if(status.equals("1")){ // '1-订单初始化 2-接单 3-开始 4-结束 5-取消’,
@@ -420,7 +488,7 @@ public class PostOrderActivity extends AppCompatActivity {
                     driver.setDriver(new Gson().fromJson(orderDetail.getDriver(), DriverDetail.class));
                     initBaiduMap();
                     initBaseUI();
-
+                    fileName = orderDetail.getId();
                     isWaitForCar = false;
                     mApplication.mDriverDetail = driver.getDriver();
                     TextView cancelPrompt = (TextView) findViewById(R.id.cancelPromptTextView);
@@ -564,22 +632,17 @@ public class PostOrderActivity extends AppCompatActivity {
                 SocketClient.getInstance().sendCancelOrderRequest(reasonSelected.getId(), "2", new ResponseHandler(Looper.myLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {
-
                         mHandler.sendMessageDelayed(mHandler.obtainMessage(CANCEL_ORDER_SUCCESS, messageBody), 500l);
-
                     }
 
                     @Override
                     public void onFailure(String error) {
-
                         mHandler.sendMessageDelayed(mHandler.obtainMessage(CANCEL_ORDER_FAILURE, error), 500l);
                     }
 
                     @Override
                     public void onTimeout() {
-
                         mHandler.sendEmptyMessageDelayed(CANCEL_ORDER_TIMEOUT, 500l);
-
                     }
                 });
             }
@@ -771,6 +834,36 @@ public class PostOrderActivity extends AppCompatActivity {
 
 //                mApplication.mDaoSession.getOrderRecordDao().insert(orderRecord);
                 mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_COMPLETED);
+            }
+
+            @Override
+            public void onFailure(String error) {
+
+            }
+
+            @Override
+            public void onTimeout() {
+
+            }
+        });
+
+        SocketClient.getInstance().registerServerMessageHandler(MessageTag.CACHE_TRIP_FEE, new ResponseHandler(Looper.myLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                if (!isStartFollow || isInCar) {
+                    return;
+                }
+                com.alibaba.fastjson.JSONObject object = JSON.parseObject(messageBody);
+                String pois = object.get("points") == null ? "" : (String)object.get("points");
+                List<Points> points = FastJsonTools.getListObject(pois, Points.class);
+                if (points.size() <= 2) return;
+                if (isStartFollow && !isInCar) { // 路上且不在车上
+                    Points pre = points.get(0);
+                    for (int i = 1; i < points.size(); i++) {
+                        drawLine(mBaiduMap, pre.get(), points.get(i).get());
+                        pre = points.get(i);
+                    }
+                }
             }
 
             @Override
@@ -1035,6 +1128,40 @@ public class PostOrderActivity extends AppCompatActivity {
             } catch (Exception e){
                 e.printStackTrace();
             }
+        }
+    }
+
+    protected class Points{
+        public double getLat() {
+            return lat;
+        }
+
+        public void setLat(double lat) {
+            this.lat = lat;
+        }
+
+        public long getTime() {
+            return time;
+        }
+
+        public void setTime(long time) {
+            this.time = time;
+        }
+
+        public double getLng() {
+            return lng;
+        }
+
+        public void setLng(double lng) {
+            this.lng = lng;
+        }
+
+        private double lat;
+        private double lng;
+        private long time;
+
+        public LatLng get(){
+            return new LatLng(lat, lng);
         }
     }
 }

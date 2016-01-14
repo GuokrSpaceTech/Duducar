@@ -17,6 +17,7 @@ import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.common.NewOrderReceiver;
+import com.guokrspace.dududriver.database.PersonalInformation;
 import com.guokrspace.dududriver.net.DuduService;
 import com.guokrspace.dududriver.util.AppExitUtil;
 import com.guokrspace.dududriver.util.CommonUtil;
@@ -223,8 +224,10 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
                 AppExitUtil.getInstance().finishOtherActivities(SettingActivity.this);
                 //清空用户数据
-                mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().list().get(0).setToken(null);
-//                mApplication.mDaoSession.getPersonalInformationDao().deleteAll();
+                PersonalInformation person = mApplication.mDaoSession.getPersonalInformationDao().queryBuilder().list().get(0);
+                person.setToken(null);
+                mApplication.mDaoSession.getPersonalInformationDao().update(person);
+
                 Intent _stopServiceIntent = new Intent();
                 _stopServiceIntent.setAction(DuduService.STOP_SERVICE);
                 sendOrderedBroadcast(_stopServiceIntent, null);
