@@ -15,6 +15,7 @@ import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.model.OrderItem;
 
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -373,5 +374,40 @@ public class CommonUtil {
         Double d = Double.parseDouble(dec);
         return String.format("%.1f", d);
     }
+
+
+    /*
+     * 返回当前日期是星期几，星期一到星期天返回1~7
+     * @param dt
+     * @return
+     */
+    public static int getDayOfWeek(Date dt) {
+        if (dt == null) return Integer.MAX_VALUE;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dt);
+        int w = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+        if (w == 0)
+            w = 7;
+        return w;
+    }
+
+    /*
+     * 根据当前日期返回下次提现的具体日期，以yyyy-MM-dd格式的字符串返回
+     * @param dayOfWeek
+     * @return
+     */
+    public static String getNextWithdrawDate(int dayOfWeek) {
+        int diff = 2 - dayOfWeek;
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        Date newDate = new Date(System.currentTimeMillis());
+        cal.setTime(newDate);
+        if (diff < 0) {
+            diff = 7 - Math.abs(diff);
+        }
+        cal.set(Calendar.DATE, cal.get(Calendar.DATE) + diff);
+        return formatter.format(cal.getTime());
+    }
+
 
 }

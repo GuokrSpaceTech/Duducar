@@ -339,9 +339,9 @@ public class LoginActivity extends AppCompatActivity implements
                 break;
             case HANDLER_VERIFY_FAILURE:
                 if (mDialog != null) mDialog.dismiss();
-                WinToast.toast(LoginActivity.this, R.string.login_failure);
-                setResult(RESULT_CANCELED);
-                finish();
+                WinToast.toast(LoginActivity.this, R.string.verify_failure);
+//                setResult(RESULT_CANCELED);
+//                finish();
                 break;
             case HANDLER_TIMERTICK:
                 mRegcodeBt.setText((String) msg.obj);

@@ -3,6 +3,8 @@
     android:id="@+id/history_order_item"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/recycler_item_bg_selector"
+    android:clickable="true"
     android:orientation="vertical"
     android:paddingBottom="10dp"
     android:paddingTop="10dp">

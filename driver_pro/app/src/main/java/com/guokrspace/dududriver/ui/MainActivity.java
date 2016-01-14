@@ -50,6 +50,7 @@ import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 import com.guokrspace.dududriver.util.VoiceUtil;
 import com.guokrspace.dududriver.view.ListenProgressView;
 import com.viewpagerindicator.TabPageIndicator;
+import com.viewpagerindicator.TitlePageIndicator;
 
 import org.json.JSONObject;
 
@@ -383,13 +384,12 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     }
 
     private void initView() {
-        mIndicator = (TabPageIndicator) findViewById(R.id.indicator);
-
-        pager = (ViewPager) findViewById(R.id.pager);
         mAdapter = new TabPagerAdapter(getSupportFragmentManager());
+        pager = (ViewPager) findViewById(R.id.pager);
         pager.setOffscreenPageLimit(3);//设置预加载页数
         //要求每次的加载都需要保证列表是最新的，当然就缓存一页
         pager.setAdapter(mAdapter);
+        mIndicator = (TabPageIndicator) findViewById(R.id.indicator);
         mIndicator.setViewPager(pager);
         mIndicator.setCurrentItem(1);//设置启动首先显示的抢单界面
 

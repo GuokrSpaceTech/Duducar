@@ -13,6 +13,7 @@
     <string name="login_erro_is_null">"用户名、密码不能为空"</string>
     <string name="login_success">"登录成功"</string>
     <string name="login_failure">"登录失败"</string>
+    <string name="verify_failure">"验证码错误"</string>
 
     <string name="nearby">附近有%d辆车</string>
     <string name="title_section2">个人信息</string>

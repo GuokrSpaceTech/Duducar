@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -42,6 +43,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -74,12 +76,20 @@ public class BalanceActivity extends BaseActivity implements Handler.Callback{
     RelativeLayout loadMoreLayout = null;
     TextView footViewText;
 
+    boolean isWithdrawDate = true;
+
     @OnClick(R.id.substitute_pay)
     void doWithdraw() {
         if (!isNetworkAvailable()) {
             showToast("网络不可用");
             return;
         }
+
+        if (!isWithdrawDate && confirmBalanceDialog != null) {
+            confirmBalanceDialog.show();
+            return;
+        }
+
         progressDialog = new ProgressDialog(context, ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
         //进行体现请求
@@ -374,8 +384,24 @@ public class BalanceActivity extends BaseActivity implements Handler.Callback{
                 resources.getColor(R.color.materialGreen));
         //下拉刷新
         mRefreshLayout.setOnRefreshListener(refreshListener);
+        int todayInWeek = CommonUtil.getDayOfWeek(new Date(System.currentTimeMillis()));
+        if (todayInWeek == 2) {
+            initConfirmBalanceDialog();
+        } else {
 
-        initConfirmBalanceDialog();
+            isWithdrawDate = false;
+            withdrawButton.setBackgroundColor(Color.GRAY);
+            confirmBalanceDialog = new MaterialDialog(context);
+            confirmBalanceDialog.setTitle("提现提醒");
+            confirmBalanceDialog.setMessage("下一个提现日为:" + CommonUtil.getNextWithdrawDate(todayInWeek));
+            confirmBalanceDialog.setPositiveButton("确定", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    confirmBalanceDialog.dismiss();
+                }
+            });
+            confirmBalanceDialog.setCanceledOnTouchOutside(false);
+        }
 
     }
 

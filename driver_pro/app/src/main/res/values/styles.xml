@@ -8,6 +8,7 @@
         <item name="colorPrimaryDark">@color/app_main_theme</item>
         <item name="colorAccent">@color/white</item>
         <item name="android:textColorPrimary">@android:color/white</item>
+        <!--<item name="vpiTitlePageIndicatorStyle">@style/CustomTitlePageIndicator</item>-->
         <item name="vpiTabPageIndicatorStyle">@style/CustomTabPageIndicator</item>
         <item name="android:listDivider">@android:drawable/divider_horizontal_bright</item>
     </style>
@@ -17,6 +18,17 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
+    <style name="CustomTitlePageIndicator">
+        <item name="android:background">#18FF0000</item>
+        <item name="footerColor">@color/indicator_footer_color</item>
+        <item name="footerLineHeight">1dp</item>
+        <item name="footerIndicatorHeight">3dp</item>
+        <item name="footerIndicatorStyle">underline</item>
+        <item name="android:textColor">#AAFFFFFF</item>
+        <item name="selectedColor">@color/indicator_footer_color</item>
+        <item name="selectedBold">true</item>
+        <item name="android:textSize">20sp</item>
+    </style>
 
     <style name="CustomTabPageIndicator" parent="Widget">
         <item name="android:background">@drawable/tab_indicator</item>

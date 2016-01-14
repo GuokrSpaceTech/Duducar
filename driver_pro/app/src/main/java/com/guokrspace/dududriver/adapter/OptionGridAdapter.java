@@ -1,6 +1,5 @@
 package com.guokrspace.dududriver.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -81,11 +80,12 @@ public class OptionGridAdapter extends RecyclerView.Adapter<OptionGridAdapter.It
         holder.tvOption.setText(mItems.get(position % mItems.size()).text);
         holder.ivOption.setImageResource(mItems.get(position % mItems.size()).resId);
 
-        holder.contentLayout.setOnTouchListener(new View.OnTouchListener() {
+        holder.itemView.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+                    v.setBackgroundResource(R.drawable.more_item_pressed_bg);
                     isClickOver = false;
                     mTimer = new Timer();
 
@@ -103,6 +103,7 @@ public class OptionGridAdapter extends RecyclerView.Adapter<OptionGridAdapter.It
                     } else {
                         mDragStartListener.onStartDrag(holder);
                     }
+                    v.setBackgroundResource(R.drawable.more_item_normal_bg);
                 }
                 return true;
             }
@@ -129,7 +130,7 @@ public class OptionGridAdapter extends RecyclerView.Adapter<OptionGridAdapter.It
             default:
                 break;
         }
-        ((Activity) context).overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_up);
+//        ((Activity) context).overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_up);
     }
 
     @Override

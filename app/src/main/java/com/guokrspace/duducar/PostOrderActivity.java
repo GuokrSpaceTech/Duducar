@@ -98,6 +98,7 @@ public class PostOrderActivity extends AppCompatActivity {
     boolean isFirstLoc = true;// 是否首次定位
     boolean isStartFollow = false;
     boolean isInCar = true;
+    private boolean isWaitForCar = false;
     ProgressBar mProgressBar;
     Toolbar mToolbar;
     Button cancelButton;
@@ -178,6 +179,7 @@ public class PostOrderActivity extends AppCompatActivity {
                     break;
                 case MessageTag.MESSAGE_ORDER_DISPATCHED:
                     if (state == WAITING_FOR_ORDER_CONFIRM) {   //The driverview moves up by 140dp
+                        mBaiduMap.clear();
                         LinearLayout bmapLayout = (LinearLayout) findViewById(R.id.bmapLayout);
                         RelativeLayout.LayoutParams paramRL = (RelativeLayout.LayoutParams) bmapLayout.getLayoutParams();
                         paramRL.height = bmapLayout.getHeight() - dpToPx(getResources(), 120);
@@ -204,7 +206,6 @@ public class PostOrderActivity extends AppCompatActivity {
                         }
                     }
 
-                    // TODO: 这里取消了定时器，当isInCar = true,怎么还能绘制距离？
                     timer.cancel();
 
                     break;
@@ -217,8 +218,8 @@ public class PostOrderActivity extends AppCompatActivity {
 
                     mCurrentChargeView.setVisibility(View.VISIBLE);
                     mBaiduMap.clear();
-                    mCurrentMarker = BitmapDescriptorFactory.fromResource(R.drawable.caricon);
-                    mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(MyLocationConfiguration.LocationMode.FOLLOWING, true, mCurrentMarker));
+//                    mCurrentMarker = BitmapDescriptorFactory.fromResource(R.drawable.caricon);
+//                    mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(MyLocationConfiguration.LocationMode.FOLLOWING, true, mCurrentMarker));
                     LatLng carLatLng = new LatLng(Double.parseDouble(order_start.getOrder().getStart_lat()), Double.parseDouble(order_start.getOrder().getStart_lng()));
                     LatLng pasLatLng = new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng());
                     double dis = DistanceUtil.getDistance(carLatLng, pasLatLng);
@@ -242,11 +243,11 @@ public class PostOrderActivity extends AppCompatActivity {
                     }
                     if(!isInCar){
                         currentLocation = new LatLng(Double.parseDouble(charge_detail.getCurrent_lat()), Double.parseDouble(charge_detail.getCurrent_lng()));
-                        MyLocationData myLocationData = new MyLocationData.Builder()//
-                                .latitude(currentLocation.latitude)//
-                                .longitude(currentLocation.longitude)//
-                                .build();
-                        mBaiduMap.setMyLocationData(myLocationData);
+//                        MyLocationData myLocationData = new MyLocationData.Builder()//
+//                                .latitude(currentLocation.latitude)//
+//                                .longitude(currentLocation.longitude)//
+//                                .build();
+//                        mBaiduMap.setMyLocationData(myLocationData);
                         //更新界面
                         mHandler.sendEmptyMessage(MessageTag.MESSAGE_UPDATE_TRACK);
                     }
@@ -647,7 +648,7 @@ public class PostOrderActivity extends AppCompatActivity {
         return false;
     }
 
-    private boolean isWaitForCar = false;
+
 
     @Override
     protected void onResume() {
@@ -962,10 +963,12 @@ public class PostOrderActivity extends AppCompatActivity {
                     .direction(location.getDirection()).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
 
-            if (locData != null && isInCar && isStartFollow) {
-                mBaiduMap.setMyLocationData(locData);
+            if (locData != null) {
                 currentLocation = new LatLng(locData.latitude, locData.longitude);
-                mHandler.sendEmptyMessage(MessageTag.MESSAGE_UPDATE_TRACK);
+                if (isInCar && isStartFollow) {
+                    mBaiduMap.setMyLocationData(locData);
+                    mHandler.sendEmptyMessage(MessageTag.MESSAGE_UPDATE_TRACK);
+                }
             }
 
 //            Log.i("BaiduLocationApiDem", sb.toString());
@@ -975,7 +978,7 @@ public class PostOrderActivity extends AppCompatActivity {
     private class MyTimerTask extends TimerTask {
         @Override
         public void run() {
-            if (start != null && currentLocation != null && !isStartFollow) {
+            if (start != null && currentLocation != null && !isStartFollow && !isWaitForCar) {
                 SocketClient.getInstance().sendNearByCarRequestTest(currentLocation.latitude, currentLocation.longitude, "1", new ResponseHandler(Looper.getMainLooper()) {
                     @Override
                     public void onSuccess(String messageBody) {

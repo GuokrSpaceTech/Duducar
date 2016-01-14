@@ -9,7 +9,6 @@ import com.guokrspace.dududriver.ui.GrabOrderFragment;
 import com.guokrspace.dududriver.ui.MeFragment;
 import com.guokrspace.dududriver.ui.MoreFragment;
 import com.guokrspace.dududriver.util.LogUtil;
-import com.viewpagerindicator.IconPageIndicator;
 import com.viewpagerindicator.IconPagerAdapter;
 
 /**
@@ -17,12 +16,12 @@ import com.viewpagerindicator.IconPagerAdapter;
  */
 public class TabPagerAdapter extends FragmentPagerAdapter implements IconPagerAdapter {
 
-    protected static final String[] TITLE = new String[] { "我", "抢单", "更多" };
+    protected static final String[] TITLE = new String[] { "我 ", "抢单", "更多" };
 
     protected static final int[] ICONS = new int[] {
-            R.drawable.indicator_me_selector,
-            R.drawable.indicator_graborder_selector,
-            R.drawable.indicator_more_selector
+            R.drawable.indicator_group_me,
+            R.drawable.indicator_group_graborder,
+            R.drawable.indicator_group_more
     };
 
     public TabPagerAdapter(FragmentManager fm){

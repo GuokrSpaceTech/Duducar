@@ -51,14 +51,15 @@ public class RecordListAdapter extends RecyclerView.Adapter<RecordListAdapter.Re
             holder.tvDest.setText(mItems.get(position).getDestination());
 
             holder.tvStatus.setText("已完成");
-            holder.orderItemLayout.setOnClickListener(new View.OnClickListener() {
+//            holder.itemView.setBackgroundResource(R.drawable.recycler_item_bg_selector);
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent detailIntent = new Intent();
                     detailIntent.setClass(context, HistoryOrderDetailActivity.class);
                     detailIntent.putExtra("orderDetail", mItems.get(position));
                     context.startActivity(detailIntent);
-                    ((Activity)context).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    ((Activity) context).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 }
             });
         }
