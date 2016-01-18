@@ -104,6 +104,8 @@ public class OptionGridAdapter extends RecyclerView.Adapter<OptionGridAdapter.It
                         mDragStartListener.onStartDrag(holder);
                     }
                     v.setBackgroundResource(R.drawable.more_item_normal_bg);
+                } else if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_CANCEL) {
+                    v.setBackgroundResource(R.drawable.more_item_normal_bg);
                 }
                 return true;
             }
