@@ -52,6 +52,7 @@ public class DuduService extends Service {
     private volatile long preTime = 0;
     private volatile int currTimeOut = 0;
 
+    private long preBeat = 0;
     private Timer heartBeatTimer;
     private TimerTask heartBeatTask;
 
@@ -68,6 +69,7 @@ public class DuduService extends Service {
         super.onCreate();
         //初始化百度定位
         initLocation();
+        preBeat = System.currentTimeMillis();
         //开始请求定位
         mLocClient.start();
         mLocClient.requestLocation();
@@ -121,26 +123,25 @@ public class DuduService extends Service {
             conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
 
-        final Looper looper = Looper.myLooper();
-        if(heartBeatTimer != null){
-            heartBeatTimer.cancel();
-        }
-        if(heartBeatTask != null){
-            heartBeatTask.cancel();
-        }
-        heartBeatTimer = new Timer();
-        heartBeatTask = new TimerTask() {
-            @Override
-            public void run() {
-                sendHeartBeat(looper);
-            }
-        };
+//        if(heartBeatTimer != null){
+//            heartBeatTimer.cancel();
+//        }
+//        if(heartBeatTask != null){
+//            heartBeatTask.cancel();
+//        }
+//        heartBeatTimer = new Timer();
+//        heartBeatTask = new TimerTask() {
+//            @Override
+//            public void run() {
+//                sendHeartBeat(Looper.myLooper());
+//            }
+//        };
         //发送心跳包 5s一次
-        Log.e("daddy service", "start heart beat" );
-        heartBeatTimer.schedule(heartBeatTask, 1000, 5 * 1000);
+//        Log.e("daddy service", "start heart beat" );
+//        heartBeatTimer.schedule(heartBeatTask, 1000, 5 * 1000);
 
         pullOrder();
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
     @Override
@@ -174,14 +175,14 @@ public class DuduService extends Service {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if(heartBeatTimer != null){
-            heartBeatTimer.cancel();
-            heartBeatTimer = null;
-        }
-        if(heartBeatTask != null){
-            heartBeatTask.cancel();
-            heartBeatTask = null;
-        }
+//        if(heartBeatTimer != null){
+//            heartBeatTimer.cancel();
+//            heartBeatTimer = null;
+//        }
+//        if(heartBeatTask != null){
+//            heartBeatTask.cancel();
+//            heartBeatTask = null;
+//        }
 
         CommonUtil.setIsServiceOn(false);
     }
@@ -241,6 +242,10 @@ public class DuduService extends Service {
             if(!isDuduServiceRunning()){
                 Log.e("daddy service ", " dudu service is stopped and restarting");
                 startService(new Intent(getApplicationContext(), DuduService.class));
+            }
+            if(System.currentTimeMillis() - preBeat >= 4 * 1000){ // 5s一次发送heartbeat
+                sendHeartBeat(Looper.myLooper());
+                preBeat = System.currentTimeMillis();
             }
             Log.e("service", "current location update");
         }
@@ -424,7 +429,6 @@ public class DuduService extends Service {
 
                     }else if(type == ConnectivityManager.TYPE_MOBILE){
                         /////////3g网络
-
                     }
                     reConnectServer();
                     sendBroadCast(Constants.SERVICE_ACTION_NEWWORK_RECONNET);
