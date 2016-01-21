@@ -15,7 +15,6 @@ import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.model.OrderItem;
 
-import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -292,7 +291,7 @@ public class CommonUtil {
         float km_price = Float.parseFloat(CommonUtil.getCurOrderItem().getCharge_rule().getKm_price());
         float low_speed_price = Float.parseFloat(CommonUtil.getCurOrderItem().getCharge_rule().getLow_speed_price());
         mileage = mileage/1000.0d;
-        if(mileage <= starting_distance + 0.5){
+        if(mileage <= starting_distance + 0.2){
             return starting_price + low_speed_price * lowtime;
         }
         mileage = mileage - starting_distance;

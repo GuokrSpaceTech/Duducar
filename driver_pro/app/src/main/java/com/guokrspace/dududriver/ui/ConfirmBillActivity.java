@@ -192,9 +192,9 @@ public class ConfirmBillActivity extends BaseActivity implements Handler.Callbac
 //                        CommonUtil.changeCurStatus(Constants.STATUS_WAIT);
 //                        VoiceUtil.startSpeaking(VoiceCommand.CONTINUE_WAIT)
                         final double addPriced[] = new double[]{
-                                new BigDecimal(addPrice[0] / 100d).setScale(2, RoundingMode.HALF_UP).doubleValue(),
-                                new BigDecimal(addPrice[1] / 100d).setScale(2, RoundingMode.HALF_UP).doubleValue(),
-                                new BigDecimal(addPrice[2] / 100d).setScale(2, RoundingMode.HALF_UP).doubleValue()};
+                                new BigDecimal(addPrice[0]).setScale(2, RoundingMode.HALF_UP).doubleValue(),
+                                new BigDecimal(addPrice[1]).setScale(2, RoundingMode.HALF_UP).doubleValue(),
+                                new BigDecimal(addPrice[2]).setScale(2, RoundingMode.HALF_UP).doubleValue()};
 
                         SocketClient.getInstance().endOrder(price + "", curDistance + "", lowSpeedTime + "", addPriced[0] + "", addPriced[1] + "", addPriced[2] + "", new ResponseHandler(Looper.myLooper()) {
                             @Override
