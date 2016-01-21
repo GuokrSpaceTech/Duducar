@@ -1,16 +1,20 @@
 package com.guokrspace.dududriver.ui;
 
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -50,7 +54,6 @@ import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 import com.guokrspace.dududriver.util.VoiceUtil;
 import com.guokrspace.dududriver.view.ListenProgressView;
 import com.viewpagerindicator.TabPageIndicator;
-import com.viewpagerindicator.TitlePageIndicator;
 
 import org.json.JSONObject;
 
@@ -199,6 +202,8 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         if(isInvoke){
             isInvoke2 = true;
             mHandler.sendEmptyMessageDelayed(NEW_ORDER_ARRIVE, 1 * 1000);
+        } else {
+            initGPS();
         }
     }
 
@@ -781,36 +786,38 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
     /**
      * 监听GPS
      */
-//    private void initGPS() {
-//        LocationManager locationManager = (LocationManager) this
-//                .getSystemService(Context.LOCATION_SERVICE);
-//        // 判断GPS模块是否开启，如果没有则开启
-//        if (!locationManager
-//                .isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
-//            Toast.makeText(MainActivity.this, "请打开GPS",
-//                    Toast.LENGTH_SHORT).show();
-//            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-//            dialog.setMessage("请打开GPS");
-//            dialog.setPositiveButton("确定",
-//                    new android.content.DialogInterface.OnClickListener() {
-//
-//                        @Override
-//                        public void onClick(DialogInterface arg0, int arg1) {
-//
-//                            // 转到手机设置界面，用户设置GPS
-//                            Intent intent = new Intent(
-//                                    Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-//                            startActivityForResult(intent, 0); // 设置完成后返回到原来的界面
-//
-//                        }
-//                    });
+    private void initGPS() {
+        LocationManager locationManager = (LocationManager) this
+                .getSystemService(Context.LOCATION_SERVICE);
+        // 判断GPS模块是否开启，如果没有则开启
+        if (!locationManager
+                .isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            if(CommonUtil.getCurrentStatus() == Constants.STATUS_WAIT) {
+                CommonUtil.changeCurStatus(Constants.STATUS_HOLD);
+                mHandler.sendEmptyMessage(ADJUST_STATUS);
+            }
+            VoiceUtil.startSpeaking(VoiceCommand.TURN_ON_GPS);
+            dialog.setMessage("请先开启GPS定位功能");
+            dialog.setCancelable(false);
+            dialog.setPositiveButton("确定",
+                    new android.content.DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            // 转到手机设置界面，用户设置GPS
+                            Intent intent = new Intent(
+                                    Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            startActivityForResult(intent, 0); // 设置完成后返回到原来的界面
+                        }
+                    });
 //            dialog.setNeutralButton("取消", new android.content.DialogInterface.OnClickListener() {
 //
 //                @Override
 //                public void onClick(DialogInterface arg0, int arg1) {
 //                    arg0.dismiss();
 //                }
-//            } );
-//            dialog.show();
-//        }
+//            });
+            dialog.show();
+        }
+    }
 }
