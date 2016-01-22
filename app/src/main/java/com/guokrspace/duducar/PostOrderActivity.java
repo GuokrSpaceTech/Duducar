@@ -253,14 +253,14 @@ public class PostOrderActivity extends AppCompatActivity {
                             Log.e("dady pick", " can not get the writer");
                         }
                     }
-                    mCurrentMarker = BitmapDescriptorFactory.fromResource(R.drawable.caricon);
-                    mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(MyLocationConfiguration.LocationMode.FOLLOWING, true, mCurrentMarker));
+//                    mCurrentMarker = BitmapDescriptorFactory.fromResource(R.drawable.caricon);
+//                    mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(MyLocationConfiguration.LocationMode.FOLLOWING, true, mCurrentMarker));
                     LatLng carLatLng = new LatLng(Double.parseDouble(order_start.getOrder().getStart_lat()), Double.parseDouble(order_start.getOrder().getStart_lng()));
                     LatLng pasLatLng = new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng());
                     double dis = DistanceUtil.getDistance(carLatLng, pasLatLng);
                     // 友盟自定义错误
                     MobclickAgent.reportError(mContext, "乘客与司机之间的距离为 " + dis);
-                    if(dis > 1){ // 距离超过0.1公里 ,判断乘客不在车上
+                    if(dis > 100){ // 距离超过0.1公里 ,判断乘客不在车上
                         isInCar = false;
                     } else {
                         isInCar = true;

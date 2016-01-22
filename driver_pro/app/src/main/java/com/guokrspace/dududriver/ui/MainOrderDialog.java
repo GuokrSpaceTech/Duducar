@@ -142,9 +142,9 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
         if(distance > 20000) {
             //20公里失败
         } else if(distance <= 999) {
-            distanceStr = ",距离你只有大约 " + distance + " 米";
+            distanceStr = "距离你只有大约 " + distance + " 米";
         } else {
-            distanceStr = ",距离你大约 " + new DecimalFormat(".#").format(distance/1000.0d) + " 公里";
+            distanceStr = "距离你大约 " + new DecimalFormat(".#").format(distance/1000.0d) + " 公里";
         }
         tvDistance.setText(distanceStr);
         tvOrderOrigin.setText(" " + order.getOrder().getStart());
