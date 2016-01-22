@@ -251,7 +251,7 @@ public class SocketClient {
         }
     }
 
-    HashMap<Integer, ResponseHandler> serverMessageDispatchMap = new HashMap<>();
+    static HashMap<Integer, ResponseHandler> serverMessageDispatchMap = new HashMap<>();
 
     public void registerServerMessageHandler( int cmd, ResponseHandler target)
     {

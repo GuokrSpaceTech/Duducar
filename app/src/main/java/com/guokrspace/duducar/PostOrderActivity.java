@@ -102,7 +102,7 @@ public class PostOrderActivity extends AppCompatActivity {
     DriverInformationView driverView;
     boolean isFirstLoc = true;// 是否首次定位
     boolean isStartFollow = false;
-    boolean isInCar = true;
+    boolean isInCar = false;
     private boolean isWaitForCar = false;
     ProgressBar mProgressBar;
     Toolbar mToolbar;
@@ -193,16 +193,7 @@ public class PostOrderActivity extends AppCompatActivity {
                 case MessageTag.MESSAGE_ORDER_DISPATCHED:
                     if (state == WAITING_FOR_ORDER_CONFIRM) {   //The driverview moves up by 140dp
                         mBaiduMap.clear();
-                        LinearLayout bmapLayout = (LinearLayout) findViewById(R.id.bmapLayout);
-                        RelativeLayout.LayoutParams paramRL = (RelativeLayout.LayoutParams) bmapLayout.getLayoutParams();
-                        paramRL.height = bmapLayout.getHeight() - dpToPx(getResources(), 120);
-                        bmapLayout.requestLayout();
-
-                        driverView = (DriverInformationView) findViewById(R.id.driverView);
-                        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) driverView.getLayoutParams();
-
-                        RelativeLayout container = (RelativeLayout) findViewById(R.id.container);
-                        container.requestLayout();
+                        addDriverView();
 
                         orderStatusString = "出租车即将到达";
                         getSupportActionBar().setTitle(orderStatusString);
@@ -266,7 +257,7 @@ public class PostOrderActivity extends AppCompatActivity {
                         isInCar = true;
                     }
                     isStartFollow = true;
-                    if(isRecover && points.size() > 5){  // 存在历史路径
+                    if(isRecover && points != null && points.size() > 5){  // 存在历史路径
                         LatLng pre = points.get(0);
                         for(int i=1; i < points.size(); i++){
                             Log.e("daddy  pick ", "drawline " + pre.latitude);
@@ -278,6 +269,7 @@ public class PostOrderActivity extends AppCompatActivity {
                     break;
                 case MessageTag.MESSAGE_UPDATE_CHARGE:
                     //TODO : 更新费用信息
+                    Log.e("daddy post","update charget messaget " + charge_detail.getCurrent_charge());
                     if(charge_detail != null) {
                         mCurrentChargeView.setText(
                                 "当前车费: " + charge_detail.getCurrent_charge() + "元\n" +
@@ -303,7 +295,7 @@ public class PostOrderActivity extends AppCompatActivity {
 
                         Intent intent = new Intent(mContext, PayCostActivity.class);
                         order_finish.getOrder().setDriver(JSON.toJSONString(driver.getDriver()));
-                        intent.putExtra("order",order_finish.getOrder());
+                        intent.putExtra("order", order_finish.getOrder());
                         startActivity(intent);
                         isStartFollow = false;
                         try {
@@ -313,8 +305,9 @@ public class PostOrderActivity extends AppCompatActivity {
                             Log.e("daddy pick","remove 图和 file");
                         } catch ( IOException e){
                             e.printStackTrace();
+                        } finally {
+                            finish();
                         }
-                        finish();
                     }
                     break;
                 case MessageTag.MESSAGE_UPDATE_TRACK:
@@ -374,11 +367,36 @@ public class PostOrderActivity extends AppCompatActivity {
                     progressDialog.dismiss();
                     showToast("提交超时~");
                     break;
+                case MessageTag.MESSAGE_REFRESH_DRIVERVIEW:
+                    addDriverView();
+                    if (driver != null) {
+                        updateDriverUI(driver);
+                        mApplication.mDriverDetail = driver.getDriver();
+                        TextView cancelPrompt = (TextView) findViewById(R.id.cancelPromptTextView);
+                        cancelPrompt.setVisibility(View.GONE);
+                        mProgressBar.setVisibility(View.GONE);
+                        mFab.setVisibility(View.GONE);
+
+                    }
+                    break;
                 default:
                     break;
             }
         }
     };
+
+    private void addDriverView() {
+        LinearLayout bmapLayout = (LinearLayout) findViewById(R.id.bmapLayout);
+        RelativeLayout.LayoutParams paramRL = (RelativeLayout.LayoutParams) bmapLayout.getLayoutParams();
+        paramRL.height = bmapLayout.getHeight() - dpToPx(getResources(), 120);
+        bmapLayout.requestLayout();
+
+        driverView = (DriverInformationView) findViewById(R.id.driverView);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) driverView.getLayoutParams();
+
+        RelativeLayout container = (RelativeLayout) findViewById(R.id.container);
+        container.requestLayout();
+    }
 
     private void initOrder(OrderDetail orderDetail){
         start = new SearchLocation();
@@ -479,7 +497,10 @@ public class PostOrderActivity extends AppCompatActivity {
                     state = WAITING_FOR_ORDER_CONFIRM;
                     initBaiduMap();
                     initBaseUI();
+                    isWaitForCar = true;
+                    mCurrentChargeView.setVisibility(View.GONE);
                     mHandler.sendEmptyMessage(MessageTag.MESSAGE_ORDER_DISPATCHED);
+                    isRecover=false;
                     return;
                 } else if(status.equals("3")){
                     OrderDetail orderDetail = (OrderDetail) bundle.getSerializable("order_detail");
@@ -488,6 +509,7 @@ public class PostOrderActivity extends AppCompatActivity {
                     driver.setDriver(new Gson().fromJson(orderDetail.getDriver(), DriverDetail.class));
                     initBaiduMap();
                     initBaseUI();
+                    mHandler.sendEmptyMessage(MessageTag.MESSAGE_REFRESH_DRIVERVIEW);
                     fileName = orderDetail.getId();
                     isWaitForCar = false;
                     mApplication.mDriverDetail = driver.getDriver();
@@ -498,6 +520,7 @@ public class PostOrderActivity extends AppCompatActivity {
                     order_start = new TripStart();
                     order_start.setOrder(orderDetail);
                     mHandler.sendEmptyMessage(MessageTag.MESSAGE_CAR_ARRIVED);
+                    isInCar=false;
                     return;
                 } else {
                     Log.e("daddy", "recover in error status");
@@ -787,14 +810,13 @@ public class PostOrderActivity extends AppCompatActivity {
 
             }
         });
-
+        Log.e("daddy post", "resume to ");
         SocketClient.getInstance().registerServerMessageHandler(MessageTag.CURRENT_TRIP_FEE, new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
+                Log.e("daddy post", "success charge " + messageBody );
                 charge_detail = FastJsonTools.getObject(messageBody, ChargeDetail.class);
-                if (!isInCar) {
 
-                }
                 mHandler.sendEmptyMessage(MessageTag.MESSAGE_UPDATE_CHARGE);
             }
 
