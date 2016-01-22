@@ -260,7 +260,7 @@ public class PostOrderActivity extends AppCompatActivity {
                     double dis = DistanceUtil.getDistance(carLatLng, pasLatLng);
                     // 友盟自定义错误
                     MobclickAgent.reportError(mContext, "乘客与司机之间的距离为 " + dis);
-                    if(dis > 1){ // 距离超过0.1公里 ,判断乘客不在车上
+                    if(dis > 100){ // 距离超过0.1公里 ,判断乘客不在车上
                         isInCar = false;
                     } else {
                         isInCar = true;
@@ -854,7 +854,7 @@ public class PostOrderActivity extends AppCompatActivity {
                     return;
                 }
                 com.alibaba.fastjson.JSONObject object = JSON.parseObject(messageBody);
-                String pois = object.get("points") == null ? "" : (String)object.get("points");
+                String pois = object.get("points") == null ? "" : (String) object.get("points");
                 List<Points> points = FastJsonTools.getListObject(pois, Points.class);
                 if (points.size() <= 2) return;
                 if (isStartFollow && !isInCar) { // 路上且不在车上
