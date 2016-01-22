@@ -8,6 +8,7 @@ import java.util.Map;
  */
 public class MessageTag {
 
+    public static final int MESSAGE_REFRESH_DRIVERVIEW = 0x8888;
     private static com.guokrspace.duducar.communication.message.MessageTag s_instance;
 
     //Pre TripOverOrder Activity
