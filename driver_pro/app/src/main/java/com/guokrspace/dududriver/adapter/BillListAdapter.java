@@ -55,7 +55,7 @@ public class BillListAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.balance_list_item, null, false);
             holder = new ViewHolder();
             holder.tvSum = (TextView) convertView.findViewById(R.id.trade_cash);
-            holder.tvAccount = (TextView) convertView.findViewById(R.id.trade_account);
+//            holder.tvAccount = (TextView) convertView.findViewById(R.id.trade_account);
             holder.tvDescription = (TextView) convertView.findViewById(R.id.trade_description);
             holder.tvTime = (TextView) convertView.findViewById(R.id.trade_time);
             convertView.setTag(holder);
@@ -63,7 +63,7 @@ public class BillListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.tvAccount.setText(CommonUtil.phoneNumFormat(items.get(position).getOpposite()));
+//        holder.tvAccount.setText(CommonUtil.phoneNumFormat(items.get(position).getOpposite()));
         holder.tvDescription.setText(items.get(position).getDescription());
         holder.tvTime.setText(CommonUtil.dateFormat(items.get(position).getTime(), CommonUtil.YEAR_MONTH_DAY));
         String money = items.get(position).getMoney();
@@ -93,8 +93,6 @@ public class BillListAdapter extends BaseAdapter {
     private static class ViewHolder {
 
         TextView tvSum;
-
-        TextView tvAccount;
 
         TextView tvDescription;
 

@@ -166,7 +166,7 @@ public class PostOrderActivity extends AppCompatActivity {
     private OutputStreamWriter routeFileWriter;
     private List<LatLng> points;
 
-    Handler mHandler = new Handler(){
+    Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message message) {
             switch (message.what) {
