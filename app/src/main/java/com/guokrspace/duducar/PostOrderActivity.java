@@ -166,7 +166,7 @@ public class PostOrderActivity extends AppCompatActivity {
     private OutputStreamWriter routeFileWriter;
     private List<LatLng> points;
 
-    Handler mHandler = new Handler(){
+    Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message message) {
             switch (message.what) {
@@ -253,8 +253,8 @@ public class PostOrderActivity extends AppCompatActivity {
                             Log.e("dady pick", " can not get the writer");
                         }
                     }
-                    mCurrentMarker = BitmapDescriptorFactory.fromResource(R.drawable.caricon);
-                    mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(MyLocationConfiguration.LocationMode.FOLLOWING, true, mCurrentMarker));
+//                    mCurrentMarker = BitmapDescriptorFactory.fromResource(R.drawable.caricon);
+//                    mBaiduMap.setMyLocationConfigeration(new MyLocationConfiguration(MyLocationConfiguration.LocationMode.FOLLOWING, true, mCurrentMarker));
                     LatLng carLatLng = new LatLng(Double.parseDouble(order_start.getOrder().getStart_lat()), Double.parseDouble(order_start.getOrder().getStart_lng()));
                     LatLng pasLatLng = new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng());
                     double dis = DistanceUtil.getDistance(carLatLng, pasLatLng);
