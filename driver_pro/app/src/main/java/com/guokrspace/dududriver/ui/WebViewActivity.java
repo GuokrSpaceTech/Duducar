@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -34,6 +35,9 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
     public static final int WEBVIEW_ABOUT = 102;
     public static final int WEBVIEW_JOIN = 103;
     public static final int WEBVIEW_NEWS = 104;
+    public static final int WEBVIEW_BILL = 105;
+    public static final int WEBVIEW_DIVIDE = 106;
+    public static final int WEBVIEW_ACHIEVEMENT = 107;
 
 
     private Context context;
@@ -60,9 +64,10 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
         context = WebViewActivity.this;
         Intent mIntent = getIntent();
         type = mIntent.getIntExtra(WEBVIEW_TYPE, 0);
-        if (type == WEBVIEW_NEWS) { //嘟嘟播报
+        if (type >= 104) {
             noticeUrl = mIntent.getStringExtra("url");
         }
+
         mHandler = new Handler(this);
         initView();
     }
@@ -94,6 +99,15 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
             case WEBVIEW_NEWS:
                 title = "嘟嘟播报";
                 key = Constants.WEBVIEW_NOTICE;
+                break;
+            case WEBVIEW_BILL:
+                title = "账单";
+                break;
+            case WEBVIEW_ACHIEVEMENT:
+                title = "成绩查询";
+                break;
+            case WEBVIEW_DIVIDE:
+                title = "分成";
                 break;
             default:
                 break;
@@ -160,7 +174,7 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
                 super.onProgressChanged(view, newProgress);
             }
         });
-        if(!key.equals(Constants.WEBVIEW_NOTICE)){ // 其他
+        if(!TextUtils.isEmpty(key) && !key.equals(Constants.WEBVIEW_NOTICE)){ // 其他
             noticeUrl = (String) SharedPreferencesUtils.getParam(context, key, "");
         }
         Log.e("hyman_webview", noticeUrl);

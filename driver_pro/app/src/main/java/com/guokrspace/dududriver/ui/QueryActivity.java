@@ -1,6 +1,7 @@
 package com.guokrspace.dududriver.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -20,6 +21,10 @@ import butterknife.ButterKnife;
  * Created by hyman on 15/12/29.
  */
 public class QueryActivity extends BaseActivity {
+
+    private static final String URL_DIVIDE = "http://120.24.237.15/index.php/Webview/Index/index/type/fenchen";
+    private static final String URL_BILL = "http://120.24.237.15/index.php/Webview/Index/index/type/sj_account";
+    private static final String URL_ACHIEVEMENT = "http://120.24.237.15/index.php/Webview/Index/index/type/cj_view";
 
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
@@ -55,21 +60,28 @@ public class QueryActivity extends BaseActivity {
                 switch (position) {
                     case 0:
                         //进入分成
-                        showToast("分成");
+                        enterWebView(WebViewActivity.WEBVIEW_DIVIDE, URL_DIVIDE);
                         break;
                     case 1:
                         //进入成绩查询
-                        showToast("成绩查询");
+                        enterWebView(WebViewActivity.WEBVIEW_ACHIEVEMENT, URL_ACHIEVEMENT);
                         break;
                     case 2:
                         //进入账单
-                        showToast("账单");
+                        enterWebView(WebViewActivity.WEBVIEW_BILL, URL_BILL);
                         break;
                     default:
                         break;
                 }
             }
         });
+    }
+
+    private void enterWebView(int type, String url) {
+        Intent _intent = new Intent(QueryActivity.this, WebViewActivity.class);
+        _intent.putExtra(WebViewActivity.WEBVIEW_TYPE, type);
+        _intent.putExtra("url", url);
+        startActivity(_intent);
     }
 
     private void initToolBar() {

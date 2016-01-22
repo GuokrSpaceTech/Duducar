@@ -121,14 +121,19 @@ public class RatingActivity extends ActionBarActivity {
 //        Log.e("hyman_raing", comments);
         List<IdAndValueModel> commentModels1 = new Gson().fromJson(comments, new TypeToken<ArrayList<IdAndValueModel>>() {
         }.getType());
-        commentModels.addAll(commentModels1);
+        for (IdAndValueModel model : commentModels1) {
+            if (model.getValue() == null || model.getValue().trim().length() == 0) {
+                continue;
+            }
+            commentModels.add(model);
+        }
 
         final String commentsStr = (String) SharedPreferencesUtils.getParam(RatingActivity.this, SharedPreferencesUtils.BASEINFO_COMMENTS, "");
         JSONArray jsonArray = JSON.parseArray(commentsStr);
         if (jsonArray.size() > 0) {
             for (int i = 0; i < jsonArray.size(); i++) {
                 com.alibaba.fastjson.JSONObject comment = (com.alibaba.fastjson.JSONObject) jsonArray.get(i);
-                mVals.put((String) comment.get("value"), Integer.parseInt((String) comment.get("id")));
+                mVals.put((String) comment.get("value"), Integer.parseInt(comment.get("id") + ""));
             }
         }
 
