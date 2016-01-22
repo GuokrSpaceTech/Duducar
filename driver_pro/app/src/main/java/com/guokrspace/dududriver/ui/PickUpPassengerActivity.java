@@ -286,7 +286,8 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
                     dis = new BigDecimal(dis).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
                     disA = new BigDecimal(disA).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 
-                    btnConfirm.setText(dis + "m/s, 共" + disA + "米 , " + secs + "s, " + speed + "bms" + ",方向: " + diraction + "°," + curCharge + "元");
+//                    btnConfirm.setText(dis + "m/s, 共" + disA + "米 , " + secs + "s, " + speed + "bms" + ",方向: " + diraction + "°," + curCharge + "元");
+                    btnConfirm.setText(curCharge + "元       达到目的地");
                 }
 
                 Log.e("daddy", "current charge");

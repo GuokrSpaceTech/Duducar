@@ -108,7 +108,8 @@
             android:background="@drawable/main_order_btn_bg_selector"
             android:text="查看地图"
             android:textColor="@color/light_gray"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/order_cancel"
