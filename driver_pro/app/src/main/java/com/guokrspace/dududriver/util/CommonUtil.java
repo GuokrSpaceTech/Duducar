@@ -406,7 +406,7 @@ public class CommonUtil {
      */
     public static String getNextWithdrawDate(int dayOfWeek) {
         int diff = 2 - dayOfWeek;
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINA);
         Calendar cal = Calendar.getInstance();
         Date newDate = new Date(System.currentTimeMillis());
         cal.setTime(newDate);

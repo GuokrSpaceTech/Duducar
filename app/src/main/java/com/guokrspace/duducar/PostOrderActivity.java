@@ -854,7 +854,7 @@ public class PostOrderActivity extends AppCompatActivity {
                     return;
                 }
                 com.alibaba.fastjson.JSONObject object = JSON.parseObject(messageBody);
-                String pois = object.get("points") == null ? "" : (String)object.get("points");
+                String pois = object.get("points") == null ? "" : (String) object.get("points");
                 List<Points> points = FastJsonTools.getListObject(pois, Points.class);
                 if (points.size() <= 2) return;
                 if (isStartFollow && !isInCar) { // 路上且不在车上
