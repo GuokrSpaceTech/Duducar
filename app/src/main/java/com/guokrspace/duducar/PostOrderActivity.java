@@ -250,7 +250,7 @@ public class PostOrderActivity extends AppCompatActivity {
                     LatLng pasLatLng = new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng());
                     double dis = DistanceUtil.getDistance(carLatLng, pasLatLng);
                     // 友盟自定义错误
-                    MobclickAgent.reportError(mContext, "乘客与司机之间的距离为 " + dis);
+//                    MobclickAgent.reportError(mContext, "乘客与司机之间的距离为 " + dis);
                     if(dis > 100){ // 距离超过0.1公里 ,判断乘客不在车上
                         isInCar = false;
                     } else {

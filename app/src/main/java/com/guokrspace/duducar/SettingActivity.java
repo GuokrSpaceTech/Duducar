@@ -182,10 +182,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void showToast(String msg) {
-        Toast toast = new Toast(context);
-        toast.setText(msg);
+        Toast toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.setDuration(Toast.LENGTH_SHORT);
         toast.show();
     }
 

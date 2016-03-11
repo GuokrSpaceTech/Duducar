@@ -5,6 +5,7 @@ package com.guokrspace.dududriver.common;
  */
 public class Constants {
 
+    public static final String ENTER_FROM_LOGIN = "enter_from_login";
     public static String CMD_REGISTER = "register";
     public static String CMD_VERIFY = "verify";
     public static String CMD_LOGIN = "login";

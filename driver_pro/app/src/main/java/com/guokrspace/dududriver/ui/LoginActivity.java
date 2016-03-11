@@ -53,6 +53,8 @@ public class LoginActivity extends BaseActivity implements
     private static final String TAG = "LoginActivity";
     @Bind(R.id.tv_regisister)
     TextView tvRegisister;
+    public static final String FROM_LOGIN_PAGE = "from_login_page";
+
     @OnClick(R.id.tv_regisister) void r_click(){ changeTab(REGISTER); }
     @Bind(R.id.tv_login)
     TextView tvLogin;
@@ -597,7 +599,9 @@ public class LoginActivity extends BaseActivity implements
                 WinToast.toast(LoginActivity.this, R.string.login_success);
                 //将sharedpreferences中是否登陆的状态改为true
                 SharedPreferencesUtils.setParam(LoginActivity.this, SharedPreferencesUtils.LOGIN_STATE, true);
-                startActivity(new Intent(this, MainActivity.class));
+                Intent _intent = new Intent(this, MainActivity.class);
+                _intent.putExtra(FROM_LOGIN_PAGE, Constants.ENTER_FROM_LOGIN);
+                startActivity(_intent);
                 finish();
                 break;
             case HANDLER_LOGIN_FAILURE:

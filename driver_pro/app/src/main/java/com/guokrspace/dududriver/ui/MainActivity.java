@@ -17,6 +17,7 @@ import android.os.Message;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -125,7 +126,13 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         context = this;
-
+        Intent mIntent = getIntent();
+        if (mIntent != null) {
+            if (TextUtils.equals(Constants.ENTER_FROM_LOGIN, mIntent.getStringExtra(LoginActivity.FROM_LOGIN_PAGE))) {
+                // 说明是登陆成功，获取baseinfo
+                pullBaseInfo();
+            }
+        }
         initView();
 
         /*MobclickAgent.reportError(context, "主界面报错");*/

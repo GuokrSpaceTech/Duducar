@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -32,13 +33,24 @@ public class ChargeService extends Service {
         Log.e("daddy, charget", " start command");
         Intent notificationIntent = new Intent();
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-        Notification noti = new Notification.Builder(this)
-                .setContentTitle("嘟嘟提醒")
-                .setContentText("请合理安排线路,感谢您提供的优质服务")
-                .setSmallIcon(R.drawable.caricon)
-                .setContentIntent(pendingIntent)
-                .setOnlyAlertOnce(true)
-                .build();
+
+        Notification noti;
+        if (Build.VERSION.SDK_INT < 16) {
+            noti  = new Notification.Builder(this)
+                    .setContentTitle("嘟嘟提醒")
+                    .setContentText("请合理安排线路,感谢您提供的优质服务")
+                    .setSmallIcon(R.drawable.caricon)
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true).getNotification();
+        } else {
+            noti = new Notification.Builder(this)
+                    .setContentTitle("嘟嘟提醒")
+                    .setContentText("请合理安排线路,感谢您提供的优质服务")
+                    .setSmallIcon(R.drawable.caricon)
+                    .setContentIntent(pendingIntent)
+                    .setOnlyAlertOnce(true)
+                    .build();
+        }
 
         startForeground(12347, noti);
         //开始计费

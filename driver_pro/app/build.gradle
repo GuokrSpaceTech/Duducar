@@ -10,8 +10,8 @@ android {
         minSdkVersion 11
         targetSdkVersion 23
         multiDexEnabled true
-        versionCode 7
-        versionName "1.0.7"
+        versionCode 8
+        versionName "beta1.0"
     }
 
     sourceSets {
@@ -23,7 +23,12 @@ android {
     }
 
     signingConfigs {
-        release
+        release {
+            keyAlias 'mactop2013'
+            keyPassword 'mactop2013'
+            storeFile file('/Users/hyman/Documents/AndroidDevelopment/guokrspace')
+            storePassword 'guokrspace'
+        }
         debug
     }
 
@@ -36,12 +41,35 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            zipAlignEnabled true
+            shrinkResources true
             signingConfig signingConfigs.release
+
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        // 输出apk名称为dududriver_beta1.0_wandoujia.apk
+                        def fileName = "dududriver_${defaultConfig.versionName}_${variant.productFlavors[0].name}.apk"
+                        output.outputFile = new File(outputFile.parent, fileName)
+                    }
+                }
+            }
         }
 
         debug {
             signingConfig signingConfigs.debug
         }
+    }
+
+    productFlavors {
+        wandoujia {}
+        baidu {}
+    }
+
+    productFlavors.all {
+        flavor ->
+            flavor.manifestPlaceholders = [CHANNEL_NAME: flavor.name]
     }
 }
 

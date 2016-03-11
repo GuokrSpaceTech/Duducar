@@ -12,7 +12,6 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- SDK1.5需要android.permission.GET_TASKS权限判断本程序是否为当前运行的应用? -->
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
@@ -37,8 +36,6 @@
     <!-- 允许应用读取低级别的系统日志文件 -->
     <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
-    <!-- Permission for Unit Test -->
-    <uses-permission android:name="android.permission.GET_TASKS" />
 
     <application
         android:name=".DuduApplication"
@@ -188,7 +185,7 @@
             android:value="5667dae667e58ebd3b002e0e"></meta-data>
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="DuduCar"></meta-data>
+            android:value="${CHANNEL_NAME}"></meta-data>
 
         <service
             android:name="com.umeng.update.net.DownloadingService"
