@@ -389,7 +389,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
         //1、 通过socket获取到订单号，cmd: order_end
         if (tripOverOrderDetail != null) {
 //            body = tripOverOrderDetail.getStart() + "到" + tripOverOrderDetail.getDestination() + "，共" + tripOverOrderDetail.getMileage() + "公里";
-            body = tripOverOrderDetail.getDestination() + "，行程" + CommonUtil.formatDecimal(tripOverOrderDetail.getMileage()) + "公里";
+            body = tripOverOrderDetail.getDestination() + "，行程" + CommonUtil.formatDecimal(Double.parseDouble(tripOverOrderDetail.getMileage()) / 1000 + "") + "公里";
             tradeNo = tripOverOrderDetail.getOrderNum();
             SharedPreferencesUtils.setParam(mContext, SharedPreferencesUtils.OUT_TRADE_NO, tradeNo);
             // TODO:这里应为sumprice

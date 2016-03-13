@@ -15,3 +15,133 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-dontshrink
+-dontpreverify
+-dontoptimize
+-dontusemixedcaseclassnames
+
+-flattenpackagehierarchy
+-allowaccessmodification
+-printmapping map.txt
+
+-optimizationpasses 7
+-verbose
+-keepattributes Exceptions,InnerClasses
+-dontskipnonpubliclibraryclasses
+-dontskipnonpubliclibraryclassmembers
+-ignorewarnings
+
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+-keep public class * extends java.lang.Throwable {*;}
+-keep public class * extends java.lang.Exception {*;}
+
+#-libraryjars libs/alipaySDK-20151103.jar
+
+-keep class com.alipay.android.app.IAlixPay{*;}
+-keep class com.alipay.android.app.IAlixPay$Stub{*;}
+-keep class com.alipay.android.app.IRemoteServiceCallback{*;}
+-keep class com.alipay.android.app.IRemoteServiceCallback$Stub{*;}
+-keep class com.alipay.sdk.app.PayTask{ public *;}
+-keep class com.alipay.sdk.app.AuthTask{ public *;}
+
+
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet);
+}
+
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}
+
+-keepclassmembers class * extends de.greenrobot.dao.AbstractDao {
+    public static java.lang.String TABLENAME;
+}
+-keep class **$Properties
+
+-keepclassmembers class * extends android.app.Activity {
+   public void *(android.view.View);
+}
+
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+-keep class * implements android.os.Parcelable {
+  public static final android.os.Parcelable$Creator *;
+}
+
+# adding this in to preserve line numbers so that the stack traces
+# can be remapped
+-renamesourcefileattribute SourceFile
+-keepattributes SourceFile,LineNumberTable
+
+## Gson
+-keepattributes *Annotation*
+-keep class sun.misc.Unsafe { *; }
+-keep class com.idea.fifaalarmclock.entity.***
+-keep class com.google.gson.stream.** { *; }
+
+## umeng
+-keepclassmembers class * {
+   public <init>(org.json.JSONObject);
+}
+
+-keep class com.umeng.**
+
+-keep public class com.idea.fifaalarmclock.app.R$*{
+    public static final int *;
+}
+
+-keep public class com.umeng.fb.ui.ThreadView {
+}
+
+-dontwarn com.umeng.**
+
+-dontwarn org.apache.commons.**
+
+-keep public class * extends com.umeng.**
+
+-keep class com.umeng.** {*; }
+
+##---------------Begin: proguard configuration for fastjson  ----------
+#-keepnames class * implements java.io.Serializable
+-keep public class * implements java.io.Serializable {
+        public *;
+}
+-keepclassmembers class * implements java.io.Serializable {
+    static final long serialVersionUID;
+    private static final java.io.ObjectStreamField[] serialPersistentFields;
+    private void writeObject(java.io.ObjectOutputStream);
+    private void readObject(java.io.ObjectInputStream);
+    java.lang.Object writeReplace();
+    java.lang.Object readResolve();
+}
+-dontwarn android.support.**
+-dontwarn com.alibaba.fastjson.**
+
+-dontskipnonpubliclibraryclassmembers
+-dontskipnonpubliclibraryclasses
+
+#-libraryjars libs/fastjson-1.2.1.jar
+-keep class com.alibaba.fastjson.** { *; }
+
+-keepclassmembers class * {
+public <methods>;
+}
+##---------------End: proguard configuration for fastjson  ----------
+
+## baidumap
+-dontwarn com.baidu.**
+-keep class com.baidu.** { *; }
+-keep class vi.com.gdi.bgl.android.**{*;}
+-keep class android.content.Context.getExternalFilesDirs
+-keep public class * extends android.content.Context.getExternalFilesDirs

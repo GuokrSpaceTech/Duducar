@@ -90,7 +90,7 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
                 key = Constants.PREFERENCE_KEY_WEBVIEW_ABOUT;
                 break;
             case WEBVIEW_CONTACT:
-                title = "乘客指南";
+                title = "联系我们";
                 key = Constants.PREFERENCE_KEY_WEBVIEW_CONTACT;
                 break;
             case WEBVIEW_CLAUSE:

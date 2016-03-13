@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
@@ -107,14 +108,24 @@ public class DuduService extends Service {
 
         Intent notificationIntent = new Intent();
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-        Notification noti = new Notification.Builder(this)
-                .setContentTitle("嘟嘟播报")
-                .setContentText("记得每日签到, 高级司机会获得更高的分成比例!")
-                .setSmallIcon(R.drawable.caricon)
-                .setContentIntent(pendingIntent)
-                .setOnlyAlertOnce(true)
-                .build();
 
+        Notification noti;
+        if (Build.VERSION.SDK_INT < 16) {
+            noti  = new Notification.Builder(this)
+                    .setContentTitle("嘟嘟播报")
+                    .setContentText("记得每日签到, 高级司机会获得更高的分成比例!")
+                    .setSmallIcon(R.drawable.caricon)
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true).getNotification();
+        } else {
+            noti = new Notification.Builder(this)
+                    .setContentTitle("嘟嘟播报")
+                    .setContentText("记得每日签到, 高级司机会获得更高的分成比例!")
+                    .setSmallIcon(R.drawable.caricon)
+                    .setContentIntent(pendingIntent)
+                    .setOnlyAlertOnce(true)
+                    .build();
+        }
         startForeground(12349, noti);
 
         Log.e("daady", "start command");
