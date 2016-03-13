@@ -1,13 +1,18 @@
 package com.guokrspace.dududriver.util;
 
 import android.content.Context;
+import android.media.SoundPool;
 import android.os.Bundle;
 
+import com.guokrspace.dududriver.R;
+import com.guokrspace.dududriver.common.Constants;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechSynthesizer;
 import com.iflytek.cloud.SpeechUtility;
 import com.iflytek.cloud.SynthesizerListener;
+
+import java.util.HashMap;
 
 /**
  * Created by daddyfang on 15/11/12.
@@ -18,6 +23,10 @@ public class VoiceUtil {
     private static boolean isSpeaking;
     private static SpeechSynthesizer mTts;
     private static SynthesizerListener mSynListener;
+
+    private static SoundPool soundPool;
+
+    private static HashMap<Integer, Integer>musicId = new HashMap<Integer, Integer>();
 
     public static void init(Context context){
         application = context;
@@ -64,6 +73,14 @@ public class VoiceUtil {
             public void onEvent(int arg0, int arg1, int arg2, Bundle arg3) {}
         };
 
+        soundPool = new SoundPool(10,0,5);
+        //3s 倒计时
+        musicId.put(Constants.SOUND_TIME, soundPool.load(context, R.raw.time, 1));
+
+    }
+
+    public static void startSpeakingSound(int music){
+        soundPool.play(musicId.get(music),1,1,0,0,1);
     }
 
     public static void startSpeaking(String content){

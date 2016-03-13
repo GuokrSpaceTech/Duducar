@@ -238,8 +238,8 @@ public class MainOrderDialog extends DialogFragment implements View.OnClickListe
                 if (tvOrderSecond != null) {
                     tvOrderSecond.setText(msg.obj + "");
                     int sec = (Integer)msg.obj;
-                    if(sec <= 5 && sec > 0 &&!VoiceUtil.isSpeaking()){
-                        VoiceUtil.startSpeaking("D");
+                    if(sec == 5 &&!VoiceUtil.isSpeaking()){
+                        VoiceUtil.startSpeakingSound(Constants.SOUND_TIME);
                     }
                 }
                 break;
