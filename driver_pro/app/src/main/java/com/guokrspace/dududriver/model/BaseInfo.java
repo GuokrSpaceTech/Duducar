@@ -25,6 +25,11 @@ public class BaseInfo {
         info.put(Constants.PREFERENCE_KEY_WEBVIEW_JOIN, webview.getJoin() == null ? "" : webview.getJoin());
         info.put(Constants.PREFERENCE_KEY_WEBVIEW_CONTACT, webview.getContact() == null ? "" : webview.getContact());
         info.put(Constants.PREFERENCE_KEY_WEBVIEW_CLAUSE, webview.getClause() == null ? "" : webview.getClause());
+        info.put(Constants.PREFERENCE_KEY_WEBVIEW_MONEY, webview.getMoney() == null ? "" : webview.getMoney());
+        info.put(Constants.PREFERENCE_KEY_WEBVIEW_PERFORMANCE, webview.getPerformance() == null ? "" : webview.getPerformance());
+        info.put(Constants.PREFERENCE_KEY_WEBVIEW_BILLS, webview.getBills() == null ? "" : webview.getBills());
+        info.put(Constants.PREFERENCE_KEY_WEBVIEW_PERSONAL, webview.getPersonal() == null ? "" : webview.getPersonal());
+
 
         return info;
     }
@@ -198,6 +203,44 @@ public class BaseInfo {
         private String join;
         private String contact;
         private String clause;
+        private String money;
+
+        public String getPersonal() {
+            return personal;
+        }
+
+        public void setPersonal(String personal) {
+            this.personal = personal;
+        }
+
+        private String personal;
+
+        public String getPerformance() {
+            return performance;
+        }
+
+        public void setPerformance(String performance) {
+            this.performance = performance;
+        }
+
+        public String getMoney() {
+            return money;
+        }
+
+        public void setMoney(String money) {
+            this.money = money;
+        }
+
+        public String getBills() {
+            return bills;
+        }
+
+        public void setBills(String bills) {
+            this.bills = bills;
+        }
+
+        private String performance;
+        private String bills;
     }
 
     public class Charge_rule{

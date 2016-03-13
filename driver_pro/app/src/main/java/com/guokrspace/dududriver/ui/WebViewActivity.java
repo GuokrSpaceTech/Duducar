@@ -18,11 +18,15 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.common.NewOrderReceiver;
+import com.guokrspace.dududriver.database.PersonalInformation;
 import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
+
+import java.util.List;
 
 /**
  * Created by hyman on 15/12/19.
@@ -38,6 +42,7 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
     public static final int WEBVIEW_BILL = 105;
     public static final int WEBVIEW_DIVIDE = 106;
     public static final int WEBVIEW_ACHIEVEMENT = 107;
+    public static final int WEBVIEW_PERSONAL = 108;
 
 
     private Context context;
@@ -102,12 +107,19 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
                 break;
             case WEBVIEW_BILL:
                 title = "账单";
+                key = Constants.PREFERENCE_KEY_WEBVIEW_BILLS;
                 break;
             case WEBVIEW_ACHIEVEMENT:
                 title = "成绩查询";
+                key = Constants.PREFERENCE_KEY_WEBVIEW_PERFORMANCE;
                 break;
             case WEBVIEW_DIVIDE:
                 title = "分成";
+                key = Constants.PREFERENCE_KEY_WEBVIEW_MONEY;
+                break;
+            case WEBVIEW_PERSONAL:
+                title = "个人信息";
+                key = Constants.PREFERENCE_KEY_WEBVIEW_PERSONAL;
                 break;
             default:
                 break;
@@ -176,6 +188,15 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
         });
         if(!TextUtils.isEmpty(key) && !key.equals(Constants.WEBVIEW_NOTICE)){ // 其他
             noticeUrl = (String) SharedPreferencesUtils.getParam(context, key, "");
+            if(key.equals(Constants.PREFERENCE_KEY_WEBVIEW_BILLS) || key.equals(Constants.PREFERENCE_KEY_WEBVIEW_MONEY) || key.equals(Constants.PREFERENCE_KEY_WEBVIEW_PERFORMANCE) || key.equals(Constants.PREFERENCE_KEY_WEBVIEW_PERSONAL)){
+                List localUsers = DuduDriverApplication.getInstance().
+                        mDaoSession.getPersonalInformationDao().
+                        queryBuilder().list();
+                if (localUsers != null && localUsers.size() > 0 && ((PersonalInformation)localUsers.get(0)).getToken() != null) {
+                    PersonalInformation  userInfo = (PersonalInformation) localUsers.get(0);
+                    noticeUrl +="?mobile="+userInfo.getMobile() + "&token="+userInfo.getToken();
+                }
+            }
         }
         Log.e("hyman_webview", noticeUrl);
 
