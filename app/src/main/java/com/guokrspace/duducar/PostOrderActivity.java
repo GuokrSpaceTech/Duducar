@@ -254,7 +254,7 @@ public class PostOrderActivity extends AppCompatActivity {
                     if(dis > 100){ // 距离超过0.1公里 ,判断乘客不在车上
                         isInCar = false;
                     } else {
-                        isInCar = true;
+                        isInCar = false;
                     }
                     isStartFollow = true;
                     if(isRecover && points != null && points.size() > 5){  // 存在历史路径
