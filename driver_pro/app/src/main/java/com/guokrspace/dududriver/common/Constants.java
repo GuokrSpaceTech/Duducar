@@ -5,6 +5,7 @@ package com.guokrspace.dududriver.common;
  */
 public class Constants {
 
+    public static final int SOUND_TIME = 1;
     public static final String ENTER_FROM_LOGIN = "enter_from_login";
     public static String CMD_REGISTER = "register";
     public static String CMD_VERIFY = "verify";
@@ -61,6 +62,11 @@ public class Constants {
     public static final String PREFERENCE_KEY_WEBVIEW_CONTACT = "WEB_CONTACT";
     public static final String PREFERENCE_KEY_WEBVIEW_CLAUSE = "WEB_CLAUSE";
     public static final String WEBVIEW_NOTICE = "WEB_NOTICE";
+    public static final String PREFERENCE_KEY_WEBVIEW_PERSONAL = "WEB_PERSONAL";
+    public static final String PREFERENCE_KEY_WEBVIEW_MONEY = "WEB_MONEY";
+    public static final String PREFERENCE_KEY_WEBVIEW_PERFORMANCE = "WEB_PERFORMANCE";
+    public static final String PREFERENCE_KEY_WEBVIEW_BILLS = "WEB_BILLS";
+
 
     public static final String PREFERENCE_KEY_TODAY = "TODAY";
     public static final String PREFERENCE_KEY_TODAY_DONE_WORK = "TODAY_DONE_WORK";
