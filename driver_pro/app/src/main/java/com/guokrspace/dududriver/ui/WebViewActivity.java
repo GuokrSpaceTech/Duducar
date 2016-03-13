@@ -33,7 +33,7 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
     public static final int WEBVIEW_CLAUSE = 100;
     public static final int WEBVIEW_CONTACT = 101;
     public static final int WEBVIEW_ABOUT = 102;
-    public static final int WEBVIEW_JOIN = 103;
+    public static final int  WEBVIEW_JOIN = 103;
     public static final int WEBVIEW_NEWS = 104;
     public static final int WEBVIEW_BILL = 105;
     public static final int WEBVIEW_DIVIDE = 106;
