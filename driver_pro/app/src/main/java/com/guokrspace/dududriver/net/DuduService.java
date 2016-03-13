@@ -351,6 +351,7 @@ public class DuduService extends Service {
                         SocketClient.getInstance().autoLoginRequest(user.getMobile(), "1", user.getToken(), new ResponseHandler(Looper.myLooper()) {
                             @Override
                             public void onSuccess(String messageBody) {
+                                Log.e("login in service: ", "duduservice sucess");
                                 SharedPreferencesUtils.setParam(DuduService.this, SharedPreferencesUtils.LOGIN_STATE, true);
                                 pullOrder();
                             }

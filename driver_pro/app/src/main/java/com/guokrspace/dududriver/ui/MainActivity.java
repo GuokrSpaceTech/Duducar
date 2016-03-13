@@ -254,7 +254,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             public void onSuccess(String messageBody) {
 
                 showCustomToast("登陆成功");
-                Log.e("login in success!", "messageBody" + messageBody);
+                Log.e("login in main activity!", "messageBody" + messageBody);
                 SharedPreferencesUtils.setParam(MainActivity.this, SharedPreferencesUtils.LOGIN_STATE, true);
                 isOnline = true;
                 if(!recover){
