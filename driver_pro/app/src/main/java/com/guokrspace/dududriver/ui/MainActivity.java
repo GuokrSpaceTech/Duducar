@@ -276,6 +276,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                             dialog.setCanceledOnTouchOutside(false);
                             dialog.show();
                             OrderItem orderItem = new Gson().fromJson(orderDetail, OrderItem.class);
+                            CommonUtil.setCurOrderItem(orderItem);
                             Intent intent = new Intent(MainActivity.this, PickUpPassengerActivity.class);
                             intent.putExtra("orderItem", orderItem);
                             intent.putExtra("isRecover", false);
