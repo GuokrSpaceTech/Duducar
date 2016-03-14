@@ -136,7 +136,7 @@ public class ChargeService extends Service {
             @Override
             public void run() {
                 if(!DuduService.isRunningApp(getApplicationContext())){ // 应用终止
-                    Toast.makeText(getApplicationContext(), "计费服务停止", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "计费服务停止", Toast.LENGTH_SHORT).show();
                     stopCharging();
                     stopSelf();
                 }
