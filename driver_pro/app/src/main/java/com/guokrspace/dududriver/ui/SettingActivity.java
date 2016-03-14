@@ -171,7 +171,9 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.account_info_layout:
-
+                Intent accoountIntent = new Intent(this, WebViewActivity.class);
+                accoountIntent.putExtra(WebViewActivity.WEBVIEW_TYPE, WebViewActivity.WEBVIEW_PERSONAL);
+                startActivity(accoountIntent);
                 break;
             case R.id.sound_setting_layout:
                 mToggleButton.toggle();
