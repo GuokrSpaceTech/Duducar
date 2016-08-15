@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.guokrspace.dududriver"
-        minSdkVersion 11
+        minSdkVersion project.ANDROID_BUILD_MIN_SDK_VERSION
         targetSdkVersion 23
         multiDexEnabled true
         versionCode 8
@@ -24,10 +24,10 @@ android {
 
     signingConfigs {
         release {
-            keyAlias 'mactop2013'
+            keyAlias 'mactop'
             keyPassword 'mactop2013'
             storeFile file('/Users/hyman/Documents/AndroidDevelopment/guokrspace')
-            storePassword 'guokrspace'
+            storePassword 'guokrspace2013'
         }
         debug
     }
