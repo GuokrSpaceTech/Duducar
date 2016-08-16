@@ -1,5 +1,7 @@
 package com.guokrspace.duducar;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -7,10 +9,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
@@ -73,6 +77,7 @@ import com.guokrspace.duducar.util.SharedPreferencesUtils;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.umeng.analytics.MobclickAgent;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -152,6 +157,8 @@ public class PreOrderActivity extends AppCompatActivity
     private ServiceReceiver receiver;
     private MaterialDialog dialog;
 
+    private String permissionInfo;
+    private final int SDK_PERMISSION_REQUEST = 127;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,6 +168,7 @@ public class PreOrderActivity extends AppCompatActivity
 
         AppExitUtil.getInstance().addActivity(this);
 
+        getPermissions();
         duduService = new Intent(this, DuduService.class);
         startService(duduService);
         Log.e("daddy", "oncreate");
@@ -294,6 +302,143 @@ public class PreOrderActivity extends AppCompatActivity
          * Init the data
          */
         start = new SearchLocation();
+    }
+
+    @TargetApi(23)
+    private void getPermissions() {
+        Log.e("getPermission", " start to getpermission");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Log.e("getPermission", "SDK check ");
+            ArrayList<String> permissions = new ArrayList<>();
+            /***
+             * 定位权限为必须权限，用户如果禁止，则每次进入都会申请
+             */
+            // 定位精确位置
+            if(checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+            }
+            if(checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+                permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+            }
+			/*
+			 * 读写权限和电话状态权限非必要权限(建议授予)只会申请一次，用户同意或者禁止，只会弹一次
+			 */
+            // 读写权限
+            if (addPermission(permissions, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                permissionInfo += "Manifest.permission.WRITE_EXTERNAL_STORAGE Deny \n";
+            }
+            // 读取电话状态权限
+            if (addPermission(permissions, Manifest.permission.READ_PHONE_STATE)) {
+                permissionInfo += "Manifest.permission.READ_PHONE_STATE Deny \n";
+            }
+
+            if (permissions.size() > 0) {
+                Log.e("PERMISSION", "REQUEST PERMISSION");
+                if (!shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    showMessageOKCancel("需要获得您的位置信息来为你分派附近的嘟嘟司机!",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (duduService != null) {
+                                        stopService(duduService);
+                                    }
+                                    dialog.dismiss();
+                                    startSettingActivity();
+                                    AppExitUtil.getInstance().exit();
+                                }
+                            },
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //直接退出
+                                    if (duduService != null) {
+                                        stopService(duduService);
+                                    }
+                                    dialog.dismiss();
+                                    AppExitUtil.getInstance().exit();
+                                }
+                            });
+                    return;
+                }
+                requestPermissions(permissions.toArray(new String[permissions.size()]), SDK_PERMISSION_REQUEST);
+                Log.e("PERMISSION", "REQUEST AFTER");
+            }
+        }
+    }
+
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener, DialogInterface.OnClickListener exitListener) {
+        new AlertDialog.Builder(PreOrderActivity.this)
+                .setMessage(message)
+                .setPositiveButton("设  置", okListener)
+                .setNegativeButton("退  出", exitListener)
+                .setCancelable(false)
+                .setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialog) {
+                        if (duduService != null) {
+                            stopService(duduService);
+                        }
+                        AppExitUtil.getInstance().exit();
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    private void startSettingActivity(){
+
+        Intent i = new  Intent();
+        i.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+        i.addCategory(Intent.CATEGORY_DEFAULT);
+        i.setData(Uri.parse("package:" + this.getPackageName()));
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        try {
+            this.startActivity(i);
+        } catch (Exception e){
+            Log.e("PreOrderActivity", "start Setting failed");
+        }
+    }
+
+    @TargetApi(23)
+    private boolean addPermission(ArrayList<String> permissionsList, String permission) {
+        if (checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) { // 如果应用没有获得对应权限,则添加到列表中,准备批量申请
+            if (shouldShowRequestPermissionRationale(permission)){
+                return true;
+            }else{
+                permissionsList.add(permission);
+                return false;
+            }
+
+        }else{
+            return true;
+        }
+    }
+
+    @TargetApi(23)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        // TODO Auto-generated method stub
+        Log.e("daddy", "request response");
+        switch(requestCode){
+            case SDK_PERMISSION_REQUEST:
+                Map<String, Integer>perms = new HashMap<>();
+
+                perms.put(Manifest.permission.ACCESS_FINE_LOCATION, PackageManager.PERMISSION_GRANTED);
+
+                for(int i = 0; i < permissions.length; i++){
+                    perms.put(permissions[i], grantResults[i]);
+                }
+
+                if(perms.get(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                    //permission granted
+                } else {
+                    //permission denied , confirm the user to do again
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, SDK_PERMISSION_REQUEST);
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 
     private void initToolBar() {
@@ -475,6 +620,10 @@ public class PreOrderActivity extends AppCompatActivity
                         Intent loginIntent = new Intent(mContext, LoginActivity.class);
                         startActivityForResult(loginIntent, ACTVITY_LOGIN_REQUEST);
                     }
+                    break;
+                case Constants.UPDATE_MAP_CENTER:
+                    Log.e("PRE", "UPDATE MAP ");
+                    mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLng(new LatLng(CommonUtil.getCurLat(), CommonUtil.getCurLng())));
                     break;
                 default:
                     return;
@@ -739,6 +888,7 @@ public class PreOrderActivity extends AppCompatActivity
         receiver = new ServiceReceiver();
         IntentFilter filter = new IntentFilter(Constants.SERVICE_BROADCAST);
         filter.addAction(Constants.SERVICE_ACTION_RELOGIN);
+        filter.addAction(Constants.UPDATE_MAP_CENTER);
         registerReceiver(receiver, filter);
     }
 

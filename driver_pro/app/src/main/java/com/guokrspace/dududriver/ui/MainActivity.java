@@ -1,5 +1,7 @@
 package com.guokrspace.dududriver.ui;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -8,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -58,7 +61,9 @@ import com.viewpagerindicator.TabPageIndicator;
 
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -117,6 +122,9 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
 
     //所有登录判断以及操作都将在Service中进行执行
 
+    private String permissionInfo;
+    private final int SDK_PERMISSION_REQUEST = 128;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -146,6 +154,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         duduService = new Intent(getBaseContext(), DuduService.class);
         startService(duduService);
 
+
         List localUsers = DuduDriverApplication.getInstance().
                 mDaoSession.getPersonalInformationDao().
                 queryBuilder().list();
@@ -154,12 +163,51 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
             if(!CommonUtil.isServiceOn()){
                 startService(duduService);
             }
+            //check the location permission
+//            CommonUtil.getPermissions(this);
         } else {
             //用户信息不存在或注销,重新注册页面
             Log.e("daddy main ", "no persion ");
             startActivity(new Intent(this, LoginActivity.class));
         }
     }
+
+
+
+
+
+
+
+
+
+
+    @TargetApi(23)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        // TODO Auto-generated method stub
+        Log.e("daddy", "request response");
+        switch(requestCode){
+            case SDK_PERMISSION_REQUEST:
+                Map<String, Integer> perms = new HashMap<>();
+
+                perms.put(Manifest.permission.ACCESS_FINE_LOCATION, PackageManager.PERMISSION_GRANTED);
+
+                for(int i = 0; i < permissions.length; i++){
+                    perms.put(permissions[i], grantResults[i]);
+                }
+
+                if(perms.get(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                    //permission granted
+                } else {
+                    //permission denied , confirm the user to do again
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, SDK_PERMISSION_REQUEST);
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
 
     @Override
     protected void onResume() {

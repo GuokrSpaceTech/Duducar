@@ -495,6 +495,8 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         registerReceiver(receiver, filter);
     }
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -505,6 +507,9 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         mHandler = new Handler(this);
         fileDir = this.getFilesDir().toString();
         ButterKnife.bind(this);
+        //check the location permission
+//        CommonUtil.getPermissions(this);
+
         initDirs();
         initNavi();
         registerBroadcastReceiver(1);
@@ -553,6 +558,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         }
 
     }
+
 
     private void initGetPassView() {
 
