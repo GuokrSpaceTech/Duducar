@@ -24,10 +24,10 @@ android {
 
     signingConfigs {
         release {
-            keyAlias 'mactop'
+            keyAlias 'mactop2013'
             keyPassword 'mactop2013'
             storeFile file('/Users/hyman/Documents/AndroidDevelopment/guokrspace')
-            storePassword 'guokrspace2013'
+            storePassword 'guokrspace'
         }
         debug
     }

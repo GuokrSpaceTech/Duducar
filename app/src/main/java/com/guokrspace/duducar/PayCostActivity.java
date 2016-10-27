@@ -35,7 +35,7 @@ import com.guokrspace.duducar.model.UnifiedorderResp;
 import com.guokrspace.duducar.communication.message.DriverDetail;
 import com.guokrspace.duducar.communication.message.MessageTag;
 import com.guokrspace.duducar.communication.message.OrderDetail;
-import com.guokrspace.duducar.database.CommonUtil;
+import com.guokrspace.duducar.common.CommonUtil;
 import com.guokrspace.duducar.database.PersonalInformation;
 import com.guokrspace.duducar.util.SharedPreferencesUtils;
 import com.guokrspace.duducar.wxapi.WePayUtil;

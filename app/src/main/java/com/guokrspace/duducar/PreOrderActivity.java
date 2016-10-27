@@ -64,12 +64,13 @@ import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
 import com.guokrspace.duducar.communication.message.NearByCars;
 import com.guokrspace.duducar.communication.message.OrderDetail;
 import com.guokrspace.duducar.communication.message.SearchLocation;
-import com.guokrspace.duducar.database.CommonUtil;
+import com.guokrspace.duducar.common.CommonUtil;
 import com.guokrspace.duducar.database.PersonalInformation;
 import com.guokrspace.duducar.ui.DrawerView;
 import com.guokrspace.duducar.ui.OrderConfirmationView;
 import com.guokrspace.duducar.ui.WinToast;
 import com.guokrspace.duducar.util.SharedPreferencesUtils;
+import com.guokrspace.duducar.util.Trace;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.umeng.analytics.MobclickAgent;
 
@@ -152,6 +153,11 @@ public class PreOrderActivity extends AppCompatActivity
     private ServiceReceiver receiver;
     private MaterialDialog dialog;
 
+
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode) {
+        super.startActivityForResult(intent, requestCode);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -385,6 +391,7 @@ public class PreOrderActivity extends AppCompatActivity
                 intent.putExtra("from", SearchActivity.PREORDERACTIVITY);
                 intent.putExtra("location", start);
                 intent.putExtra("city", city);
+                intent.putExtra(SearchActivity.SEARCH_TYPE, SearchActivity.SEARCH_TYPE_START);
                 startActivityForResult(intent, ACTIVITY_SEARCH_START_REQUEST);
             }
         });
@@ -392,6 +399,11 @@ public class PreOrderActivity extends AppCompatActivity
         destLocButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!CommonUtil.isNetworkAvailable(PreOrderActivity.this)) {
+                    Trace.e("CommonUtil.isNetworkAvailable(PreOrderActivity.this)");
+                    Toast.makeText(PreOrderActivity.this, "网络不可用，无法选择目的地", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 destLocButton.setClickable(false);
                 destLocButton.setEnabled(false);
                 SocketClient.getInstance().pullNotPaidOrder(Constants.PASSENGER_ROLE, new ResponseHandler(Looper.myLooper()) {
@@ -431,6 +443,7 @@ public class PreOrderActivity extends AppCompatActivity
                         intent.putExtra("from", SearchActivity.PREORDERACTIVITY);
                         intent.putExtra("location", start); //Search nearby from the start
                         intent.putExtra("city", city);
+                        intent.putExtra(SearchActivity.SEARCH_TYPE, SearchActivity.SEARCH_TYPE_DES);
                         startActivityForResult(intent, ACTIVITY_SEARCH_DEST_REQUEST);
                         destLocButton.setClickable(true);
                         destLocButton.setEnabled(true);
@@ -758,6 +771,7 @@ public class PreOrderActivity extends AppCompatActivity
                             String help_url = "";
                             String about_url = "";
                             String clause_url = "";
+                            Trace.e(messageBody);
                             if (!TextUtils.isEmpty(messageBody)) {
                                 JSONObject responseObj = JSON.parseObject(messageBody);
                                 if (responseObj != null) {

@@ -162,7 +162,7 @@
             android:name=".NewsActivity"
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
-            android:label="关于嘟嘟"
+            android:label="消息中心"
             android:screenOrientation="portrait" />
         <activity
             android:name=".CommonAddrActivity"

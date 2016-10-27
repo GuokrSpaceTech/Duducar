@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
+import com.baidu.mapapi.map.Text;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.CityInfo;
 import com.baidu.mapapi.search.core.PoiInfo;
@@ -49,19 +50,15 @@ import com.baidu.mapapi.search.sug.SuggestionSearch;
 import com.baidu.mapapi.search.sug.SuggestionSearchOption;
 import com.guokrspace.duducar.common.CommonAddrType;
 import com.guokrspace.duducar.common.Constants;
-import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
 import com.guokrspace.duducar.communication.message.SearchLocation;
-import com.guokrspace.duducar.database.CommonUtil;
+import com.guokrspace.duducar.common.CommonUtil;
 import com.guokrspace.duducar.database.DaoSession;
 import com.guokrspace.duducar.database.SearchHistory;
 import com.guokrspace.duducar.model.AddrRowDescriptor;
 import com.guokrspace.duducar.util.SharedPreferencesUtils;
-import com.guokrspace.duducar.util.Trace;
 import com.umeng.analytics.MobclickAgent;
 
-import org.json.JSONObject;
-import org.w3c.dom.Text;
-
+import java.lang.annotation.ElementType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,6 +70,10 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
     private static final String ARG_CITY = "city";
     private static final String ARG_FROM = "from";
     private static final String ARG_TYPE = "common_addr_type";
+
+    public static final String SEARCH_TYPE = "type";
+    public static final String SEARCH_TYPE_START = "start";
+    public static final String SEARCH_TYPE_DES = "des";
 
     private PoiSearch mPoiSearch = null;
     private SuggestionSearch mSuggestionSearch = null;
@@ -115,6 +116,7 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
     private Drawable companyIcon;
     private FrameLayout homeTabLayout;
     private FrameLayout companyTabLayout;
+    private String pageTitle = "搜索地点";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +134,13 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
                 location = (SearchLocation) bundle.get("location");
                 if (location != null)
                     mReqLoc = location.getLocation();
+                String searchType = bundle.getString(SEARCH_TYPE);
+                if (TextUtils.equals(SEARCH_TYPE_DES, searchType)) {
+                    pageTitle = "选择目的地";
+                } else if (TextUtils.equals(SEARCH_TYPE_START, searchType)){
+                    pageTitle = "选择出发地";
+                }
+
             } else if (TextUtils.equals(fromPage, COMMONADDRACTIVITY)) {
                 addrType = CommonAddrType.getByDesc(bundle.getString(ARG_TYPE));
             }
@@ -357,7 +366,7 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
 
     private void initToolBar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle("搜索地点");
+        mToolbar.setTitle(pageTitle);
         mToolbar.setTitleTextColor(Color.WHITE);
         mToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back));
         setSupportActionBar(mToolbar);

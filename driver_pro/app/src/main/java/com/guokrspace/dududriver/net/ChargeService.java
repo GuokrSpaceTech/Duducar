@@ -18,6 +18,7 @@ import com.baidu.mapapi.utils.DistanceUtil;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
 import com.guokrspace.dududriver.util.CommonUtil;
+import com.guokrspace.dududriver.util.LogUtil;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -199,7 +200,7 @@ public class ChargeService extends Service {
     }
 
     public void stopCharging(){
-        Log.e("daddy ", "stop charging service");
+        LogUtil.e("daddy ", "stop charging service");
         if(calTimer != null){
             calTimer.cancel();
             calTimer = null;

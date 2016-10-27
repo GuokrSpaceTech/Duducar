@@ -65,7 +65,7 @@ import com.guokrspace.duducar.communication.message.OrderDetail;
 import com.guokrspace.duducar.communication.message.SearchLocation;
 import com.guokrspace.duducar.communication.message.TripOver;
 import com.guokrspace.duducar.communication.message.TripStart;
-import com.guokrspace.duducar.database.CommonUtil;
+import com.guokrspace.duducar.common.CommonUtil;
 import com.guokrspace.duducar.database.OrderRecord;
 import com.guokrspace.duducar.model.IdAndValueModel;
 import com.guokrspace.duducar.ui.DriverInformationView;

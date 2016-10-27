@@ -2,9 +2,7 @@ package com.guokrspace;
 
 import de.greenrobot.daogenerator.DaoGenerator;
 import de.greenrobot.daogenerator.Entity;
-import de.greenrobot.daogenerator.Property;
 import de.greenrobot.daogenerator.Schema;
-import de.greenrobot.daogenerator.ToOne;
 
 public class DAODBGenerator {
 
@@ -18,15 +16,26 @@ public class DAODBGenerator {
      */
 
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(1001, "com.guokrspace.duducar.database");
+        Schema schema = new Schema(1002, "com.guokrspace.duducar.database");
 
         addConfig(schema);
         addOrder(schema);
         addSearchRecord(schema);
         addDriver(schema);
+        addMessage(schema);
 
 //        new DaoGenerator().generateAll(schema, "src-gen");
         new DaoGenerator().generateAll(schema, "/Users/hyman/Duducar/app/src/main/java");
+    }
+
+    private static void addMessage(Schema schema) {
+        Entity notice = schema.addEntity("MessageInfo");
+        notice.addIntProperty("id");
+        notice.addStringProperty("title");
+        notice.addStringProperty("date");
+        notice.addStringProperty("imgurl");
+        notice.addStringProperty("content");
+        notice.addStringProperty("url");
     }
 
     private static void addConfig(Schema schema) {

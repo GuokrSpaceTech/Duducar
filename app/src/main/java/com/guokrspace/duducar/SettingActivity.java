@@ -148,6 +148,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.passenger_guide_layout:
                 Intent guideIntent = new Intent(this, WebViewActivity.class);
                 guideIntent.putExtra(WebViewActivity.WEBVIEW_TYPE, WebViewActivity.WEBVIEW_HELP);
+                guideIntent.putExtra(WebViewActivity.WEBVIEW_URL, "");
                 startActivity(guideIntent);
                 break;
             case R.id.feedback_layout:
@@ -156,11 +157,13 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.legal_items_layout:
                 Intent clauseIntent = new Intent(this, WebViewActivity.class);
                 clauseIntent.putExtra(WebViewActivity.WEBVIEW_TYPE, WebViewActivity.WEBVIEW_CLAUSE);
+                clauseIntent.putExtra(WebViewActivity.WEBVIEW_URL, "");
                 startActivity(clauseIntent);
                 break;
             case R.id.about_us_layout:
                 Intent aboutIntent = new Intent(this, WebViewActivity.class);
                 aboutIntent.putExtra(WebViewActivity.WEBVIEW_TYPE, WebViewActivity.WEBVIEW_ABOUT);
+                aboutIntent.putExtra(WebViewActivity.WEBVIEW_URL, "");
                 startActivity(aboutIntent);
                 break;
             case R.id.quit_button:

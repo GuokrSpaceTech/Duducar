@@ -1,6 +1,7 @@
 package com.guokrspace.duducar.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.guokrspace.duducar.R;
+import com.guokrspace.duducar.WebViewActivity;
 import com.guokrspace.duducar.model.News;
 import com.squareup.picasso.Picasso;
 
@@ -47,13 +49,21 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
                         .centerCrop().fit().into(holder.newsImage);
             }
             holder.tvContent.setText(mItems.get(position).getContent());
-
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //进入相应的webview
-                }
-            });
+            if (TextUtils.isEmpty(mItems.get(position).getImg())) {
+                holder.newsImage.setVisibility(View.GONE);
+            }
+//            if (!TextUtils.isEmpty(mItems.get(position).getUrl())) {
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //进入相应的webview
+                        Intent intent = new Intent(context, WebViewActivity.class);
+                        intent.putExtra(WebViewActivity.WEBVIEW_TYPE, 0);
+                        intent.putExtra(WebViewActivity.WEBVIEW_URL, "");
+                        context.startActivity(intent);
+                    }
+                });
+//            }
         }
 
     }

@@ -24,8 +24,10 @@ import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.MyLocationData;
 import com.guokrspace.duducar.DuduApplication;
 import com.guokrspace.duducar.common.Constants;
-import com.guokrspace.duducar.database.CommonUtil;
+import com.guokrspace.duducar.common.CommonUtil;
+import com.guokrspace.duducar.communication.message.MessageTag;
 import com.guokrspace.duducar.database.PersonalInformation;
+import com.guokrspace.duducar.util.Trace;
 
 import java.util.List;
 
@@ -34,7 +36,6 @@ import java.util.List;
 * send heartbeat
 * */
 public class DuduService extends Service {
-
     private SocketClient mTcpClient = null;
     private connectTask conctTask = null;
     private DuduApplication mApplication;
