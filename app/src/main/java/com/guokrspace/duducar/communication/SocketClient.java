@@ -579,5 +579,25 @@ public class SocketClient {
         return ret;
     }
 
+    /**
+     * 上传反馈信息
+     * @param feedback
+     * @param handler
+     * @return
+     */
+    public int publishFeedback(String feedback, ResponseHandler handler) {
+        int ret = -1;
+        JSONObject params = new JSONObject();
+        try {
+            params.put("cmd", MessageTag.getInstance().Command(MessageTag.PUBLISH_FEEDBACK));
+            params.put("role", "2");
+            params.put("feedback", feedback);
+            ret = sendMessage(params, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
 
 }

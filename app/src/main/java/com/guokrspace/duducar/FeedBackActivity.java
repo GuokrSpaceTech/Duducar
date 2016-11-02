@@ -2,8 +2,7 @@ package com.guokrspace.duducar;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -14,6 +13,8 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.guokrspace.duducar.communication.ResponseHandler;
+import com.guokrspace.duducar.communication.SocketClient;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.Timer;
@@ -33,32 +34,6 @@ public class FeedBackActivity extends AppCompatActivity {
     private ProgressBar mProgressBar;
     private Button publishButton;
 
-//    private boolean isEnable = true;
-
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                case 1:
-                    mProgressBar.setVisibility(View.INVISIBLE);
-                    final MaterialDialog dialog = new MaterialDialog(context);
-                    dialog.setMessage("提交成功");
-                    dialog.setCanceledOnTouchOutside(true);
-                    dialog.setPositiveButton("OK", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            FeedBackActivity.this.finish();
-                        }
-                    });
-                    dialog.show();
-                    publishButton.setEnabled(true);
-                    break;
-                default:
-                    break;
-            }
-
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,17 +91,33 @@ public class FeedBackActivity extends AppCompatActivity {
          *  提交反馈
          */
     public void publishFeedBack(View view) {
-
-        if (TextUtils.isEmpty(feedbackEditText.getText())) {
+        String feedback = feedbackEditText.getText().toString().trim();
+        if (TextUtils.isEmpty(feedback)) {
             showToast("反馈内容不可为空哦~");
             return;
         }
 
         publishButton.setEnabled(false);
 //        isEnable = false;
+        // 提交
+        SocketClient.getInstance().publishFeedback(feedback, new ResponseHandler(Looper.myLooper()) {
+            @Override
+            public void onSuccess(String messageBody) {
+                showFeedbackDialog("提交成功！");
+            }
 
-        mProgressBar.setVisibility(View.VISIBLE);
-        new Thread(new Runnable() {
+            @Override
+            public void onFailure(String error) {
+                showFeedbackDialog("提交失败，请稍后尝试！");
+            }
+
+            @Override
+            public void onTimeout() {
+                showFeedbackDialog("超时，请稍后尝试！");
+            }
+        });
+//        mProgressBar.setVisibility(View.VISIBLE);
+        /*new Thread(new Runnable() {
             int i = 0;
 
             @Override
@@ -142,7 +133,23 @@ public class FeedBackActivity extends AppCompatActivity {
                 }
                 mHandler.sendEmptyMessage(1);
             }
-        }).start();
+        }).start();*/
+    }
+
+    private void showFeedbackDialog(String msg) {
+        mProgressBar.setVisibility(View.INVISIBLE);
+        final MaterialDialog dialog = new MaterialDialog(context);
+        dialog.setMessage(msg);
+        dialog.setCanceledOnTouchOutside(true);
+        dialog.setPositiveButton("OK", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                feedbackEditText.setText("");
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+        publishButton.setEnabled(true);
     }
 
     private void showToast(String msg) {
