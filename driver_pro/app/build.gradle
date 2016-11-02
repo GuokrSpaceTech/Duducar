@@ -8,7 +8,7 @@ android {
     defaultConfig {
         applicationId "com.guokrspace.dududriver"
         minSdkVersion project.ANDROID_BUILD_MIN_SDK_VERSION
-        targetSdkVersion 23
+        targetSdkVersion 22
         multiDexEnabled true
         versionCode 8
         versionName "beta1.0"
@@ -24,10 +24,10 @@ android {
 
     signingConfigs {
         release {
-            keyAlias 'mactop'
+            keyAlias 'mactop2013'
             keyPassword 'mactop2013'
             storeFile file('/Users/hyman/Documents/AndroidDevelopment/guokrspace')
-            storePassword 'guokrspace2013'
+            storePassword 'guokrspace'
         }
         debug
     }
@@ -102,6 +102,16 @@ dependencies {
     compile project(':indicator_library')
     compile project(':MaterialDesign')
     compile project(':ToggleButtonLib')
+    provided 'com.google.code.gson:gson:2.2.2'
+    //    compile 'com.squareup.okhttp:okhttp:2.4.0'
+    //    compile 'com.squareup.okhttp:okhttp-urlconnection:2.2.0'
+    //    compile 'com.squareup.picasso:picasso:2.4.0'
+    //    compile 'com.squareup.okhttp:okhttp:2.0.0'
+    //    compile 'com.android.support:design:23.1.0'
+    //    compile files('libs/BaiduNaviSDK_2.0.jar')
+    //    compile files('libs/alipaySdk-20151103.jar')
+    //    compile files('libs/libammsdk.jar')
+    //    compile files('libs/httpcore-4.3.2.jar')
     compile 'com.android.support:appcompat-v7:23.1.0'
     compile 'com.android.support:recyclerview-v7:23.1.0'
     compile 'com.github.dexafree:materiallist:3.1.2'
@@ -112,16 +122,7 @@ dependencies {
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.alibaba:fastjson:1.1.34.android'
     compile 'com.hannesdorfmann:adapterdelegates:1.1.0'
-    provided 'com.google.code.gson:gson:2.2.2'
     compile 'me.drakeet.materialdialog:library:1.2.8'
     compile 'com.zhy:okhttputils:1.0.2'
-    //    compile 'com.squareup.okhttp:okhttp:2.4.0'
-    //    compile 'com.squareup.okhttp:okhttp-urlconnection:2.2.0'
-    //    compile 'com.squareup.picasso:picasso:2.4.0'
-    //    compile 'com.squareup.okhttp:okhttp:2.0.0'
-    //    compile 'com.android.support:design:23.1.0'
-    //    compile files('libs/BaiduNaviSDK_2.0.jar')
-    //    compile files('libs/alipaySdk-20151103.jar')
-    //    compile files('libs/libammsdk.jar')
-    //    compile files('libs/httpcore-4.3.2.jar')
+    compile 'com.android.support:support-v4:23.1.0'
 }

@@ -33,7 +33,7 @@ import com.guokrspace.duducar.model.Driver;
 import com.guokrspace.duducar.model.HistoryOrdersResponse;
 import com.guokrspace.duducar.model.Order;
 import com.guokrspace.duducar.communication.message.OrderDetail;
-import com.guokrspace.duducar.database.CommonUtil;
+import com.guokrspace.duducar.common.CommonUtil;
 import com.guokrspace.duducar.database.DriverRecord;
 import com.guokrspace.duducar.database.DriverRecordDao;
 import com.guokrspace.duducar.database.OrderRecord;

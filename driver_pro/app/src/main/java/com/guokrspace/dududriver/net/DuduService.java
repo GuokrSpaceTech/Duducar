@@ -14,7 +14,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.Looper;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.baidu.location.BDLocation;
@@ -33,6 +32,7 @@ import com.guokrspace.dududriver.net.message.HeartBeatMessage;
 import com.guokrspace.dududriver.net.message.MessageTag;
 import com.guokrspace.dududriver.ui.PickUpPassengerActivity;
 import com.guokrspace.dududriver.util.CommonUtil;
+import com.guokrspace.dududriver.util.LogUtil;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 
 import java.util.List;
@@ -89,7 +89,7 @@ public class DuduService extends Service {
         mFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(mReceiver, mFilter);
         preTime = System.currentTimeMillis();
-        Log.e("daddy", "service create");
+        LogUtil.e("daddy", "service create");
         CommonUtil.setIsServiceOn(true);
     }
 
@@ -128,7 +128,7 @@ public class DuduService extends Service {
         }
         startForeground(12349, noti);
 
-        Log.e("daady", "start command");
+        LogUtil.e("daady", "start command");
         if(mTcpClient == null){
             conctTask = new connectTask(); //Connect to server
             conctTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -148,7 +148,7 @@ public class DuduService extends Service {
 //            }
 //        };
         //发送心跳包 5s一次
-//        Log.e("daddy service", "start heart beat" );
+//        LogUtil.e("daddy service", "start heart beat" );
 //        heartBeatTimer.schedule(heartBeatTask, 1000, 5 * 1000);
 
         pullOrder();
@@ -178,7 +178,7 @@ public class DuduService extends Service {
         if(null != mLocClient){
             mLocClient.stop();
         }
-        Log.e("daddy", "service done" );
+        LogUtil.e("daddy", "service done" );
         try {
             mTcpClient.stopClient();
             conctTask.cancel(true);
@@ -198,7 +198,6 @@ public class DuduService extends Service {
         CommonUtil.setIsServiceOn(false);
     }
 
-    /////////////
     //后台实时获取地址
 
     //一分钟计算一次单段走过的距离百度distance, 计算是否低速, 计算价格
@@ -251,14 +250,14 @@ public class DuduService extends Service {
             CommonUtil.setCurSpeed(curLocaData.speed + "");
             CommonUtil.setCurDirction(curLocaData.direction);
             if(!isDuduServiceRunning()){
-                Log.e("daddy service ", " dudu service is stopped and restarting");
+                LogUtil.e("daddy service ", " dudu service is stopped and restarting");
                 startService(new Intent(getApplicationContext(), DuduService.class));
             }
             if(System.currentTimeMillis() - preBeat >= 4 * 1000){ // 5s一次发送heartbeat
                 sendHeartBeat(Looper.myLooper());
                 preBeat = System.currentTimeMillis();
             }
-            Log.e("service", "current location update");
+            LogUtil.e("service", "current location update");
         }
     }
 
@@ -267,34 +266,34 @@ public class DuduService extends Service {
         SocketClient.getInstance().registerServerMessageHandler(MessageTag.PATCH_ORDER, new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
-                Log.e("Mainactivity", "confirm order handler");
+                LogUtil.e("confirm order handler");
                 OrderItem orderItem = new Gson().fromJson(messageBody, OrderItem.class);
-                Log.e("daddy duduservice", " new order come");
+                LogUtil.e("daddy duduservice >>> new order come");
                 if (CommonUtil.getCurOrderItem() != null) {
                     if (CommonUtil.getCurOrderItem().getOrder().getId().equals(orderItem.getOrder().getId())) {
-                        Log.e("daddy error", " dudu service the same order");
+                        LogUtil.e("daddy error>>> dudu service the same order");
                         //同一个单
                         return;
                     }
                 }
                 if (CommonUtil.getCurrentStatus() != Constants.STATUS_WAIT) {
-                    Log.e("daddy error", " dudu service not right status");
+                    LogUtil.e("daddy error>>> dudu service not right status");
                     return;
                 }
                 CommonUtil.setCurOrderItem(orderItem);
-                Log.e("Daddy ", messageBody + "  " + orderItem.getCMD() + " " + orderItem.getOrder().getDestination_lat() + "::" + orderItem.getOrder().getDestination_lng());
+                LogUtil.e(messageBody + "  " + orderItem.getCMD() + " " + orderItem.getOrder().getDestination_lat() + "::" + orderItem.getOrder().getDestination_lng());
                 //向主界面发送广播
                 sendBroadCast(Constants.SERVICE_ACTION_NEW_ORDER);
             }
 
             @Override
             public void onFailure(String error) {
-                Log.e("Mainactivity", "register order handler error");
+                LogUtil.e("register order handler error");
             }
 
             @Override
             public void onTimeout() {
-                Log.e("Mainactivity", "register order handler time out");
+                LogUtil.e("register order handler time out");
             }
         });
 
@@ -304,7 +303,7 @@ public class DuduService extends Service {
     private void sendHeartBeat(Looper looper) {
         if(!isRunningApp(getApplicationContext())){
             // 程序完全退出
-            Log.e("daddy best", "service stop self");
+            LogUtil.e("DuduService >>> service stop self");
             stopSelf();
             return;
         }
@@ -319,7 +318,7 @@ public class DuduService extends Service {
         SocketClient.getInstance().sendHeartBeat(msg, new ResponseHandler(looper) {
             @Override
             public void onSuccess(String messageBody) {
-                Log.i("HeartBeat Response", messageBody);
+                LogUtil.i("HeartBeat Response", messageBody);
                 //将登陆状态置为true
                 SharedPreferencesUtils.setParam(DuduService.this, SharedPreferencesUtils.LOGIN_STATE, true);
                 if(PickUpPassengerActivity.isNetworkOut){
@@ -334,7 +333,7 @@ public class DuduService extends Service {
 
             @Override
             public void onFailure(String error) {
-                Log.i("HeartBeat Response", error);
+                LogUtil.e("HeartBeat Response", error);
                 if(error.contains("login")){//登陆出现问题
                     //将登陆状态置为false
                     SharedPreferencesUtils.setParam(DuduService.this, SharedPreferencesUtils.LOGIN_STATE, false);
@@ -351,17 +350,17 @@ public class DuduService extends Service {
                         SocketClient.getInstance().autoLoginRequest(user.getMobile(), "1", user.getToken(), new ResponseHandler(Looper.myLooper()) {
                             @Override
                             public void onSuccess(String messageBody) {
-                                Log.e("login in service: ", "duduservice sucess");
+                                LogUtil.e("login in service: ", "duduservice sucess");
                                 SharedPreferencesUtils.setParam(DuduService.this, SharedPreferencesUtils.LOGIN_STATE, true);
                                 pullOrder();
                             }
 
                             @Override
-                            public void onFailure(String error) { Log.e("login in failure!", "errorbody " + error); }
+                            public void onFailure(String error) { LogUtil.e("login in failure!", "errorbody " + error); }
 
                             @Override
                             public void onTimeout() {
-                                Log.e("hyman", "登陆超时");
+                                LogUtil.e("hyman", "登陆超时");
                             }
                         });
                     }
@@ -373,7 +372,7 @@ public class DuduService extends Service {
 
             @Override
             public void onTimeout() {
-                Log.i("HeartBeat", "Response Timeout");
+                LogUtil.e("HeartBeat", "Response Timeout");
                 if(System.currentTimeMillis() - preTime < 1000 * 10){ // 连续超时
                     currTimeOut ++;
                 } else {
@@ -384,7 +383,7 @@ public class DuduService extends Service {
                     reConnectServer();
                     currTimeOut = 0;
                 }
-                Log.e("daddy heart beat", "time out " + currTimeOut);
+                LogUtil.e("daddy heart beat", "time out " + currTimeOut);
 //                if(SocketClient.getInstance().getSocket().)
                 //将登陆状态置为false
                 SharedPreferencesUtils.setParam(DuduService.this, SharedPreferencesUtils.LOGIN_STATE, false);
@@ -432,20 +431,20 @@ public class DuduService extends Service {
                 mConnectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
                 netInfo = mConnectivityManager.getActiveNetworkInfo();
                 if(netInfo != null && netInfo.isAvailable()) {
-                    /////////////网络连接
+                    //网络连接
                     int type = netInfo.getType();
                     //网络连接切换, 一般重新连接
                     if(type == ConnectivityManager.TYPE_WIFI){
-                        /////WiFi网络
+                        //WiFi网络
                     }else if(type == ConnectivityManager.TYPE_ETHERNET){
 
                     }else if(type == ConnectivityManager.TYPE_MOBILE){
-                        /////////3g网络
+                        //3g网络
                     }
                     reConnectServer();
                     sendBroadCast(Constants.SERVICE_ACTION_NEWWORK_RECONNET);
                 } else {
-                    ////////网络断开
+                    //网络断开
                     Toast.makeText(DuduService.this, "网络连接断开...", Toast.LENGTH_SHORT).show();
                     sendBroadCast(Constants.SERVICE_ACTION_NETWORK_OUT);
                     //TODO 网络断开
@@ -486,12 +485,12 @@ public class DuduService extends Service {
     private void registerDuduMessageListener(){
 
         //TODO: 监听服务器新消息的通知
-        Log.e("daddy message", "register new message");
+        LogUtil.e("register new message");
         mTcpClient.registerServerMessageHandler(MessageTag.NEW_MESSAGE, new ResponseHandler(Looper.myLooper()) {
             @Override
             public void onSuccess(String messageBody) {
                 // 广播通知
-                Log.e("daddy message", "got a new message notice");
+                LogUtil.e("got a new message notice");
                 sendBroadCast(Constants.SERVICE_ACTION_MESAGE);
             }
 

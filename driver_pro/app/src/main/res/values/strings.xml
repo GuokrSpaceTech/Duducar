@@ -50,4 +50,8 @@
     <string name="wealth_add_notice">乘客尾号%1$s支付%2$.2f元，您此单收入请到“我的余额”查看详情</string>
     <string name="title_activity_alipay">AlipayActivity</string>
     <string name="title_activity_news">NewsActivity</string>
+
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

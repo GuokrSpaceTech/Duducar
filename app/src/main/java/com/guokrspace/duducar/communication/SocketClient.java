@@ -555,4 +555,29 @@ public class SocketClient {
     }
 
 
+    /**
+     * 拉取消息
+     * @param type
+     * @param num
+     * @param msgId
+     * @param handler
+     * @return
+     */
+    public int pullMessages(String type, int num, int msgId, ResponseHandler handler){
+        int ret = -1;
+        JSONObject params = new JSONObject();
+        try {
+            params.put("cmd", "get_message");
+            params.put("role", "2");
+            params.put("type", type);
+            params.put("number", num);
+            params.put("base_message_id", msgId);
+            ret = sendMessage(params, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();;
+        }
+        return ret;
+    }
+
+
 }

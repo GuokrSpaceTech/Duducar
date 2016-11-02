@@ -68,12 +68,13 @@ import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
 import com.guokrspace.duducar.communication.message.NearByCars;
 import com.guokrspace.duducar.communication.message.OrderDetail;
 import com.guokrspace.duducar.communication.message.SearchLocation;
-import com.guokrspace.duducar.database.CommonUtil;
+import com.guokrspace.duducar.common.CommonUtil;
 import com.guokrspace.duducar.database.PersonalInformation;
 import com.guokrspace.duducar.ui.DrawerView;
 import com.guokrspace.duducar.ui.OrderConfirmationView;
 import com.guokrspace.duducar.ui.WinToast;
 import com.guokrspace.duducar.util.SharedPreferencesUtils;
+import com.guokrspace.duducar.util.Trace;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.umeng.analytics.MobclickAgent;
 
@@ -159,6 +160,11 @@ public class PreOrderActivity extends AppCompatActivity
 
     private String permissionInfo;
     private final int SDK_PERMISSION_REQUEST = 127;
+
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode) {
+        super.startActivityForResult(intent, requestCode);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -530,6 +536,7 @@ public class PreOrderActivity extends AppCompatActivity
                 intent.putExtra("from", SearchActivity.PREORDERACTIVITY);
                 intent.putExtra("location", start);
                 intent.putExtra("city", city);
+                intent.putExtra(SearchActivity.SEARCH_TYPE, SearchActivity.SEARCH_TYPE_START);
                 startActivityForResult(intent, ACTIVITY_SEARCH_START_REQUEST);
             }
         });
@@ -537,6 +544,11 @@ public class PreOrderActivity extends AppCompatActivity
         destLocButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!CommonUtil.isNetworkAvailable(PreOrderActivity.this)) {
+                    Trace.e("CommonUtil.isNetworkAvailable(PreOrderActivity.this)");
+                    Toast.makeText(PreOrderActivity.this, "网络不可用，无法选择目的地", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 destLocButton.setClickable(false);
                 destLocButton.setEnabled(false);
                 SocketClient.getInstance().pullNotPaidOrder(Constants.PASSENGER_ROLE, new ResponseHandler(Looper.myLooper()) {
@@ -576,6 +588,7 @@ public class PreOrderActivity extends AppCompatActivity
                         intent.putExtra("from", SearchActivity.PREORDERACTIVITY);
                         intent.putExtra("location", start); //Search nearby from the start
                         intent.putExtra("city", city);
+                        intent.putExtra(SearchActivity.SEARCH_TYPE, SearchActivity.SEARCH_TYPE_DES);
                         startActivityForResult(intent, ACTIVITY_SEARCH_DEST_REQUEST);
                         destLocButton.setClickable(true);
                         destLocButton.setEnabled(true);
@@ -908,6 +921,7 @@ public class PreOrderActivity extends AppCompatActivity
                             String help_url = "";
                             String about_url = "";
                             String clause_url = "";
+                            Trace.e(messageBody);
                             if (!TextUtils.isEmpty(messageBody)) {
                                 JSONObject responseObj = JSON.parseObject(messageBody);
                                 if (responseObj != null) {
@@ -965,18 +979,21 @@ public class PreOrderActivity extends AppCompatActivity
                         LatLng searchLoc = start.getLocation();
 
                         startLocButton.setText(start.getAddress());
+                        Log.e("DADDY", "Start ADDTREES " + start.getAddress());
 
                         mBaiduMap.clear();
                         mBaiduMap.addOverlay(new MarkerOptions().position(searchLoc)
                                 .icon(BitmapDescriptorFactory
                                         .fromResource(R.drawable.ic_current_position_pin)));
                         mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newLatLng(searchLoc));
-                        mGeoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(searchLoc));
+//                        mGeoCoder.reverseGeoCode(new ReverseGeoCodeOption().location(searchLoc));
+                        startLocButton.setText(start.getAddress());
                     }
                 } else if (requestCode == ACTIVITY_SEARCH_DEST_REQUEST) {
                     Bundle bundle = data.getExtras();
                     if (bundle != null) {
                         dest = (SearchLocation) bundle.get("location");
+                        Log.e("DADDY", "Start ADDTREES " + dest.getAddress());
                         destLocButton.setText(dest.getAddress());
                         destLocButton.setTextColor(getResources().getColor(android.R.color.black));
                         callCabButton.setEnabled(true);
@@ -984,6 +1001,7 @@ public class PreOrderActivity extends AppCompatActivity
                         Intent intent = new Intent(mContext, CostEstimateActivity.class);
                         intent.putExtra("start", start);
                         intent.putExtra("dest", dest);
+                        intent.putExtra("city", city);
 
                         startActivityForResult(intent, ACTVITY_COST_ESTIMATE_REQUEST);
                     }
@@ -1046,7 +1064,12 @@ public class PreOrderActivity extends AppCompatActivity
         mOrder.setStartLocation(result.getAddress(), result.getLocation().latitude, result.getLocation().longitude);
 
         city = result.getAddressDetail().city;
-        startLocButton.setText(result.getAddress());
+        if(result.getPoiList().size()>0){
+            start.setAddress(result.getPoiList().get(0).name);
+            startLocButton.setText(result.getPoiList().get(0).name);
+        } else {
+            startLocButton.setText(result.getAddress());
+        }
     }
 
 

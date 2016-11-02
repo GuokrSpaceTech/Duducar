@@ -198,7 +198,7 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
                 }
             }
         }
-        Log.e("hyman_webview", noticeUrl);
+//        Log.e("hyman_webview", noticeUrl);
 
         mWebView.loadUrl(noticeUrl);
         mWebView.requestFocus();

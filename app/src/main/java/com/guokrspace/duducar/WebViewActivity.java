@@ -6,6 +6,7 @@ import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Xml;
 import android.view.KeyEvent;
 import android.view.View;
@@ -18,9 +19,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.guokrspace.duducar.util.SharedPreferencesUtils;
+import com.guokrspace.duducar.util.Trace;
 import com.umeng.analytics.MobclickAgent;
 
 import org.apache.http.util.EncodingUtils;
+import org.w3c.dom.Text;
 
 /**
  * Created by hyman on 15/12/19.
@@ -28,6 +31,7 @@ import org.apache.http.util.EncodingUtils;
 public class WebViewActivity extends AppCompatActivity {
 
     public static final String WEBVIEW_TYPE = "webview_type";
+    public static final String WEBVIEW_URL = "webview_url";
     public static final int WEBVIEW_HELP = 100;
     public static final int WEBVIEW_CLAUSE = 101;
     public static final int WEBVIEW_ABOUT = 102;
@@ -40,6 +44,7 @@ public class WebViewActivity extends AppCompatActivity {
     private ProgressBar mProgressBar;
 
     private int type;
+    private String url = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +54,11 @@ public class WebViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_webview);
         context = WebViewActivity.this;
         Intent mIntent = getIntent();
+        // 类型
         type = mIntent.getIntExtra(WEBVIEW_TYPE, 0);
-        initView();
+        // url，如果传过来的url则url不为空
+        url = mIntent.getStringExtra(WEBVIEW_URL);
+        Trace.e(type + " " + url);
     }
 
     private void initView() {
@@ -140,9 +148,15 @@ public class WebViewActivity extends AppCompatActivity {
         });
 
 
-        String url = (String) SharedPreferencesUtils.getParam(context, key, "");
-
-        mWebView.loadUrl(url);
+        if (!TextUtils.isEmpty(key)) {
+            url = (String) SharedPreferencesUtils.getParam(context, key, "");
+        }
+        if (TextUtils.isEmpty(title)) {
+            mToolbar.setVisibility(View.GONE);
+        }
+        if (!TextUtils.isEmpty(url)) {
+            mWebView.loadUrl(url);
+        }
         mWebView.requestFocus();
     }
 
@@ -176,6 +190,8 @@ public class WebViewActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mWebView.clearCache(true);
+        if(mWebView != null) {
+            mWebView.clearCache(true);
+        }
     }
 }

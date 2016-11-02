@@ -33,9 +33,16 @@ public class DuduApplication extends Application{
     public PersonalInformation mPersonalInformation;
     public DriverDetail mDriverDetail;
 
+    private static DuduApplication instance = null;
+
+    public static DuduApplication getInstance() {
+        return instance;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
         // 初始化对OkHttpClientManager中的OkHttpClient对象的一些设置
         initOkHttpClient();
 

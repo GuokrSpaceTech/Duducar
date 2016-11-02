@@ -310,4 +310,6 @@ public class OrderMapActivity extends BaseActivity implements View.OnClickListen
     public void setRequestedOrientation(int requestedOrientation) {
         return;
     }
+
+
 }

@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -48,19 +49,14 @@ import com.baidu.mapapi.search.sug.SuggestionResult;
 import com.baidu.mapapi.search.sug.SuggestionSearch;
 import com.baidu.mapapi.search.sug.SuggestionSearchOption;
 import com.guokrspace.duducar.common.CommonAddrType;
+import com.guokrspace.duducar.common.CommonUtil;
 import com.guokrspace.duducar.common.Constants;
-import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
 import com.guokrspace.duducar.communication.message.SearchLocation;
-import com.guokrspace.duducar.database.CommonUtil;
 import com.guokrspace.duducar.database.DaoSession;
 import com.guokrspace.duducar.database.SearchHistory;
 import com.guokrspace.duducar.model.AddrRowDescriptor;
 import com.guokrspace.duducar.util.SharedPreferencesUtils;
-import com.guokrspace.duducar.util.Trace;
 import com.umeng.analytics.MobclickAgent;
-
-import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,10 +65,15 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
 
     public static final String PREORDERACTIVITY = "searchCommonAddr";
     public static final String COMMONADDRACTIVITY = "searchDestination";
+    public static final String COSTESTIMATEACTIVITY = "changeDestination";
 
     private static final String ARG_CITY = "city";
     private static final String ARG_FROM = "from";
     private static final String ARG_TYPE = "common_addr_type";
+
+    public static final String SEARCH_TYPE = "type";
+    public static final String SEARCH_TYPE_START = "start";
+    public static final String SEARCH_TYPE_DES = "des";
 
     private PoiSearch mPoiSearch = null;
     private SuggestionSearch mSuggestionSearch = null;
@@ -115,6 +116,7 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
     private Drawable companyIcon;
     private FrameLayout homeTabLayout;
     private FrameLayout companyTabLayout;
+    private String pageTitle = "搜索地点";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,11 +129,18 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             fromPage = bundle.getString(ARG_FROM);
-            if (TextUtils.equals(fromPage, PREORDERACTIVITY)) {
+            if (TextUtils.equals(fromPage, COSTESTIMATEACTIVITY) || TextUtils.equals(fromPage, PREORDERACTIVITY)) {
                 mCity = bundle.getString(ARG_CITY);
                 location = (SearchLocation) bundle.get("location");
                 if (location != null)
                     mReqLoc = location.getLocation();
+                String searchType = bundle.getString(SEARCH_TYPE);
+                if (TextUtils.equals(SEARCH_TYPE_DES, searchType)) {
+                    pageTitle = "选择目的地";
+                } else if (TextUtils.equals(SEARCH_TYPE_START, searchType)){
+                    pageTitle = "选择出发地";
+                }
+
             } else if (TextUtils.equals(fromPage, COMMONADDRACTIVITY)) {
                 addrType = CommonAddrType.getByDesc(bundle.getString(ARG_TYPE));
             }
@@ -160,7 +169,7 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
         editSearchKey = (EditText) findViewById(R.id.searchkey);
         editSearchKey.setText("");
 
-        if (TextUtils.equals(fromPage, PREORDERACTIVITY)) {
+        if (TextUtils.equals(fromPage, PREORDERACTIVITY) || TextUtils.equals(fromPage, COSTESTIMATEACTIVITY)) {
             commonAttrLayout.setVisibility(View.VISIBLE);
             int mIconSize = this.getResources().getDimensionPixelSize(R.dimen.common_addr_icon_size);
 
@@ -357,7 +366,7 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
 
     private void initToolBar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mToolbar.setTitle("搜索地点");
+        mToolbar.setTitle(pageTitle);
         mToolbar.setTitleTextColor(Color.WHITE);
         mToolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_back));
         setSupportActionBar(mToolbar);
@@ -505,12 +514,23 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
 //                    Trace.e("hyman_poi", mDataset.get(position).address + " " + mDataset.get(position).name + " ");
                     PoiInfo info = mDataset.get(position);
                     mLoc = info.location;
-                    if (TextUtils.equals(fromPage, PREORDERACTIVITY)) {
+                    if(TextUtils.equals(fromPage, COSTESTIMATEACTIVITY)){
                         Intent intent = new Intent();
                         SearchLocation location = new SearchLocation();
                         location.setLat(mLoc.latitude);
                         location.setLng(mLoc.longitude);
                         location.setAddress(mDataset.get(position).name);
+                        intent.putExtra("location", location);
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    } else if (TextUtils.equals(fromPage, PREORDERACTIVITY)) {
+                        Intent intent = new Intent();
+                        SearchLocation location = new SearchLocation();
+                        location.setLat(mLoc.latitude);
+                        location.setLng(mLoc.longitude);
+                        Log.e("DADDY ADDRESS", mDataset.get(position).name + " === " + mDataset.get(position).address);
+                        location.setAddress(mDataset.get(position).name);
+//                        location.setAddress(mDataset.get(position).address);
                         intent.putExtra("location", location);
                         setResult(RESULT_OK, intent);
                         finish();
