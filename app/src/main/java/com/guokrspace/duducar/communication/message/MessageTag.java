@@ -73,6 +73,7 @@ public class MessageTag {
     public static final int BASEINFO = 0x1016;
     public static final int CANCEL_ORDER = 0x1018;
     public static final int HISTORY_ORDERS = 0x101A;
+    public static final int PUBLISH_FEEDBACK = 0x101C;
 
 
     public static MessageTag getInstance(){
@@ -111,6 +112,7 @@ public class MessageTag {
         MessageTag.put("history_orders", HISTORY_ORDERS);
         MessageTag.put("complain", COMPLAIN_SERVICE);
         MessageTag.put("cache_point", CACHE_TRIP_FEE);
+        MessageTag.put("publish_feedback", PUBLISH_FEEDBACK);
     }
 
     public int Tag(String command)
