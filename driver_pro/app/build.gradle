@@ -8,10 +8,10 @@ android {
     defaultConfig {
         applicationId "com.guokrspace.dududriver"
         minSdkVersion project.ANDROID_BUILD_MIN_SDK_VERSION
-        targetSdkVersion 23
+        targetSdkVersion 22
         multiDexEnabled true
-        versionCode 8
-        versionName "beta1.0"
+        versionCode 9
+        versionName "beta1.1"
     }
 
     sourceSets {
