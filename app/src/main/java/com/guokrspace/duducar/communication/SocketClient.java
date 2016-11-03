@@ -275,7 +275,7 @@ public class SocketClient {
             regcodeReq.put("cmd","register");
             regcodeReq.put("role",role);
             regcodeReq.put("mobile",mobile);
-            ret = sendMessage(regcodeReq, handler, 5);
+            ret = sendMessage(regcodeReq, handler, 10);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -293,7 +293,7 @@ public class SocketClient {
             verify.put("role",role);
             verify.put("mobile",mobile);
             verify.put("verifycode",regcode);
-            ret = sendMessage(verify, handler, 5);
+            ret = sendMessage(verify, handler, 10);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -311,7 +311,7 @@ public class SocketClient {
             loginmsg.put("role",role);
             loginmsg.put("mobile",mobile);
             loginmsg.put("token",token);
-            ret = sendMessage(loginmsg, handler, 5);
+            ret = sendMessage(loginmsg, handler, 10);
         } catch (JSONException e) {
             e.printStackTrace();
         }

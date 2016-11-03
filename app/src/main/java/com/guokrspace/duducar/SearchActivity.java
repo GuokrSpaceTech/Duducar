@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,7 +33,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import com.baidu.mapapi.map.Text;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.CityInfo;
 import com.baidu.mapapi.search.core.PoiInfo;
@@ -49,16 +49,15 @@ import com.baidu.mapapi.search.sug.SuggestionResult;
 import com.baidu.mapapi.search.sug.SuggestionSearch;
 import com.baidu.mapapi.search.sug.SuggestionSearchOption;
 import com.guokrspace.duducar.common.CommonAddrType;
+import com.guokrspace.duducar.common.CommonUtil;
 import com.guokrspace.duducar.common.Constants;
 import com.guokrspace.duducar.communication.message.SearchLocation;
-import com.guokrspace.duducar.common.CommonUtil;
 import com.guokrspace.duducar.database.DaoSession;
 import com.guokrspace.duducar.database.SearchHistory;
 import com.guokrspace.duducar.model.AddrRowDescriptor;
 import com.guokrspace.duducar.util.SharedPreferencesUtils;
 import com.umeng.analytics.MobclickAgent;
 
-import java.lang.annotation.ElementType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,6 +65,7 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
 
     public static final String PREORDERACTIVITY = "searchCommonAddr";
     public static final String COMMONADDRACTIVITY = "searchDestination";
+    public static final String COSTESTIMATEACTIVITY = "changeDestination";
 
     private static final String ARG_CITY = "city";
     private static final String ARG_FROM = "from";
@@ -129,7 +129,7 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             fromPage = bundle.getString(ARG_FROM);
-            if (TextUtils.equals(fromPage, PREORDERACTIVITY)) {
+            if (TextUtils.equals(fromPage, COSTESTIMATEACTIVITY) || TextUtils.equals(fromPage, PREORDERACTIVITY)) {
                 mCity = bundle.getString(ARG_CITY);
                 location = (SearchLocation) bundle.get("location");
                 if (location != null)
@@ -169,7 +169,7 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
         editSearchKey = (EditText) findViewById(R.id.searchkey);
         editSearchKey.setText("");
 
-        if (TextUtils.equals(fromPage, PREORDERACTIVITY)) {
+        if (TextUtils.equals(fromPage, PREORDERACTIVITY) || TextUtils.equals(fromPage, COSTESTIMATEACTIVITY)) {
             commonAttrLayout.setVisibility(View.VISIBLE);
             int mIconSize = this.getResources().getDimensionPixelSize(R.dimen.common_addr_icon_size);
 
@@ -514,12 +514,23 @@ public class SearchActivity extends AppCompatActivity implements OnGetPoiSearchR
 //                    Trace.e("hyman_poi", mDataset.get(position).address + " " + mDataset.get(position).name + " ");
                     PoiInfo info = mDataset.get(position);
                     mLoc = info.location;
-                    if (TextUtils.equals(fromPage, PREORDERACTIVITY)) {
+                    if(TextUtils.equals(fromPage, COSTESTIMATEACTIVITY)){
                         Intent intent = new Intent();
                         SearchLocation location = new SearchLocation();
                         location.setLat(mLoc.latitude);
                         location.setLng(mLoc.longitude);
                         location.setAddress(mDataset.get(position).name);
+                        intent.putExtra("location", location);
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    } else if (TextUtils.equals(fromPage, PREORDERACTIVITY)) {
+                        Intent intent = new Intent();
+                        SearchLocation location = new SearchLocation();
+                        location.setLat(mLoc.latitude);
+                        location.setLng(mLoc.longitude);
+                        Log.e("DADDY ADDRESS", mDataset.get(position).name + " === " + mDataset.get(position).address);
+                        location.setAddress(mDataset.get(position).name);
+//                        location.setAddress(mDataset.get(position).address);
                         intent.putExtra("location", location);
                         setResult(RESULT_OK, intent);
                         finish();

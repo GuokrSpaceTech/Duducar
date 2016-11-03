@@ -365,6 +365,9 @@ public class LoginActivity extends BaseActivity implements
         initView();
 
         AppExitUtil.getInstance().addActivity(this);
+
+        //check the location permission
+//        CommonUtil.getPermissions(this);
     }
 
     @Override

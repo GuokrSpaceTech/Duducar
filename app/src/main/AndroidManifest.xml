@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.guokrspace.duducar">
+    package="com.guokrspace.duducar" >
 
     <supports-screens
         android:anyDensity="true"
@@ -42,32 +42,27 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppBaseTheme">
+        android:theme="@style/AppBaseTheme" >
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="yWIyrGPVMWZt9Y7gYA9SVeHx" />
-
 
         <activity
             android:name=".PreOrderActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@style/AppBaseTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:theme="@style/AppBaseTheme" >
+
         </activity>
         <activity
             android:name=".LoginActivity"
             android:label=""
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SearchActivity"
             android:label="@string/title_activity_search"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait">
-
+            android:screenOrientation="portrait" >
         </activity>
 
         <service
@@ -77,7 +72,7 @@
 
         <activity
             android:name=".PostOrderActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".CostEstimateActivity"
             android:screenOrientation="portrait" />
@@ -85,18 +80,20 @@
             android:name=".PayCostActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:scheme="wxb3a91786fc792d8c" />
             </intent-filter>
         </activity>
-        <activity android:name=".RatingActivity"></activity>
+        <activity android:name=".RatingActivity" />
 
         <service
             android:name=".communication.DuduService"
-            android:exported="false"></service>
+            android:exported="false" />
 
         <!-- alipay sdk begin -->
         <activity
@@ -104,17 +101,18 @@
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
             android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <!-- alipay sdk end -->
 
-        <!-- wepay init begin-->
+
+        <!-- wepay init begin -->
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-        <receiver android:name=".wxapi.AppRegister">
+        <receiver android:name=".wxapi.AppRegister" >
             <intent-filter>
                 <action android:name="com.tencent.mm.plugin.openapi.Intent.ACTION_REFRESH_WXAPP" />
             </intent-filter>
@@ -186,21 +184,33 @@
         <!-- Update Activitys Start -->
         <activity
             android:name="com.umeng.update.UpdateDialogActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <!-- Update Activitys End -->
+
 
         <!-- Caution! Do not change this app key. It is only for demo usage. -->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="5667dae667e58ebd3b002e0e"></meta-data>
+            android:value="5667dae667e58ebd3b002e0e" />
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="${CHANNEL_NAME}"></meta-data>
+            android:value="${CHANNEL_NAME}" />
 
         <service
             android:name="com.umeng.update.net.DownloadingService"
-            android:process=":DownloadingService"></service>
+            android:process=":DownloadingService" />
+
+        <activity android:name=".SplashActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/AppSplash"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

@@ -1,10 +1,12 @@
 package com.guokrspace.duducar;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +29,8 @@ public class CostEstimateActivity extends AppCompatActivity {
     private Button confirmButton;
     private Toolbar mToolbar;
     private Context context;
+
+    private String city;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +67,7 @@ public class CostEstimateActivity extends AppCompatActivity {
         {
             startLoc = (SearchLocation)bundle.get("start");
             endLoc = (SearchLocation)bundle.get("dest");
+            city = (String)bundle.get("city");
         }
 
         if(startLoc!=null && endLoc!=null)
@@ -76,6 +81,24 @@ public class CostEstimateActivity extends AppCompatActivity {
 
             startTextView.setText(startLoc.getAddress());
             endTextView.setText(endLoc.getAddress());
+            startTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+            endTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(CostEstimateActivity.this, SearchActivity.class);
+                    intent.putExtra("from", SearchActivity.COSTESTIMATEACTIVITY);
+                    intent.putExtra("location", startLoc); //Search nearby from the start
+                    intent.putExtra("city", city);
+                    intent.putExtra("type", "des");
+                    intent.putExtra(SearchActivity.SEARCH_TYPE, SearchActivity.SEARCH_TYPE_DES);
+                    startActivityForResult(intent, PreOrderActivity.ACTIVITY_SEARCH_DEST_REQUEST);
+                }
+            });
         }
 
 //        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -92,6 +115,39 @@ public class CostEstimateActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (resultCode) {
+            case RESULT_OK:
+                switch (requestCode){
+                    case PreOrderActivity.ACTIVITY_SEARCH_DEST_REQUEST:
+                        Bundle bundle = data.getExtras();
+                        if (bundle != null) {
+                            endLoc = (SearchLocation) bundle.get("location");
+                            Log.e("DADDY", "Start ADDTREES " + endLoc.getAddress());
+                            if(startLoc!=null && endLoc!=null) {
+                                Double distance = DistanceUtil.getDistance(startLoc.getLocation(), endLoc.getLocation());
+                                int price_high = (int) (distance * 3.2 / 1000); //meter -> km
+                                int price_low = (int) (distance * 3 / 1000); //meter -> km
+
+                                String estimation = String.format("%d-%d", price_low, price_high);
+                                costEstTextView.setText(estimation);
+
+                                startTextView.setText(startLoc.getAddress());
+                                endTextView.setText(endLoc.getAddress());
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                startActivity(new Intent(context, PreOrderActivity.class));
+                break;
+        }
     }
 
     private void initToolBar() {

@@ -34,3 +34,8 @@ captures/
 
 #.idea
 .idea/
+app/src/main/AndroidManifest_BACKUP_3842.xml
+app/src/main/AndroidManifest_BASE_3842.xml
+app/src/main/AndroidManifest_LOCAL_3842.xml
+app/src/main/AndroidManifest_REMOTE_3842.xml
+app/src/main/res/layout/fragment_personal_info_pre.xml

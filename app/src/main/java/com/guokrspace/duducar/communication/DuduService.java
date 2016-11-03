@@ -23,11 +23,9 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.map.MyLocationData;
 import com.guokrspace.duducar.DuduApplication;
-import com.guokrspace.duducar.common.Constants;
 import com.guokrspace.duducar.common.CommonUtil;
-import com.guokrspace.duducar.communication.message.MessageTag;
+import com.guokrspace.duducar.common.Constants;
 import com.guokrspace.duducar.database.PersonalInformation;
-import com.guokrspace.duducar.util.Trace;
 
 import java.util.List;
 
@@ -194,18 +192,25 @@ public class DuduService extends Service {
         @Override
         public void onReceiveLocation(BDLocation location) {
 
-            // map view 销毁后不在处理新接收的位置
+            // map view 销毁后不在处理新接收的位置 TODO: 无权限时会得到 null 通知用户?获取权限
             if (location == null){
+//                sendBroadCast
+                Log.e("BAIDU ERROR", " NO LOCATION INFO");
                 return;
             }
+
             MyLocationData curLocaData = new MyLocationData.Builder()
                     .accuracy(location.getRadius())
                     .direction(location.getDirection()).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
-
+            if(curLocaData.latitude - CommonUtil.getCurLat()  > 5){
+                if(CommonUtil.getCurLat() < 1){ // 获取到有效地址
+                    CommonUtil.setCurLng(curLocaData.longitude);
+                    CommonUtil.setCurLat(curLocaData.latitude);
+                    sendBroadCast(Constants.UPDATE_MAP_CENTER);
+                }
+            }
             //修改现在状态
-            CommonUtil.setCurLng(curLocaData.longitude);
-            CommonUtil.setCurLat(curLocaData.latitude);
             CommonUtil.setLocationSuccess(true);
             CommonUtil.setCurTime(System.currentTimeMillis());
 //
