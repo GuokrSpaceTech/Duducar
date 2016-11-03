@@ -74,6 +74,10 @@ public class MessageTag {
     public static final int CANCEL_ORDER = 0x1018;
     public static final int HISTORY_ORDERS = 0x101A;
     public static final int PUBLISH_FEEDBACK = 0x101C;
+    public static final int GET_PERSONAL_INFO = 0x101E;
+    public static final int UPDATE_PERSONAL_INFO = 0x1023;
+    public static final int CERTIFY_REALNAME = 0x1025;
+    public static final int CHECK_CERTIFY_STATUS = 0x1027;
 
 
     public static MessageTag getInstance(){
@@ -113,6 +117,10 @@ public class MessageTag {
         MessageTag.put("complain", COMPLAIN_SERVICE);
         MessageTag.put("cache_point", CACHE_TRIP_FEE);
         MessageTag.put("publish_feedback", PUBLISH_FEEDBACK);
+        MessageTag.put("get_personal_info", GET_PERSONAL_INFO);
+        MessageTag.put("update_personal_info", UPDATE_PERSONAL_INFO);
+        MessageTag.put("certify_realname", CERTIFY_REALNAME);
+        MessageTag.put("check_certify_status", CHECK_CERTIFY_STATUS);
     }
 
     public int Tag(String command)

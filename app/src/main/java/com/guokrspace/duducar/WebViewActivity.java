@@ -59,6 +59,7 @@ public class WebViewActivity extends AppCompatActivity {
         // url，如果传过来的url则url不为空
         url = mIntent.getStringExtra(WEBVIEW_URL);
         Trace.e(type + " " + url);
+        initView();
     }
 
     private void initView() {

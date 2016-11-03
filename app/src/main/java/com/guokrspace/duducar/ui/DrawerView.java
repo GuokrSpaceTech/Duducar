@@ -3,6 +3,7 @@ package com.guokrspace.duducar.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -15,6 +16,7 @@ import com.guokrspace.duducar.PersonalInfoActivity;
 import com.guokrspace.duducar.R;
 import com.guokrspace.duducar.SettingActivity;
 import com.guokrspace.duducar.database.PersonalInformation;
+import com.guokrspace.duducar.util.Trace;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import java.util.List;
@@ -38,6 +40,9 @@ public class DrawerView implements View.OnClickListener {
     private TextView tvMoble;
 
     SlidingMenu localSlidingMenu;
+    private TextView tvNickname;
+    private RelativeLayout profileLayout;
+
     public DrawerView(Activity activity) {
         this.activity = activity;
         mApplication = (DuduApplication) activity.getApplicationContext();
@@ -79,14 +84,22 @@ public class DrawerView implements View.OnClickListener {
     private void initView() {
         civAvatar = (CircleImageView) localSlidingMenu.findViewById(R.id.my_avatar);
         tvMoble = (TextView) localSlidingMenu.findViewById(R.id.my_account);
+        tvNickname = (TextView) localSlidingMenu.findViewById(R.id.nickname_tv);
         if (personalInformation != null) {
             tvMoble.setText(personalInformation.getMobile());
+            String nickname = personalInformation.getNickname();
+            if (!TextUtils.isEmpty(nickname)) {
+                tvNickname.setText(nickname);
+            }
         }
+        profileLayout = (RelativeLayout) localSlidingMenu.findViewById(R.id.profile_layout);
+
         historyOrderItem = (RelativeLayout) localSlidingMenu.findViewById(R.id.history_orders_layout);
         settingItem = (RelativeLayout) localSlidingMenu.findViewById(R.id.setting_layout);
         noticeItem = (RelativeLayout) localSlidingMenu.findViewById(R.id.notice_layout);
 
-        civAvatar.setOnClickListener(this);
+        profileLayout.setOnClickListener(this);
+//        civAvatar.setOnClickListener(this);
         historyOrderItem.setOnClickListener(this);
         settingItem.setOnClickListener(this);
         noticeItem.setOnClickListener(this);
@@ -96,7 +109,7 @@ public class DrawerView implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
 
-            case R.id.my_avatar:
+            case R.id.profile_layout:
                 enterActivity(PersonalInfoActivity.class);
                 break;
             case R.id.history_orders_layout:
@@ -130,6 +143,11 @@ public class DrawerView implements View.OnClickListener {
         }
         if (personalInformation != null) {
             tvMoble.setText(personalInformation.getMobile());
+            String nickname = personalInformation.getNickname();
+            Trace.e("nickname: " + nickname);
+            if (!TextUtils.isEmpty(nickname)) {
+                tvNickname.setText(nickname);
+            }
         }
     }
 

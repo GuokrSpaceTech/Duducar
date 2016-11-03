@@ -16,7 +16,7 @@ public class DAODBGenerator {
      */
 
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(1002, "com.guokrspace.duducar.database");
+        Schema schema = new Schema(1004, "com.guokrspace.duducar.database");
 
         addConfig(schema);
         addOrder(schema);
@@ -43,6 +43,15 @@ public class DAODBGenerator {
         person.addIdProperty().autoincrement();
         person.addStringProperty("token");
         person.addStringProperty("mobile");
+        person.addStringProperty("nickname");
+        person.addStringProperty("sex");
+        person.addStringProperty("age");
+        person.addStringProperty("industry");
+        person.addStringProperty("company");
+        person.addStringProperty("profession");
+        person.addStringProperty("signature");
+        person.addStringProperty("realname_certify_status");
+        person.addStringProperty("driver_certify_status");
     }
 
     /*private static void addOrder(Schema schema){

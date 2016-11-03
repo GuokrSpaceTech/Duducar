@@ -16,6 +16,7 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Prashant Adesara, Kai Yang
@@ -592,6 +593,88 @@ public class SocketClient {
             params.put("cmd", MessageTag.getInstance().Command(MessageTag.PUBLISH_FEEDBACK));
             params.put("role", "2");
             params.put("feedback", feedback);
+            ret = sendMessage(params, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
+    /**
+     * 获取乘客个人信息
+     * @param handler
+     * @return
+     */
+    public int getPersonalInfo(ResponseHandler handler) {
+        int ret = -1;
+        JSONObject params = new JSONObject();
+        try {
+            params.put("cmd", MessageTag.getInstance().Command(MessageTag.GET_PERSONAL_INFO));
+            params.put("role", "2");
+            ret = sendMessage(params, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
+    /**
+     * 更新乘客个人信息
+     * @param map
+     * @param handler
+     * @return
+     */
+    public int updatePersonalInfo(Map<String, String> map, ResponseHandler handler) {
+        int ret = -1;
+        JSONObject params = new JSONObject();
+        try {
+            params.put("cmd", MessageTag.getInstance().Command(MessageTag.UPDATE_PERSONAL_INFO));
+            params.put("role", "2");
+            for (Map.Entry<String, String> entry : map.entrySet()) {
+                params.put(entry.getKey(), entry.getValue());
+            }
+            ret = sendMessage(params, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return ret;
+    }
+
+
+    /**
+     * 乘客实名认证
+     * @param realname
+     * @param idnumber
+     * @param handler
+     * @return
+     */
+    public int certifyRealname(String realname, String idnumber, ResponseHandler handler) {
+        int ret = -1;
+        JSONObject params = new JSONObject();
+        try {
+            params.put("cmd", MessageTag.getInstance().Command(MessageTag.CERTIFY_REALNAME));
+            params.put("role", "2");
+            params.put("realname",realname);
+            params.put("idnumber", idnumber);
+            ret = sendMessage(params, handler, 5);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
+    /**
+     * 查询认证状态（包括实名认证和车主认证）
+     * @param handler
+     * @return
+     */
+    public int checkCertifyStatus(ResponseHandler handler) {
+        int ret = -1;
+        JSONObject params = new JSONObject();
+        try {
+            params.put("cmd", MessageTag.getInstance().Command(MessageTag.CHECK_CERTIFY_STATUS));
+            params.put("role", "2");
             ret = sendMessage(params, handler, 5);
         } catch (JSONException e) {
             e.printStackTrace();

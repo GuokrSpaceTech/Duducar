@@ -64,9 +64,9 @@
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".SearchActivity"
-            android:screenOrientation="portrait"
+            android:label="@string/title_activity_search"
             android:launchMode="singleTop"
-            android:label="@string/title_activity_search">
+            android:screenOrientation="portrait">
 
         </activity>
 
@@ -170,7 +170,18 @@
             android:exported="false"
             android:label="常用地址"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".EditPersonalInfoActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:exported="false"
+            android:label="编辑资料"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CertifyRealNameActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:exported="false"
+            android:label="实名认证"
+            android:screenOrientation="portrait" />
 
         <!-- Update Activitys Start -->
         <activity

@@ -56,6 +56,7 @@ import com.baidu.mapapi.search.geocode.OnGetGeoCoderResultListener;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeOption;
 import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.google.gson.Gson;
+import com.guokrspace.duducar.common.CommonUtil;
 import com.guokrspace.duducar.common.Constants;
 import com.guokrspace.duducar.communication.DuduService;
 import com.guokrspace.duducar.communication.ResponseHandler;
@@ -64,8 +65,8 @@ import com.guokrspace.duducar.communication.fastjson.FastJsonTools;
 import com.guokrspace.duducar.communication.message.NearByCars;
 import com.guokrspace.duducar.communication.message.OrderDetail;
 import com.guokrspace.duducar.communication.message.SearchLocation;
-import com.guokrspace.duducar.common.CommonUtil;
 import com.guokrspace.duducar.database.PersonalInformation;
+import com.guokrspace.duducar.database.PersonalInformationDao;
 import com.guokrspace.duducar.ui.DrawerView;
 import com.guokrspace.duducar.ui.OrderConfirmationView;
 import com.guokrspace.duducar.ui.WinToast;
@@ -153,6 +154,18 @@ public class PreOrderActivity extends AppCompatActivity
     private ServiceReceiver receiver;
     private MaterialDialog dialog;
 
+    // 更新drawerview的广播接收器
+    private BroadcastReceiver mRefreshDrawerViewBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(Constants.ACTION_REFRESH_DRAWERVIEW)) {
+                drawerView.refreshMenuView();
+                this.abortBroadcast();
+            }
+        }
+    };
+
 
     @Override
     public void startActivityForResult(Intent intent, int requestCode) {
@@ -177,6 +190,12 @@ public class PreOrderActivity extends AppCompatActivity
             startActivityForResult(intent, ACTVITY_LOGIN_REQUEST);
 //            finish();
         }
+
+        // 注册一个广播刷新DrawerView
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Constants.ACTION_REFRESH_DRAWERVIEW);
+        intentFilter.setPriority(100);
+        registerReceiver(mRefreshDrawerViewBroadcastReceiver, intentFilter);
 
         /*
          * Init the UI
@@ -418,7 +437,9 @@ public class PreOrderActivity extends AppCompatActivity
                             } else {
                                 destLocButton.setClickable(true);
                                 destLocButton.setEnabled(true);
-                                if(dialog != null) { return; }
+                                if (dialog != null) {
+                                    return;
+                                }
                                 dialog = new MaterialDialog(PreOrderActivity.this);
                                 dialog.setTitle("账单欠费").setMessage("您还有支付的订单, 请尽快完成支付, 否则将无法继续为您提供服务!")
                                         .setCanceledOnTouchOutside(false).setNegativeButton("稍后支付", new View.OnClickListener() {
@@ -504,12 +525,14 @@ public class PreOrderActivity extends AppCompatActivity
                 JSONObject noPaid = JSONObject.parseObject(messageBody);
                 if (((String) noPaid.get("order_status")).equals("1")) {//存在未支付的账单
 //                        final OrderDetail notPaidOrder = FastJsonTools.getObject((String)noPaid.get("order"), OrderDetail.class);
-                    Log.e("daddy fang", (String)noPaid.get("order"));
-                    final OrderDetail notPaidOrder = new Gson().fromJson((String)noPaid.get("order"), OrderDetail.class);
-                    if("1".equals(notPaidOrder.getPay_role())){ //司机代付
+                    Log.e("daddy fang", (String) noPaid.get("order"));
+                    final OrderDetail notPaidOrder = new Gson().fromJson((String) noPaid.get("order"), OrderDetail.class);
+                    if ("1".equals(notPaidOrder.getPay_role())) { //司机代付
                         return;
                     }
-                    if(dialog != null){ return; }
+                    if (dialog != null) {
+                        return;
+                    }
                     dialog = new MaterialDialog(PreOrderActivity.this);
                     dialog.setCanceledOnTouchOutside(false);
                     dialog.setTitle("账单欠费").setMessage("您还有支付的订单, 请尽快完成支付, 否则将无法继续为您提供服务!")
@@ -719,6 +742,8 @@ public class PreOrderActivity extends AppCompatActivity
         ViewGroup viewGroup = (ViewGroup) getWindow().getDecorView();
         viewGroup.removeView(sidingMenu);
         super.onDestroy();
+
+        unregisterReceiver(mRefreshDrawerViewBroadcastReceiver);
     }
 
     @Override
@@ -760,7 +785,47 @@ public class PreOrderActivity extends AppCompatActivity
         switch (resultCode) {
             case RESULT_OK:
                 if (requestCode == ACTVITY_LOGIN_REQUEST) {
-                    drawerView.refreshMenuView();
+                    // TODO 获取用户信息，写入数据库
+                    SocketClient.getInstance().getPersonalInfo(new ResponseHandler(Looper.myLooper()) {
+                        @Override
+                        public void onSuccess(String messageBody) {
+                            Trace.e(messageBody);
+                            PersonalInformationDao personalInformationDao = DuduApplication.getInstance().mDaoSession.getPersonalInformationDao();
+                            List<PersonalInformation> infos = personalInformationDao.queryBuilder().offset(0).limit(1).build().list();
+                            PersonalInformation personalInformation = null;
+                            if (infos != null) {
+                                personalInformation = infos.get(0);
+                            }
+
+                            JSONObject respObj = JSON.parseObject(messageBody);
+                            if (respObj != null && personalInformation != null) {
+                                personalInformation.setNickname(respObj.getString("nickname"));
+                                personalInformation.setAge(respObj.getString("age"));
+                                personalInformation.setCompany(respObj.getString("company"));
+                                personalInformation.setIndustry(respObj.getString("industry"));
+                                personalInformation.setSex(respObj.getString("sex"));
+                                personalInformation.setProfession(respObj.getString("profession"));
+                                personalInformation.setSignature(respObj.getString("signature"));
+                                personalInformation.setRealname_certify_status(respObj.getString("realname_certify_status"));
+                                personalInformation.setDriver_certify_status(respObj.getString("driver_certify_status"));
+                            }
+                            personalInformationDao.update(personalInformation);
+                            drawerView.refreshMenuView();
+                        }
+
+                        @Override
+                        public void onFailure(String error) {
+                            Trace.e("PreOrderActivity->getPersonalInfo", "request failure : " + error);
+                            drawerView.refreshMenuView();
+                        }
+
+                        @Override
+                        public void onTimeout() {
+                            Trace.e("PreOrderActivity->getPersonalInfo", "request timeout");
+                            drawerView.refreshMenuView();
+                        }
+                    });
+
                     //获取baseinfo信息
                     SocketClient.getInstance().getBaseInfoRequest("2", new ResponseHandler(Looper.myLooper()) {
                         @Override

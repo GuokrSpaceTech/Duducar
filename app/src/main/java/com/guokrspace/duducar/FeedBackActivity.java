@@ -97,6 +97,7 @@ public class FeedBackActivity extends AppCompatActivity {
             return;
         }
 
+        mProgressBar.setVisibility(View.VISIBLE);
         publishButton.setEnabled(false);
 //        isEnable = false;
         // 提交
@@ -116,7 +117,6 @@ public class FeedBackActivity extends AppCompatActivity {
                 showFeedbackDialog("超时，请稍后尝试！");
             }
         });
-//        mProgressBar.setVisibility(View.VISIBLE);
         /*new Thread(new Runnable() {
             int i = 0;
 

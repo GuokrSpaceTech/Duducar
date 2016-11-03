@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/profile_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="@dimen/big_padding"
@@ -22,13 +23,13 @@
             app:border_width="1dp" />
 
         <TextView
-            android:id="@+id/vip_type"
+            android:id="@+id/nickname_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="@dimen/big_padding"
             android:layout_toRightOf="@id/my_avatar"
-            android:text="普通会员"
+            android:text="设置昵称"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="@android:color/black"/>
@@ -37,7 +38,7 @@
             android:id="@+id/my_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/vip_type"
+            android:layout_below="@id/nickname_tv"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@id/my_avatar"

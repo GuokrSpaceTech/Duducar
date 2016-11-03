@@ -26,6 +26,15 @@ public class PersonalInformationDao extends AbstractDao<PersonalInformation, Lon
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Token = new Property(1, String.class, "token", false, "TOKEN");
         public final static Property Mobile = new Property(2, String.class, "mobile", false, "MOBILE");
+        public final static Property Nickname = new Property(3, String.class, "nickname", false, "NICKNAME");
+        public final static Property Sex = new Property(4, String.class, "sex", false, "SEX");
+        public final static Property Age = new Property(5, String.class, "age", false, "AGE");
+        public final static Property Industry = new Property(6, String.class, "industry", false, "INDUSTRY");
+        public final static Property Company = new Property(7, String.class, "company", false, "COMPANY");
+        public final static Property Profession = new Property(8, String.class, "profession", false, "PROFESSION");
+        public final static Property Signature = new Property(9, String.class, "signature", false, "SIGNATURE");
+        public final static Property Realname_certify_status = new Property(10, String.class, "realname_certify_status", false, "REALNAME_CERTIFY_STATUS");
+        public final static Property Driver_certify_status = new Property(11, String.class, "driver_certify_status", false, "DRIVER_CERTIFY_STATUS");
     };
 
 
@@ -43,7 +52,16 @@ public class PersonalInformationDao extends AbstractDao<PersonalInformation, Lon
         db.execSQL("CREATE TABLE " + constraint + "'PERSONAL_INFORMATION' (" + //
                 "'_id' INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "'TOKEN' TEXT," + // 1: token
-                "'MOBILE' TEXT);"); // 2: mobile
+                "'MOBILE' TEXT," + // 2: mobile
+                "'NICKNAME' TEXT," + // 3: nickname
+                "'SEX' TEXT," + // 4: sex
+                "'AGE' TEXT," + // 5: age
+                "'INDUSTRY' TEXT," + // 6: industry
+                "'COMPANY' TEXT," + // 7: company
+                "'PROFESSION' TEXT," + // 8: profession
+                "'SIGNATURE' TEXT," + // 9: signature
+                "'REALNAME_CERTIFY_STATUS' TEXT," + // 10: realname_certify_status
+                "'DRIVER_CERTIFY_STATUS' TEXT);"); // 11: driver_certify_status
     }
 
     /** Drops the underlying database table. */
@@ -71,6 +89,51 @@ public class PersonalInformationDao extends AbstractDao<PersonalInformation, Lon
         if (mobile != null) {
             stmt.bindString(3, mobile);
         }
+ 
+        String nickname = entity.getNickname();
+        if (nickname != null) {
+            stmt.bindString(4, nickname);
+        }
+ 
+        String sex = entity.getSex();
+        if (sex != null) {
+            stmt.bindString(5, sex);
+        }
+ 
+        String age = entity.getAge();
+        if (age != null) {
+            stmt.bindString(6, age);
+        }
+ 
+        String industry = entity.getIndustry();
+        if (industry != null) {
+            stmt.bindString(7, industry);
+        }
+ 
+        String company = entity.getCompany();
+        if (company != null) {
+            stmt.bindString(8, company);
+        }
+ 
+        String profession = entity.getProfession();
+        if (profession != null) {
+            stmt.bindString(9, profession);
+        }
+ 
+        String signature = entity.getSignature();
+        if (signature != null) {
+            stmt.bindString(10, signature);
+        }
+ 
+        String realname_certify_status = entity.getRealname_certify_status();
+        if (realname_certify_status != null) {
+            stmt.bindString(11, realname_certify_status);
+        }
+ 
+        String driver_certify_status = entity.getDriver_certify_status();
+        if (driver_certify_status != null) {
+            stmt.bindString(12, driver_certify_status);
+        }
     }
 
     /** @inheritdoc */
@@ -85,7 +148,16 @@ public class PersonalInformationDao extends AbstractDao<PersonalInformation, Lon
         PersonalInformation entity = new PersonalInformation( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // token
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2) // mobile
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // mobile
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // nickname
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // sex
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // age
+            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // industry
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // company
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // profession
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // signature
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // realname_certify_status
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11) // driver_certify_status
         );
         return entity;
     }
@@ -96,6 +168,15 @@ public class PersonalInformationDao extends AbstractDao<PersonalInformation, Lon
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setToken(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setMobile(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setNickname(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setSex(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setAge(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setIndustry(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
+        entity.setCompany(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setProfession(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setSignature(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setRealname_certify_status(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setDriver_certify_status(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
      }
     
     /** @inheritdoc */
