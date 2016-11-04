@@ -11,6 +11,8 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -18,6 +20,8 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.guokrspace.dududriver.DuduDriverApplication;
 import com.guokrspace.dududriver.R;
 import com.guokrspace.dududriver.common.Constants;
@@ -26,6 +30,13 @@ import com.guokrspace.dududriver.database.PersonalInformation;
 import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.SharedPreferencesUtils;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -43,6 +54,10 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
     public static final int WEBVIEW_DIVIDE = 106;
     public static final int WEBVIEW_ACHIEVEMENT = 107;
     public static final int WEBVIEW_PERSONAL = 108;
+
+    private static final int LOGIN_MESSAGE = 200;
+
+    private static final String URL2VISIT = "http://www.duducab.com/index.php/Weixin/Driver/account";
 
 
     private Context context;
@@ -74,7 +89,10 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
         }
 
         mHandler = new Handler(this);
+        new HttpProxyThread(mHandler).start();
+
         initView();
+
     }
 
     private void initView() {
@@ -189,18 +207,17 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
         if(!TextUtils.isEmpty(key) && !key.equals(Constants.WEBVIEW_NOTICE)){ // 其他
             noticeUrl = (String) SharedPreferencesUtils.getParam(context, key, "");
             if(key.equals(Constants.PREFERENCE_KEY_WEBVIEW_BILLS) || key.equals(Constants.PREFERENCE_KEY_WEBVIEW_MONEY) || key.equals(Constants.PREFERENCE_KEY_WEBVIEW_PERFORMANCE) || key.equals(Constants.PREFERENCE_KEY_WEBVIEW_PERSONAL)){
-                List localUsers = DuduDriverApplication.getInstance().
+                List<PersonalInformation> localUsers = DuduDriverApplication.getInstance().
                         mDaoSession.getPersonalInformationDao().
                         queryBuilder().list();
-                if (localUsers != null && localUsers.size() > 0 && ((PersonalInformation)localUsers.get(0)).getToken() != null) {
+                if (localUsers.size() > 0) {
                     PersonalInformation  userInfo = (PersonalInformation) localUsers.get(0);
                     noticeUrl +="?mobile="+userInfo.getMobile() + "&token="+userInfo.getToken();
                 }
             }
         }
 //        Log.e("hyman_webview", noticeUrl);
-
-        mWebView.loadUrl(noticeUrl);
+//        mWebView.loadUrl(noticeUrl);
         mWebView.requestFocus();
     }
 
@@ -261,6 +278,17 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
                     dialog.show(getSupportFragmentManager(), "mainorderdialog");
                 }
                 break;
+            case LOGIN_MESSAGE:
+                String cookie = (String) msg.obj;
+//                Log.e("webview_login", cookie);
+                // 设置cookie，再发起网页请求
+                CookieSyncManager.createInstance(WebViewActivity.this);
+                CookieManager cm = CookieManager.getInstance();
+                cm.setAcceptCookie(true);
+                cm.setCookie(URL2VISIT, cookie);
+                CookieSyncManager.getInstance().sync();
+                mWebView.loadUrl(URL2VISIT);
+                break;
             default:
                 break;
         }
@@ -270,5 +298,71 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
     @Override
     public void setRequestedOrientation(int requestedOrientation) {
         return;
+    }
+
+    private static class HttpProxyThread extends Thread {
+        private Handler mHandler;
+        private String mobile;
+        private String token;
+
+        public HttpProxyThread(Handler handler) {
+            this.mHandler = handler;
+            List<PersonalInformation> localUsers = DuduDriverApplication.getInstance().
+                    mDaoSession.getPersonalInformationDao().
+                    queryBuilder().list();
+            if (localUsers.size() > 0) {
+                PersonalInformation  userInfo = (PersonalInformation) localUsers.get(0);
+                this.mobile = userInfo.getMobile();
+                this.token = userInfo.getToken();
+            }
+        }
+
+
+        @Override
+        public void run() {
+            HttpURLConnection conn = null;
+            try {
+                String urlPath = "http://www.duducab.com/index.php/Weixin/Driver/applogin?mobile=" + mobile + "&token=" + token;
+                URL url = new URL(urlPath);
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.setConnectTimeout(10000);
+                conn.setRequestProperty("Charset", "UTF-8");
+//                Log.e("webview_login", mobile + " " + token);
+                conn.connect();
+                int code = conn.getResponseCode();
+                if (code == HttpURLConnection.HTTP_OK) {
+                    InputStream is = conn.getInputStream();
+                    BufferedReader br = new BufferedReader(new InputStreamReader(is));
+                    String response = "";
+                    String line = null;
+                    while((line = br.readLine()) != null) {
+                        response = response + line;
+                    }
+                    br.close();
+                    is.close();
+                    // 分析返回的status是否为1
+                    JSONObject jsonObj = JSON.parseObject(response);
+                    int status = jsonObj.getIntValue("status");
+                    if (status == 1) {
+                        // 获取 cookie
+                        String cookie = conn.getHeaderField("set-cookie");
+                        if (mHandler != null) {
+                            mHandler.sendMessage(mHandler.obtainMessage(LOGIN_MESSAGE, cookie));
+                        }
+                    }
+
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (conn != null) {
+                    conn.disconnect();
+                }
+            }
+
+        }
     }
 }
