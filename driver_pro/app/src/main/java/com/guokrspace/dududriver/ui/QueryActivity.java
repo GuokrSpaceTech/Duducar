@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 public class QueryActivity extends BaseActivity {
 
     private static final String URL_DIVIDE = "http://120.24.237.15/index.php/Webview/Index/index/type/fenchen";
-    private static final String URL_BILL = "http://120.24.237.15/index.php/Webview/Index/index/type/sj_account";
+    private static final String URL_BILL = "http://www.duducab.com/index.php/Weixin/Driver/account";
     private static final String URL_ACHIEVEMENT = "http://120.24.237.15/index.php/Webview/Index/index/type/cj_view";
 
     @Bind(R.id.toolbar)
@@ -80,7 +80,7 @@ public class QueryActivity extends BaseActivity {
     private void enterWebView(int type, String url) {
         Intent _intent = new Intent(QueryActivity.this, WebViewActivity.class);
         _intent.putExtra(WebViewActivity.WEBVIEW_TYPE, type);
-        _intent.putExtra("url", url);
+//        _intent.putExtra("url", url);
         startActivity(_intent);
     }
 

@@ -173,6 +173,7 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
             case R.id.account_info_layout:
                 Intent accoountIntent = new Intent(this, WebViewActivity.class);
                 accoountIntent.putExtra(WebViewActivity.WEBVIEW_TYPE, WebViewActivity.WEBVIEW_PERSONAL);
+                // TODO 个人信息界面的url
                 startActivity(accoountIntent);
                 break;
             case R.id.sound_setting_layout:

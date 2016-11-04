@@ -27,8 +27,8 @@ public class BaseInfo {
         info.put(Constants.PREFERENCE_KEY_WEBVIEW_CLAUSE, webview.getClause() == null ? "" : webview.getClause());
         info.put(Constants.PREFERENCE_KEY_WEBVIEW_MONEY, webview.getMoney() == null ? "" : webview.getMoney());
         info.put(Constants.PREFERENCE_KEY_WEBVIEW_PERFORMANCE, webview.getPerformance() == null ? "" : webview.getPerformance());
-        info.put(Constants.PREFERENCE_KEY_WEBVIEW_BILLS, webview.getBills() == null ? "" : webview.getBills());
-        info.put(Constants.PREFERENCE_KEY_WEBVIEW_PERSONAL, webview.getPersonal() == null ? "" : webview.getPersonal());
+        info.put(Constants.PREFERENCE_KEY_WEBVIEW_BILLS, webview.getSj_account() == null ? "" : webview.getSj_account());
+        info.put(Constants.PREFERENCE_KEY_WEBVIEW_PERSONAL, webview.getDriver_personal() == null ? "" : webview.getDriver_personal());
 
 
         return info;
@@ -205,15 +205,15 @@ public class BaseInfo {
         private String clause;
         private String money;
 
-        public String getPersonal() {
-            return personal;
+        public String getDriver_personal() {
+            return driver_personal;
         }
 
-        public void setPersonal(String personal) {
-            this.personal = personal;
+        public void setDriver_personal(String driver_personal) {
+            this.driver_personal = driver_personal;
         }
 
-        private String personal;
+        private String driver_personal;
 
         public String getPerformance() {
             return performance;
@@ -231,16 +231,16 @@ public class BaseInfo {
             this.money = money;
         }
 
-        public String getBills() {
-            return bills;
+        public String getSj_account() {
+            return sj_account;
         }
 
-        public void setBills(String bills) {
-            this.bills = bills;
+        public void setSj_account(String sj_account) {
+            this.sj_account = sj_account;
         }
 
         private String performance;
-        private String bills;
+        private String sj_account;
     }
 
     public class Charge_rule{

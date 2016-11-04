@@ -158,7 +158,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
         List localUsers = DuduDriverApplication.getInstance().
                 mDaoSession.getPersonalInformationDao().
                 queryBuilder().list();
-        if (localUsers != null && localUsers.size() > 0 && ((PersonalInformation)localUsers.get(0)).getToken() != null) {
+        if (localUsers.size() > 0 && ((PersonalInformation)localUsers.get(0)).getToken() != null) {
             userInfo = (PersonalInformation) localUsers.get(0);
             if(!CommonUtil.isServiceOn()){
                 startService(duduService);

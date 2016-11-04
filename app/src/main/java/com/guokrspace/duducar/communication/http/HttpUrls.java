@@ -7,7 +7,7 @@ import android.util.SparseArray;
  */
 public class HttpUrls {
 
-    public static final String API_URL = "http://120.24.237.15:81/api/";
+    public static final String API_URL = "http://www.duducab.com/api/";
 //    api.duducab.com
 
     public static final int WX_PAY_WXUNIFIEDORDER = 100;//提交预支付请求，获得prepay_id，sign等

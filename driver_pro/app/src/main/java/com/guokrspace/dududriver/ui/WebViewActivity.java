@@ -45,19 +45,17 @@ import java.util.List;
 public class WebViewActivity extends BaseActivity implements Handler.Callback{
 
     public static final String WEBVIEW_TYPE = "webview_type";
-    public static final int WEBVIEW_CLAUSE = 100;
-    public static final int WEBVIEW_CONTACT = 101;
-    public static final int WEBVIEW_ABOUT = 102;
-    public static final int  WEBVIEW_JOIN = 103;
-    public static final int WEBVIEW_NEWS = 104;
-    public static final int WEBVIEW_BILL = 105;
-    public static final int WEBVIEW_DIVIDE = 106;
-    public static final int WEBVIEW_ACHIEVEMENT = 107;
-    public static final int WEBVIEW_PERSONAL = 108;
+    public static final int WEBVIEW_CLAUSE = 100;   // 法律条款
+    public static final int WEBVIEW_CONTACT = 101;  // 联系我们
+    public static final int WEBVIEW_ABOUT = 102;    //关于嘟嘟
+    public static final int  WEBVIEW_JOIN = 103;    // 专车指南
+    public static final int WEBVIEW_NEWS = 104;     // 嘟嘟播报
+    public static final int WEBVIEW_BILL = 105;     // 账单
+    public static final int WEBVIEW_DIVIDE = 106;       //分成
+    public static final int WEBVIEW_ACHIEVEMENT = 107;  //成绩查询
+    public static final int WEBVIEW_PERSONAL = 108;     //个人信息
 
     private static final int LOGIN_MESSAGE = 200;
-
-    private static final String URL2VISIT = "http://www.duducab.com/index.php/Weixin/Driver/account";
 
 
     private Context context;
@@ -73,7 +71,9 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
 
     private int type;
 
-    private String noticeUrl;
+    String title = "";
+    String key = "";
+    private static String URL2VISIT = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,10 +84,11 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
         context = WebViewActivity.this;
         Intent mIntent = getIntent();
         type = mIntent.getIntExtra(WEBVIEW_TYPE, 0);
-        if (type >= 104) {
-            noticeUrl = mIntent.getStringExtra("url");
+        if (type == WEBVIEW_NEWS) {
+            // 只有通知的时候带了url
+            URL2VISIT = mIntent.getStringExtra("url");
         }
-
+        initUrl();
         mHandler = new Handler(this);
         new HttpProxyThread(mHandler).start();
 
@@ -95,13 +96,7 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
 
     }
 
-    private void initView() {
-
-        //初始化toolbar
-        initToolBar();
-
-        String title = "";
-        String key = "";
+    private void initUrl() {
         switch (type) {
             case WEBVIEW_ABOUT:
                 title = "关于嘟嘟";
@@ -142,6 +137,15 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
             default:
                 break;
         }
+
+        if(!TextUtils.isEmpty(key) && !key.equals(Constants.WEBVIEW_NOTICE)){ // 其他
+            URL2VISIT = (String) SharedPreferencesUtils.getParam(context, key, "");
+        }
+    }
+
+    private void initView() {
+        //初始化toolbar
+        initToolBar();
 
         titleTextView = (TextView) findViewById(R.id.title_textview);
         titleTextView.setText(title);
@@ -204,18 +208,7 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
                 super.onProgressChanged(view, newProgress);
             }
         });
-        if(!TextUtils.isEmpty(key) && !key.equals(Constants.WEBVIEW_NOTICE)){ // 其他
-            noticeUrl = (String) SharedPreferencesUtils.getParam(context, key, "");
-            if(key.equals(Constants.PREFERENCE_KEY_WEBVIEW_BILLS) || key.equals(Constants.PREFERENCE_KEY_WEBVIEW_MONEY) || key.equals(Constants.PREFERENCE_KEY_WEBVIEW_PERFORMANCE) || key.equals(Constants.PREFERENCE_KEY_WEBVIEW_PERSONAL)){
-                List<PersonalInformation> localUsers = DuduDriverApplication.getInstance().
-                        mDaoSession.getPersonalInformationDao().
-                        queryBuilder().list();
-                if (localUsers.size() > 0) {
-                    PersonalInformation  userInfo = (PersonalInformation) localUsers.get(0);
-                    noticeUrl +="?mobile="+userInfo.getMobile() + "&token="+userInfo.getToken();
-                }
-            }
-        }
+
 //        Log.e("hyman_webview", noticeUrl);
 //        mWebView.loadUrl(noticeUrl);
         mWebView.requestFocus();
@@ -322,6 +315,7 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
         public void run() {
             HttpURLConnection conn = null;
             try {
+                // 预先登陆请求地址
                 String urlPath = "http://www.duducab.com/index.php/Weixin/Driver/applogin?mobile=" + mobile + "&token=" + token;
                 URL url = new URL(urlPath);
                 conn = (HttpURLConnection) url.openConnection();
