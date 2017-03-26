@@ -286,6 +286,9 @@ public class SocketClient {
             verify.put("mobile", mobile);
             verify.put("verifycode", regcode);
             verify.put("password", pwd);
+            verify.put("mac", CommonUtil.getMAC());
+            verify.put("imei", CommonUtil.getIMEI());
+            verify.put("imsi", CommonUtil.getIMSI());
             ret = sendMessage(verify, handler, 5);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -302,6 +305,11 @@ public class SocketClient {
             loginRequest.put("mobile", mobile);
             loginRequest.put("role", role);
             loginRequest.put("token", token);
+            loginRequest.put("mac", CommonUtil.getMAC());
+            loginRequest.put("imei", CommonUtil.getIMEI());
+            loginRequest.put("imsi", CommonUtil.getIMSI());
+            loginRequest.put("lat", CommonUtil.getCurLat());
+            loginRequest.put("lng", CommonUtil.getCurLng());
             ret = sendMessage(loginRequest, handler, 5);
         } catch(JSONException e) {
             e.printStackTrace();
@@ -317,6 +325,11 @@ public class SocketClient {
             loginRequest.put("mobile", mobile);
             loginRequest.put("role", role);
             loginRequest.put("password", pwd);
+            loginRequest.put("mac", CommonUtil.getMAC());
+            loginRequest.put("imei", CommonUtil.getIMEI());
+            loginRequest.put("imsi", CommonUtil.getIMSI());
+            loginRequest.put("lat", CommonUtil.getCurLat());
+            loginRequest.put("lng", CommonUtil.getCurLng());
             ret = sendMessage(loginRequest, handler, 5);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -332,7 +345,6 @@ public class SocketClient {
             orderOrder.put("cmd", "accept");
             orderOrder.put("role", "1");
             orderOrder.put("order_id", order_no);
-
             ret = sendMessage(orderOrder, handler, 10);
         } catch (JSONException e) {
             e.printStackTrace();
