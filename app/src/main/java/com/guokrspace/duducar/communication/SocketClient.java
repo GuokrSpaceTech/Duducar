@@ -1,9 +1,13 @@
 package com.guokrspace.duducar.communication;
 
+import android.os.Looper;
 import android.os.Message;
+import android.util.Base64;
 import android.util.Log;
 
 import com.guokrspace.duducar.communication.message.MessageTag;
+import com.guokrspace.duducar.communication.tools.RSAEncrypt;
+import com.guokrspace.duducar.communication.tools.Security;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,6 +21,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author Prashant Adesara, Kai Yang
@@ -32,7 +38,7 @@ public class SocketClient {
     /**
      * Specify the Server Ip Address here. Whereas our Socket Server is started.
      * */
-    public static final String SERVERIP = "120.24.237.15"; // your computer IP address
+    public static final String SERVERIP = "124.232.146.14"; // your computer IP address 120.24.237.15
     public static final int SERVERPORT = 8282;
     private boolean mRun = false;
 
@@ -48,6 +54,19 @@ public class SocketClient {
         }
         return s_socketClient;
     }
+
+    private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
+
+    private void doWrite(final JSONObject msg) {
+        Runnable syncRunnable = new Runnable() {
+            @Override
+            public void run() {
+                out.println(msg);
+                out.flush();
+            }
+        };
+        threadExecutor.execute(syncRunnable);
+    }
     /**
      *  Constructor of the class. OnMessagedReceived listens for the messages received from server
      */
@@ -56,6 +75,17 @@ public class SocketClient {
 //        mMessageListener = listener;
         s_socketClient = this;
         messageid = 0;
+        Log.e("fangfangbest", "socket thread is: " + Thread.currentThread().getName());
+    }
+
+
+    public void sendKey(final JSONObject message){
+        //Send the message
+        if (out != null && !out.checkError()) {
+            Log.e("SENT KEY TO SERVER", "S: Sent Message: '" + message.toString() + "'");
+            out.println(message);
+            out.flush();
+        }
     }
 
     public Socket getSocket(){
@@ -74,12 +104,17 @@ public class SocketClient {
 //        Log.e("daddy", out.toString());
         //Send the message
         try {
+            JSONObject newMessage = new JSONObject();
+
             message.put("message_id", messageid);
+            String msg = Security.encrypt(message.toString(), Security.getSecurityKey());
+            newMessage.put("cipher", msg);
 
             if (out != null && !out.checkError()) {
                 Log.e("SENT TO SERVER", "S: Sent Message: '" + message.toString() + "'");
-                out.println(message.toString());
-                out.flush();
+//                out.println(newMessage);
+//                out.flush();
+                doWrite(newMessage);
 
                 //Start a timer
                 blockMessage = 0;
@@ -162,6 +197,18 @@ public class SocketClient {
                     if (serverMessage != null) {
 
                         JSONObject jsonObject = new JSONObject(serverMessage);
+                        if (jsonObject.has("status")) { //生成对称加密秘钥
+                            byte[] skey = RSAEncrypt.encrypt(RSAEncrypt.getPublicKey(), Security.getSecurityKey().getBytes());
+                            sendASEKey(Base64.encodeToString(skey, Base64.NO_WRAP));
+                        } else {
+                            if(jsonObject.has("cipher")){
+                                String encrypt = (String) jsonObject.get("cipher");
+                                serverMessage = Security.decrypt(encrypt, Security.getSecurityKey());
+                                Log.e("Response from server:", serverMessage);
+                                jsonObject = new JSONObject(serverMessage);
+                            }
+                        }
+
                         if (jsonObject.has("message_id")) {
                             int messageid = (int) jsonObject.get("message_id");
                             MessageDispatcher dispatcher = messageDispatchQueue.get(messageid);
@@ -170,6 +217,7 @@ public class SocketClient {
                              * Client Originated Message
                              */
                             if (dispatcher != null) {
+                                Log.e("SocketClient220", "not null dispatcher");
                                 dispatcher.setResponse(jsonObject);
                                 ResponseHandler handler = dispatcher.target;
                                 handler.sendResponse(serverMessage);
@@ -262,6 +310,22 @@ public class SocketClient {
     public void unregisterServerMessageHandler( int cmd)
     {
         serverMessageDispatchMap.remove(cmd);
+    }
+
+
+
+    public int sendASEKey(String key){
+        int ret = -1;
+        JSONObject ASEKey = new JSONObject();
+        try {
+            ASEKey.put("key", key);
+            sendKey(ASEKey);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ret;
     }
 
     /*

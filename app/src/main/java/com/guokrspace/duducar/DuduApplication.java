@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.AssetManager;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.baidu.mapapi.SDKInitializer;
@@ -15,7 +16,9 @@ import com.guokrspace.duducar.database.PersonalInformation;
 import com.guokrspace.duducar.database.PersonalInformationDao;
 import com.squareup.okhttp.OkHttpClient;
 import com.zhy.http.okhttp.OkHttpClientManager;
+import static com.guokrspace.duducar.communication.tools.RSAEncrypt.loadPublicKeyByFile;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -32,6 +35,8 @@ public class DuduApplication extends Application{
 
     public PersonalInformation mPersonalInformation;
     public DriverDetail mDriverDetail;
+
+    public final String KEY_PATH="publicKey.keystore";
 
     private static DuduApplication instance = null;
 
@@ -56,6 +61,14 @@ public class DuduApplication extends Application{
         iFilter.addAction(SDKInitializer.SDK_BROADTCAST_INTENT_EXTRA_INFO_KEY_ERROR_CODE);
         mReceiver = new SDKReceiver();
         registerReceiver(mReceiver, iFilter);
+
+        try {
+            AssetManager am = getAssets();
+            InputStream is = am.open(KEY_PATH);
+            loadPublicKeyByFile(is);
+        } catch (Exception e) {
+            android.os.Process.killProcess(android.os.Process.myPid());
+        }
 
         initDB();
 

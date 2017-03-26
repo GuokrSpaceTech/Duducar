@@ -10,6 +10,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -245,6 +246,7 @@ public class LoginActivity extends AppCompatActivity implements
                         try {
                             JSONObject jsonObject = new JSONObject(messageBody);
                             if (jsonObject.has("token")) token = (String) jsonObject.get("token");
+                            Log.e("fang->LoginActivity:", token);
                             PersonalInformation person = new PersonalInformation();
                             person.setMobile(userName);
                             person.setToken(token);

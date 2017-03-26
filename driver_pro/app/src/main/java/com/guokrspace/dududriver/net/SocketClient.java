@@ -1,11 +1,14 @@
 package com.guokrspace.dududriver.net;
 
 import android.os.Message;
+import android.util.Base64;
 import android.util.Log;
 
 import com.guokrspace.dududriver.net.message.HeartBeatMessage;
 import com.guokrspace.dududriver.net.message.MessageTag;
 import com.guokrspace.dududriver.util.CommonUtil;
+import com.guokrspace.dududriver.util.RSAEncrypt;
+import com.guokrspace.dududriver.util.Security;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,6 +22,8 @@ import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -35,7 +40,7 @@ public class SocketClient {
     /**
      * Specify the Server Ip Address here. Whereas our Socket Server is started.
      * */
-    public static final String SERVERIP = "120.24.237.15"; // your computer IP address
+    public static final String SERVERIP = "124.232.146.14"; // your computer IP address
     public static final int SERVERPORT = 8282;
     private boolean mRun = false;
 
@@ -65,6 +70,27 @@ public class SocketClient {
         messageid.getAndSet(0);
     }
 
+    public void sendKey(final JSONObject message){
+        //Send the message
+        if (out != null && !out.checkError()) {
+            Log.e("SENT KEY TO SERVER", "S: Sent Message: '" + message.toString() + "'");
+            out.println(message);
+            out.flush();
+        }
+    }
+    public int sendASEKey(String key){
+        int ret = -1;
+        JSONObject ASEKey = new JSONObject();
+        try {
+            ASEKey.put("key", key);
+            sendKey(ASEKey);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
 
     /**
      * Sends the message entered by client to the server
@@ -76,12 +102,15 @@ public class SocketClient {
 //        Log.e("daddy", out.toString());
         //Send the message
         try {
+            JSONObject newMessage = new JSONObject();
+
             message.put("message_id", messageid);
+            String msg = Security.encrypt(message.toString(), Security.getSecurityKey());
+            newMessage.put("cipher", msg);
 
             if (out != null && !out.checkError()) {
                 Log.e("SENT TO SERVER", "S: Sent Message: '" + message.toString() + "'");
-                out.println(message.toString());
-                out.flush();
+                doWrite(newMessage);
 
                 Log.e("DADDY " , mRun + "d");
                 //Start a timer
@@ -162,11 +191,17 @@ public class SocketClient {
 
                     if (serverMessage != null) {
 
-//                        serverMessage = removeBOM(serverMessage);
-                        //call the method messageReceived in MainActivity class
-//                        serverMessage = new String(serverMessage.getBytes("UTF-8"), "UTF-8");
-//                        serverMessage = convertStandardJSONString(serverMessage);
                         JSONObject jsonObject = new JSONObject(serverMessage);
+                        if (jsonObject.has("status")) { //生成对称加密秘钥
+                            byte[] skey = RSAEncrypt.encrypt(RSAEncrypt.getPublicKey(), Security.getSecurityKey().getBytes());
+                            sendASEKey(Base64.encodeToString(skey, Base64.NO_WRAP));
+                        } else {
+                            if(jsonObject.has("cipher")){
+                                String encrypt = (String) jsonObject.get("cipher");
+                                serverMessage = Security.decrypt(encrypt, Security.getSecurityKey());
+                                jsonObject = new JSONObject(serverMessage);
+                            }
+                        }
                         if (jsonObject.has("message_id")) {
                             int messageid = (int) jsonObject.get("message_id");
                             MessageDispatcher dispatcher = messageDispatchQueue.get(messageid);
@@ -223,6 +258,18 @@ public class SocketClient {
         }
     }
 
+    private static ExecutorService threadExecutor = Executors.newSingleThreadExecutor();
+
+    private void doWrite(final JSONObject msg) {
+        Runnable syncRunnable = new Runnable() {
+            @Override
+            public void run() {
+                out.println(msg);
+                out.flush();
+            }
+        };
+        threadExecutor.execute(syncRunnable);
+    }
 
     HashMap<Integer, MessageDispatcher> messageDispatchQueue = new HashMap<>();
     public class MessageDispatcher{

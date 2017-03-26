@@ -8,8 +8,8 @@ android {
         applicationId "com.guokrspace.duducar"
         minSdkVersion 11
         targetSdkVersion 22
-        versionCode 9
-        versionName "beta1.1"
+        versionCode 10
+        versionName "beta1.2"
     }
 
     sourceSets {
