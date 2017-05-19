@@ -5,6 +5,7 @@ import android.os.Message;
 import android.util.Base64;
 import android.util.Log;
 
+import com.guokrspace.duducar.common.CommonUtil;
 import com.guokrspace.duducar.communication.message.MessageTag;
 import com.guokrspace.duducar.communication.tools.RSAEncrypt;
 import com.guokrspace.duducar.communication.tools.Security;
@@ -357,6 +358,9 @@ public class SocketClient {
             verify.put("role",role);
             verify.put("mobile",mobile);
             verify.put("verifycode",regcode);
+            verify.put("mac", CommonUtil.getMAC());
+            verify.put("imei", CommonUtil.getIMEI());
+            verify.put("imsi", CommonUtil.getIMSI());
             ret = sendMessage(verify, handler, 10);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -375,6 +379,11 @@ public class SocketClient {
             loginmsg.put("role",role);
             loginmsg.put("mobile",mobile);
             loginmsg.put("token",token);
+            loginmsg.put("mac", CommonUtil.getMAC());
+            loginmsg.put("imei", CommonUtil.getIMEI());
+            loginmsg.put("imsi", CommonUtil.getIMSI());
+            loginmsg.put("lat", CommonUtil.getCurLat());
+            loginmsg.put("lng", CommonUtil.getCurLng());
             ret = sendMessage(loginmsg, handler, 10);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -431,6 +440,9 @@ public class SocketClient {
             carmsg.put("pre_mileage",distance);
             carmsg.put("pre_price",price);
             carmsg.put("car_type",car);
+            carmsg.put("mac", CommonUtil.getMAC());
+            carmsg.put("imei", CommonUtil.getIMEI());
+            carmsg.put("imsi", CommonUtil.getIMSI());
             ret = sendMessage(carmsg, handler, 5);
         } catch (JSONException e) {
             e.printStackTrace();
