@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ImageView;
 
-import com.guokrspace.dududriver.R;
-
 
 public class SplashActivity extends Activity {
 
@@ -16,9 +14,9 @@ public class SplashActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+//        setContentView(R.layout.activity_splash);
 
-        splash = (ImageView) findViewById(R.id.splash_image);
+//        splash = (ImageView) findViewById(R.id.splash_image);
 
         Handler mHandler = new Handler();
         mHandler.postDelayed(new Runnable() {

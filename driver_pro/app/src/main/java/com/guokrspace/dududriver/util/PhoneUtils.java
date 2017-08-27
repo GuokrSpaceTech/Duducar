@@ -1,4 +1,4 @@
-package com.guokrspace.duducar.util;
+package com.guokrspace.dududriver.util;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.net.wifi.WifiManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import com.guokrspace.duducar.DuduApplication;
+import com.guokrspace.dududriver.DuduDriverApplication;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,7 +32,7 @@ public class PhoneUtils {
      */
     @SuppressLint("HardwareIds")
     public static String getIMEI() {
-        TelephonyManager tm = (TelephonyManager) DuduApplication.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager tm = (TelephonyManager) DuduDriverApplication.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
         return tm != null ? tm.getDeviceId() : null;
     }
 
@@ -44,7 +44,7 @@ public class PhoneUtils {
      */
     @SuppressLint("HardwareIds")
     public static String getIMSI() {
-        TelephonyManager tm = (TelephonyManager) DuduApplication.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager tm = (TelephonyManager) DuduDriverApplication.getInstance().getSystemService(Context.TELEPHONY_SERVICE);
         return tm != null ? tm.getSubscriberId() : null;
     }
 
@@ -58,7 +58,7 @@ public class PhoneUtils {
      * @return MAC地址
      */
     public static String getMAC() {
-        WifiManager wifiMan = (WifiManager) DuduApplication.getInstance().getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifiMan = (WifiManager) DuduDriverApplication.getInstance().getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInf = wifiMan.getConnectionInfo();
 
         if(wifiInf.getMacAddress().equals(marshmallowMacAddress)){//version after 6.0

@@ -1,6 +1,5 @@
 package com.guokrspace.duducar.communication;
 
-import android.os.Looper;
 import android.os.Message;
 import android.util.Base64;
 import android.util.Log;
