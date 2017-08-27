@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId "com.guokrspace.duducar"
         minSdkVersion 11
-        targetSdkVersion 22
+        targetSdkVersion 23
         versionCode 9
         versionName "beta1.1"
     }

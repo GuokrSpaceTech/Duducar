@@ -202,17 +202,19 @@ public class OrderHistoryActivity extends AppCompatActivity implements Handler.C
         order.setCityline_id(localRecord.getCityline_id());//
         order.setCompany(localRecord.getCompany());//
 
-        DriverRecord driverRecord = mApplication.mDaoSession.getDriverRecordDao().queryBuilder().where(DriverRecordDao.Properties.Id.eq(localRecord.getDriver_id())).list().get(0);
-        Driver driver = new Driver();
-        driver.setId(driverRecord.getId());
-        driver.setAvatar(driverRecord.getAvatar());
-        driver.setDescription(driverRecord.getDescription());
-        driver.setMobile(driverRecord.getMobile());
-        driver.setName(driverRecord.getName());
-        driver.setPicture(driverRecord.getPicture());
-        driver.setPlate(driverRecord.getPlate());
-
-        order.setDriver(driver);
+        List<DriverRecord> driverRecords = mApplication.mDaoSession.getDriverRecordDao().queryBuilder().where(DriverRecordDao.Properties.Id.eq(localRecord.getDriver_id())).list();
+        if (driverRecords != null && driverRecords.size() > 0) {
+            DriverRecord driverRecord = driverRecords.get(0);
+            Driver driver = new Driver();
+            driver.setId(driverRecord.getId());
+            driver.setAvatar(driverRecord.getAvatar());
+            driver.setDescription(driverRecord.getDescription());
+            driver.setMobile(driverRecord.getMobile());
+            driver.setName(driverRecord.getName());
+            driver.setPicture(driverRecord.getPicture());
+            driver.setPlate(driverRecord.getPlate());
+            order.setDriver(driver);
+        }
 
         return order;
     }

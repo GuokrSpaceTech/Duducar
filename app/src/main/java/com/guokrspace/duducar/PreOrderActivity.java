@@ -1,6 +1,5 @@
 package com.guokrspace.duducar;
 
-import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -14,10 +13,8 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
-import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -35,7 +32,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ZoomControls;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -79,14 +75,12 @@ import com.guokrspace.duducar.util.SharedPreferencesUtils;
 import com.guokrspace.duducar.util.Trace;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.umeng.analytics.MobclickAgent;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import me.drakeet.materialdialog.MaterialDialog;
 
 public class PreOrderActivity extends AppCompatActivity
@@ -180,6 +174,7 @@ public class PreOrderActivity extends AppCompatActivity
         super.startActivityForResult(intent, requestCode);
     }
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -188,7 +183,6 @@ public class PreOrderActivity extends AppCompatActivity
 
         AppExitUtil.getInstance().addActivity(this);
 
-//        getPermissions();
         duduService = new Intent(this, DuduService.class);
         startService(duduService);
         Log.e("daddy", "oncreate");
@@ -1142,7 +1136,7 @@ public class PreOrderActivity extends AppCompatActivity
         mOrder.setStartLocation(result.getAddress(), result.getLocation().latitude, result.getLocation().longitude);
 
         city = result.getAddressDetail().city;
-        if(result.getPoiList().size()>0){
+        if(result.getPoiList() != null && result.getPoiList().size()>0){
             start.setAddress(result.getPoiList().get(0).name);
             startLocButton.setText(result.getPoiList().get(0).name);
         } else {

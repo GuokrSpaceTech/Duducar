@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion '25.0.0'
 
 
     defaultConfig {
@@ -70,6 +70,11 @@ android {
     productFlavors.all {
         flavor ->
             flavor.manifestPlaceholders = [CHANNEL_NAME: flavor.name]
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
     }
 }
 

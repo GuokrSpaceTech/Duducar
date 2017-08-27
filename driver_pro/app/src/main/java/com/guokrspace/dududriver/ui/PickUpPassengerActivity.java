@@ -508,7 +508,7 @@ public class PickUpPassengerActivity extends BaseActivity implements Handler.Cal
         fileDir = this.getFilesDir().toString();
         ButterKnife.bind(this);
         //check the location permission
-//        CommonUtil.getPermissions(this);
+        CommonUtil.getPermissions(this);
 
         initDirs();
         initNavi();

@@ -2,6 +2,7 @@ package com.guokrspace.duducar.communication.tools;
 
 import android.util.Base64;
 
+import android.util.Log;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -32,6 +33,7 @@ public class Security {
         return SECURITY_KEY_MD5;
     }
     public static String encrypt(String input, String skey){
+        Log.e("Security", input + " " + skey);
         byte[] crypted = null;  
         try{  
             Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
@@ -40,8 +42,9 @@ public class Security {
             crypted = cipher.doFinal(input.getBytes());  
         }catch(Exception e){  
         System.out.println(e.toString());  
-    }  
-    return new String(Base64.encode(crypted, Base64.DEFAULT));
+    }
+
+    return crypted == null ? "" : new String(Base64.encode(crypted, Base64.DEFAULT));
 }  
 
     public static String decrypt(String input, String skey){

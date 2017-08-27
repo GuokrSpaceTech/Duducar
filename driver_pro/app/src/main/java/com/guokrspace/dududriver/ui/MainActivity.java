@@ -164,7 +164,7 @@ public class MainActivity extends BaseActivity implements Handler.Callback {
                 startService(duduService);
             }
             //check the location permission
-//            CommonUtil.getPermissions(this);
+            CommonUtil.getPermissions(this);
         } else {
             //用户信息不存在或注销,重新注册页面
             Log.e("daddy main ", "no persion ");

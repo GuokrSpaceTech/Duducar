@@ -58,7 +58,7 @@ public class PhoneUtils {
      * @return MAC地址
      */
     public static String getMAC() {
-        WifiManager wifiMan = (WifiManager) DuduDriverApplication.getInstance().getSystemService(Context.WIFI_SERVICE);
+        WifiManager wifiMan = (WifiManager) DuduDriverApplication.getInstance().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         WifiInfo wifiInf = wifiMan.getConnectionInfo();
 
         if(wifiInf.getMacAddress().equals(marshmallowMacAddress)){//version after 6.0

@@ -367,7 +367,7 @@ public class LoginActivity extends BaseActivity implements
         AppExitUtil.getInstance().addActivity(this);
 
         //check the location permission
-//        CommonUtil.getPermissions(this);
+        CommonUtil.getPermissions(this);
     }
 
     @Override
