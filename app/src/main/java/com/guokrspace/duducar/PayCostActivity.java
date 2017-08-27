@@ -517,7 +517,7 @@ public class PayCostActivity extends ActionBarActivity implements View.OnClickLi
      * create the order info. 创建订单信息
      */
     public String getOrderInfo(OrderDetail tripOverOrderDetail){
-        String notifyUrl = "http://120.24.237.15:81/api/Pay/getAlipayResult";
+        String notifyUrl = "https://api.duducab.com/Api/Pay/getAlipayResult";
 
         // 签约合作者身份ID
         String orderInfo = "partner=" + "\"" + PARTNER + "\"";

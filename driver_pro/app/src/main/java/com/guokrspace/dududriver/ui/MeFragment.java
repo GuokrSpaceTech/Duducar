@@ -360,6 +360,7 @@ public class MeFragment extends BaseFragment implements Handler.Callback{
      */
 
     public static void setRefreshing(SwipeRefreshLayout refreshLayout,boolean refreshing, boolean notify){
+        if (refreshLayout == null) return;
         Class<? extends SwipeRefreshLayout> refreshLayoutClass = refreshLayout.getClass();
         if (refreshLayoutClass != null) {
 

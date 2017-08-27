@@ -237,6 +237,7 @@ public class DuduService extends Service {
 
             MyLocationData curLocaData = new MyLocationData.Builder()
                     .accuracy(location.getRadius())
+                    .speed(location.getSpeed())
                     .direction(location.getDirection()).latitude(location.getLatitude())
                     .longitude(location.getLongitude()).build();
 

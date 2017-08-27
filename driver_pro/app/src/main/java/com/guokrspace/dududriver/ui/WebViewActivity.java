@@ -273,7 +273,7 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
                 break;
             case LOGIN_MESSAGE:
                 String cookie = (String) msg.obj;
-//                Log.e("webview_login", cookie);
+                Log.e("webview_login", cookie);
                 // 设置cookie，再发起网页请求
                 CookieSyncManager.createInstance(WebViewActivity.this);
                 CookieManager cm = CookieManager.getInstance();
@@ -281,6 +281,7 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
                 cm.setCookie(URL2VISIT, cookie);
                 CookieSyncManager.getInstance().sync();
                 mWebView.loadUrl(URL2VISIT);
+                Log.e("WebViewActivity", "URL " + URL2VISIT);
                 break;
             default:
                 break;
@@ -316,7 +317,7 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
             HttpURLConnection conn = null;
             try {
                 // 预先登陆请求地址
-                String urlPath = "http://www.duducab.com/index.php/Weixin/Driver/applogin?mobile=" + mobile + "&token=" + token;
+                String urlPath = "https://www.duducab.com/index.php/Weixin/Driver/applogin?mobile=" + mobile + "&token=" + token;
                 URL url = new URL(urlPath);
                 conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
@@ -336,6 +337,7 @@ public class WebViewActivity extends BaseActivity implements Handler.Callback{
                     br.close();
                     is.close();
                     // 分析返回的status是否为1
+                    Log.e("WebViewActivity->339: ", response);
                     JSONObject jsonObj = JSON.parseObject(response);
                     int status = jsonObj.getIntValue("status");
                     if (status == 1) {

@@ -1,13 +1,6 @@
-package com.guokrspace.duducar.common;
+package com.guokrspace.dududriver.common;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.text.TextUtils;
-
-import com.guokrspace.duducar.communication.message.OrderDetail;
-import com.guokrspace.duducar.database.PersonalInformation;
-import com.guokrspace.duducar.util.PhoneUtils;
+import com.guokrspace.dududriver.util.PhoneUtils;
 
 /**
  * Created by daddyfang on 15/11/13.

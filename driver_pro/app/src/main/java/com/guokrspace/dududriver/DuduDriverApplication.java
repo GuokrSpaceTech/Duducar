@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.AssetManager;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.baidu.mapapi.SDKInitializer;
@@ -15,7 +16,9 @@ import com.guokrspace.dududriver.database.PersonalInformationDao;
 import com.guokrspace.dududriver.util.CommonUtil;
 import com.guokrspace.dududriver.util.DisplayUtil;
 import com.guokrspace.dududriver.util.VoiceUtil;
+import static com.guokrspace.dududriver.util.RSAEncrypt.loadPublicKeyByFile;
 
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -30,6 +33,8 @@ public class DuduDriverApplication extends Application{
     public PersonalInformation mPersonalInformation;
 
     private SDKReceiver mReceiver;
+
+    public final String KEY_PATH="publicKey.keystore";
 
     private static DuduDriverApplication instance = null;
 
@@ -57,7 +62,15 @@ public class DuduDriverApplication extends Application{
         mReceiver = new SDKReceiver();
         registerReceiver(mReceiver, iFilter);
 
-        initDB();
+        try {
+            AssetManager am = getAssets();
+            InputStream is = am.open(KEY_PATH);
+            loadPublicKeyByFile(is);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+            initDB();
 
         if(!CommonUtil.isGpsOpen(getApplicationContext())){
              //TODO GPS未打开

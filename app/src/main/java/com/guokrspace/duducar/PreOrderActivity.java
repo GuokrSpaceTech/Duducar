@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
+import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -187,7 +188,7 @@ public class PreOrderActivity extends AppCompatActivity
 
         AppExitUtil.getInstance().addActivity(this);
 
-        getPermissions();
+//        getPermissions();
         duduService = new Intent(this, DuduService.class);
         startService(duduService);
         Log.e("daddy", "oncreate");
@@ -327,69 +328,73 @@ public class PreOrderActivity extends AppCompatActivity
          * Init the data
          */
         start = new SearchLocation();
-    }
-
-    @TargetApi(23)
-    private void getPermissions() {
-        Log.e("getPermission", " start to getpermission");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            Log.e("getPermission", "SDK check ");
-            ArrayList<String> permissions = new ArrayList<>();
-            /***
-             * 定位权限为必须权限，用户如果禁止，则每次进入都会申请
-             */
-            // 定位精确位置
-            if(checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-                permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
-            }
-            if(checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-                permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
-            }
-			/*
-			 * 读写权限和电话状态权限非必要权限(建议授予)只会申请一次，用户同意或者禁止，只会弹一次
-			 */
-            // 读写权限
-            if (addPermission(permissions, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                permissionInfo += "Manifest.permission.WRITE_EXTERNAL_STORAGE Deny \n";
-            }
-            // 读取电话状态权限
-            if (addPermission(permissions, Manifest.permission.READ_PHONE_STATE)) {
-                permissionInfo += "Manifest.permission.READ_PHONE_STATE Deny \n";
-            }
-
-            if (permissions.size() > 0) {
-                Log.e("PERMISSION", "REQUEST PERMISSION");
-                if (!shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                    showMessageOKCancel("需要获得您的位置信息来为你分派附近的嘟嘟司机!",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if (duduService != null) {
-                                        stopService(duduService);
-                                    }
-                                    dialog.dismiss();
-                                    startSettingActivity();
-                                    AppExitUtil.getInstance().exit();
-                                }
-                            },
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    //直接退出
-                                    if (duduService != null) {
-                                        stopService(duduService);
-                                    }
-                                    dialog.dismiss();
-                                    AppExitUtil.getInstance().exit();
-                                }
-                            });
-                    return;
-                }
-                requestPermissions(permissions.toArray(new String[permissions.size()]), SDK_PERMISSION_REQUEST);
-                Log.e("PERMISSION", "REQUEST AFTER");
-            }
+        if (savedInstanceState != null) {//exit with exception and restore
+            start = (SearchLocation)savedInstanceState.get("start");
+            dest = (SearchLocation)savedInstanceState.get("dest");
         }
     }
+
+//    @TargetApi(23)
+//    private void getPermissions() {
+//        Log.e("getPermission", " start to getpermission");
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            Log.e("getPermission", "SDK check ");
+//            ArrayList<String> permissions = new ArrayList<>();
+//            /***
+//             * 定位权限为必须权限，用户如果禁止，则每次进入都会申请
+//             */
+//            // 定位精确位置
+//            if(checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+//                permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+//            }
+//            if(checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+//                permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+//            }
+//			/*
+//			 * 读写权限和电话状态权限非必要权限(建议授予)只会申请一次，用户同意或者禁止，只会弹一次
+//			 */
+//            // 读写权限
+//            if (addPermission(permissions, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+//                permissionInfo += "Manifest.permission.WRITE_EXTERNAL_STORAGE Deny \n";
+//            }
+//            // 读取电话状态权限
+//            if (addPermission(permissions, Manifest.permission.READ_PHONE_STATE)) {
+//                permissionInfo += "Manifest.permission.READ_PHONE_STATE Deny \n";
+//            }
+//
+//            if (permissions.size() > 0) {
+//                Log.e("PERMISSION", "REQUEST PERMISSION");
+//                if (!shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
+//                    showMessageOKCancel("需要获得您的位置信息来为你分派附近的嘟嘟司机!",
+//                            new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    if (duduService != null) {
+//                                        stopService(duduService);
+//                                    }
+//                                    dialog.dismiss();
+//                                    startSettingActivity();
+//                                    AppExitUtil.getInstance().exit();
+//                                }
+//                            },
+//                            new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    //直接退出
+//                                    if (duduService != null) {
+//                                        stopService(duduService);
+//                                    }
+//                                    dialog.dismiss();
+//                                    AppExitUtil.getInstance().exit();
+//                                }
+//                            });
+//                    return;
+//                }
+//                requestPermissions(permissions.toArray(new String[permissions.size()]), SDK_PERMISSION_REQUEST);
+//                Log.e("PERMISSION", "REQUEST AFTER");
+//            }
+//        }
+//    }
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener, DialogInterface.OnClickListener exitListener) {
         new AlertDialog.Builder(PreOrderActivity.this)
@@ -439,32 +444,32 @@ public class PreOrderActivity extends AppCompatActivity
         }
     }
 
-    @TargetApi(23)
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        // TODO Auto-generated method stub
-        Log.e("daddy", "request response");
-        switch(requestCode){
-            case SDK_PERMISSION_REQUEST:
-                Map<String, Integer>perms = new HashMap<>();
-
-                perms.put(Manifest.permission.ACCESS_FINE_LOCATION, PackageManager.PERMISSION_GRANTED);
-
-                for(int i = 0; i < permissions.length; i++){
-                    perms.put(permissions[i], grantResults[i]);
-                }
-
-                if(perms.get(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-                    //permission granted
-                } else {
-                    //permission denied , confirm the user to do again
-                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, SDK_PERMISSION_REQUEST);
-                }
-                break;
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        }
-    }
+//    @TargetApi(23)
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+//        // TODO Auto-generated method stub
+//        Log.e("daddy", "request response");
+//        switch(requestCode){
+//            case SDK_PERMISSION_REQUEST:
+//                Map<String, Integer>perms = new HashMap<>();
+//
+//                perms.put(Manifest.permission.ACCESS_FINE_LOCATION, PackageManager.PERMISSION_GRANTED);
+//
+//                for(int i = 0; i < permissions.length; i++){
+//                    perms.put(permissions[i], grantResults[i]);
+//                }
+//
+//                if(perms.get(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+//                    //permission granted
+//                } else {
+//                    //permission denied , confirm the user to do again
+//                    requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, SDK_PERMISSION_REQUEST);
+//                }
+//                break;
+//            default:
+//                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        }
+//    }
 
     private void initToolBar() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -881,9 +886,15 @@ public class PreOrderActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("start", start);
+        outState.putSerializable("dest", dest);
+    }
+
+    @Override
     protected void onDestroy() {
         mMapView.onDestroy();
-
         if (mCurrentMarker != null) mCurrentMarker.recycle();
         mLocClient.stop();
 
@@ -1058,10 +1069,12 @@ public class PreOrderActivity extends AppCompatActivity
                     Bundle bundle = data.getExtras();
                     if (bundle != null) {
                         dest = (SearchLocation) bundle.get("location");
-                        Log.e("DADDY", "Start ADDTREES " + dest.getAddress());
+                        Log.e("DADDY", "Start ADDTREES " + dest.getAddress() + start.getAddress());
                         destLocButton.setText(dest.getAddress());
                         destLocButton.setTextColor(getResources().getColor(android.R.color.black));
                         callCabButton.setEnabled(true);
+
+                        startLocButton.setText(start.getAddress());
 
                         Intent intent = new Intent(mContext, CostEstimateActivity.class);
                         intent.putExtra("start", start);

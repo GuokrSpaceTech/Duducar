@@ -215,6 +215,7 @@ public class DuduService extends Service {
             CommonUtil.setCurTime(System.currentTimeMillis());
 //
             sendHeartBeat(curLocaData);
+
         }
     }
 
@@ -225,7 +226,7 @@ public class DuduService extends Service {
         msg.setLat(String.valueOf(locData.latitude));
         msg.setLng(String.valueOf(locData.longitude));
 
-        SocketClient.getInstance().sendHeartBeat(msg, Constants.PASSENGER_ROLE, new ResponseHandler(Looper.myLooper()) {
+        SocketClient.getInstance().sendHeartBeat(msg, Constants.PASSENGER_ROLE, new ResponseHandler(Looper.getMainLooper()) {
             @Override
             public void onSuccess(String messageBody) {
                 Log.i("HeartBeat Response", messageBody);
@@ -317,6 +318,12 @@ public class DuduService extends Service {
      *         receive the message from server with asyncTask
      */
     public class connectTask extends AsyncTask<String, String, SocketClient> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.e("fangfangbest", "main thread is: " + Thread.currentThread().getName());
+        }
+
         @Override
         protected SocketClient doInBackground(String... message) {
             //we create a TCPClient object and
