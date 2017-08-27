@@ -9,7 +9,7 @@ android {
         minSdkVersion 11
         targetSdkVersion 23
         versionCode 9
-        versionName "beta1.1"
+        versionName "beta1.3"
     }
 
     sourceSets {
@@ -35,7 +35,7 @@ android {
 //            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
-            shrinkResources true
+            shrinkResources false
             signingConfig signingConfigs.release
 
             applicationVariants.all { variant ->
@@ -63,11 +63,18 @@ android {
     productFlavors {
         wandoujia {}
         baidu {}
+        yingyongbao {}
+        huawei {}
     }
 
     productFlavors.all {
         flavor ->
             flavor.manifestPlaceholders = [CHANNEL_NAME: flavor.name]
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
     }
 }
 

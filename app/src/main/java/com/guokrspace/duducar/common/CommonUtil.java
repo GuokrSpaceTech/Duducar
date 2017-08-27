@@ -168,8 +168,6 @@ public class CommonUtil {
   }
 
   /**
-   *
-   * @param act
    * @return 是否有权限需要运行时申请
    */
   @TargetApi(23)
@@ -194,8 +192,13 @@ public class CommonUtil {
       {
         permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
       }
+      if (ActivityCompat.checkSelfPermission(act, Manifest.permission.READ_PHONE_STATE)
+          != PackageManager.PERMISSION_GRANTED)
+      {
+        permissions.add(Manifest.permission.READ_PHONE_STATE);
+      }
       /*
-			 * 读写权限和电话状态权限非必要权限(建议授予)只会申请一次，用户同意或者禁止，只会弹一次
+       * 读写权限和电话状态权限非必要权限(建议授予)只会申请一次，用户同意或者禁止，只会弹一次
 			 */
       //// 读写权限
       //if (addPermission(act, permissions, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {

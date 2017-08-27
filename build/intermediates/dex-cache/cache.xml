@@ -2,256 +2,76 @@
 <items version="2" >
 
     <item
-        is-multidex="true"
-        jar="/Users/hyman/.android/build-cache/9cc0265fa30518ae93aa6c1e56748c8c7f7d914a/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="07cb37d60b2949131813d532fea644b2cd7d9a63">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/transforms/dex/baidu/debug/folders/1000/10/classes_ca952410d75c7e2eeecc56a1a1eb9fdd394d2e9c/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/hyman/.android/build-cache/e748ea30e32908f2971f425fe7eb174555ed854c/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="3f151e49c316a5ab2c065969a3b3b55ef9b393fc">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/transforms/dex/baidu/debug/folders/1000/10/classes_9ebd07517a7093484e26c6c1522cdc3812a5b7f4/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/hyman/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.6.0/98476622f10715998eacf9240d6b479f12c66143/okio-1.6.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="98476622f10715998eacf9240d6b479f12c66143">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/transforms/dex/baidu/debug/folders/1000/10/okio-1.6.0_44cee392933c3cf1eed2ee865b3bd0799fa499f6/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/hyman/Duducar/app/build/intermediates/incremental-runtime-classes/baidu/debug/instant-run.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/transforms/dex/baidu/debug/folders/1000/10000/instant-run_7a5b2c681e58c951dad1842f433b9af64166703f/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/hyman/.android/build-cache/50444e3c658d50db25eed0abc9204ba9f52c412c/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="57ae0d750ff83f0c738d21720224ac7ea866a094">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/transforms/dex/baidu/debug/folders/1000/10/classes_51cc7166c6d20fa816747a6cb03019c5bf981642/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/hyman/Duducar/app/libs/umeng-analytics-v5.6.4.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="76fed6d2233b958f0c1d589aa366785e0ab5c8f1">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/transforms/dex/baidu/debug/folders/1000/2/umeng-analytics-v5.6.4_d345a015e08ae041f6de234fd982b4d7d3a84439/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/hyman/Duducar/app/libs/alipaySdk-20151103.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="532e123a000537dcc0fc5bcbac1aeb4562be98af">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/transforms/dex/baidu/debug/folders/1000/2/alipaySdk-20151103_c5231749be507e2148c4292a71e6bd1113c7d54c/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/hyman/.android/build-cache/13b1b71579c6654717f0e79af15d74ac0f3839b6/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="ddde541c289c8b816a8f8fd6c325d80788c522a6">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/transforms/dex/baidu/debug/folders/1000/10/classes_a2566c1199744b76a4134e563a6549193a2efd4f/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/hyman/Duducar/app/libs/umeng-update-v2.6.0.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="e76510af0986842b672c59d29502f3d29866320a">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/transforms/dex/baidu/debug/folders/1000/2/umeng-update-v2.6.0.1_d9d1d75917432f880dd46f945eca05ff12539a8a/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/hyman/.gradle/caches/modules-2/files-2.1/de.greenrobot/greendao-generator/1.3.1/2f757df97b422e40bf99f71094e5d105c98f32e7/greendao-generator-1.3.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="2f757df97b422e40bf99f71094e5d105c98f32e7">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/transforms/dex/baidu/debug/folders/1000/10/greendao-generator-1.3.1_4039c23d85f7ea05a5cfbadaca41a0d743bb242d/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/hyman/.gradle/caches/modules-2/files-2.1/com.nineoldandroids/library/2.4.0/e9b63380f3a242dbdbf103a2355ad7e43bad17cb/library-2.4.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/transforms/dex/baidu/debug/folders/1000/10/library-2.4.0_59c01d9b0998b0933c04c1f19b50a9b2c7475d29/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/hyman/Duducar/app/libs/fastjson-1.2.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="f0f61c45b8e6e1f4e3444725863db8ee7124c52a">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/transforms/dex/baidu/debug/folders/1000/2/fastjson-1.2.1_aad976b94603a078555aace2bda28753726a7562/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
+        is-multidex="false"
         jar="/Users/hyman/Duducar/app/libs/BaiduLBS_Android.jar"
-        jumboMode="true"
+        jumboMode="false"
         optimize="true"
         revision="25.0.0"
         sha1="878b9c2f2bab7b98178746afd77dd0bf7fba34b1">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/transforms/dex/baidu/debug/folders/1000/2/BaiduLBS_Android_d4612105a9a362263c502df8dc112272cc70ae0b/classes.dex" />
+        <dex dex="/Users/hyman/Duducar/app/build/intermediates/pre-dexed/baidu/release/BaiduLBS_Android_d4612105a9a362263c502df8dc112272cc70ae0b.jar" />
     </item>
     <item
-        is-multidex="true"
-        jar="/Users/hyman/.android/build-cache/c55f2d44e04c797ecf5c1513646b9066953bec09/output/jars/classes.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="/Users/hyman/Duducar/app/libs/umeng-analytics-v5.6.4.jar"
+        jumboMode="false"
         optimize="true"
         revision="25.0.0"
-        sha1="19026d31f5d3ae868db81319671a642be5fbba08">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/transforms/dex/baidu/debug/folders/1000/10/classes_2783c806228d9903508ddc79a6accf6e82fb1bd1/classes.dex" />
+        sha1="76fed6d2233b958f0c1d589aa366785e0ab5c8f1">
+        <dex dex="/Users/hyman/Duducar/app/build/intermediates/pre-dexed/baidu/release/umeng-analytics-v5.6.4_d345a015e08ae041f6de234fd982b4d7d3a84439.jar" />
     </item>
     <item
-        is-multidex="true"
-        jar="/Users/hyman/.android/build-cache/6c367282d4facfd0e4995b685cdc4e8ad794c224/output/jars/classes.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="/Users/hyman/Duducar/library_slidingmenu/build/intermediates/bundles/default/classes.jar"
+        jumboMode="false"
         optimize="true"
         revision="25.0.0"
-        sha1="0573d010bcb1ee874e1c258a31e98ab920e6805f">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/transforms/dex/baidu/debug/folders/1000/10/classes_908373a90459518a6699f630cf06227e8ba73603/classes.dex" />
+        sha1="aeb35a252c28e8ceeea6a4b77e847327e7032705">
+        <dex dex="/Users/hyman/Duducar/app/build/intermediates/pre-dexed/baidu/release/classes_dea3b8068396020b6ef2fade9796ac1364c3ff52.jar" />
     </item>
     <item
-        is-multidex="true"
-        jar="/Users/hyman/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.1.0/support-annotations-23.1.0.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="/Users/hyman/Duducar/app/libs/alipaySdk-20151103.jar"
+        jumboMode="false"
         optimize="true"
         revision="25.0.0"
-        sha1="92e3fc113ec3ee36b64603a38857b95700025633">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/transforms/dex/baidu/debug/folders/1000/10/support-annotations-23.1.0_162c7bd05bad08dc45e77696fdd7b7bbef24820f/classes.dex" />
+        sha1="532e123a000537dcc0fc5bcbac1aeb4562be98af">
+        <dex dex="/Users/hyman/Duducar/app/build/intermediates/pre-dexed/baidu/release/alipaySdk-20151103_c5231749be507e2148c4292a71e6bd1113c7d54c.jar" />
     </item>
     <item
-        is-multidex="true"
-        jar="/Users/hyman/.gradle/caches/modules-2/files-2.1/org.freemarker/freemarker/2.3.20/5ad6bea46b5af666d88c260c8acc6a03408723c8/freemarker-2.3.20.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="5ad6bea46b5af666d88c260c8acc6a03408723c8">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/transforms/dex/baidu/debug/folders/1000/10/freemarker-2.3.20_6fea73d7c3612a38ab435fa0a7f05f75810f18cf/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/hyman/Duducar/app/build/intermediates/incremental-classes/baidu/debug/instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="2f6c2664630a214556910ec28c67b55420136cee">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/transforms/dex/baidu/debug/folders/1000/10000/instant-run-bootstrap_43346fe90608e43b033287379d0fccae2d02b89f/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/hyman/.android/build-cache/0c7e776a3c490e223d5fd40696b8281fd2262b8c/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="ac6948cce36f694f3eb3d73a135e298dc4b3527a">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/transforms/dex/baidu/debug/folders/1000/10/classes_9c54b0a6a6925b32dcfcbe9e74d9d40d13a50561/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
+        is-multidex="false"
         jar="/Users/hyman/Duducar/app/libs/httpcore-4.3.2.jar"
-        jumboMode="true"
+        jumboMode="false"
         optimize="true"
         revision="25.0.0"
         sha1="31fbbff1ddbf98f3aa7377c94d33b0447c646b6e">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/transforms/dex/baidu/debug/folders/1000/2/httpcore-4.3.2_153ca76c0dc6739156e830587024ad3cc4386693/classes.dex" />
+        <dex dex="/Users/hyman/Duducar/app/build/intermediates/pre-dexed/baidu/release/httpcore-4.3.2_153ca76c0dc6739156e830587024ad3cc4386693.jar" />
     </item>
     <item
-        is-multidex="true"
-        jar="/Users/hyman/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp/okhttp/2.5.0/4de2b4ed3445c37ec1720a7d214712e845a24636/okhttp-2.5.0.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="/Users/hyman/Duducar/app/libs/umeng-update-v2.6.0.1.jar"
+        jumboMode="false"
         optimize="true"
         revision="25.0.0"
-        sha1="4de2b4ed3445c37ec1720a7d214712e845a24636">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/transforms/dex/baidu/debug/folders/1000/10/okhttp-2.5.0_c619ab92c4fbdedda5ac6540d26e83fff84fea5b/classes.dex" />
+        sha1="e76510af0986842b672c59d29502f3d29866320a">
+        <dex dex="/Users/hyman/Duducar/app/build/intermediates/pre-dexed/baidu/release/umeng-update-v2.6.0.1_d9d1d75917432f880dd46f945eca05ff12539a8a.jar" />
     </item>
     <item
-        is-multidex="true"
-        jar="/Users/hyman/.android/build-cache/2fe4fbbd3c9a0a492e9024d09199f160b4ee8a6e/output/jars/classes.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="/Users/hyman/Duducar/app/libs/fastjson-1.2.1.jar"
+        jumboMode="false"
         optimize="true"
         revision="25.0.0"
-        sha1="d96886efea7cc74fbb3abd0e3b51d5638fc57be0">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/transforms/dex/baidu/debug/folders/1000/10/classes_e65cb6786b7d17f6fa97888684037c3e2899a4b3/classes.dex" />
+        sha1="f0f61c45b8e6e1f4e3444725863db8ee7124c52a">
+        <dex dex="/Users/hyman/Duducar/app/build/intermediates/pre-dexed/baidu/release/fastjson-1.2.1_aad976b94603a078555aace2bda28753726a7562.jar" />
     </item>
     <item
-        is-multidex="true"
-        jar="/Users/hyman/.gradle/caches/modules-2/files-2.1/de.greenrobot/greendao/1.3.7/dda08161d004c4df96938da6909f1c2b96cd33c8/greendao-1.3.7.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="dda08161d004c4df96938da6909f1c2b96cd33c8">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/transforms/dex/baidu/debug/folders/1000/10/greendao-1.3.7_4e4d7c9ae2aa3ef97c2237a26bd80365f6ae962a/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/hyman/.android/build-cache/bee34adf5bc8a825717567359083d6972c95226a/output/jars/libs/gson-2.2.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="42a24d508f5e05bd22cc42bd2e2babd7b5466ec9">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/transforms/dex/baidu/debug/folders/1000/10/gson-2.2.1_5a08563e3ab7cab138067981ebe3700d4633ffa3/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/hyman/.android/build-cache/13b1b71579c6654717f0e79af15d74ac0f3839b6/output/jars/libs/internal_impl-23.1.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="8716243bf04bae8d6c9ca94d27b9a9be7236f0a3">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/transforms/dex/baidu/debug/folders/1000/10/internal_impl-23.1.0_0f6a92beec023595d09b6d6d2bb4e711b9fe8fb4/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
+        is-multidex="false"
         jar="/Users/hyman/Duducar/app/libs/libammsdk.jar"
-        jumboMode="true"
+        jumboMode="false"
         optimize="true"
         revision="25.0.0"
         sha1="d7c2f29c05b35e8c8713be2b81c41cf18f98b64a">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/transforms/dex/baidu/debug/folders/1000/2/libammsdk_50b6c13f6fe34e6b0fb7c31fa04d70d792e39cc3/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/hyman/.android/build-cache/bee34adf5bc8a825717567359083d6972c95226a/output/jars/classes.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="9bd1bb5ea9ee043fb215b54551f9fa86e56c415e">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/transforms/dex/baidu/debug/folders/1000/10/classes_960294218b4cdd98e63ab2e32970ce70b14890bd/classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="/Users/hyman/.gradle/caches/modules-2/files-2.1/com.squareup.picasso/picasso/2.5.2/7446d06ec8d4f7ffcc53f1da37c95f200dcb9387/picasso-2.5.2.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.0"
-        sha1="7446d06ec8d4f7ffcc53f1da37c95f200dcb9387">
-        <dex dex="/Users/hyman/Duducar/app/build/intermediates/transforms/dex/baidu/debug/folders/1000/10/picasso-2.5.2_ff84f03a2dd52e64be7e86c0258591593bf4b012/classes.dex" />
+        <dex dex="/Users/hyman/Duducar/app/build/intermediates/pre-dexed/baidu/release/libammsdk_50b6c13f6fe34e6b0fb7c31fa04d70d792e39cc3.jar" />
     </item>
 
 </items>
